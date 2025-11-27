@@ -1,9 +1,51 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# KinXplore
+
+**Your Personalized Kinshasa Trip Planner**
+
+KinXplore is the mobile-optimized web app that designs your perfect Kinshasa trip. Just tell us your trip style (Party, Relax, Family, etc.) and group size, and we'll instantly generate a personalized itinerary tailored precisely to your needs and preferences. Explore Kinshasa, your way!
+
+## Features
+
+- 🎯 **Personalized Itineraries** - Get custom trip plans based on your travel style and group size
+- 📱 **Mobile-Optimized** - Designed to work seamlessly on all mobile devices
+- 🌍 **Multi-Language Support** - Available in English, French, and Dutch
+- 🎨 **Modern UI** - Beautiful, responsive interface with dark mode support
+- ⚡ **Fast & Efficient** - Built with Next.js for optimal performance
+
+## Tech Stack
+
+- **Framework**: [Next.js](https://nextjs.org/) 14
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS
+- **Internationalization**: next-intl
+- **UI Components**: Radix UI
+- **Theme**: next-themes (dark mode support)
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
 
+- Node.js 18+ installed
+- npm, yarn, pnpm, or bun
+
+### Installation
+
+1. Clone the repository:
+```bash
+git clone <repository-url>
+cd kinxplore
+```
+
+2. Install dependencies:
+```bash
+npm install
+# or
+yarn install
+# or
+pnpm install
+```
+
+3. Run the development server:
 ```bash
 npm run dev
 # or
@@ -14,23 +56,42 @@ pnpm dev
 bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+4. Open [http://localhost:3000](http://localhost:3000) in your browser to see the app.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Available Scripts
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+- `npm run dev` - Start the development server
+- `npm run build` - Build the app for production
+- `npm run start` - Start the production server
+- `npm run lint` - Run ESLint to check for code issues
+- `npm run export` - Build and export the app as static HTML
+
+## Project Structure
+
+```
+kinxplore/
+├── src/
+│   ├── app/              # Next.js app router pages
+│   │   ├── [locale]/     # Internationalized routes
+│   │   └── api/          # API routes and data
+│   ├── components/       # React components
+│   ├── assets/           # Static assets and styles
+│   ├── lib/              # Utility functions
+│   └── navigation.ts     # Navigation configuration
+├── messages/             # Translation files (en, fr, nl)
+└── public/               # Public static files
+```
 
 ## Learn More
 
-To learn more about Next.js, take a look at the following resources:
+- [Next.js Documentation](https://nextjs.org/docs) - Learn about Next.js features and API
+- [Next.js Learn](https://nextjs.org/learn) - Interactive Next.js tutorial
+- [next-intl Documentation](https://next-intl-docs.vercel.app/) - Internationalization for Next.js
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## License
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## Deploy on Vercel
+## Author
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Julien Matondo
