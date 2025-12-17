@@ -1,28 +1,30 @@
 import "../../assets/styles/globals.css";
 
 import type { Metadata } from "next";
-import { DM_Sans } from "next/font/google";
+import { Inter } from "next/font/google";
 import React from "react";
 
 import Providers from "./providers";
 
-const dmSans = DM_Sans({ subsets: ["latin"] });
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "ADA - Point of sale",
-  description: "Adaptive Point of sale system working on multiple devices",
+  title: "KinXplore - Kinshasa Trip Planner",
+  description: "Experience the vibrant heart of the DRC. Plan your perfect journey in Kinshasa with AI-powered itineraries.",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
-  params: { locale },
+  params,
 }: {
   children: React.ReactNode;
-  params: { locale: string };
+  params: Promise<{ locale: string }>;
 }) {
+  const { locale } = await params;
+  
   return (
     <html suppressHydrationWarning={true} lang={locale}>
-      <body className={`${dmSans.className}`}>
+      <body className={`${inter.className} antialiased`}>
         <Providers locale={locale}>{children}</Providers>
       </body>
     </html>

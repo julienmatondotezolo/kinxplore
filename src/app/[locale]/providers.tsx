@@ -3,7 +3,7 @@
 import { NextIntlClientProvider } from "next-intl";
 import { ThemeProvider } from "next-themes";
 import React, { JSX, ReactNode } from "react";
-import { QueryClient, QueryClientProvider } from "react-query";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 // Manually import messages for each locale
 import enMessages from "../../../messages/en.json";

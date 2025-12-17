@@ -1,6 +1,6 @@
 const createNextIntlPlugin = require("next-intl/plugin");
 
-const withNextIntl = createNextIntlPlugin();
+const withNextIntl = createNextIntlPlugin("./src/i18n.ts");
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -14,7 +14,16 @@ const nextConfig = {
     ];
   },
   images: {
-    domains: ["cdn.builder.io"],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "cdn.builder.io",
+      },
+      {
+        protocol: "https",
+        hostname: "picsum.photos",
+      },
+    ],
   },
   typescript: {
     // !! WARN !!
