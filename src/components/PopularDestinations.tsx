@@ -1,44 +1,70 @@
 import React from 'react';
-import { ArrowUpRight } from 'lucide-react';
+import { Plane, Star } from 'lucide-react';
 
 const destinations = [
-    { title: "Zongo Falls", price: "$120", rating: 4.8, img: 5 },
-    { title: "Lola ya Bonobo", price: "$40", rating: 4.9, img: 6 },
-    { title: "Fleuve Congo", price: "$85", rating: 4.7, img: 7 },
-    { title: "Ma Vallée", price: "$60", rating: 4.6, img: 8 },
+    { 
+        title: "Lola ya Bonobo, Mont Ngafula", 
+        price: "$40", 
+        rating: 5.0, 
+        img: "https://picsum.photos/600/600?random=101" 
+    },
+    { 
+        title: "Zongo Falls, Bas-Congo", 
+        price: "$120", 
+        rating: 5.0, 
+        img: "https://picsum.photos/600/600?random=102" 
+    },
+    { 
+        title: "Ma Vallée, Nature Park", 
+        price: "$65", 
+        rating: 5.0, 
+        img: "https://picsum.photos/600/600?random=103" 
+    },
+    { 
+        title: "Sunset over Congo River", 
+        price: "$85", 
+        rating: 5.0, 
+        img: "https://picsum.photos/600/600?random=104" 
+    },
 ];
 
 export const PopularDestinations: React.FC = () => {
     return (
-        <div className="py-20 max-w-7xl mx-auto px-4" id="destinations">
+        <div className="py-24 max-w-7xl mx-auto px-4" id="destinations">
             <div className="mb-12">
-                <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Popular Destinations</h2>
-                <p className="text-gray-500">Discover the gems around Kinshasa most loved by travelers.</p>
+                <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900 tracking-tight mb-4">Popular Destinations</h2>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
                 {destinations.map((dest, idx) => (
-                    <div key={idx} className="bg-white p-3 rounded-3xl shadow-lg shadow-gray-100 hover:shadow-xl transition-all hover:-translate-y-1 group cursor-pointer">
-                        <div className="relative overflow-hidden rounded-2xl mb-4 h-64">
+                    <div key={idx} className="group cursor-pointer">
+                        <div className="relative overflow-hidden rounded-[2.5rem] mb-6 aspect-square shadow-sm transition-all duration-500 group-hover:shadow-2xl">
                             <img 
-                                src={`https://picsum.photos/400/500?random=${dest.img}`} 
+                                src={dest.img} 
                                 alt={dest.title} 
-                                className="w-full h-full object-cover transform group-hover:scale-110 transition duration-500"
+                                className="w-full h-full object-cover transform group-hover:scale-110 transition duration-700"
                             />
-                            <div className="absolute top-3 right-3 bg-white/30 backdrop-blur p-2 rounded-full text-white hover:bg-white hover:text-black transition">
-                                <ArrowUpRight size={20} />
-                            </div>
-                            <div className="absolute bottom-3 left-3 bg-white px-3 py-1 rounded-lg text-xs font-bold shadow-sm">
-                                {dest.rating} ⭐
+                            
+                            {/* Booking Pill */}
+                            <div className="absolute bottom-6 left-1/2 -translate-x-1/2 w-[85%] bg-white/95 backdrop-blur-md rounded-full py-3 px-6 flex items-center justify-between shadow-lg opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-500">
+                                <span className="text-xs font-bold text-gray-900 uppercase tracking-wider">Booking Trip</span>
+                                <div className="bg-blue-600 text-white p-1.5 rounded-full">
+                                    <Plane size={14} className="rotate-45" />
+                                </div>
                             </div>
                         </div>
-                        <div className="px-2 pb-2">
-                            <div className="flex justify-between items-end">
-                                <div>
-                                    <h3 className="font-bold text-lg text-gray-900">{dest.title}</h3>
-                                    <p className="text-sm text-gray-400">Starting</p>
+
+                        <div className="space-y-2 px-1">
+                            <h3 className="font-bold text-lg text-gray-900 leading-tight group-hover:text-blue-600 transition-colors">{dest.title}</h3>
+                            <div className="flex justify-between items-center">
+                                <div className="flex items-baseline gap-1.5">
+                                    <span className="font-bold text-gray-900">{dest.price}</span>
+                                    <span className="text-sm font-medium text-gray-400">Starting</span>
                                 </div>
-                                <span className="font-bold text-blue-600 text-lg">{dest.price}</span>
+                                <div className="flex items-center gap-1">
+                                    <Star size={14} className="text-gray-300 fill-gray-300" />
+                                    <span className="text-sm font-bold text-gray-900">{dest.rating.toFixed(1)}</span>
+                                </div>
                             </div>
                         </div>
                     </div>

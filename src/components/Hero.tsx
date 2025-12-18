@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowRight, Star, Plus, Plane, MapPin, Compass, Heart, ArrowUpRight } from 'lucide-react';
+import { ArrowRight, Star, Plus, Plane, MapPin, Compass, ArrowUpRight } from 'lucide-react';
 import { TripPlannerForm } from './TripPlannerForm';
 import { UserPreferences } from '@/types';
 
@@ -9,13 +9,6 @@ interface HeroProps {
 }
 
 export const Hero: React.FC<HeroProps> = ({ onGenerate, isLoading }) => {
-  const suggestions = [
-    { title: "Lola ya Bonobo", location: "Mont Ngafula", img: "https://picsum.photos/400/300?random=11" },
-    { title: "Zongo Falls", location: "Bas-Congo", img: "https://picsum.photos/400/300?random=12" },
-    { title: "Marché de la Liberté", location: "Masina", img: "https://picsum.photos/400/300?random=13" },
-    { title: "Congo River", location: "Gombe", img: "https://picsum.photos/400/300?random=14" },
-  ];
-
   const packages = [
     { 
       title: "Kinshasa Essentials", 
