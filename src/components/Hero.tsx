@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowRight, Star, Plus, Plane, MapPin, Compass, Heart } from 'lucide-react';
+import { ArrowRight, Star, Plus, Plane, MapPin, Compass, Heart, ArrowUpRight } from 'lucide-react';
 import { TripPlannerForm } from './TripPlannerForm';
 import { UserPreferences } from '@/types';
 
@@ -16,9 +16,35 @@ export const Hero: React.FC<HeroProps> = ({ onGenerate, isLoading }) => {
     { title: "Congo River", location: "Gombe", img: "https://picsum.photos/400/300?random=14" },
   ];
 
+  const packages = [
+    { 
+      title: "Kinshasa Essentials", 
+      price: "$450", 
+      duration: "3 Days", 
+      img: "https://picsum.photos/800/1000?random=60",
+      badge: "Bestseller",
+      tag: "Cultural"
+    },
+    { 
+      title: "River Safari", 
+      price: "$800", 
+      duration: "5 Days", 
+      img: "https://picsum.photos/600/400?random=61",
+      tag: "Adventure"
+    },
+    { 
+      title: "Nightlife Tour", 
+      price: "$250", 
+      duration: "1 Night", 
+      img: "https://picsum.photos/600/400?random=62",
+      badge: "Trending",
+      tag: "Entertainment"
+    },
+  ];
+
   return (
-    <div className="relative pt-40 pb-48 px-4 overflow-hidden bg-gradient-to-br from-blue-50/50 via-purple-50/30 to-pink-50/40">
-      {/* Animated Background Blobs */}
+    <div className="relative pt-32 pb-48 px-4 overflow-hidden bg-gradient-to-br from-blue-50/50 via-purple-50/30 to-pink-50/40">
+      {/* ... Background Blobs ... */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {/* Large primary blob - top right */}
         <div className="absolute -top-40 -right-40 w-[500px] h-[500px] bg-gradient-to-br from-blue-400/20 to-purple-400/20 rounded-full blur-3xl animate-pulse" />
@@ -46,7 +72,7 @@ export const Hero: React.FC<HeroProps> = ({ onGenerate, isLoading }) => {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center relative z-10">
+      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-start relative z-10">
         
         {/* Left Content */}
         <div className="space-y-10 relative z-10">
@@ -77,69 +103,101 @@ export const Hero: React.FC<HeroProps> = ({ onGenerate, isLoading }) => {
           <div className="pt-2">
             <TripPlannerForm onGenerate={onGenerate} isLoading={isLoading} compact={true} />
           </div>
-
-          {/* Destination Suggestions */}
-          <div className="space-y-6 pt-2">
-            <div className="flex items-center justify-between max-w-lg">
-              <h3 className="font-bold text-gray-900">Explore Nearby</h3>
-              <button className="text-sm font-bold text-blue-600 flex items-center gap-1 hover:underline">
-                View all <ArrowRight size={14} />
-              </button>
-            </div>
-            
-            <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide">
-              {suggestions.map((item, i) => (
-                <div key={i} className="min-w-[180px] group cursor-pointer">
-                  <div className="relative h-24 rounded-2xl overflow-hidden mb-3">
-                    <img src={item.img} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" alt={item.title} />
-                    <div className="absolute top-2 right-2 p-1.5 bg-white/80 backdrop-blur rounded-full shadow-sm">
-                      <Heart size={12} className="text-gray-400 group-hover:text-red-500 transition-colors" />
-                    </div>
-                  </div>
-                  <h4 className="font-bold text-sm text-gray-900 group-hover:text-blue-600 transition-colors">{item.title}</h4>
-                  <p className="text-xs text-gray-400 font-medium flex items-center gap-1">
-                    <MapPin size={10} /> {item.location}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </div>
         </div>
 
-        {/* Right Content - Modern Grid */}
-        <div className="relative hidden lg:block h-[600px]">
-            {/* Main large image with "X" close-like icon from example */}
-            <div className="absolute top-0 right-0 w-[85%] h-[75%] rounded-[3rem] overflow-hidden shadow-2xl border-8 border-white group">
-                <img src="https://picsum.photos/800/1000?random=1" alt="Destination" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000" />
-                <div className="absolute top-8 right-8 w-12 h-12 bg-white/90 backdrop-blur rounded-full flex items-center justify-center shadow-lg">
-                    <Plus size={24} className="text-gray-900 rotate-45" />
+        {/* Right Content - Modern Destination Packages Grid */}
+        <div className="relative hidden lg:flex flex-col gap-6 h-full">
+            {/* Top Row: Review */}
+            <div className="flex flex-col gap-3 pl-12">
+                <div className="flex items-center gap-4">
+                    <div className="flex -space-x-3">
+                        {[1, 2, 3, 4].map(i => (
+                            <img key={i} src={`https://picsum.photos/100/100?random=${i + 30}`} className="w-10 h-10 rounded-full border-4 border-white object-cover shadow-sm" alt="User" />
+                        ))}
+                    </div>
+                    <div>
+                        <p className="text-xs font-bold text-gray-900 tracking-tight">
+                            <span className="underline decoration-blue-500 decoration-2 underline-offset-4">Reviews</span> 4.8 out of 5
+                        </p>
+                        <p className="text-[9px] text-gray-400 font-medium uppercase tracking-widest mt-0.5">Top-Rated Experiences</p>
+                    </div>
                 </div>
             </div>
 
-            {/* Bottom floating image */}
-            <div className="absolute -bottom-4 left-0 w-[60%] h-[50%] rounded-[3.5rem] overflow-hidden shadow-2xl border-8 border-white z-20 group">
-                <img src="https://picsum.photos/600/600?random=2" alt="Landscape" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000" />
-                <div className="absolute top-8 right-8 w-12 h-12 bg-white/90 backdrop-blur rounded-full flex items-center justify-center shadow-lg">
-                    <Plus size={24} className="text-gray-900 rotate-45" />
+            {/* Grid of Destination Cards */}
+            <div className="grid grid-cols-2 gap-4 relative h-full max-h-[420px]">
+                {/* Large Left Package Card */}
+                <div className="relative rounded-[2rem] overflow-hidden shadow-2xl border-4 border-white group cursor-pointer h-full row-span-2">
+                    <img src={packages[0].img} alt={packages[0].title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-60 group-hover:opacity-80 transition-opacity" />
+                    
+                    {/* Badge */}
+                    {packages[0].badge && (
+                        <div className="absolute top-4 left-4 px-3 py-1 bg-blue-600 text-white text-[9px] font-bold rounded-full uppercase tracking-wider shadow-lg">
+                            {packages[0].badge}
+                        </div>
+                    )}
+
+                    <div className="absolute top-4 right-4 w-8 h-8 bg-white/90 backdrop-blur rounded-full flex items-center justify-center shadow-lg group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                        <ArrowUpRight size={16} />
+                    </div>
+
+                    <div className="absolute bottom-6 left-6 right-6 text-white">
+                        <p className="text-[10px] font-bold text-blue-400 uppercase tracking-[0.2em] mb-1">{packages[0].tag}</p>
+                        <h4 className="text-xl font-extrabold mb-2 leading-tight">{packages[0].title}</h4>
+                        <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-2">
+                                <span className="text-xs font-bold opacity-90">{packages[0].duration}</span>
+                                <span className="w-1 h-1 bg-white/40 rounded-full" />
+                                <span className="text-xs font-bold text-blue-400">From {packages[0].price}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Top Right Package Card */}
+                <div className="relative rounded-[2rem] overflow-hidden shadow-xl border-4 border-white group cursor-pointer h-48">
+                    <img src={packages[1].img} alt={packages[1].title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-50 group-hover:opacity-70 transition-opacity" />
+                    
+                    <div className="absolute top-4 right-4 w-8 h-8 bg-white/90 backdrop-blur rounded-full flex items-center justify-center shadow-lg group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                        <ArrowUpRight size={16} />
+                    </div>
+
+                    <div className="absolute bottom-4 left-4 right-4 text-white">
+                        <h4 className="text-base font-bold mb-0.5 leading-tight">{packages[1].title}</h4>
+                        <div className="flex items-center gap-2 text-[9px] font-bold text-white/80">
+                            <span>{packages[1].duration}</span>
+                            <span className="text-blue-400">{packages[1].price}</span>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Bottom Right Package Card */}
+                <div className="relative rounded-[2rem] overflow-hidden shadow-xl border-4 border-white group cursor-pointer h-40 mt-auto">
+                    <img src={packages[2].img} alt={packages[2].title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-50 group-hover:opacity-70 transition-opacity" />
+                    
+                    <div className="absolute top-4 right-4 w-8 h-8 bg-white/90 backdrop-blur rounded-full flex items-center justify-center shadow-lg group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                        <ArrowUpRight size={16} />
+                    </div>
+
+                    <div className="absolute bottom-4 left-4 right-4 text-white">
+                        <h4 className="text-base font-bold mb-0.5 leading-tight">{packages[2].title}</h4>
+                        <div className="flex items-center gap-2 text-[9px] font-bold text-white/80">
+                            <span>{packages[2].duration}</span>
+                            <span className="text-blue-400">{packages[2].price}</span>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            {/* Side social icons from example */}
-            <div className="absolute -right-4 top-1/4 flex flex-col gap-4 z-30">
-                <div className="w-10 h-10 bg-[#FF6B00] rounded-full flex items-center justify-center text-white shadow-lg cursor-pointer hover:scale-110 transition">
-                    <span className="font-bold text-xs italic">in</span>
-                </div>
-                <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center text-gray-900 shadow-lg cursor-pointer hover:scale-110 transition border border-gray-100">
-                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.067.06 1.407.06 4.123v.08c0 2.643-.012 2.987-.06 4.043-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.067.048-1.407.06-4.123.06h-.08c-2.643 0-2.987-.012-4.043-.06-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.047-1.024-.06-1.379-.06-3.808v-.63c0-2.43.013-2.784.06-3.808.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772A4.902 4.902 0 015.45 2.525c.636-.247 1.363-.416 2.427-.465C8.901 2.013 9.256 2 11.685 2h.63z" /></svg>
-                </div>
-                <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center text-gray-900 shadow-lg cursor-pointer hover:scale-110 transition border border-gray-100">
-                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.25 2.25h6.834l4.697 6.147 5.463-6.147zm-1.161 17.52h1.833L7.084 4.126H5.117L17.083 19.77z" /></svg>
-                </div>
-            </div>
-
-            {/* Decorative element - floating plane/star or similar */}
-            <div className="absolute top-[20%] left-[-5%] w-16 h-16 bg-white rounded-2xl shadow-xl flex items-center justify-center transform -rotate-12 animate-bounce duration-[3000ms] z-30">
-                <Star size={30} className="text-yellow-400 fill-current" />
+            {/* Footer Link */}
+            <div className="pt-2 self-start pl-12">
+                <button className="flex items-center gap-2 text-blue-600 font-bold text-xs uppercase tracking-[0.2em] group border-b-2 border-transparent hover:border-blue-600 pb-1 transition-all">
+                    Explore All Packages
+                    <ArrowRight size={14} className="-rotate-45 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+                </button>
             </div>
         </div>
 
