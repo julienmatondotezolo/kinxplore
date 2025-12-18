@@ -152,11 +152,15 @@ export const Hero: React.FC = () => {
                   <img key={i} src={`https://picsum.photos/100/100?random=${i + 30}`} className="w-10 h-10 rounded-full border-4 border-white object-cover shadow-sm" alt="User" />
                 ))}
               </div>
-              <div>
-                <p className="text-xs font-bold text-gray-900 tracking-tight">
-                  <span className="underline decoration-blue-500 decoration-2 underline-offset-4">{t('reviews')}</span> {t('reviewsRating')}
+              <div className="flex flex-col">
+                <div className="flex items-center gap-0.5">
+                  {[1, 2, 3, 4, 5].map(i => (
+                    <Star key={i} size={12} className="text-yellow-400 fill-yellow-400" />
+                  ))}
+                </div>
+                <p className="text-[11px] font-bold text-gray-900 tracking-tight mt-0.5">
+                  {t('reviewsStats')}
                 </p>
-                <p className="text-[10px] text-gray-400 font-medium uppercase tracking-widest mt-0.5">{t('topRated')}</p>
               </div>
             </div>
 
@@ -209,19 +213,21 @@ export const Hero: React.FC = () => {
         {/* Right Content - Modern Destination Packages Grid */}
         <div className="relative hidden lg:flex flex-col gap-6 h-full">
             {/* Top Row: Review */}
-            <motion.div variants={itemVariants} className="flex flex-col gap-3 pl-12">
-                <div className="flex items-center gap-4">
-                    <div className="flex -space-x-3">
-                        {[1, 2, 3, 4].map(i => (
-                            <img key={i} src={`https://picsum.photos/100/100?random=${i + 30}`} className="w-10 h-10 rounded-full border-4 border-white object-cover shadow-sm" alt="User" />
+            <motion.div variants={itemVariants} className="flex items-center gap-4 pl-12">
+                <div className="flex -space-x-3">
+                    {[1, 2, 3, 4].map(i => (
+                        <img key={i} src={`https://picsum.photos/100/100?random=${i + 30}`} className="w-10 h-10 rounded-full border-4 border-white object-cover shadow-sm" alt="User" />
+                    ))}
+                </div>
+                <div className="flex flex-col">
+                    <div className="flex items-center gap-0.5">
+                        {[1, 2, 3, 4, 5].map(i => (
+                            <Star key={i} size={14} className="text-yellow-400 fill-yellow-400" />
                         ))}
                     </div>
-                    <div>
-                        <p className="text-xs font-bold text-gray-900 tracking-tight">
-                            <span className="underline decoration-blue-500 decoration-2 underline-offset-4">{t('reviews')}</span> {t('reviewsRating')}
-                        </p>
-                        <p className="text-[10px] text-gray-400 font-medium uppercase tracking-widest mt-0.5">{t('topRated')}</p>
-                    </div>
+                    <p className="text-xs font-bold text-gray-900 tracking-tight mt-0.5">
+                        {t('reviewsStats')}
+                    </p>
                 </div>
             </motion.div>
 
