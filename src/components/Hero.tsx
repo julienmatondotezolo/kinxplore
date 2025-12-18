@@ -1,16 +1,10 @@
 import React from 'react';
 import { ArrowRight, Star, Plus, Plane, MapPin, Compass, ArrowUpRight, Heart, LayoutGrid, Bed } from 'lucide-react';
 import { TripPlannerForm } from './TripPlannerForm';
-import { UserPreferences } from '@/types';
 import { motion } from 'framer-motion';
 import { useTranslations } from 'next-intl';
 
-interface HeroProps {
-  onGenerate: (prefs: UserPreferences) => void;
-  isLoading: boolean;
-}
-
-export const Hero: React.FC<HeroProps> = ({ onGenerate, isLoading }) => {
+export const Hero: React.FC = () => {
   const t = useTranslations('Hero');
   const packages = [
     { 
@@ -146,7 +140,7 @@ export const Hero: React.FC<HeroProps> = ({ onGenerate, isLoading }) => {
 
           {/* Search Form Integrated */}
           <motion.div variants={itemVariants} className="pt-4 md:pt-2 w-full mx-auto lg:mx-0">
-            <TripPlannerForm onGenerate={onGenerate} isLoading={isLoading} compact={true} />
+            <TripPlannerForm compact={true} />
           </motion.div>
 
           {/* Mobile Recommended Section - Screenshot 2 Style */}

@@ -26,13 +26,13 @@
     "reviews": "Avis",
     "reviewsRating": "4,8 sur 5",
     "topRated": "Expériences les Mieux Notées",
-    "explorePackages": "Découvrir Tous les Forfaits"
+    "explorePackages": "Découvrir tous les packages"
   },
   "TripStyles": {
     "adventure": "Aventure",
     "cultural": "Culturel",
     "relaxation": "Détente",
-    "nightlife": "Vie Nocturne",
+    "party": "Fête",
     "family": "Famille",
     "business": "Affaires"
   },

@@ -1,25 +1,22 @@
 import React, { useState } from 'react';
-import { TripStyle, UserPreferences } from '@/types';
-import { MapPin, Calendar, Users, Activity, ArrowRight, Loader2, ChevronDown, Search } from 'lucide-react';
+import { TripStyle } from '@/types';
+import { MapPin, Calendar, Activity, ArrowRight, ChevronDown, Search } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
 interface Props {
-  onGenerate: (prefs: UserPreferences) => void;
-  isLoading: boolean;
   compact?: boolean;
 }
 
-export const TripPlannerForm: React.FC<Props> = ({ onGenerate, isLoading, compact = false }) => {
+export const TripPlannerForm: React.FC<Props> = ({ compact = false }) => {
   const t = useTranslations('Hero');
   const tStyles = useTranslations('TripStyles');
   const [style, setStyle] = useState<TripStyle>(TripStyle.Adventure);
-  const [groupSize, setGroupSize] = useState<number>(2);
   const [duration, setDuration] = useState<number>(3);
-  const [activeTab, setActiveTab] = useState<'destination' | 'flight' | 'hotel'>('destination');
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onGenerate({ style, groupSize, duration });
+    // TODO: Handle search/navigation logic here
+    console.log('Search with:', { style, duration });
   };
 
   if (compact) {
@@ -76,15 +73,10 @@ export const TripPlannerForm: React.FC<Props> = ({ onGenerate, isLoading, compac
           {/* Search Button */}
           <button 
             onClick={handleSubmit}
-            disabled={isLoading}
-            className="bg-blue-600 hover:bg-blue-700 text-white p-4 rounded-full transition-all shadow-lg hover:shadow-blue-500/40 active:scale-95 disabled:opacity-70 flex-shrink-0"
-            title={isLoading ? t('planning') : t('startPlanning')}
+            className="bg-blue-600 hover:bg-blue-700 text-white p-4 rounded-full transition-all shadow-lg hover:shadow-blue-500/40 active:scale-95 flex-shrink-0"
+            title={t('startPlanning')}
           >
-            {isLoading ? (
-              <Loader2 size={20} className="animate-spin" />
-            ) : (
-              <Search size={20} />
-            )}
+            <Search size={20} />
           </button>
         </div>
 
@@ -142,20 +134,10 @@ export const TripPlannerForm: React.FC<Props> = ({ onGenerate, isLoading, compac
 
           <button 
             onClick={handleSubmit}
-            disabled={isLoading}
-            className="w-full bg-blue-600 hover:bg-blue-700 text-white py-4 rounded-2xl font-bold transition-all shadow-lg shadow-blue-500/20 active:scale-[0.98] disabled:opacity-70 flex items-center justify-center gap-3"
+            className="w-full bg-blue-600 hover:bg-blue-700 text-white py-4 rounded-2xl font-bold transition-all shadow-lg shadow-blue-500/20 active:scale-[0.98] flex items-center justify-center gap-3"
           >
-            {isLoading ? (
-              <>
-                <Loader2 size={20} className="animate-spin" />
-                <span>Planning...</span>
-              </>
-            ) : (
-              <>
-                <Search size={20} />
-                <span>Start AI Planning</span>
-              </>
-            )}
+            <Search size={20} />
+            <span>{t('startPlanning')}</span>
           </button>
         </div>
       </div>
@@ -256,22 +238,12 @@ export const TripPlannerForm: React.FC<Props> = ({ onGenerate, isLoading, compac
           <div className="md:pl-4">
             <button 
               type="submit" 
-              disabled={isLoading}
-              className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-5 px-8 rounded-2xl transition-all shadow-[0_10px_25px_rgba(37,99,235,0.4)] flex items-center justify-center gap-3 disabled:opacity-70 disabled:cursor-not-allowed group active:scale-[0.98]"
+              className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-5 px-8 rounded-2xl transition-all shadow-[0_10px_25px_rgba(37,99,235,0.4)] flex items-center justify-center gap-3 group active:scale-[0.98]"
             >
-              {isLoading ? (
-                <>
-                  <Loader2 size={22} className="animate-spin" />
-                  Planning...
-                </>
-              ) : (
-                <>
-                  Search Now
-                  <div className="bg-white/20 p-1 rounded-lg group-hover:translate-x-1 transition-transform">
-                    <ArrowRight size={18} />
-                  </div>
-                </>
-              )}
+              {t('startPlanning')}
+              <div className="bg-white/20 p-1 rounded-lg group-hover:translate-x-1 transition-transform">
+                <ArrowRight size={18} />
+              </div>
             </button>
           </div>
 
