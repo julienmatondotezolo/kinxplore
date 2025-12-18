@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { TripStyle } from '@/types';
 import { MapPin, Calendar, Activity, ArrowRight, ChevronDown, Search } from 'lucide-react';
 import { useTranslations } from 'next-intl';
+import { useRouter } from '@/navigation';
 
 interface Props {
   compact?: boolean;
@@ -10,13 +11,13 @@ interface Props {
 export const TripPlannerForm: React.FC<Props> = ({ compact = false }) => {
   const t = useTranslations('Hero');
   const tStyles = useTranslations('TripStyles');
+  const router = useRouter();
   const [style, setStyle] = useState<TripStyle>(TripStyle.Adventure);
   const [duration, setDuration] = useState<number>(3);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: Handle search/navigation logic here
-    console.log('Search with:', { style, duration });
+    router.push('/packages');
   };
 
   if (compact) {

@@ -109,5 +109,24 @@
     "privacyLink": "Privacy",
     "termsLink": "Terms",
     "cookiesLink": "Cookies"
+  },
+  "Packages": {
+    "title": "A Selection Of Exceptional Villas And Hotels",
+    "date": "Date",
+    "budget": "Budget",
+    "guests": "Guest",
+    "search": "Search",
+    "categories": {
+      "all": "All",
+      "resort": "Resort",
+      "villa": "Villa",
+      "hotel": "Hotel",
+      "cottage": "Cottage",
+      "homestay": "Homestay",
+      "guesthouse": "Guesthouse",
+      "ecoLodge": "Eco Lodge"
+    },
+    "startingFrom": "Starting from",
+    "night": "night"
   }
 }

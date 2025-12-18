@@ -109,5 +109,24 @@
     "privacyLink": "Confidentialité",
     "termsLink": "Conditions",
     "cookiesLink": "Cookies"
+  },
+  "Packages": {
+    "title": "Une Sélection de Villas et Hôtels d'Exception",
+    "date": "Date",
+    "budget": "Budget",
+    "guests": "Voyageurs",
+    "search": "Rechercher",
+    "categories": {
+      "all": "Tous",
+      "resort": "Resort",
+      "villa": "Villa",
+      "hotel": "Hôtel",
+      "cottage": "Gîte",
+      "homestay": "Chez l'habitant",
+      "guesthouse": "Maison d'hôte",
+      "ecoLodge": "Éco-lodge"
+    },
+    "startingFrom": "À partir de",
+    "night": "nuit"
   }
 }
