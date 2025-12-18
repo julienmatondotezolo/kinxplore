@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import { TripStyle, UserPreferences } from '@/types';
-import { MapPin, Calendar, Users, Activity, ArrowRight, Loader2, ChevronDown } from 'lucide-react';
+import { MapPin, Calendar, Users, Activity, ArrowRight, Loader2, ChevronDown, Search } from 'lucide-react';
 
 interface Props {
   onGenerate: (prefs: UserPreferences) => void;
   isLoading: boolean;
+  compact?: boolean;
 }
 
-export const TripPlannerForm: React.FC<Props> = ({ onGenerate, isLoading }) => {
+export const TripPlannerForm: React.FC<Props> = ({ onGenerate, isLoading, compact = false }) => {
   const [style, setStyle] = useState<TripStyle>(TripStyle.Adventure);
   const [groupSize, setGroupSize] = useState<number>(2);
   const [duration, setDuration] = useState<number>(3);
@@ -18,8 +19,76 @@ export const TripPlannerForm: React.FC<Props> = ({ onGenerate, isLoading }) => {
     onGenerate({ style, groupSize, duration });
   };
 
+  if (compact) {
+    return (
+      <div className="w-full max-w-4xl">
+        <div className="glass rounded-full shadow-2xl border border-white/40 p-2 flex items-center gap-2">
+          {/* Destination */}
+          <div className="flex-1 px-6 py-2 border-r border-gray-200/50 hover:bg-gray-50/50 rounded-full transition-colors cursor-pointer group">
+            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-0.5">Destination</p>
+            <div className="flex items-center gap-2">
+              <MapPin size={14} className="text-blue-600" />
+              <span className="text-sm font-bold text-gray-900">Kinshasa, DRC</span>
+            </div>
+          </div>
+
+          {/* Dates/Duration */}
+          <div className="flex-1 px-6 py-2 border-r border-gray-200/50 hover:bg-gray-50/50 rounded-full transition-colors cursor-pointer group">
+            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-0.5">Duration</p>
+            <div className="flex items-center gap-2">
+              <Calendar size={14} className="text-blue-600" />
+              <input 
+                type="number" 
+                min="1" 
+                max="14"
+                value={duration}
+                onChange={(e) => setDuration(parseInt(e.target.value))}
+                onClick={(e) => e.stopPropagation()}
+                className="bg-transparent text-sm font-bold text-gray-900 focus:outline-none w-12"
+              />
+              <span className="text-xs text-gray-400 font-medium">Days</span>
+            </div>
+          </div>
+
+          {/* Style */}
+          <div className="flex-1 px-6 py-2 hover:bg-gray-50/50 rounded-full transition-colors cursor-pointer group relative">
+            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-0.5">Trip Style</p>
+            <div className="flex items-center gap-2">
+              <Activity size={14} className="text-blue-600" />
+              <select 
+                value={style}
+                onChange={(e) => setStyle(e.target.value as TripStyle)}
+                onClick={(e) => e.stopPropagation()}
+                className="bg-transparent text-sm font-bold text-gray-900 appearance-none focus:outline-none cursor-pointer pr-4"
+              >
+                {Object.values(TripStyle).map((s) => (
+                  <option key={s} value={s}>{s}</option>
+                ))}
+              </select>
+              <ChevronDown size={12} className="text-gray-400 absolute right-4" />
+            </div>
+          </div>
+
+          {/* Search Button */}
+          <button 
+            onClick={handleSubmit}
+            disabled={isLoading}
+            className="bg-blue-600 hover:bg-blue-700 text-white p-4 rounded-full transition-all shadow-lg hover:shadow-blue-500/40 active:scale-95 disabled:opacity-70"
+          >
+            {isLoading ? (
+              <Loader2 size={20} className="animate-spin" />
+            ) : (
+              <Search size={20} />
+            )}
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="relative z-30 mx-4 md:mx-auto max-w-6xl -mt-24">
+      {/* ... rest of the original form ... */}
       {/* Decorative background elements for the form area */}
       <div className="absolute inset-0 -z-10 overflow-hidden pointer-events-none">
         <div className="absolute -top-20 -left-20 w-64 h-64 bg-gradient-to-br from-blue-400/10 to-purple-400/10 rounded-full blur-3xl" />

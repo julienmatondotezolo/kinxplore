@@ -1,7 +1,21 @@
 import React from 'react';
-import { ArrowRight, Star, Plus, Plane, MapPin, Compass } from 'lucide-react';
+import { ArrowRight, Star, Plus, Plane, MapPin, Compass, Heart } from 'lucide-react';
+import { TripPlannerForm } from './TripPlannerForm';
+import { UserPreferences } from '@/types';
 
-export const Hero: React.FC = () => {
+interface HeroProps {
+  onGenerate: (prefs: UserPreferences) => void;
+  isLoading: boolean;
+}
+
+export const Hero: React.FC<HeroProps> = ({ onGenerate, isLoading }) => {
+  const suggestions = [
+    { title: "Lola ya Bonobo", location: "Mont Ngafula", img: "https://picsum.photos/400/300?random=11" },
+    { title: "Zongo Falls", location: "Bas-Congo", img: "https://picsum.photos/400/300?random=12" },
+    { title: "Marché de la Liberté", location: "Masina", img: "https://picsum.photos/400/300?random=13" },
+    { title: "Congo River", location: "Gombe", img: "https://picsum.photos/400/300?random=14" },
+  ];
+
   return (
     <div className="relative pt-40 pb-48 px-4 overflow-hidden bg-gradient-to-br from-blue-50/50 via-purple-50/30 to-pink-50/40">
       {/* Animated Background Blobs */}
@@ -42,11 +56,11 @@ export const Hero: React.FC = () => {
           </div>
           
           <div className="space-y-6">
-            <h1 className="text-6xl md:text-[5.5rem] font-extrabold text-[#111] leading-[1.05] tracking-tight">
+            <h1 className="text-5xl md:text-[4.5rem] font-extrabold text-[#111] leading-[1.05] tracking-tight">
               Let's <br/>
               <span className="flex items-center gap-4 flex-wrap">
                 Explore
-                <span className="inline-block w-28 h-14 md:w-36 md:h-20 bg-blue-100 rounded-full overflow-hidden border-4 border-white shadow-sm -rotate-2 transform hover:rotate-0 transition-transform duration-500">
+                <span className="inline-block w-20 h-10 md:w-28 md:h-16 bg-blue-100 rounded-full overflow-hidden border-4 border-white shadow-sm -rotate-2 transform hover:rotate-0 transition-transform duration-500">
                   <img src="https://picsum.photos/400/300?random=50" className="w-full h-full object-cover" alt="Kinshasa" />
                 </span>
                 the
@@ -59,24 +73,36 @@ export const Hero: React.FC = () => {
             </p>
           </div>
 
-          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-8 pt-4">
-             <div className="flex flex-col gap-2">
-                <div className="flex -space-x-4">
-                    {[1,2,3,4].map(i => (
-                        <img key={i} src={`https://picsum.photos/100/100?random=${i + 20}`} className="w-12 h-12 rounded-full border-4 border-white object-cover shadow-sm" alt="User" />
-                    ))}
-                </div>
-                <div className="flex items-center gap-2">
-                    <p className="text-sm font-bold text-gray-900">Reviews <span className="text-gray-400 font-medium">4.8 out of 5</span></p>
-                </div>
-             </div>
+          {/* Search Form Integrated */}
+          <div className="pt-2">
+            <TripPlannerForm onGenerate={onGenerate} isLoading={isLoading} compact={true} />
+          </div>
 
-             <div className="flex items-center gap-2 text-blue-600 font-bold text-sm uppercase tracking-wider cursor-pointer group">
-                Explore Best Packages
-                <div className="w-6 h-6 rounded-full bg-blue-600 text-white flex items-center justify-center transform group-hover:translate-x-1 transition-transform">
-                  <ArrowRight size={14} className="-rotate-45" />
+          {/* Destination Suggestions */}
+          <div className="space-y-6 pt-2">
+            <div className="flex items-center justify-between max-w-lg">
+              <h3 className="font-bold text-gray-900">Explore Nearby</h3>
+              <button className="text-sm font-bold text-blue-600 flex items-center gap-1 hover:underline">
+                View all <ArrowRight size={14} />
+              </button>
+            </div>
+            
+            <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide">
+              {suggestions.map((item, i) => (
+                <div key={i} className="min-w-[180px] group cursor-pointer">
+                  <div className="relative h-24 rounded-2xl overflow-hidden mb-3">
+                    <img src={item.img} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" alt={item.title} />
+                    <div className="absolute top-2 right-2 p-1.5 bg-white/80 backdrop-blur rounded-full shadow-sm">
+                      <Heart size={12} className="text-gray-400 group-hover:text-red-500 transition-colors" />
+                    </div>
+                  </div>
+                  <h4 className="font-bold text-sm text-gray-900 group-hover:text-blue-600 transition-colors">{item.title}</h4>
+                  <p className="text-xs text-gray-400 font-medium flex items-center gap-1">
+                    <MapPin size={10} /> {item.location}
+                  </p>
                 </div>
-             </div>
+              ))}
+            </div>
           </div>
         </div>
 

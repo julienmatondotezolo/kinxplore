@@ -40,15 +40,7 @@ export default function HomePage() {
 
       {!itinerary ? (
         <>
-          <Hero />
-
-          <div className="relative">
-            {/* Background gradient for form overlap */}
-            <div className="absolute top-0 w-full h-32 bg-white z-0"></div>
-            <div className="absolute bottom-0 w-full h-[calc(100%-8rem)] bg-gray-50 z-0"></div>
-
-            <TripPlannerForm onGenerate={handleGenerate} isLoading={isLoading} />
-          </div>
+          <Hero onGenerate={handleGenerate} isLoading={isLoading} />
 
           <div className="relative bg-gradient-to-b from-blue-50/30 via-purple-50/20 to-pink-50/30 pb-20 pt-10 overflow-hidden">
             {/* Background decorative elements */}
