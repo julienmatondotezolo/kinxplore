@@ -4,22 +4,66 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 export const Navigation: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
+  const [activeSection, setActiveSection] = useState('home');
 
   useEffect(() => {
     const handleScroll = () => {
+      // Handle background change
       setIsScrolled(window.scrollY > 50);
+
+      // Handle active section detection
+      const sections = ['destinations', 'services', 'faq', 'contact'];
+      let currentSection = 'home';
+
+      if (window.scrollY < 100) {
+        currentSection = 'home';
+      } else {
+        for (const sectionId of sections) {
+          const element = document.getElementById(sectionId);
+          if (element) {
+            const rect = element.getBoundingClientRect();
+            // If the top of the section is in the top half of the viewport
+            if (rect.top <= 150) {
+              currentSection = sectionId;
+            }
+          }
+        }
+      }
+      setActiveSection(currentSection);
     };
+
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const scrollToSection = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
     e.preventDefault();
+    if (id === 'home') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
     const element = document.getElementById(id);
     if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+      const offset = 80; // Offset for the fixed header
+      const bodyRect = document.body.getBoundingClientRect().top;
+      const elementRect = element.getBoundingClientRect().top;
+      const elementPosition = elementRect - bodyRect;
+      const offsetPosition = elementPosition - offset;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+      });
     }
   };
+
+  const navLinks = [
+    { id: 'home', label: 'Home', href: '#' },
+    { id: 'destinations', label: 'Destination', href: '#destinations' },
+    { id: 'services', label: 'Services', href: '#services' },
+    { id: 'faq', label: 'FAQ', href: '#faq' },
+    { id: 'contact', label: 'Contact', href: '#contact' },
+  ];
 
   return (
     <motion.nav 
@@ -41,14 +85,24 @@ export const Navigation: React.FC = () => {
           ? 'bg-transparent text-gray-600' 
           : 'bg-white/80 backdrop-blur-md shadow-sm border border-gray-100/50 text-gray-600'
       }`}>
-        <a href="#" className="text-blue-600 font-semibold flex items-center gap-1.5">
-          <span className="w-1.5 h-1.5 bg-blue-600 rounded-full"></span>
-          Home
-        </a>
-        <a href="#destinations" onClick={(e) => scrollToSection(e, 'destinations')} className="hover:text-blue-600 transition">Destination</a>
-        <a href="#services" onClick={(e) => scrollToSection(e, 'services')} className="hover:text-blue-600 transition">Services</a>
-        <a href="#faq" onClick={(e) => scrollToSection(e, 'faq')} className="hover:text-blue-600 transition">FAQ</a>
-        <a href="#contact" onClick={(e) => scrollToSection(e, 'contact')} className="hover:text-blue-600 transition">Contact</a>
+        {navLinks.map((link) => (
+          <a
+            key={link.id}
+            href={link.href}
+            onClick={(e) => scrollToSection(e, link.id)}
+            className={`transition-colors flex items-center gap-1.5 relative ${
+              activeSection === link.id ? 'text-blue-600 font-semibold' : 'hover:text-blue-600'
+            }`}
+          >
+            {activeSection === link.id && (
+              <motion.span 
+                layoutId="activeDot"
+                className="w-1.5 h-1.5 bg-blue-600 rounded-full"
+              />
+            )}
+            {link.label}
+          </a>
+        ))}
       </div>
 
       <div className="flex items-center gap-6">
