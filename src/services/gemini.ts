@@ -2,21 +2,28 @@ import { GoogleGenAI, Type, Schema } from "@google/genai";
 import { UserPreferences, Itinerary } from "@/types";
 
 const getApiKey = () => {
+  // Client-side code can only access NEXT_PUBLIC_ prefixed variables
+  // For server-side, use GEMINI_API_KEY (without NEXT_PUBLIC_)
   if (typeof window === "undefined") {
-    // Server-side
     return process.env.GEMINI_API_KEY;
   }
-  // Client-side
-  return process.env.NEXT_PUBLIC_GEMINI_API_KEY || process.env.GEMINI_API_KEY;
+  // Client-side requires NEXT_PUBLIC_ prefix
+  return process.env.NEXT_PUBLIC_GEMINI_API_KEY;
 };
 
 const apiKey = getApiKey();
 
-if (!apiKey) {
-  console.error("GEMINI_API_KEY or NEXT_PUBLIC_GEMINI_API_KEY environment variable is required");
-}
+let ai: GoogleGenAI | null = null;
 
-const ai = apiKey ? new GoogleGenAI({ apiKey }) : null;
+if (apiKey) {
+  try {
+    ai = new GoogleGenAI({ apiKey });
+  } catch (error) {
+    console.error("Failed to initialize GoogleGenAI:", error);
+  }
+} else {
+  console.warn("NEXT_PUBLIC_GEMINI_API_KEY is not set. Please add it to your .env.local file.");
+}
 
 const itinerarySchema: Schema = {
   type: Type.OBJECT,

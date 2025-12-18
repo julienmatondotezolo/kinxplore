@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { TripStyle, UserPreferences } from '@/types';
-import { MapPin, Calendar, Users, Activity, ArrowRight, Loader2 } from 'lucide-react';
+import { MapPin, Calendar, Users, Activity, ArrowRight, Loader2, ChevronDown } from 'lucide-react';
 
 interface Props {
   onGenerate: (prefs: UserPreferences) => void;
@@ -11,6 +11,7 @@ export const TripPlannerForm: React.FC<Props> = ({ onGenerate, isLoading }) => {
   const [style, setStyle] = useState<TripStyle>(TripStyle.Adventure);
   const [groupSize, setGroupSize] = useState<number>(2);
   const [duration, setDuration] = useState<number>(3);
+  const [activeTab, setActiveTab] = useState<'destination' | 'flight' | 'hotel'>('destination');
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -18,100 +19,113 @@ export const TripPlannerForm: React.FC<Props> = ({ onGenerate, isLoading }) => {
   };
 
   return (
-    <div className="bg-white rounded-3xl shadow-xl p-6 md:p-8 -mt-24 md:-mt-32 relative z-30 mx-4 md:mx-auto max-w-5xl border border-gray-100">
-      <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-4 gap-6 items-end">
-        
-        {/* Destination (Static for now as it's KinXplore) */}
-        <div className="flex flex-col gap-2">
-          <label className="text-sm font-semibold text-gray-500 pl-1">Destination</label>
-          <div className="relative bg-gray-50 rounded-xl p-4 flex items-center gap-3 border border-gray-100 hover:border-blue-200 transition group">
-            <div className="bg-white p-2 rounded-lg shadow-sm text-blue-600 group-hover:text-blue-700">
-              <MapPin size={20} />
-            </div>
-            <div>
-              <p className="font-bold text-gray-900">Kinshasa</p>
-              <p className="text-xs text-gray-500">DR Congo</p>
-            </div>
-          </div>
-        </div>
-
-        {/* Style Selector */}
-        <div className="flex flex-col gap-2">
-          <label className="text-sm font-semibold text-gray-500 pl-1">Trip Style</label>
-          <div className="relative">
-            <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400">
-              <Activity size={20} />
-            </div>
-            <select 
-              value={style}
-              onChange={(e) => setStyle(e.target.value as TripStyle)}
-              className="w-full bg-gray-50 border border-gray-100 rounded-xl p-4 pl-12 font-semibold text-gray-900 appearance-none focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer hover:bg-white hover:border-blue-200 transition"
-            >
-              {Object.values(TripStyle).map((s) => (
-                <option key={s} value={s}>{s}</option>
-              ))}
-            </select>
-          </div>
-        </div>
-
-        {/* Duration & Size Grouped */}
-        <div className="flex gap-4">
-          <div className="flex flex-col gap-2 flex-1">
-            <label className="text-sm font-semibold text-gray-500 pl-1">Days</label>
-            <div className="relative">
-              <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
-                <Calendar size={18} />
-              </div>
-              <input 
-                type="number" 
-                min="1" 
-                max="14"
-                value={duration}
-                onChange={(e) => setDuration(parseInt(e.target.value))}
-                className="w-full bg-gray-50 border border-gray-100 rounded-xl p-4 pl-10 font-bold text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
-          </div>
-          <div className="flex flex-col gap-2 flex-1">
-            <label className="text-sm font-semibold text-gray-500 pl-1">People</label>
-            <div className="relative">
-              <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
-                <Users size={18} />
-              </div>
-              <input 
-                type="number" 
-                min="1" 
-                max="50"
-                value={groupSize}
-                onChange={(e) => setGroupSize(parseInt(e.target.value))}
-                className="w-full bg-gray-50 border border-gray-100 rounded-xl p-4 pl-10 font-bold text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
-          </div>
-        </div>
-
-        {/* Submit Button */}
-        <div className="h-full flex items-end">
-          <button 
-            type="submit" 
-            disabled={isLoading}
-            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-6 rounded-xl transition-all shadow-lg shadow-blue-200 flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
+    <div className="relative z-30 mx-4 md:mx-auto max-w-6xl -mt-24">
+      {/* Tabs like in example 2 */}
+      <div className="flex gap-1 mb-0 ml-4 md:ml-0">
+        {[
+          { id: 'destination', label: 'Destination' },
+          { id: 'flight', label: 'Flight' },
+          { id: 'hotel', label: 'Hotel' }
+        ].map((tab) => (
+          <button
+            key={tab.id}
+            onClick={() => setActiveTab(tab.id as any)}
+            className={`px-8 py-4 rounded-t-2xl font-bold text-sm transition-all ${
+              activeTab === tab.id 
+                ? 'bg-blue-600 text-white' 
+                : 'bg-white/90 backdrop-blur-sm text-gray-500 hover:text-gray-700'
+            }`}
           >
-            {isLoading ? (
-              <>
-                <Loader2 size={20} className="animate-spin" />
-                Planning...
-              </>
-            ) : (
-              <>
-                Generate Trip
-                <ArrowRight size={20} />
-              </>
-            )}
+            {tab.label}
           </button>
-        </div>
+        ))}
+      </div>
 
-      </form>
+      <div className="bg-white rounded-3xl md:rounded-tl-none shadow-[0_20px_50px_rgba(0,0,0,0.1)] p-6 md:p-10 border border-gray-100">
+        <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-4 gap-8 items-center">
+          
+          {/* Location */}
+          <div className="space-y-3">
+            <label className="text-sm font-bold text-gray-900 ml-1">Location</label>
+            <div className="relative group">
+              <div className="absolute left-0 top-1/2 -translate-y-1/2 text-blue-600">
+                <MapPin size={20} />
+              </div>
+              <div className="w-full flex items-center justify-between pl-8 pr-2 py-3 border-b border-gray-200 group-hover:border-blue-600 transition-colors cursor-pointer">
+                <span className="font-bold text-gray-900">Kinshasa, DRC</span>
+                <ChevronDown size={18} className="text-gray-400" />
+              </div>
+            </div>
+          </div>
+
+          {/* Date / Duration */}
+          <div className="space-y-3">
+            <label className="text-sm font-bold text-gray-900 ml-1">Duration (Days)</label>
+            <div className="relative group">
+              <div className="absolute left-0 top-1/2 -translate-y-1/2 text-blue-600">
+                <Calendar size={20} />
+              </div>
+              <div className="w-full flex items-center justify-between pl-8 pr-2 py-1 border-b border-gray-200 group-hover:border-blue-600 transition-colors">
+                <input 
+                  type="number" 
+                  min="1" 
+                  max="14"
+                  value={duration}
+                  onChange={(e) => setDuration(parseInt(e.target.value))}
+                  className="w-full bg-transparent font-bold text-gray-900 focus:outline-none py-2"
+                />
+                <ChevronDown size={18} className="text-gray-400" />
+              </div>
+            </div>
+          </div>
+
+          {/* Style / Price analogue */}
+          <div className="space-y-3">
+            <label className="text-sm font-bold text-gray-900 ml-1">Trip Style</label>
+            <div className="relative group">
+              <div className="absolute left-0 top-1/2 -translate-y-1/2 text-blue-600">
+                <Activity size={20} />
+              </div>
+              <div className="w-full flex items-center justify-between pl-8 pr-0 py-1 border-b border-gray-200 group-hover:border-blue-600 transition-colors">
+                <select 
+                  value={style}
+                  onChange={(e) => setStyle(e.target.value as TripStyle)}
+                  className="w-full bg-transparent font-bold text-gray-900 appearance-none focus:outline-none cursor-pointer py-2"
+                >
+                  {Object.values(TripStyle).map((s) => (
+                    <option key={s} value={s}>{s}</option>
+                  ))}
+                </select>
+                <ChevronDown size={18} className="text-gray-400 pointer-events-none absolute right-2" />
+              </div>
+            </div>
+          </div>
+
+          {/* Submit Button */}
+          <div className="md:pl-4">
+            <button 
+              type="submit" 
+              disabled={isLoading}
+              className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-5 px-8 rounded-2xl transition-all shadow-[0_10px_25px_rgba(37,99,235,0.4)] flex items-center justify-center gap-3 disabled:opacity-70 disabled:cursor-not-allowed group active:scale-[0.98]"
+            >
+              {isLoading ? (
+                <>
+                  <Loader2 size={22} className="animate-spin" />
+                  Planning...
+                </>
+              ) : (
+                <>
+                  Search Now
+                  <div className="bg-white/20 p-1 rounded-lg group-hover:translate-x-1 transition-transform">
+                    <ArrowRight size={18} />
+                  </div>
+                </>
+              )}
+            </button>
+          </div>
+
+        </form>
+      </div>
     </div>
   );
 };
