@@ -71,7 +71,7 @@ export const Hero: React.FC<HeroProps> = ({ onGenerate, isLoading }) => {
   };
 
   return (
-    <div className="relative pt-32 pb-48 px-4 overflow-hidden bg-gradient-to-br from-blue-50/50 via-purple-50/30 to-pink-50/40">
+    <div className="relative pt-24 md:pt-32 pb-32 md:pb-48 px-4 overflow-hidden bg-gradient-to-br from-blue-50/50 via-purple-50/30 to-pink-50/40">
       {/* ... Background Blobs ... */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {/* Large primary blob - top right */}
@@ -101,31 +101,31 @@ export const Hero: React.FC<HeroProps> = ({ onGenerate, isLoading }) => {
       </div>
 
       <motion.div 
-        className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-start relative z-10"
+        className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 md:gap-16 items-center relative z-10"
         variants={containerVariants}
         initial="hidden"
         animate="visible"
       >
         
         {/* Left Content */}
-        <div className="space-y-10 relative z-10">
+        <div className="space-y-8 md:space-y-10 relative z-10">
           <motion.div 
             variants={itemVariants}
-            className="inline-flex items-center gap-2 bg-gray-900/5 backdrop-blur-sm text-gray-900 px-5 py-2.5 rounded-full text-xs font-bold border border-gray-900/10 tracking-widest uppercase"
+            className="inline-flex items-center gap-2 bg-gray-900/5 backdrop-blur-sm text-gray-900 px-5 py-2.5 rounded-full text-[10px] md:text-xs font-bold border border-gray-900/10 tracking-widest uppercase mx-auto lg:mx-0"
           >
             <span className="w-2 h-2 bg-blue-600 rounded-full animate-pulse"></span>
             Kinshasa Awaits
           </motion.div>
           
-          <div className="space-y-6">
+          <div className="space-y-4 md:space-y-6 text-center lg:text-left">
             <motion.h1 
               variants={itemVariants}
-              className="text-4xl md:text-[4.2rem] font-black text-gray-900 leading-[1.1] tracking-tight"
+              className="text-4xl md:text-[4.2rem] font-black text-gray-900 leading-[1.2] md:leading-[1.1] tracking-tight uppercase"
             >
               <span className="block">Explore</span>
-              <span className="flex items-center gap-3 flex-wrap">
+              <span className="flex items-center justify-center lg:justify-start gap-3 flex-wrap">
                 Kinshasa,
-                <span className="inline-block w-20 h-10 md:w-24 md:h-12 bg-gray-100 rounded-full overflow-hidden border-4 border-white shadow-sm -rotate-2 transform hover:rotate-0 transition-transform duration-500">
+                <span className="inline-block w-16 h-8 md:w-24 md:h-12 bg-gray-100 rounded-full overflow-hidden border-2 md:border-4 border-white shadow-sm -rotate-2 transform hover:rotate-0 transition-transform duration-500">
                   <img src="https://picsum.photos/400/300?random=50" className="w-full h-full object-cover" alt="Kinshasa" />
                 </span>
                 Your
@@ -135,14 +135,14 @@ export const Hero: React.FC<HeroProps> = ({ onGenerate, isLoading }) => {
             
             <motion.p 
               variants={itemVariants}
-              className="text-base md:text-lg text-gray-500 max-w-lg leading-relaxed font-medium"
+              className="text-sm md:text-lg text-gray-500 max-w-lg leading-relaxed font-medium mx-auto lg:mx-0"
             >
               <span className="text-gray-900 font-bold">The heartbeat of Congo.</span> Tell us your trip style, and our AI will craft the perfect itinerary for your stay in Kinshasa.
             </motion.p>
           </div>
 
           {/* Search Form Integrated */}
-          <motion.div variants={itemVariants} className="pt-2">
+          <motion.div variants={itemVariants} className="pt-4 md:pt-2 w-full max-w-md mx-auto lg:mx-0">
             <TripPlannerForm onGenerate={onGenerate} isLoading={isLoading} compact={true} />
           </motion.div>
         </div>

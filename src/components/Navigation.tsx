@@ -1,17 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, Globe, User, Heart, ShoppingBag } from 'lucide-react';
+import { Menu, Globe, User, Heart, ShoppingBag, X, LogOut, Home, MapPin, Briefcase, HelpCircle, Mail, Settings } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export const Navigation: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
-      // Handle background change
       setIsScrolled(window.scrollY > 50);
 
-      // Handle active section detection
       const sections = ['destinations', 'services', 'faq', 'contact'];
       let currentSection = 'home';
 
@@ -22,7 +21,6 @@ export const Navigation: React.FC = () => {
           const element = document.getElementById(sectionId);
           if (element) {
             const rect = element.getBoundingClientRect();
-            // If the top of the section is in the top half of the viewport
             if (rect.top <= 150) {
               currentSection = sectionId;
             }
@@ -36,15 +34,17 @@ export const Navigation: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const scrollToSection = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
+  const scrollToSection = (e: React.MouseEvent<HTMLAnchorElement | HTMLDivElement>, id: string) => {
     e.preventDefault();
+    setIsMobileMenuOpen(false);
+    
     if (id === 'home') {
       window.scrollTo({ top: 0, behavior: 'smooth' });
       return;
     }
     const element = document.getElementById(id);
     if (element) {
-      const offset = 80; // Offset for the fixed header
+      const offset = 80;
       const bodyRect = document.body.getBoundingClientRect().top;
       const elementRect = element.getBoundingClientRect().top;
       const elementPosition = elementRect - bodyRect;
@@ -58,77 +58,169 @@ export const Navigation: React.FC = () => {
   };
 
   const navLinks = [
-    { id: 'home', label: 'Home', href: '#' },
-    { id: 'destinations', label: 'Destination', href: '#destinations' },
-    { id: 'services', label: 'Services', href: '#services' },
-    { id: 'faq', label: 'FAQ', href: '#faq' },
-    { id: 'contact', label: 'Contact', href: '#contact' },
+    { id: 'home', label: 'Home', icon: Home },
+    { id: 'destinations', label: 'Destination', icon: MapPin },
+    { id: 'services', label: 'Services', icon: Briefcase },
+    { id: 'faq', label: 'FAQ', icon: HelpCircle },
+    { id: 'contact', label: 'Contact', icon: Mail },
   ];
 
   return (
-    <motion.nav 
-      initial={{ y: -100 }}
-      animate={{ y: 0 }}
-      transition={{ duration: 0.6 }}
-      className={`w-full flex justify-between items-center transition-all duration-500 z-[100] ${
-        isScrolled 
-          ? 'fixed top-0 bg-white/70 backdrop-blur-xl py-3 px-4 md:px-12 shadow-sm border-b border-gray-100/50' 
-          : 'absolute top-0 bg-transparent py-6 px-4 md:px-12'
-      }`}
-    >
-      <div className="flex items-center gap-2 cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-        <span className="text-2xl font-bold tracking-tight text-gray-900">KinXplore</span>
-      </div>
+    <>
+      <motion.nav 
+        initial={{ y: -100 }}
+        animate={{ y: 0 }}
+        transition={{ duration: 0.6 }}
+        className={`w-full flex justify-between items-center transition-all duration-500 z-[100] ${
+          isScrolled 
+            ? 'fixed top-0 bg-white/70 backdrop-blur-xl py-3 px-4 md:px-12 shadow-sm border-b border-gray-100/50' 
+            : 'absolute top-0 bg-transparent py-6 px-4 md:px-12'
+        }`}
+      >
+        <div className="flex items-center gap-2 cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+          <span className="text-2xl font-bold tracking-tight text-gray-900">KinXplore</span>
+        </div>
 
-      <div className={`hidden md:flex items-center px-8 py-3 rounded-full transition-all duration-500 gap-8 text-sm font-medium ${
-        isScrolled 
-          ? 'bg-transparent text-gray-600' 
-          : 'bg-white/80 backdrop-blur-md shadow-sm border border-gray-100/50 text-gray-600'
-      }`}>
-        {navLinks.map((link) => (
-          <a
-            key={link.id}
-            href={link.href}
-            onClick={(e) => scrollToSection(e, link.id)}
-            className={`transition-colors flex items-center gap-1.5 relative ${
-              activeSection === link.id ? 'text-blue-600 font-semibold' : 'hover:text-blue-600'
-            }`}
+        {/* Desktop Links */}
+        <div className={`hidden md:flex items-center px-8 py-3 rounded-full transition-all duration-500 gap-8 text-sm font-medium ${
+          isScrolled 
+            ? 'bg-transparent text-gray-600' 
+            : 'bg-white/80 backdrop-blur-md shadow-sm border border-gray-100/50 text-gray-600'
+        }`}>
+          {navLinks.map((link) => (
+            <a
+              key={link.id}
+              href={`#${link.id}`}
+              onClick={(e) => scrollToSection(e, link.id)}
+              className={`transition-colors flex items-center gap-1.5 relative ${
+                activeSection === link.id ? 'text-blue-600 font-semibold' : 'hover:text-blue-600'
+              }`}
+            >
+              {activeSection === link.id && (
+                <motion.span 
+                  layoutId="activeDot"
+                  className="w-1.5 h-1.5 bg-blue-600 rounded-full"
+                />
+              )}
+              {link.label}
+            </a>
+          ))}
+        </div>
+
+        <div className="flex items-center gap-4 md:gap-6">
+          <div className="hidden md:flex items-center gap-5 text-gray-700">
+            <button className="hover:text-blue-600 transition">
+              <Heart size={20} />
+            </button>
+            <button className="hover:text-blue-600 transition">
+              <ShoppingBag size={20} />
+            </button>
+          </div>
+          
+          <div className="flex items-center gap-3 pl-0 md:pl-4 md:border-l border-gray-200">
+            <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-white shadow-sm">
+              <img src="https://picsum.photos/100/100?random=10" alt="Profile" className="w-full h-full object-cover" />
+            </div>
+            <div className="hidden lg:block">
+              <p className="text-[10px] text-gray-400 font-medium leading-none mb-1">Hello!</p>
+              <p className="text-sm font-bold text-gray-900 leading-none">Traveler</p>
+            </div>
+          </div>
+
+          <button 
+            onClick={() => setIsMobileMenuOpen(true)}
+            className="md:hidden p-2.5 rounded-2xl bg-white/80 backdrop-blur-md border border-gray-100 shadow-sm text-gray-900"
           >
-            {activeSection === link.id && (
-              <motion.span 
-                layoutId="activeDot"
-                className="w-1.5 h-1.5 bg-blue-600 rounded-full"
-              />
-            )}
-            {link.label}
-          </a>
-        ))}
-      </div>
-
-      <div className="flex items-center gap-6">
-        <div className="hidden md:flex items-center gap-5 text-gray-700">
-          <button className="hover:text-blue-600 transition">
-            <Heart size={20} />
-          </button>
-          <button className="hover:text-blue-600 transition">
-            <ShoppingBag size={20} />
+            <Menu size={24} />
           </button>
         </div>
-        
-        <div className="flex items-center gap-3 pl-4 border-l border-gray-200">
-          <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-white shadow-sm">
-            <img src="https://picsum.photos/100/100?random=10" alt="Profile" className="w-full h-full object-cover" />
-          </div>
-          <div className="hidden lg:block">
-            <p className="text-[10px] text-gray-400 font-medium leading-none mb-1">Hello!</p>
-            <p className="text-sm font-bold text-gray-900 leading-none">Traveler</p>
-          </div>
-        </div>
+      </motion.nav>
 
-        <button className="md:hidden p-2 rounded-full hover:bg-gray-100 transition">
-          <Menu size={24} className="text-gray-700" />
-        </button>
-      </div>
-    </motion.nav>
+      {/* Mobile Menu Drawer */}
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <>
+            {/* Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="fixed inset-0 bg-black/20 backdrop-blur-sm z-[110] md:hidden"
+            />
+            
+            {/* Drawer Content */}
+            <motion.div
+              initial={{ x: '100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '100%' }}
+              transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+              className="fixed top-0 right-0 h-full w-[80%] max-w-sm bg-white z-[120] shadow-2xl flex flex-col md:hidden p-8"
+            >
+              <div className="flex items-center justify-between mb-12">
+                <div className="flex items-center gap-2">
+                  <div className="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center text-white font-black text-xl italic shadow-lg shadow-blue-500/20">
+                    K
+                  </div>
+                  <span className="text-xl font-bold text-gray-900">KinXplore</span>
+                </div>
+                <button 
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="p-2 rounded-xl bg-gray-50 text-gray-500 hover:bg-gray-100"
+                >
+                  <X size={20} />
+                </button>
+              </div>
+
+              <div className="flex-1 space-y-6">
+                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-4">Main Menu</p>
+                <div className="space-y-2">
+                  {navLinks.map((link) => (
+                    <div
+                      key={link.id}
+                      onClick={(e) => scrollToSection(e as any, link.id)}
+                      className={`flex items-center justify-between p-4 rounded-2xl cursor-pointer transition-all ${
+                        activeSection === link.id 
+                          ? 'bg-blue-50 text-blue-600' 
+                          : 'text-gray-500 hover:bg-gray-50'
+                      }`}
+                    >
+                      <div className="flex items-center gap-4">
+                        <link.icon size={20} className={activeSection === link.id ? 'text-blue-600' : 'text-gray-400'} />
+                        <span className="font-bold">{link.label}</span>
+                      </div>
+                      <motion.div 
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: activeSection === link.id ? 1 : 0 }}
+                      >
+                        <div className="w-1.5 h-1.5 bg-blue-600 rounded-full" />
+                      </motion.div>
+                    </div>
+                  ))}
+                  <div className="flex items-center gap-4 p-4 rounded-2xl text-gray-500 hover:bg-gray-50 cursor-pointer">
+                    <Settings size={20} className="text-gray-400" />
+                    <span className="font-bold">Settings</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="pt-8 mt-auto border-t border-gray-100">
+                <div className="flex items-center gap-4 mb-8">
+                  <img src="https://picsum.photos/100/100?random=10" alt="Profile" className="w-12 h-12 rounded-2xl object-cover border-2 border-blue-50" />
+                  <div>
+                    <p className="font-bold text-gray-900">Traveler</p>
+                    <p className="text-xs text-gray-400 font-medium">Explorer Account</p>
+                  </div>
+                </div>
+                <button className="w-full flex items-center gap-4 p-4 rounded-2xl bg-red-50 text-red-600 font-bold hover:bg-red-100 transition-colors">
+                  <LogOut size={20} />
+                  Log Out
+                </button>
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
+    </>
   );
 };
