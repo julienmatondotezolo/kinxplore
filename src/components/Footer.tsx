@@ -1,7 +1,10 @@
 import React from 'react';
 import { Mail, Github, Twitter, Instagram, Globe } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 
 export const Footer: React.FC = () => {
+  const t = useTranslations('Footer');
+  
   return (
     <footer className="bg-white pt-24 pb-12" id="contact">
       <div className="max-w-7xl mx-auto px-4">
@@ -13,7 +16,7 @@ export const Footer: React.FC = () => {
               <div className="w-2 h-2 bg-blue-600 rounded-full animate-pulse" />
             </div>
             <p className="text-gray-500 font-medium leading-relaxed">
-              Design your perfect Kinshasa trip with our AI-powered planner. Personal, fast, and optimized for your style.
+              {t('description')}
             </p>
             <div className="flex items-center gap-4">
               {[Github, Twitter, Instagram, Globe].map((Icon, i) => (
@@ -26,35 +29,33 @@ export const Footer: React.FC = () => {
 
           {/* Links */}
           <div className="space-y-8">
-            <h4 className="text-lg font-bold text-gray-900">Company</h4>
+            <h4 className="text-lg font-bold text-gray-900">{t('company')}</h4>
             <ul className="space-y-4">
-              {['About Us', 'Services', 'Community', 'Our Blog'].map((item) => (
-                <li key={item}>
-                  <a href="#" className="text-gray-500 hover:text-blue-600 font-medium transition-colors">{item}</a>
-                </li>
-              ))}
+              <li><a href="#" className="text-gray-500 hover:text-blue-600 font-medium transition-colors">{t('aboutUs')}</a></li>
+              <li><a href="#" className="text-gray-500 hover:text-blue-600 font-medium transition-colors">{t('services')}</a></li>
+              <li><a href="#" className="text-gray-500 hover:text-blue-600 font-medium transition-colors">{t('community')}</a></li>
+              <li><a href="#" className="text-gray-500 hover:text-blue-600 font-medium transition-colors">{t('ourBlog')}</a></li>
             </ul>
           </div>
 
           <div className="space-y-8" id="faq">
-            <h4 className="text-lg font-bold text-gray-900">Support</h4>
+            <h4 className="text-lg font-bold text-gray-900">{t('support')}</h4>
             <ul className="space-y-4">
-              {['Help Center', 'Safety Information', 'Terms of Service', 'Privacy Policy'].map((item) => (
-                <li key={item}>
-                  <a href="#" className="text-gray-500 hover:text-blue-600 font-medium transition-colors">{item}</a>
-                </li>
-              ))}
+              <li><a href="#" className="text-gray-500 hover:text-blue-600 font-medium transition-colors">{t('helpCenter')}</a></li>
+              <li><a href="#" className="text-gray-500 hover:text-blue-600 font-medium transition-colors">{t('safetyInfo')}</a></li>
+              <li><a href="#" className="text-gray-500 hover:text-blue-600 font-medium transition-colors">{t('terms')}</a></li>
+              <li><a href="#" className="text-gray-500 hover:text-blue-600 font-medium transition-colors">{t('privacy')}</a></li>
             </ul>
           </div>
 
           {/* Newsletter */}
           <div className="space-y-8">
-            <h4 className="text-lg font-bold text-gray-900">Subscribe</h4>
-            <p className="text-gray-500 font-medium">Get travel tips and news in Kinshasa.</p>
+            <h4 className="text-lg font-bold text-gray-900">{t('subscribe')}</h4>
+            <p className="text-gray-500 font-medium">{t('subscribeDesc')}</p>
             <div className="relative">
               <input 
                 type="email" 
-                placeholder="hello@kinxplore.com" 
+                placeholder={t('emailPlaceholder')}
                 className="w-full bg-gray-50 border border-gray-100 rounded-2xl py-4 pl-6 pr-12 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
               />
               <button className="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 bg-blue-600 text-white rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/30 hover:bg-blue-700 transition-all">
@@ -66,11 +67,11 @@ export const Footer: React.FC = () => {
 
         {/* Copyright */}
         <div className="pt-8 border-t border-gray-50 flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-sm font-medium text-gray-400">© 2025 KinXplore. All Rights Reserved.</p>
+          <p className="text-sm font-medium text-gray-400">{t('copyright')}</p>
           <div className="flex gap-8">
-            <a href="#" className="text-sm font-medium text-gray-400 hover:text-blue-600 transition-colors">Privacy</a>
-            <a href="#" className="text-sm font-medium text-gray-400 hover:text-blue-600 transition-colors">Terms</a>
-            <a href="#" className="text-sm font-medium text-gray-400 hover:text-blue-600 transition-colors">Cookies</a>
+            <a href="#" className="text-sm font-medium text-gray-400 hover:text-blue-600 transition-colors">{t('privacyLink')}</a>
+            <a href="#" className="text-sm font-medium text-gray-400 hover:text-blue-600 transition-colors">{t('termsLink')}</a>
+            <a href="#" className="text-sm font-medium text-gray-400 hover:text-blue-600 transition-colors">{t('cookiesLink')}</a>
           </div>
         </div>
       </div>

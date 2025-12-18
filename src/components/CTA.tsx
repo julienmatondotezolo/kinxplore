@@ -1,8 +1,11 @@
 import React from 'react';
 import { ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { useTranslations } from 'next-intl';
 
 export const CTA: React.FC = () => {
+  const t = useTranslations('CTA');
+  
   return (
     <div className="max-w-7xl mx-auto px-4 mb-24">
       <motion.div 
@@ -25,7 +28,7 @@ export const CTA: React.FC = () => {
               transition={{ duration: 0.6, delay: 0.2 }}
               className="text-4xl md:text-6xl font-extrabold text-gray-900 tracking-tight leading-tight"
             >
-              Let's enjoy your journey with us
+              {t('title')}
             </motion.h2>
             <motion.p 
               initial={{ opacity: 0, x: -30 }}
@@ -34,7 +37,7 @@ export const CTA: React.FC = () => {
               transition={{ duration: 0.6, delay: 0.3 }}
               className="text-xl text-gray-500 font-medium max-w-xl"
             >
-              Experience ultimate comfort with our AI-driven planning. We know Kinshasa like the back of our hand.
+              {t('description')}
             </motion.p>
           </div>
 
@@ -46,11 +49,11 @@ export const CTA: React.FC = () => {
             className="flex-shrink-0 flex flex-col gap-4 w-full md:w-auto"
           >
             <button className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-5 px-12 rounded-2xl shadow-xl shadow-blue-500/30 transition-all hover:scale-105 active:scale-95 flex items-center justify-center gap-3 group">
-              Start Your Plan
+              {t('startPlan')}
               <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
             </button>
             <p className="text-center text-sm font-medium text-gray-400">
-              Free forever. No credit card required.
+              {t('freeForever')}
             </p>
           </motion.div>
         </div>

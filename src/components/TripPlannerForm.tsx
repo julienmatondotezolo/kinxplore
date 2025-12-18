@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { TripStyle, UserPreferences } from '@/types';
 import { MapPin, Calendar, Users, Activity, ArrowRight, Loader2, ChevronDown, Search } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 
 interface Props {
   onGenerate: (prefs: UserPreferences) => void;
@@ -9,6 +10,8 @@ interface Props {
 }
 
 export const TripPlannerForm: React.FC<Props> = ({ onGenerate, isLoading, compact = false }) => {
+  const t = useTranslations('Hero');
+  const tStyles = useTranslations('TripStyles');
   const [style, setStyle] = useState<TripStyle>(TripStyle.Adventure);
   const [groupSize, setGroupSize] = useState<number>(2);
   const [duration, setDuration] = useState<number>(3);
@@ -26,16 +29,16 @@ export const TripPlannerForm: React.FC<Props> = ({ onGenerate, isLoading, compac
         <div className="hidden md:flex bg-white rounded-full shadow-[0_20px_50px_rgba(0,0,0,0.1)] border border-gray-100 p-2 items-center gap-2">
           {/* Destination */}
           <div className="flex-1 px-6 py-2 border-r border-gray-100 hover:bg-gray-50/50 rounded-full transition-colors cursor-pointer group">
-            <p className="text-[9px] font-bold text-gray-400 uppercase tracking-widest mb-0.5">Destination</p>
+            <p className="text-[9px] font-bold text-gray-400 uppercase tracking-widest mb-0.5">{t('destination')}</p>
             <div className="flex items-center gap-2">
               <MapPin size={14} className="text-blue-600" />
-              <span className="text-sm font-bold text-gray-900 truncate">Kinshasa, DRC</span>
+              <span className="text-sm font-bold text-gray-900 truncate">{t('destinationValue')}</span>
             </div>
           </div>
 
           {/* Dates/Duration */}
           <div className="flex-1 px-6 py-2 border-r border-gray-100 hover:bg-gray-50/50 rounded-full transition-colors cursor-pointer group">
-            <p className="text-[9px] font-bold text-gray-400 uppercase tracking-widest mb-0.5">Duration</p>
+            <p className="text-[9px] font-bold text-gray-400 uppercase tracking-widest mb-0.5">{t('duration')}</p>
             <div className="flex items-center gap-2">
               <Calendar size={14} className="text-blue-600" />
               <input 
@@ -47,13 +50,13 @@ export const TripPlannerForm: React.FC<Props> = ({ onGenerate, isLoading, compac
                 onClick={(e) => e.stopPropagation()}
                 className="bg-transparent text-sm font-bold text-gray-900 focus:outline-none w-12"
               />
-              <span className="text-[10px] text-gray-400 font-medium">Days</span>
+              <span className="text-[10px] text-gray-400 font-medium">{t('days')}</span>
             </div>
           </div>
 
           {/* Style */}
           <div className="flex-1 px-6 py-2 hover:bg-gray-50/50 rounded-full transition-colors cursor-pointer group relative">
-            <p className="text-[9px] font-bold text-gray-400 uppercase tracking-widest mb-0.5">Trip Style</p>
+            <p className="text-[9px] font-bold text-gray-400 uppercase tracking-widest mb-0.5">{t('tripStyle')}</p>
             <div className="flex items-center gap-2">
               <Activity size={14} className="text-blue-600" />
               <select 
@@ -63,7 +66,7 @@ export const TripPlannerForm: React.FC<Props> = ({ onGenerate, isLoading, compac
                 className="bg-transparent text-sm font-bold text-gray-900 appearance-none focus:outline-none cursor-pointer pr-4"
               >
                 {Object.values(TripStyle).map((s) => (
-                  <option key={s} value={s}>{s}</option>
+                  <option key={s} value={s}>{tStyles(s.toLowerCase())}</option>
                 ))}
               </select>
               <ChevronDown size={12} className="text-gray-400 absolute right-4" />
@@ -75,6 +78,7 @@ export const TripPlannerForm: React.FC<Props> = ({ onGenerate, isLoading, compac
             onClick={handleSubmit}
             disabled={isLoading}
             className="bg-blue-600 hover:bg-blue-700 text-white p-4 rounded-full transition-all shadow-lg hover:shadow-blue-500/40 active:scale-95 disabled:opacity-70 flex-shrink-0"
+            title={isLoading ? t('planning') : t('startPlanning')}
           >
             {isLoading ? (
               <Loader2 size={20} className="animate-spin" />

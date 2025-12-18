@@ -1,12 +1,15 @@
 import React from 'react';
 import { Smartphone, CheckCircle2, ChevronRight } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { useTranslations } from 'next-intl';
 
 export const WhyChooseUs: React.FC = () => {
+  const t = useTranslations('WhyChooseUs');
+  
   const points = [
-    { title: "Travel Tip", desc: "Our AI provides real-time local tips updated by locals." },
-    { title: "Flight Booking", desc: "Find the best routes directly from our platform." },
-    { title: "Safe Spots", desc: "Prioritizing verified and secure locations across Kinshasa." },
+    { title: t('travelTip.title'), desc: t('travelTip.description') },
+    { title: t('flightBooking.title'), desc: t('flightBooking.description') },
+    { title: t('safeSpots.title'), desc: t('safeSpots.description') },
   ];
 
   return (
@@ -23,10 +26,10 @@ export const WhyChooseUs: React.FC = () => {
         >
           <div className="space-y-6">
             <h2 className="text-4xl md:text-6xl font-extrabold text-gray-900 tracking-tight leading-tight">
-              Why choose us?
+              {t('title')}
             </h2>
             <p className="text-xl text-gray-500 font-medium max-w-xl leading-relaxed">
-              Experience ultimate comfort in your Single Feature theme, designed for your next adventure.
+              {t('subtitle')}
             </p>
           </div>
 
@@ -52,7 +55,7 @@ export const WhyChooseUs: React.FC = () => {
           </div>
 
           <button className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-10 rounded-2xl shadow-xl shadow-blue-500/30 transition-all hover:scale-105 active:scale-95 flex items-center gap-2">
-            Learn More <ChevronRight size={20} />
+            {t('learnMore')} <ChevronRight size={20} />
           </button>
         </motion.div>
 

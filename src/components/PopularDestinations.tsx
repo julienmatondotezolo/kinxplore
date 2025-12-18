@@ -1,6 +1,7 @@
 import React from 'react';
 import { Plane, Star } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { useTranslations } from 'next-intl';
 
 const destinations = [
     { 
@@ -52,6 +53,8 @@ const itemVariants = {
 };
 
 export const PopularDestinations: React.FC = () => {
+    const t = useTranslations('PopularDestinations');
+    
     return (
         <div className="py-24 max-w-7xl mx-auto px-4" id="destinations">
             <motion.div 
@@ -61,7 +64,7 @@ export const PopularDestinations: React.FC = () => {
               transition={{ duration: 0.6 }}
               className="mb-12"
             >
-                <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900 tracking-tight mb-4">Popular Destinations</h2>
+                <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900 tracking-tight mb-4">{t('title')}</h2>
             </motion.div>
 
             <motion.div 
@@ -86,7 +89,7 @@ export const PopularDestinations: React.FC = () => {
                             
                             {/* Booking Pill */}
                             <div className="absolute bottom-6 left-1/2 -translate-x-1/2 w-[85%] bg-white/95 backdrop-blur-md rounded-full py-3 px-6 flex items-center justify-between shadow-lg opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-500">
-                                <span className="text-xs font-bold text-gray-900 uppercase tracking-wider">Booking Trip</span>
+                                <span className="text-xs font-bold text-gray-900 uppercase tracking-wider">{t('bookingTrip')}</span>
                                 <div className="bg-blue-600 text-white p-1.5 rounded-full">
                                     <Plane size={14} className="rotate-45" />
                                 </div>
@@ -98,7 +101,7 @@ export const PopularDestinations: React.FC = () => {
                             <div className="flex justify-between items-center">
                                 <div className="flex items-baseline gap-1.5">
                                     <span className="font-bold text-gray-900">{dest.price}</span>
-                                    <span className="text-sm font-medium text-gray-400">Starting</span>
+                                    <span className="text-sm font-medium text-gray-400">{t('starting')}</span>
                                 </div>
                                 <div className="flex items-center gap-1">
                                     <Star size={14} className="text-gray-300 fill-gray-300" />

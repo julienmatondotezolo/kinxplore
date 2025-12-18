@@ -1,5 +1,113 @@
 {
-  "Index": {
-    "welcome": "Bienvenue"
+  "Navigation": {
+    "home": "Accueil",
+    "destination": "Destination",
+    "services": "Services",
+    "faq": "FAQ",
+    "contact": "Contact",
+    "hello": "Bonjour !",
+    "traveler": "Voyageur",
+    "logout": "Déconnexion"
+  },
+  "Hero": {
+    "badge": "Découvrez Kinshasa, RDC",
+    "title": "Explorez",
+    "titleCity": "Kinshasa,",
+    "titleYourWay": "À Votre Façon.",
+    "subtitle": "Le cœur battant du Congo.",
+    "description": "Dites-nous votre style de voyage et notre IA créera l'itinéraire parfait pour votre séjour à Kinshasa.",
+    "destination": "Destination",
+    "destinationValue": "Kinshasa, RDC",
+    "duration": "Durée",
+    "days": "Jours",
+    "tripStyle": "Style de Voyage",
+    "startPlanning": "Planifier avec l'IA",
+    "planning": "Planification...",
+    "reviews": "Avis",
+    "reviewsRating": "4,8 sur 5",
+    "topRated": "Expériences les Mieux Notées",
+    "explorePackages": "Découvrir Tous les Forfaits"
+  },
+  "TripStyles": {
+    "adventure": "Aventure",
+    "cultural": "Culturel",
+    "relaxation": "Détente",
+    "nightlife": "Vie Nocturne",
+    "family": "Famille",
+    "business": "Affaires"
+  },
+  "PopularDestinations": {
+    "title": "Destinations Populaires",
+    "bookingTrip": "Réserver un Voyage",
+    "starting": "À partir de"
+  },
+  "Services": {
+    "title": "Nos services",
+    "tripPlanning": {
+      "title": "Planification de Voyage",
+      "description": "Itinéraires personnalisés conçus spécifiquement pour votre style de voyage et vos besoins."
+    },
+    "aiItinerary": {
+      "title": "Itinéraire IA",
+      "description": "La génération instantanée par IA vous fait gagner des heures de recherche pour votre voyage à Kinshasa."
+    },
+    "safePackages": {
+      "title": "Forfaits Sécurisés",
+      "description": "Accès à des expériences locales premium et vérifiées aux meilleurs prix garantis."
+    },
+    "localSupport": {
+      "title": "Support Local",
+      "description": "Support 24/7 d'experts locaux prêts à vous assister à tout moment pendant votre séjour."
+    },
+    "exploreNow": "Explorer Maintenant"
+  },
+  "WhyChooseUs": {
+    "title": "Pourquoi nous choisir ?",
+    "subtitle": "Profitez d'un confort ultime avec notre thème Single Feature, conçu pour votre prochaine aventure.",
+    "travelTip": {
+      "title": "Conseils de Voyage",
+      "description": "Notre IA fournit des conseils locaux en temps réel mis à jour par les habitants."
+    },
+    "flightBooking": {
+      "title": "Réservation de Vol",
+      "description": "Trouvez les meilleurs itinéraires directement depuis notre plateforme."
+    },
+    "safeSpots": {
+      "title": "Lieux Sûrs",
+      "description": "Priorisation des emplacements vérifiés et sécurisés à travers Kinshasa."
+    },
+    "learnMore": "En Savoir Plus"
+  },
+  "Community": {
+    "title": "Rejoignez notre communauté",
+    "description": "Rejoignez notre communauté de voyageurs pour explorer, connecter et partager vos meilleurs moments.",
+    "communityPick": "Choix de la Communauté",
+    "joinNow": "Rejoindre Maintenant"
+  },
+  "CTA": {
+    "title": "Profitez de votre voyage avec nous",
+    "description": "Profitez d'un confort ultime avec notre planification pilotée par IA. Nous connaissons Kinshasa comme notre poche.",
+    "startPlan": "Commencer Votre Plan",
+    "freeForever": "Gratuit pour toujours. Aucune carte de crédit requise."
+  },
+  "Footer": {
+    "description": "Concevez votre voyage parfait à Kinshasa avec notre planificateur alimenté par IA. Personnel, rapide et optimisé pour votre style.",
+    "company": "Entreprise",
+    "aboutUs": "À Propos",
+    "services": "Services",
+    "community": "Communauté",
+    "ourBlog": "Notre Blog",
+    "support": "Support",
+    "helpCenter": "Centre d'Aide",
+    "safetyInfo": "Informations de Sécurité",
+    "terms": "Conditions d'Utilisation",
+    "privacy": "Politique de Confidentialité",
+    "subscribe": "S'abonner",
+    "subscribeDesc": "Recevez des conseils de voyage et des nouvelles à Kinshasa.",
+    "emailPlaceholder": "bonjour@kinxplore.com",
+    "copyright": "© 2025 KinXplore. Tous Droits Réservés.",
+    "privacyLink": "Confidentialité",
+    "termsLink": "Conditions",
+    "cookiesLink": "Cookies"
   }
 }

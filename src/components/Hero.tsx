@@ -3,6 +3,7 @@ import { ArrowRight, Star, Plus, Plane, MapPin, Compass, ArrowUpRight, Heart, La
 import { TripPlannerForm } from './TripPlannerForm';
 import { UserPreferences } from '@/types';
 import { motion } from 'framer-motion';
+import { useTranslations } from 'next-intl';
 
 interface HeroProps {
   onGenerate: (prefs: UserPreferences) => void;
@@ -10,6 +11,7 @@ interface HeroProps {
 }
 
 export const Hero: React.FC<HeroProps> = ({ onGenerate, isLoading }) => {
+  const t = useTranslations('Hero');
   const packages = [
     { 
       title: "Kinshasa Essentials", 
@@ -115,7 +117,7 @@ export const Hero: React.FC<HeroProps> = ({ onGenerate, isLoading }) => {
               className="inline-flex items-center gap-2 bg-gradient-to-r from-orange-50 via-white to-orange-50 backdrop-blur-sm text-orange-600 px-5 py-2.5 rounded-full text-[10px] md:text-xs font-bold border border-orange-100/50 tracking-wide shadow-sm"
             >
               <span className="w-2 h-2 bg-orange-500 rounded-full animate-pulse"></span>
-              Discover Kinshasa, DRC
+              {t('badge')}
             </motion.div>
           </div>
           
@@ -124,13 +126,13 @@ export const Hero: React.FC<HeroProps> = ({ onGenerate, isLoading }) => {
               variants={itemVariants}
               className="text-4xl md:text-[4.2rem] font-black text-gray-900 leading-[1.2] md:leading-[1.1] tracking-tight uppercase"
             >
-              <span className="block">Explore</span>
+              <span className="block">{t('title')}</span>
               <span className="flex items-center justify-center lg:justify-start gap-3 flex-wrap">
-                Kinshasa,
+                {t('titleCity')}
                 <span className="inline-block w-16 h-8 md:w-24 md:h-12 bg-gray-100 rounded-full overflow-hidden border-2 md:border-4 border-white shadow-sm -rotate-2 transform hover:rotate-0 transition-transform duration-500">
                   <img src="https://picsum.photos/400/300?random=50" className="w-full h-full object-cover" alt="Kinshasa" />
                 </span>
-                Your Way.
+                {t('titleYourWay')}
               </span>
             </motion.h1>
             
@@ -138,7 +140,7 @@ export const Hero: React.FC<HeroProps> = ({ onGenerate, isLoading }) => {
               variants={itemVariants}
               className="text-sm md:text-lg text-gray-500 max-w-lg leading-relaxed font-medium mx-auto lg:mx-0"
             >
-              <span className="text-gray-900 font-bold">The heartbeat of Congo.</span> Tell us your trip style, and our AI will craft the perfect itinerary for your stay in Kinshasa.
+              <span className="text-gray-900 font-bold">{t('subtitle')}</span> {t('description')}
             </motion.p>
           </div>
 
@@ -158,9 +160,9 @@ export const Hero: React.FC<HeroProps> = ({ onGenerate, isLoading }) => {
               </div>
               <div>
                 <p className="text-xs font-bold text-gray-900 tracking-tight">
-                  <span className="underline decoration-blue-500 decoration-2 underline-offset-4">Reviews</span> 4.8 out of 5
+                  <span className="underline decoration-blue-500 decoration-2 underline-offset-4">{t('reviews')}</span> {t('reviewsRating')}
                 </p>
-                <p className="text-[10px] text-gray-400 font-medium uppercase tracking-widest mt-0.5">Top-Rated Experiences</p>
+                <p className="text-[10px] text-gray-400 font-medium uppercase tracking-widest mt-0.5">{t('topRated')}</p>
               </div>
             </div>
 
@@ -203,7 +205,7 @@ export const Hero: React.FC<HeroProps> = ({ onGenerate, isLoading }) => {
             {/* Footer Link */}
             <div className="pt-2 text-center">
               <button className="inline-flex items-center gap-2 text-blue-600 font-black text-[10px] uppercase tracking-[0.2em] group border-b-2 border-transparent hover:border-blue-600 pb-1 transition-all">
-                Explore All Packages
+                {t('explorePackages')}
                 <ArrowRight size={14} className="-rotate-45 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
               </button>
             </div>
@@ -222,9 +224,9 @@ export const Hero: React.FC<HeroProps> = ({ onGenerate, isLoading }) => {
                     </div>
                     <div>
                         <p className="text-xs font-bold text-gray-900 tracking-tight">
-                            <span className="underline decoration-blue-500 decoration-2 underline-offset-4">Reviews</span> 4.8 out of 5
+                            <span className="underline decoration-blue-500 decoration-2 underline-offset-4">{t('reviews')}</span> {t('reviewsRating')}
                         </p>
-                        <p className="text-[10px] text-gray-400 font-medium uppercase tracking-widest mt-0.5">Top-Rated Experiences</p>
+                        <p className="text-[10px] text-gray-400 font-medium uppercase tracking-widest mt-0.5">{t('topRated')}</p>
                     </div>
                 </div>
             </motion.div>
@@ -312,7 +314,7 @@ export const Hero: React.FC<HeroProps> = ({ onGenerate, isLoading }) => {
             {/* Footer Link */}
             <motion.div variants={itemVariants} className="pt-2 self-start pl-12">
                 <button className="flex items-center gap-2 text-blue-600 font-bold text-xs uppercase tracking-[0.2em] group border-b-2 border-transparent hover:border-blue-600 pb-1 transition-all">
-                    Explore All Packages
+                    {t('explorePackages')}
                     <ArrowRight size={14} className="-rotate-45 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
                 </button>
             </motion.div>

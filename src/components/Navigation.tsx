@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, Globe, User, Heart, ShoppingBag, X, LogOut, Home, MapPin, Briefcase, HelpCircle, Mail, Settings } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useTranslations } from 'next-intl';
 
 export const Navigation: React.FC = () => {
+  const t = useTranslations('Navigation');
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -58,11 +60,11 @@ export const Navigation: React.FC = () => {
   };
 
   const navLinks = [
-    { id: 'home', label: 'Home', icon: Home },
-    { id: 'destinations', label: 'Destination', icon: MapPin },
-    { id: 'services', label: 'Services', icon: Briefcase },
-    { id: 'faq', label: 'FAQ', icon: HelpCircle },
-    { id: 'contact', label: 'Contact', icon: Mail },
+    { id: 'home', label: t('home'), icon: Home },
+    { id: 'destinations', label: t('destination'), icon: MapPin },
+    { id: 'services', label: t('services'), icon: Briefcase },
+    { id: 'faq', label: t('faq'), icon: HelpCircle },
+    { id: 'contact', label: t('contact'), icon: Mail },
   ];
 
   return (
@@ -122,8 +124,8 @@ export const Navigation: React.FC = () => {
               <img src="https://picsum.photos/100/100?random=10" alt="Profile" className="w-full h-full object-cover" />
             </div>
             <div className="hidden lg:block">
-              <p className="text-[10px] text-gray-400 font-medium leading-none mb-1">Hello!</p>
-              <p className="text-sm font-bold text-gray-900 leading-none">Traveler</p>
+              <p className="text-[10px] text-gray-400 font-medium leading-none mb-1">{t('hello')}</p>
+              <p className="text-sm font-bold text-gray-900 leading-none">{t('traveler')}</p>
             </div>
           </div>
 
@@ -208,13 +210,13 @@ export const Navigation: React.FC = () => {
                 <div className="flex items-center gap-4 mb-8">
                   <img src="https://picsum.photos/100/100?random=10" alt="Profile" className="w-12 h-12 rounded-2xl object-cover border-2 border-blue-50" />
                   <div>
-                    <p className="font-bold text-gray-900">Traveler</p>
+                    <p className="font-bold text-gray-900">{t('traveler')}</p>
                     <p className="text-xs text-gray-400 font-medium">Explorer Account</p>
                   </div>
                 </div>
                 <button className="w-full flex items-center gap-4 p-4 rounded-2xl bg-red-50 text-red-600 font-bold hover:bg-red-100 transition-colors">
                   <LogOut size={20} />
-                  Log Out
+                  {t('logout')}
                 </button>
               </div>
             </motion.div>

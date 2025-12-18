@@ -1,5 +1,113 @@
 {
-  "Index": {
-    "welcome": "Welcome"
+  "Navigation": {
+    "home": "Home",
+    "destination": "Destination",
+    "services": "Services",
+    "faq": "FAQ",
+    "contact": "Contact",
+    "hello": "Hello!",
+    "traveler": "Traveler",
+    "logout": "Logout"
+  },
+  "Hero": {
+    "badge": "Discover Kinshasa, DRC",
+    "title": "Explore",
+    "titleCity": "Kinshasa,",
+    "titleYourWay": "Your Way.",
+    "subtitle": "The heartbeat of Congo.",
+    "description": "Tell us your trip style, and our AI will craft the perfect itinerary for your stay in Kinshasa.",
+    "destination": "Destination",
+    "destinationValue": "Kinshasa, DRC",
+    "duration": "Duration",
+    "days": "Days",
+    "tripStyle": "Trip Style",
+    "startPlanning": "Start AI Planning",
+    "planning": "Planning...",
+    "reviews": "Reviews",
+    "reviewsRating": "4.8 out of 5",
+    "topRated": "Top-Rated Experiences",
+    "explorePackages": "Explore All Packages"
+  },
+  "TripStyles": {
+    "adventure": "Adventure",
+    "cultural": "Cultural",
+    "relaxation": "Relaxation",
+    "nightlife": "Nightlife",
+    "family": "Family",
+    "business": "Business"
+  },
+  "PopularDestinations": {
+    "title": "Popular Destinations",
+    "bookingTrip": "Booking Trip",
+    "starting": "Starting"
+  },
+  "Services": {
+    "title": "Our services",
+    "tripPlanning": {
+      "title": "Trip Planning",
+      "description": "Personalized itineraries designed specifically for your travel style and needs."
+    },
+    "aiItinerary": {
+      "title": "AI Itinerary",
+      "description": "Instant AI generation saves you hours of research time for your Kinshasa trip."
+    },
+    "safePackages": {
+      "title": "Safe Packages",
+      "description": "Bridges to premium and verified local experiences at the best guaranteed prices."
+    },
+    "localSupport": {
+      "title": "Local Support",
+      "description": "24/7 support from local experts ready to assist you any time during your stay."
+    },
+    "exploreNow": "Explore Now"
+  },
+  "WhyChooseUs": {
+    "title": "Why choose us?",
+    "subtitle": "Experience ultimate comfort in your Single Feature theme, designed for your next adventure.",
+    "travelTip": {
+      "title": "Travel Tip",
+      "description": "Our AI provides real-time local tips updated by locals."
+    },
+    "flightBooking": {
+      "title": "Flight Booking",
+      "description": "Find the best routes directly from our platform."
+    },
+    "safeSpots": {
+      "title": "Safe Spots",
+      "description": "Prioritizing verified and secure locations across Kinshasa."
+    },
+    "learnMore": "Learn More"
+  },
+  "Community": {
+    "title": "Join with our community",
+    "description": "Join our traveler community to explore, connect, and share your best moments.",
+    "communityPick": "Community Pick",
+    "joinNow": "Join Now"
+  },
+  "CTA": {
+    "title": "Let's enjoy your journey with us",
+    "description": "Experience ultimate comfort with our AI-driven planning. We know Kinshasa like the back of our hand.",
+    "startPlan": "Start Your Plan",
+    "freeForever": "Free forever. No credit card required."
+  },
+  "Footer": {
+    "description": "Design your perfect Kinshasa trip with our AI-powered planner. Personal, fast, and optimized for your style.",
+    "company": "Company",
+    "aboutUs": "About Us",
+    "services": "Services",
+    "community": "Community",
+    "ourBlog": "Our Blog",
+    "support": "Support",
+    "helpCenter": "Help Center",
+    "safetyInfo": "Safety Information",
+    "terms": "Terms of Service",
+    "privacy": "Privacy Policy",
+    "subscribe": "Subscribe",
+    "subscribeDesc": "Get travel tips and news in Kinshasa.",
+    "emailPlaceholder": "hello@kinxplore.com",
+    "copyright": "© 2025 KinXplore. All Rights Reserved.",
+    "privacyLink": "Privacy",
+    "termsLink": "Terms",
+    "cookiesLink": "Cookies"
   }
 }

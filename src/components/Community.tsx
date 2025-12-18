@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { useTranslations } from 'next-intl';
 
 const users = [
   { id: 1, img: "https://picsum.photos/100/100?random=301", size: "w-20 h-20", pos: "top-[10%] left-[15%]" },
@@ -15,6 +16,8 @@ const users = [
 ];
 
 export const Community: React.FC = () => {
+  const t = useTranslations('Community');
+  
   return (
     <div className="py-32 bg-[#FAFBFF] relative overflow-hidden">
       {/* Background decoration */}
@@ -52,10 +55,10 @@ export const Community: React.FC = () => {
           >
             <div className="space-y-4">
               <h2 className="text-4xl md:text-6xl font-extrabold text-gray-900 tracking-tight leading-tight">
-                Join with our community
+                {t('title')}
               </h2>
               <p className="text-xl text-gray-500 font-medium">
-                Join our traveler community to explore, connect, and share your best moments.
+                {t('description')}
               </p>
             </div>
 
@@ -69,7 +72,7 @@ export const Community: React.FC = () => {
                 <img src="https://picsum.photos/800/600?random=350" alt="Kinshasa Landmark" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" />
                 <div className="absolute bottom-6 left-6 right-6 p-4 glass rounded-2xl flex items-center justify-between text-left">
                   <div>
-                    <p className="text-[10px] font-bold text-blue-600 uppercase tracking-widest mb-1">Community Pick</p>
+                    <p className="text-[10px] font-bold text-blue-600 uppercase tracking-widest mb-1">{t('communityPick')}</p>
                     <p className="font-bold text-gray-900 text-sm">Santorini, Greece</p>
                   </div>
                   <div className="flex items-center gap-1">
@@ -80,7 +83,7 @@ export const Community: React.FC = () => {
             </motion.div>
 
             <button className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-12 rounded-2xl shadow-xl shadow-blue-500/30 transition-all hover:scale-105 active:scale-95">
-              Join Now
+              {t('joinNow')}
             </button>
           </motion.div>
         </div>
