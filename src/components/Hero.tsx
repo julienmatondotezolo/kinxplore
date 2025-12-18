@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowRight, Star, Plus, Plane, MapPin, Compass, ArrowUpRight } from 'lucide-react';
+import { ArrowRight, Star, Plus, Plane, MapPin, Compass, ArrowUpRight, Heart, LayoutGrid, Bed } from 'lucide-react';
 import { TripPlannerForm } from './TripPlannerForm';
 import { UserPreferences } from '@/types';
 import { motion } from 'framer-motion';
@@ -53,7 +53,6 @@ export const Hero: React.FC<HeroProps> = ({ onGenerate, isLoading }) => {
       y: 0,
       transition: {
         duration: 0.5,
-        ease: "easeOut",
       },
     },
   };
@@ -65,7 +64,6 @@ export const Hero: React.FC<HeroProps> = ({ onGenerate, isLoading }) => {
       scale: 1,
       transition: {
         duration: 0.5,
-        ease: "easeOut",
       },
     },
   };
@@ -101,23 +99,27 @@ export const Hero: React.FC<HeroProps> = ({ onGenerate, isLoading }) => {
       </div>
 
       <motion.div 
-        className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 md:gap-16 items-center relative z-10"
+        className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-start relative z-10"
         variants={containerVariants}
         initial="hidden"
         animate="visible"
       >
         
         {/* Left Content */}
-        <div className="space-y-8 md:space-y-10 relative z-10">
-          <motion.div 
-            variants={itemVariants}
-            className="inline-flex items-center gap-2 bg-gray-900/5 backdrop-blur-sm text-gray-900 px-5 py-2.5 rounded-full text-[10px] md:text-xs font-bold border border-gray-900/10 tracking-widest uppercase mx-auto lg:mx-0"
-          >
-            <span className="w-2 h-2 bg-blue-600 rounded-full animate-pulse"></span>
-            Kinshasa Awaits
-          </motion.div>
+        <div className="space-y-8 md:space-y-10 relative z-10 w-[95%] mx-auto lg:w-full lg:mx-0">
+          <div className="flex justify-center lg:justify-start">
+            <motion.div 
+              variants={itemVariants}
+              animate={{ y: [0, -5, 0] }}
+              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+              className="inline-flex items-center gap-2 bg-gradient-to-r from-orange-50 via-white to-orange-50 backdrop-blur-sm text-orange-600 px-5 py-2.5 rounded-full text-[10px] md:text-xs font-bold border border-orange-100/50 tracking-wide shadow-sm"
+            >
+              <span className="w-2 h-2 bg-orange-500 rounded-full animate-pulse"></span>
+              Discover Kinshasa, DRC
+            </motion.div>
+          </div>
           
-          <div className="space-y-4 md:space-y-6 text-center lg:text-left">
+          <div className="space-y-4 md:space-y-6 text-center lg:text-left max-w-[90%] mx-auto lg:max-w-none lg:mx-0">
             <motion.h1 
               variants={itemVariants}
               className="text-4xl md:text-[4.2rem] font-black text-gray-900 leading-[1.2] md:leading-[1.1] tracking-tight uppercase"
@@ -128,9 +130,8 @@ export const Hero: React.FC<HeroProps> = ({ onGenerate, isLoading }) => {
                 <span className="inline-block w-16 h-8 md:w-24 md:h-12 bg-gray-100 rounded-full overflow-hidden border-2 md:border-4 border-white shadow-sm -rotate-2 transform hover:rotate-0 transition-transform duration-500">
                   <img src="https://picsum.photos/400/300?random=50" className="w-full h-full object-cover" alt="Kinshasa" />
                 </span>
-                Your
+                Your Way.
               </span>
-              <span className="block text-gray-900">Way.</span>
             </motion.h1>
             
             <motion.p 
@@ -142,8 +143,70 @@ export const Hero: React.FC<HeroProps> = ({ onGenerate, isLoading }) => {
           </div>
 
           {/* Search Form Integrated */}
-          <motion.div variants={itemVariants} className="pt-4 md:pt-2 w-full max-w-md mx-auto lg:mx-0">
+          <motion.div variants={itemVariants} className="pt-4 md:pt-2 w-full mx-auto lg:mx-0">
             <TripPlannerForm onGenerate={onGenerate} isLoading={isLoading} compact={true} />
+          </motion.div>
+
+          {/* Mobile Recommended Section - Screenshot 2 Style */}
+          <motion.div variants={itemVariants} className="lg:hidden space-y-8 pt-10">
+            {/* Top Row: Review */}
+            <div className="flex items-center gap-4 px-4">
+              <div className="flex -space-x-3">
+                {[1, 2, 3, 4].map(i => (
+                  <img key={i} src={`https://picsum.photos/100/100?random=${i + 30}`} className="w-10 h-10 rounded-full border-4 border-white object-cover shadow-sm" alt="User" />
+                ))}
+              </div>
+              <div>
+                <p className="text-xs font-bold text-gray-900 tracking-tight">
+                  <span className="underline decoration-blue-500 decoration-2 underline-offset-4">Reviews</span> 4.8 out of 5
+                </p>
+                <p className="text-[10px] text-gray-400 font-medium uppercase tracking-widest mt-0.5">Top-Rated Experiences</p>
+              </div>
+            </div>
+
+            {/* Packages Grid for Mobile */}
+            <div className="space-y-4 px-2">
+              {packages.map((pkg, i) => (
+                <motion.div 
+                  key={i}
+                  variants={cardVariants}
+                  whileTap={{ scale: 0.98 }}
+                  className="relative rounded-[2.5rem] overflow-hidden shadow-xl border-4 border-white group cursor-pointer aspect-[16/10]"
+                >
+                  <img src={pkg.img} alt={pkg.title} className="w-full h-full object-cover" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-60" />
+                  
+                  {/* Badge */}
+                  {pkg.badge && (
+                    <div className="absolute top-4 left-4 px-3 py-1 bg-blue-600 text-white text-[9px] font-bold rounded-full uppercase tracking-wider shadow-lg">
+                      {pkg.badge}
+                    </div>
+                  )}
+
+                  <div className="absolute top-4 right-4 w-8 h-8 bg-white/90 backdrop-blur rounded-full flex items-center justify-center shadow-lg">
+                    <ArrowUpRight size={16} className="text-gray-900" />
+                  </div>
+
+                  <div className="absolute bottom-6 left-6 right-6 text-white text-left">
+                    <p className="text-[9px] font-bold text-blue-400 uppercase tracking-[0.2em] mb-1">{pkg.tag}</p>
+                    <h4 className="text-xl font-extrabold mb-2 leading-tight">{pkg.title}</h4>
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs font-bold opacity-90">{pkg.duration}</span>
+                      <span className="w-1 h-1 bg-white/40 rounded-full" />
+                      <span className="text-xs font-bold text-blue-400">From {pkg.price}</span>
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+
+            {/* Footer Link */}
+            <div className="pt-2 text-center">
+              <button className="inline-flex items-center gap-2 text-blue-600 font-black text-[10px] uppercase tracking-[0.2em] group border-b-2 border-transparent hover:border-blue-600 pb-1 transition-all">
+                Explore All Packages
+                <ArrowRight size={14} className="-rotate-45 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+              </button>
+            </div>
           </motion.div>
         </div>
 

@@ -21,20 +21,21 @@ export const TripPlannerForm: React.FC<Props> = ({ onGenerate, isLoading, compac
 
   if (compact) {
     return (
-      <div className="w-full max-w-4xl">
-        <div className="glass rounded-full shadow-2xl border border-white/40 p-2 flex items-center gap-2">
+      <div className="w-full">
+        {/* Desktop Pill Version */}
+        <div className="hidden md:flex bg-white rounded-full shadow-[0_20px_50px_rgba(0,0,0,0.1)] border border-gray-100 p-2 items-center gap-2">
           {/* Destination */}
-          <div className="flex-1 px-6 py-2 border-r border-gray-200/50 hover:bg-gray-50/50 rounded-full transition-colors cursor-pointer group">
-            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-0.5">Destination</p>
+          <div className="flex-1 px-6 py-2 border-r border-gray-100 hover:bg-gray-50/50 rounded-full transition-colors cursor-pointer group">
+            <p className="text-[9px] font-bold text-gray-400 uppercase tracking-widest mb-0.5">Destination</p>
             <div className="flex items-center gap-2">
               <MapPin size={14} className="text-blue-600" />
-              <span className="text-sm font-bold text-gray-900">Kinshasa, DRC</span>
+              <span className="text-sm font-bold text-gray-900 truncate">Kinshasa, DRC</span>
             </div>
           </div>
 
           {/* Dates/Duration */}
-          <div className="flex-1 px-6 py-2 border-r border-gray-200/50 hover:bg-gray-50/50 rounded-full transition-colors cursor-pointer group">
-            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-0.5">Duration</p>
+          <div className="flex-1 px-6 py-2 border-r border-gray-100 hover:bg-gray-50/50 rounded-full transition-colors cursor-pointer group">
+            <p className="text-[9px] font-bold text-gray-400 uppercase tracking-widest mb-0.5">Duration</p>
             <div className="flex items-center gap-2">
               <Calendar size={14} className="text-blue-600" />
               <input 
@@ -46,13 +47,13 @@ export const TripPlannerForm: React.FC<Props> = ({ onGenerate, isLoading, compac
                 onClick={(e) => e.stopPropagation()}
                 className="bg-transparent text-sm font-bold text-gray-900 focus:outline-none w-12"
               />
-              <span className="text-xs text-gray-400 font-medium">Days</span>
+              <span className="text-[10px] text-gray-400 font-medium">Days</span>
             </div>
           </div>
 
           {/* Style */}
           <div className="flex-1 px-6 py-2 hover:bg-gray-50/50 rounded-full transition-colors cursor-pointer group relative">
-            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-0.5">Trip Style</p>
+            <p className="text-[9px] font-bold text-gray-400 uppercase tracking-widest mb-0.5">Trip Style</p>
             <div className="flex items-center gap-2">
               <Activity size={14} className="text-blue-600" />
               <select 
@@ -73,12 +74,83 @@ export const TripPlannerForm: React.FC<Props> = ({ onGenerate, isLoading, compac
           <button 
             onClick={handleSubmit}
             disabled={isLoading}
-            className="bg-blue-600 hover:bg-blue-700 text-white p-4 rounded-full transition-all shadow-lg hover:shadow-blue-500/40 active:scale-95 disabled:opacity-70"
+            className="bg-blue-600 hover:bg-blue-700 text-white p-4 rounded-full transition-all shadow-lg hover:shadow-blue-500/40 active:scale-95 disabled:opacity-70 flex-shrink-0"
           >
             {isLoading ? (
               <Loader2 size={20} className="animate-spin" />
             ) : (
               <Search size={20} />
+            )}
+          </button>
+        </div>
+
+        {/* Mobile Stacked Version */}
+        <div className="flex md:hidden flex-col gap-3">
+          <div className="bg-white rounded-3xl shadow-xl border border-gray-100 p-4 space-y-4">
+            {/* Destination */}
+            <div className="space-y-1 px-2">
+              <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Destination</p>
+              <div className="flex items-center gap-3 py-1 border-b border-gray-50">
+                <MapPin size={18} className="text-blue-600 flex-shrink-0" />
+                <span className="text-base font-bold text-gray-900">Kinshasa, DRC</span>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              {/* Duration */}
+              <div className="space-y-1 px-2">
+                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Duration</p>
+                <div className="flex items-center gap-3 py-1 border-b border-gray-50">
+                  <Calendar size={18} className="text-blue-600 flex-shrink-0" />
+                  <div className="flex items-baseline gap-1">
+                    <input 
+                      type="number" 
+                      min="1" 
+                      max="14"
+                      value={duration}
+                      onChange={(e) => setDuration(parseInt(e.target.value))}
+                      className="bg-transparent text-base font-bold text-gray-900 focus:outline-none w-8"
+                    />
+                    <span className="text-xs text-gray-400 font-medium">Days</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Style */}
+              <div className="space-y-1 px-2">
+                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Style</p>
+                <div className="flex items-center gap-3 py-1 border-b border-gray-50 relative">
+                  <Activity size={18} className="text-blue-600 flex-shrink-0" />
+                  <select 
+                    value={style}
+                    onChange={(e) => setStyle(e.target.value as TripStyle)}
+                    className="w-full bg-transparent text-base font-bold text-gray-900 appearance-none focus:outline-none cursor-pointer pr-6"
+                  >
+                    {Object.values(TripStyle).map((s) => (
+                      <option key={s} value={s}>{s}</option>
+                    ))}
+                  </select>
+                  <ChevronDown size={14} className="text-gray-400 absolute right-0 pointer-events-none" />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <button 
+            onClick={handleSubmit}
+            disabled={isLoading}
+            className="w-full bg-blue-600 hover:bg-blue-700 text-white py-4 rounded-2xl font-bold transition-all shadow-lg shadow-blue-500/20 active:scale-[0.98] disabled:opacity-70 flex items-center justify-center gap-3"
+          >
+            {isLoading ? (
+              <>
+                <Loader2 size={20} className="animate-spin" />
+                <span>Planning...</span>
+              </>
+            ) : (
+              <>
+                <Search size={20} />
+                <span>Start AI Planning</span>
+              </>
             )}
           </button>
         </div>
