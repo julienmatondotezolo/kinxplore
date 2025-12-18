@@ -118,7 +118,7 @@ export const Hero: React.FC = () => {
           <div className="space-y-4 md:space-y-6 text-center lg:text-left max-w-[90%] mx-auto lg:max-w-none lg:mx-0">
             <motion.h1 
               variants={itemVariants}
-              className="text-4xl md:text-[4.2rem] font-black text-gray-900 leading-[1.2] md:leading-[1.1] tracking-tight uppercase"
+              className="text-4xl md:text-[4.2rem] font-black text-gray-900 leading-[1.2] md:leading-[1.1] tracking-tight"
             >
               <span className="block">{t('title')}</span>
               <span className="flex items-center justify-center lg:justify-start gap-3 flex-wrap">

@@ -17,7 +17,7 @@ export const TripPlannerForm: React.FC<Props> = ({ compact = false }) => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    router.push('/packages');
+    router.push('/destinations');
   };
 
   if (compact) {

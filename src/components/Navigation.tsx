@@ -2,9 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { Menu, Globe, User, Heart, ShoppingBag, X, LogOut, Home, MapPin, Briefcase, HelpCircle, Mail, Settings } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslations } from 'next-intl';
+import { useRouter, usePathname } from '@/navigation';
 
 export const Navigation: React.FC = () => {
   const t = useTranslations('Navigation');
+  const router = useRouter();
+  const pathname = usePathname();
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -12,6 +15,11 @@ export const Navigation: React.FC = () => {
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
+
+      // Only update active section if on home page
+      if (pathname !== '/') {
+        return;
+      }
 
       const sections = ['destinations', 'services', 'faq', 'contact'];
       let currentSection = 'home';
@@ -34,16 +42,36 @@ export const Navigation: React.FC = () => {
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [pathname]);
+
+  // Set active section based on pathname
+  useEffect(() => {
+    if (pathname === '/destinations') {
+      setActiveSection('destinations');
+    } else if (pathname === '/') {
+      setActiveSection('home');
+    }
+  }, [pathname]);
 
   const scrollToSection = (e: React.MouseEvent<HTMLAnchorElement | HTMLDivElement>, id: string) => {
     e.preventDefault();
     setIsMobileMenuOpen(false);
     
     if (id === 'home') {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      if (pathname === '/') {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        router.push('/');
+      }
       return;
     }
+    
+    // If not on home page, navigate home first
+    if (pathname !== '/') {
+      router.push('/');
+      return;
+    }
+    
     const element = document.getElementById(id);
     if (element) {
       const offset = 80;
@@ -67,6 +95,14 @@ export const Navigation: React.FC = () => {
     { id: 'contact', label: t('contact'), icon: Mail },
   ];
 
+  const handleLogoClick = () => {
+    if (pathname === '/') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+      router.push('/');
+    }
+  };
+
   return (
     <>
       <motion.nav 
@@ -79,7 +115,7 @@ export const Navigation: React.FC = () => {
             : 'absolute top-0 bg-transparent py-6 px-4 md:px-12'
         }`}
       >
-        <div className="flex items-center gap-2 cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+        <div className="flex items-center gap-2 cursor-pointer" onClick={handleLogoClick}>
           <span className="text-2xl font-bold tracking-tight text-gray-900">KinXplore</span>
         </div>
 
@@ -160,7 +196,7 @@ export const Navigation: React.FC = () => {
               className="fixed top-0 right-0 h-full w-[80%] max-w-sm bg-white z-[120] shadow-2xl flex flex-col md:hidden p-8"
             >
               <div className="flex items-center justify-between mb-12">
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 cursor-pointer" onClick={handleLogoClick}>
                   <div className="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center text-white font-black text-xl italic shadow-lg shadow-blue-500/20">
                     K
                   </div>
