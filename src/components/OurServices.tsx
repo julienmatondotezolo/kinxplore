@@ -1,30 +1,34 @@
 import React from 'react';
-import { Calendar, Zap, ShieldCheck, Headphones } from 'lucide-react';
+import { Calendar, Zap, ShieldCheck, Headphones, ArrowRight } from 'lucide-react';
 
 const services = [
   {
     icon: Calendar,
-    title: "Custom Trip Planning",
-    desc: "Personalized itineraries designed specifically for your travel style.",
-    gradient: "from-blue-500 to-cyan-500",
+    title: "Trip Planning",
+    desc: "Personalized itineraries designed specifically for your travel style and needs.",
+    bgColor: "bg-[#DEFCE9]",
+    iconBg: "bg-[#63E6BE]",
   },
   {
     icon: Zap,
-    title: "Hassle-Free Booking",
-    desc: "Instant AI generation saves you hours of research time.",
-    gradient: "from-purple-500 to-pink-500",
+    title: "AI Itinerary",
+    desc: "Instant AI generation saves you hours of research time for your Kinshasa trip.",
+    bgColor: "bg-[#E6F0FF]",
+    iconBg: "bg-[#A5D8FF]",
   },
   {
     icon: ShieldCheck,
-    title: "Luxury Trip Packages",
-    desc: "Bridges to premium local experiences at the best prices.",
-    gradient: "from-green-500 to-emerald-500",
+    title: "Safe Packages",
+    desc: "Bridges to premium and verified local experiences at the best guaranteed prices.",
+    bgColor: "bg-[#F9E6FF]",
+    iconBg: "bg-[#FFD6FF]",
   },
   {
     icon: Headphones,
-    title: "24/7 Travel Support",
-    desc: "Local Kinshasa experts ready to assist you any time.",
-    gradient: "from-orange-500 to-red-500",
+    title: "Local Support",
+    desc: "24/7 support from local experts ready to assist you any time during your stay.",
+    bgColor: "bg-[#FFF4E6]",
+    iconBg: "bg-[#FFD8A8]",
   },
 ];
 
@@ -42,13 +46,18 @@ export const OurServices: React.FC = () => {
           {services.map((svc, i) => (
             <div
               key={i}
-              className="group glass p-8 rounded-3xl hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 border border-gray-50 text-center flex flex-col items-center"
+              className={`group ${svc.bgColor} p-10 rounded-[2.5rem] transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 flex flex-col items-start text-left`}
             >
-              <div className={`w-16 h-16 bg-gradient-to-br ${svc.gradient} rounded-[1.5rem] flex items-center justify-center text-white mb-8 group-hover:scale-110 transition-transform duration-300 shadow-xl`}>
-                <svc.icon size={32} />
+              <div className={`w-14 h-14 ${svc.iconBg} rounded-2xl flex items-center justify-center text-gray-900 mb-8 group-hover:scale-110 transition-transform duration-300 shadow-sm`}>
+                <svc.icon size={28} />
               </div>
-              <h3 className="font-bold text-xl text-gray-900 mb-4">{svc.title}</h3>
-              <p className="text-gray-500 font-medium leading-relaxed">{svc.desc}</p>
+              <h3 className="font-extrabold text-3xl text-gray-900 mb-4">{svc.title}</h3>
+              <p className="text-gray-600 font-medium leading-relaxed mb-10">{svc.desc}</p>
+              
+              <button className="mt-auto flex items-center gap-2 font-bold text-gray-900 group/btn">
+                Explore Now
+                <ArrowRight size={20} className="group-hover/btn:translate-x-1 transition-transform" />
+              </button>
             </div>
           ))}
         </div>

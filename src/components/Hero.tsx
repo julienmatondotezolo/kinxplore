@@ -46,10 +46,10 @@ export const Hero: React.FC<HeroProps> = ({ onGenerate, isLoading }) => {
         <div className="absolute -bottom-20 -left-20 w-[400px] h-[400px] bg-gradient-to-tr from-pink-400/15 to-orange-400/15 rounded-full blur-3xl animate-pulse delay-1000" />
         
         {/* Accent blob - middle */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-r from-cyan-400/10 to-blue-400/10 rounded-full blur-3xl animate-pulse delay-500" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-r from-yellow-400/10 to-blue-400/10 rounded-full blur-3xl animate-pulse delay-500" />
         
         {/* Floating decorative shapes */}
-        <div className="absolute top-20 left-[10%] w-20 h-20 bg-gradient-to-br from-blue-500/10 to-purple-500/10 rounded-2xl rotate-12 animate-float" />
+        <div className="absolute top-20 left-[10%] w-20 h-20 bg-gradient-to-br from-yellow-500/10 to-orange-500/10 rounded-2xl rotate-12 animate-float" />
         <div className="absolute bottom-40 right-[15%] w-16 h-16 bg-gradient-to-br from-pink-500/10 to-orange-500/10 rounded-full animate-float-delayed" />
         <div className="absolute top-[60%] left-[5%] w-12 h-12 bg-gradient-to-br from-cyan-500/10 to-blue-500/10 rounded-lg -rotate-12 animate-float-slow" />
         
@@ -69,26 +69,26 @@ export const Hero: React.FC<HeroProps> = ({ onGenerate, isLoading }) => {
         
         {/* Left Content */}
         <div className="space-y-10 relative z-10">
-          <div className="inline-flex items-center gap-2 bg-orange-50/80 backdrop-blur-sm text-orange-600 px-5 py-2.5 rounded-full text-sm font-bold border border-orange-100/50">
-            <span className="w-2 h-2 bg-orange-500 rounded-full animate-pulse"></span>
-            Discover Kinshasa, DRC
+          <div className="inline-flex items-center gap-2 bg-gray-900/5 backdrop-blur-sm text-gray-900 px-5 py-2.5 rounded-full text-xs font-bold border border-gray-900/10 tracking-widest uppercase">
+            <span className="w-2 h-2 bg-blue-600 rounded-full animate-pulse"></span>
+            Kinshasa Awaits
           </div>
           
           <div className="space-y-6">
-            <h1 className="text-5xl md:text-[4.5rem] font-extrabold text-[#111] leading-[1.05] tracking-tight">
-              Let's <br/>
-              <span className="flex items-center gap-4 flex-wrap">
-                Explore
-                <span className="inline-block w-20 h-10 md:w-28 md:h-16 bg-blue-100 rounded-full overflow-hidden border-4 border-white shadow-sm -rotate-2 transform hover:rotate-0 transition-transform duration-500">
+            <h1 className="text-4xl md:text-[4.2rem] font-black text-gray-900 leading-[1.1] tracking-tight">
+              <span className="block">Explore</span>
+              <span className="flex items-center gap-3 flex-wrap">
+                Kinshasa,
+                <span className="inline-block w-20 h-10 md:w-24 md:h-12 bg-gray-100 rounded-full overflow-hidden border-4 border-white shadow-sm -rotate-2 transform hover:rotate-0 transition-transform duration-500">
                   <img src="https://picsum.photos/400/300?random=50" className="w-full h-full object-cover" alt="Kinshasa" />
                 </span>
-                the
+                Your
               </span>
-              world
+              <span className="block text-gray-900">Way.</span>
             </h1>
             
-            <p className="text-lg md:text-xl text-gray-500 max-w-lg leading-relaxed font-medium">
-              Discover Kinshasa with Ease! Your dream destinations and unforgettable experiences are just a click away.
+            <p className="text-base md:text-lg text-gray-500 max-w-lg leading-relaxed font-medium">
+              <span className="text-gray-900 font-bold">The heartbeat of Congo.</span> Tell us your trip style, and our AI will craft the perfect itinerary for your stay in Kinshasa.
             </p>
           </div>
 
@@ -112,7 +112,7 @@ export const Hero: React.FC<HeroProps> = ({ onGenerate, isLoading }) => {
                         <p className="text-xs font-bold text-gray-900 tracking-tight">
                             <span className="underline decoration-blue-500 decoration-2 underline-offset-4">Reviews</span> 4.8 out of 5
                         </p>
-                        <p className="text-[9px] text-gray-400 font-medium uppercase tracking-widest mt-0.5">Top-Rated Experiences</p>
+                        <p className="text-[10px] text-gray-400 font-medium uppercase tracking-widest mt-0.5">Top-Rated Experiences</p>
                     </div>
                 </div>
             </div>

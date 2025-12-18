@@ -1,14 +1,32 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Menu, Globe, User, Heart, ShoppingBag } from 'lucide-react';
 
 export const Navigation: React.FC = () => {
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   return (
-    <nav className="w-full py-6 px-4 md:px-12 flex justify-between items-center bg-transparent absolute top-0 z-50">
+    <nav className={`w-full flex justify-between items-center transition-all duration-500 z-[100] ${
+      isScrolled 
+        ? 'fixed top-0 bg-white/70 backdrop-blur-xl py-3 px-4 md:px-12 shadow-sm border-b border-gray-100/50' 
+        : 'absolute top-0 bg-transparent py-6 px-4 md:px-12'
+    }`}>
       <div className="flex items-center gap-2">
         <span className="text-2xl font-bold tracking-tight text-gray-900">KinXplore</span>
       </div>
 
-      <div className="hidden md:flex items-center bg-white/80 backdrop-blur-md px-8 py-3 rounded-full shadow-sm border border-gray-100/50 gap-8 text-sm font-medium text-gray-600">
+      <div className={`hidden md:flex items-center px-8 py-3 rounded-full transition-all duration-500 gap-8 text-sm font-medium ${
+        isScrolled 
+          ? 'bg-transparent text-gray-600' 
+          : 'bg-white/80 backdrop-blur-md shadow-sm border border-gray-100/50 text-gray-600'
+      }`}>
         <a href="#" className="text-blue-600 font-semibold flex items-center gap-1.5">
           <span className="w-1.5 h-1.5 bg-blue-600 rounded-full"></span>
           Home
