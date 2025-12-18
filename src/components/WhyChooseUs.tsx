@@ -1,23 +1,22 @@
-import React from 'react';
-import { Smartphone, CheckCircle2, ChevronRight } from 'lucide-react';
-import { motion } from 'framer-motion';
-import { useTranslations } from 'next-intl';
+import { motion } from "framer-motion";
+import { CheckCircle2, ChevronRight, Smartphone } from "lucide-react";
+import { useTranslations } from "next-intl";
+import React from "react";
 
 export const WhyChooseUs: React.FC = () => {
-  const t = useTranslations('WhyChooseUs');
-  
+  const t = useTranslations("WhyChooseUs");
+
   const points = [
-    { title: t('travelTip.title'), desc: t('travelTip.description') },
-    { title: t('flightBooking.title'), desc: t('flightBooking.description') },
-    { title: t('safeSpots.title'), desc: t('safeSpots.description') },
+    { title: t("travelTip.title"), desc: t("travelTip.description") },
+    { title: t("flightBooking.title"), desc: t("flightBooking.description") },
+    { title: t("safeSpots.title"), desc: t("safeSpots.description") },
   ];
 
   return (
     <div className="py-32 bg-white relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 flex flex-col lg:flex-row items-center gap-20">
-        
         {/* Left Side: Content */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, x: -50 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true }}
@@ -26,17 +25,15 @@ export const WhyChooseUs: React.FC = () => {
         >
           <div className="space-y-6">
             <h2 className="text-4xl md:text-6xl font-extrabold text-gray-900 tracking-tight leading-tight">
-              {t('title')}
+              {t("title")}
             </h2>
-            <p className="text-xl text-gray-500 font-medium max-w-xl leading-relaxed">
-              {t('subtitle')}
-            </p>
+            <p className="text-xl text-gray-500 font-medium max-w-xl leading-relaxed">{t("subtitle")}</p>
           </div>
 
           <div className="space-y-8">
             {points.map((point, i) => (
-              <motion.div 
-                key={i} 
+              <motion.div
+                key={i}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
@@ -55,12 +52,12 @@ export const WhyChooseUs: React.FC = () => {
           </div>
 
           <button className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-10 rounded-2xl shadow-xl shadow-blue-500/30 transition-all hover:scale-105 active:scale-95 flex items-center gap-2">
-            {t('learnMore')} <ChevronRight size={20} />
+            {t("learnMore")} <ChevronRight size={20} />
           </button>
         </motion.div>
 
         {/* Right Side: Device Mockup (Mobile-optimized web app) */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, scale: 0.8 }}
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
@@ -69,7 +66,7 @@ export const WhyChooseUs: React.FC = () => {
         >
           {/* Background circle decoration */}
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-blue-100/50 rounded-full blur-3xl -z-10" />
-          
+
           <div className="relative max-w-sm mx-auto">
             {/* Phone Mockup Frame */}
             <div className="relative rounded-[3.5rem] border-[12px] border-gray-900 shadow-2xl overflow-hidden aspect-[9/19.5] bg-white">
@@ -115,7 +112,7 @@ export const WhyChooseUs: React.FC = () => {
             </div>
 
             {/* Floating Element beside phone */}
-            <motion.div 
+            <motion.div
               animate={{ y: [0, -20, 0] }}
               transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
               className="absolute -right-12 bottom-20 w-40 h-40 glass rounded-[2rem] p-4 shadow-2xl flex flex-col justify-center gap-3"

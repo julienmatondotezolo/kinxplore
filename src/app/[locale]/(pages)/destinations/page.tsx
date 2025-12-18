@@ -1,15 +1,14 @@
 "use client";
 
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import { useTranslations } from 'next-intl';
-import { Navigation } from "@/components/Navigation";
-import { Footer } from "@/components/Footer";
-import { Calendar, CircleDollarSign, Users, Search, Star, MapPin, ArrowUpRight, Plane, Compass } from 'lucide-react';
+import { motion } from "framer-motion";
+import { ArrowUpRight, Calendar, CircleDollarSign, Compass, MapPin, Plane, Search, Star, Users } from "lucide-react";
+import { useTranslations } from "next-intl";
+import React, { useState } from "react";
 
-const categories = [
-  "all", "resort", "villa", "hotel", "cottage", "homestay", "guesthouse", "ecoLodge"
-];
+import { Footer } from "@/components/Footer";
+import { Navigation } from "@/components/Navigation";
+
+const categories = ["all", "resort", "villa", "hotel", "cottage", "homestay", "guesthouse", "ecoLodge"];
 
 const packages = [
   {
@@ -20,7 +19,7 @@ const packages = [
     rating: 4.9,
     image: "https://picsum.photos/800/600?random=103",
     category: "hotel",
-    tag: "Luxury"
+    tag: "Luxury",
   },
   {
     id: 2,
@@ -30,7 +29,7 @@ const packages = [
     rating: 4.8,
     image: "https://picsum.photos/800/600?random=104",
     category: "ecoLodge",
-    tag: "Nature"
+    tag: "Nature",
   },
   {
     id: 3,
@@ -40,7 +39,7 @@ const packages = [
     rating: 4.9,
     image: "https://picsum.photos/800/600?random=101",
     category: "resort",
-    tag: "Wellness"
+    tag: "Wellness",
   },
   {
     id: 4,
@@ -50,7 +49,7 @@ const packages = [
     rating: 4.7,
     image: "https://picsum.photos/800/600?random=100",
     category: "villa",
-    tag: "Private"
+    tag: "Private",
   },
   {
     id: 5,
@@ -60,7 +59,7 @@ const packages = [
     rating: 4.5,
     image: "https://picsum.photos/800/600?random=105",
     category: "guesthouse",
-    tag: "Affordable"
+    tag: "Affordable",
   },
   {
     id: 6,
@@ -70,18 +69,18 @@ const packages = [
     rating: 4.6,
     image: "https://picsum.photos/800/600?random=106",
     category: "ecoLodge",
-    tag: "Adventure"
-  }
+    tag: "Adventure",
+  },
 ];
 
 export default function DestinationsPage() {
-  const t = useTranslations('Packages');
+  const t = useTranslations("Packages");
   const [activeCategory, setActiveCategory] = useState("all");
 
   const pageVariants = {
     initial: { opacity: 0, x: 20 },
     animate: { opacity: 1, x: 0 },
-    exit: { opacity: 0, x: -20 }
+    exit: { opacity: 0, x: -20 },
   };
 
   const containerVariants = {
@@ -99,13 +98,12 @@ export default function DestinationsPage() {
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.5 }
+      transition: { duration: 0.5 },
     },
   };
 
-  const filteredPackages = activeCategory === "all" 
-    ? packages 
-    : packages.filter(pkg => pkg.category === activeCategory);
+  const filteredPackages =
+    activeCategory === "all" ? packages : packages.filter((pkg) => pkg.category === activeCategory);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50/50 via-purple-50/30 to-pink-50/40 text-gray-900 font-sans selection:bg-blue-100 selection:text-blue-900 overflow-x-hidden">
@@ -116,11 +114,11 @@ export default function DestinationsPage() {
         <div className="absolute -top-40 -right-40 w-[500px] h-[500px] bg-gradient-to-br from-blue-400/20 to-purple-400/20 rounded-full blur-3xl animate-pulse" />
         <div className="absolute -bottom-20 -left-20 w-[400px] h-[400px] bg-gradient-to-tr from-pink-400/15 to-orange-400/15 rounded-full blur-3xl animate-pulse delay-1000" />
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-r from-yellow-400/10 to-blue-400/10 rounded-full blur-3xl animate-pulse delay-500" />
-        
+
         {/* Floating decorative shapes */}
         <div className="absolute top-20 left-[10%] w-20 h-20 bg-gradient-to-br from-yellow-500/10 to-orange-500/10 rounded-2xl rotate-12 animate-float" />
         <div className="absolute bottom-40 right-[15%] w-16 h-16 bg-gradient-to-br from-pink-500/10 to-orange-500/10 rounded-full animate-float-delayed" />
-        
+
         {/* Icon decorations */}
         <div className="absolute top-32 right-[20%] text-blue-400/20 animate-float">
           <Plane size={40} className="rotate-45" />
@@ -129,8 +127,8 @@ export default function DestinationsPage() {
           <Compass size={36} />
         </div>
       </div>
-      
-      <motion.main 
+
+      <motion.main
         initial="initial"
         animate="animate"
         exit="exit"
@@ -140,7 +138,7 @@ export default function DestinationsPage() {
       >
         {/* Title Section */}
         <div className="text-center mb-12 md:mb-16 space-y-4">
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
@@ -148,18 +146,18 @@ export default function DestinationsPage() {
           >
             KinXplore Recommendations
           </motion.div>
-          <motion.h1 
+          <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2, duration: 0.8 }}
             className="text-4xl md:text-7xl font-black text-gray-900 leading-[1.1] tracking-tight max-w-5xl mx-auto"
           >
-            {t('title')}
+            {t("title")}
           </motion.h1>
         </div>
 
         {/* Filter Bar - Modernized with Blue Theme */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4, duration: 0.8 }}
@@ -168,15 +166,19 @@ export default function DestinationsPage() {
           <div className="flex-1 w-full px-8 py-3 border-b md:border-b-0 md:border-r border-gray-100 flex items-center gap-4 group cursor-pointer hover:bg-gray-50/50 rounded-2xl md:rounded-none transition-colors">
             <Calendar size={20} className="text-blue-600" />
             <div className="flex flex-col">
-              <span className="text-[9px] font-bold text-gray-400 uppercase tracking-widest leading-none mb-1.5">{t('date')}</span>
+              <span className="text-[9px] font-bold text-gray-400 uppercase tracking-widest leading-none mb-1.5">
+                {t("date")}
+              </span>
               <span className="text-sm font-black text-gray-900">Select Date</span>
             </div>
           </div>
-          
+
           <div className="flex-1 w-full px-8 py-3 border-b md:border-b-0 md:border-r border-gray-100 flex items-center gap-4 group cursor-pointer hover:bg-gray-50/50 rounded-2xl md:rounded-none transition-colors">
             <CircleDollarSign size={20} className="text-blue-600" />
             <div className="flex flex-col">
-              <span className="text-[9px] font-bold text-gray-400 uppercase tracking-widest leading-none mb-1.5">{t('budget')}</span>
+              <span className="text-[9px] font-bold text-gray-400 uppercase tracking-widest leading-none mb-1.5">
+                {t("budget")}
+              </span>
               <span className="text-sm font-black text-gray-900">$200 - $1,000+</span>
             </div>
           </div>
@@ -184,19 +186,21 @@ export default function DestinationsPage() {
           <div className="flex-1 w-full px-8 py-3 flex items-center gap-4 group cursor-pointer hover:bg-gray-50/50 rounded-2xl md:rounded-none transition-colors">
             <Users size={20} className="text-blue-600" />
             <div className="flex flex-col">
-              <span className="text-[9px] font-bold text-gray-400 uppercase tracking-widest leading-none mb-1.5">{t('guests')}</span>
+              <span className="text-[9px] font-bold text-gray-400 uppercase tracking-widest leading-none mb-1.5">
+                {t("guests")}
+              </span>
               <span className="text-sm font-black text-gray-900">2 Guests</span>
             </div>
           </div>
 
           <button className="bg-blue-600 text-white px-10 py-5 rounded-[1.5rem] md:rounded-full font-black text-xs tracking-widest uppercase hover:bg-blue-700 transition-all shadow-xl shadow-blue-500/30 active:scale-95 flex items-center gap-3 w-full md:w-auto justify-center group">
             <Search size={18} className="group-hover:scale-110 transition-transform" />
-            {t('search')}
+            {t("search")}
           </button>
         </motion.div>
 
         {/* Category Tabs */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.6 }}
@@ -207,9 +211,9 @@ export default function DestinationsPage() {
               key={cat}
               onClick={() => setActiveCategory(cat)}
               className={`px-6 py-3 rounded-full text-[10px] md:text-xs font-black uppercase tracking-widest transition-all duration-300 ${
-                activeCategory === cat 
-                  ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/30' 
-                  : 'bg-white/80 backdrop-blur-md text-gray-500 hover:text-blue-600 border border-white hover:border-blue-100'
+                activeCategory === cat
+                  ? "bg-blue-600 text-white shadow-lg shadow-blue-500/30"
+                  : "bg-white/80 backdrop-blur-md text-gray-500 hover:text-blue-600 border border-white hover:border-blue-100"
               }`}
             >
               {t(`categories.${cat}`)}
@@ -218,7 +222,7 @@ export default function DestinationsPage() {
         </motion.div>
 
         {/* Packages Grid */}
-        <motion.div 
+        <motion.div
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
@@ -233,13 +237,13 @@ export default function DestinationsPage() {
               className="group relative rounded-[2.5rem] overflow-hidden bg-white shadow-2xl border-4 border-white cursor-pointer h-full"
             >
               <div className="relative aspect-[4/5] overflow-hidden">
-                <img 
-                  src={pkg.image} 
-                  alt={pkg.name} 
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" 
+                <img
+                  src={pkg.image}
+                  alt={pkg.name}
+                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-70 group-hover:opacity-85 transition-opacity" />
-                
+
                 {/* Badges */}
                 <div className="absolute top-6 left-6 flex flex-col gap-2 items-start">
                   <div className="bg-blue-600 text-white text-[9px] font-black uppercase tracking-widest px-3 py-1.5 rounded-full shadow-lg">
@@ -265,8 +269,12 @@ export default function DestinationsPage() {
 
                 {/* Content Overlay */}
                 <div className="absolute bottom-8 left-8 right-8 text-white">
-                  <p className="text-[10px] font-black text-blue-400 uppercase tracking-[0.3em] mb-3">{t(`categories.${pkg.category}`)}</p>
-                  <h3 className="text-2xl md:text-3xl font-black mb-3 leading-tight uppercase tracking-tight">{pkg.name}</h3>
+                  <p className="text-[10px] font-black text-blue-400 uppercase tracking-[0.3em] mb-3">
+                    {t(`categories.${pkg.category}`)}
+                  </p>
+                  <h3 className="text-2xl md:text-3xl font-black mb-3 leading-tight uppercase tracking-tight">
+                    {pkg.name}
+                  </h3>
                   <div className="flex items-end justify-between border-t border-white/10 pt-4">
                     <div className="flex items-center gap-2 text-white/60">
                       <MapPin size={14} className="text-blue-400" />

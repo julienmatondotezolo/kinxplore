@@ -1,23 +1,24 @@
-import React, { useState } from 'react';
-import { TripStyle } from '@/types';
-import { MapPin, Calendar, Activity, ArrowRight, ChevronDown, Search } from 'lucide-react';
-import { useTranslations } from 'next-intl';
-import { useRouter } from '@/navigation';
+import { Activity, ArrowRight, Calendar, ChevronDown, MapPin, Search } from "lucide-react";
+import { useTranslations } from "next-intl";
+import React, { useState } from "react";
+
+import { useRouter } from "@/navigation";
+import { TripStyle } from "@/types";
 
 interface Props {
   compact?: boolean;
 }
 
 export const TripPlannerForm: React.FC<Props> = ({ compact = false }) => {
-  const t = useTranslations('Hero');
-  const tStyles = useTranslations('TripStyles');
+  const t = useTranslations("Hero");
+  const tStyles = useTranslations("TripStyles");
   const router = useRouter();
   const [style, setStyle] = useState<TripStyle>(TripStyle.Adventure);
   const [duration, setDuration] = useState<number>(3);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    router.push('/destinations');
+    router.push("/destinations");
   };
 
   if (compact) {
@@ -27,44 +28,46 @@ export const TripPlannerForm: React.FC<Props> = ({ compact = false }) => {
         <div className="hidden md:flex bg-white rounded-full shadow-[0_20px_50px_rgba(0,0,0,0.1)] border border-gray-100 p-2 items-center gap-2">
           {/* Destination */}
           <div className="flex-1 px-6 py-2 border-r border-gray-100 hover:bg-gray-50/50 rounded-full transition-colors cursor-pointer group">
-            <p className="text-[9px] font-bold text-gray-400 uppercase tracking-widest mb-0.5">{t('destination')}</p>
+            <p className="text-[9px] font-bold text-gray-400 uppercase tracking-widest mb-0.5">{t("destination")}</p>
             <div className="flex items-center gap-2">
               <MapPin size={14} className="text-blue-600" />
-              <span className="text-sm font-bold text-gray-900 truncate">{t('destinationValue')}</span>
+              <span className="text-sm font-bold text-gray-900 truncate">{t("destinationValue")}</span>
             </div>
           </div>
 
           {/* Dates/Duration */}
           <div className="flex-1 px-6 py-2 border-r border-gray-100 hover:bg-gray-50/50 rounded-full transition-colors cursor-pointer group">
-            <p className="text-[9px] font-bold text-gray-400 uppercase tracking-widest mb-0.5">{t('duration')}</p>
+            <p className="text-[9px] font-bold text-gray-400 uppercase tracking-widest mb-0.5">{t("duration")}</p>
             <div className="flex items-center gap-2">
               <Calendar size={14} className="text-blue-600" />
-              <input 
-                type="number" 
-                min="1" 
+              <input
+                type="number"
+                min="1"
                 max="14"
                 value={duration}
                 onChange={(e) => setDuration(parseInt(e.target.value))}
                 onClick={(e) => e.stopPropagation()}
                 className="bg-transparent text-sm font-bold text-gray-900 focus:outline-none w-12"
               />
-              <span className="text-[10px] text-gray-400 font-medium">{t('days')}</span>
+              <span className="text-[10px] text-gray-400 font-medium">{t("days")}</span>
             </div>
           </div>
 
           {/* Style */}
           <div className="flex-1 px-6 py-2 hover:bg-gray-50/50 rounded-full transition-colors cursor-pointer group relative">
-            <p className="text-[9px] font-bold text-gray-400 uppercase tracking-widest mb-0.5">{t('tripStyle')}</p>
+            <p className="text-[9px] font-bold text-gray-400 uppercase tracking-widest mb-0.5">{t("tripStyle")}</p>
             <div className="flex items-center gap-2">
               <Activity size={14} className="text-blue-600" />
-              <select 
+              <select
                 value={style}
                 onChange={(e) => setStyle(e.target.value as TripStyle)}
                 onClick={(e) => e.stopPropagation()}
                 className="bg-transparent text-sm font-bold text-gray-900 appearance-none focus:outline-none cursor-pointer pr-4"
               >
                 {Object.values(TripStyle).map((s) => (
-                  <option key={s} value={s}>{tStyles(s.toLowerCase())}</option>
+                  <option key={s} value={s}>
+                    {tStyles(s.toLowerCase())}
+                  </option>
                 ))}
               </select>
               <ChevronDown size={12} className="text-gray-400 absolute right-4" />
@@ -72,10 +75,10 @@ export const TripPlannerForm: React.FC<Props> = ({ compact = false }) => {
           </div>
 
           {/* Search Button */}
-          <button 
+          <button
             onClick={handleSubmit}
             className="bg-blue-600 hover:bg-blue-700 text-white p-4 rounded-full transition-all shadow-lg hover:shadow-blue-500/40 active:scale-95 flex-shrink-0"
-            title={t('startPlanning')}
+            title={t("startPlanning")}
           >
             <Search size={20} />
           </button>
@@ -100,9 +103,9 @@ export const TripPlannerForm: React.FC<Props> = ({ compact = false }) => {
                 <div className="flex items-center gap-3 py-1 border-b border-gray-50">
                   <Calendar size={18} className="text-blue-600 flex-shrink-0" />
                   <div className="flex items-baseline gap-1">
-                    <input 
-                      type="number" 
-                      min="1" 
+                    <input
+                      type="number"
+                      min="1"
                       max="14"
                       value={duration}
                       onChange={(e) => setDuration(parseInt(e.target.value))}
@@ -118,13 +121,15 @@ export const TripPlannerForm: React.FC<Props> = ({ compact = false }) => {
                 <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Style</p>
                 <div className="flex items-center gap-3 py-1 border-b border-gray-50 relative">
                   <Activity size={18} className="text-blue-600 flex-shrink-0" />
-                  <select 
+                  <select
                     value={style}
                     onChange={(e) => setStyle(e.target.value as TripStyle)}
                     className="w-full bg-transparent text-base font-bold text-gray-900 appearance-none focus:outline-none cursor-pointer pr-6"
                   >
                     {Object.values(TripStyle).map((s) => (
-                      <option key={s} value={s}>{s}</option>
+                      <option key={s} value={s}>
+                        {s}
+                      </option>
                     ))}
                   </select>
                   <ChevronDown size={14} className="text-gray-400 absolute right-0 pointer-events-none" />
@@ -133,12 +138,12 @@ export const TripPlannerForm: React.FC<Props> = ({ compact = false }) => {
             </div>
           </div>
 
-          <button 
+          <button
             onClick={handleSubmit}
             className="w-full bg-blue-600 hover:bg-blue-700 text-white py-4 rounded-2xl font-bold transition-all shadow-lg shadow-blue-500/20 active:scale-[0.98] flex items-center justify-center gap-3"
           >
             <Search size={20} />
-            <span>{t('startPlanning')}</span>
+            <span>{t("startPlanning")}</span>
           </button>
         </div>
       </div>
@@ -157,17 +162,17 @@ export const TripPlannerForm: React.FC<Props> = ({ compact = false }) => {
       {/* Tabs like in example 2 */}
       <div className="flex gap-1 mb-0 ml-4 md:ml-0">
         {[
-          { id: 'destination', label: 'Destination' },
-          { id: 'flight', label: 'Flight' },
-          { id: 'hotel', label: 'Hotel' }
+          { id: "destination", label: "Destination" },
+          { id: "flight", label: "Flight" },
+          { id: "hotel", label: "Hotel" },
         ].map((tab) => (
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id as any)}
             className={`px-8 py-4 rounded-t-2xl font-bold text-sm transition-all ${
-              activeTab === tab.id 
-                ? 'bg-gradient-to-r from-blue-600 to-blue-500 text-white shadow-lg shadow-blue-500/30' 
-                : 'glass text-gray-500 hover:text-gray-700'
+              activeTab === tab.id
+                ? "bg-gradient-to-r from-blue-600 to-blue-500 text-white shadow-lg shadow-blue-500/30"
+                : "glass text-gray-500 hover:text-gray-700"
             }`}
           >
             {tab.label}
@@ -177,7 +182,6 @@ export const TripPlannerForm: React.FC<Props> = ({ compact = false }) => {
 
       <div className="glass rounded-3xl md:rounded-tl-none shadow-[0_20px_50px_rgba(0,0,0,0.1)] p-6 md:p-10 border border-white/40">
         <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-4 gap-8 items-center">
-          
           {/* Location */}
           <div className="space-y-3">
             <label className="text-sm font-bold text-gray-900 ml-1">Location</label>
@@ -200,9 +204,9 @@ export const TripPlannerForm: React.FC<Props> = ({ compact = false }) => {
                 <Calendar size={20} />
               </div>
               <div className="w-full flex items-center justify-between pl-8 pr-2 py-1 border-b border-gray-200 group-hover:border-blue-600 transition-colors">
-                <input 
-                  type="number" 
-                  min="1" 
+                <input
+                  type="number"
+                  min="1"
                   max="14"
                   value={duration}
                   onChange={(e) => setDuration(parseInt(e.target.value))}
@@ -221,13 +225,15 @@ export const TripPlannerForm: React.FC<Props> = ({ compact = false }) => {
                 <Activity size={20} />
               </div>
               <div className="w-full flex items-center justify-between pl-8 pr-0 py-1 border-b border-gray-200 group-hover:border-blue-600 transition-colors">
-                <select 
+                <select
                   value={style}
                   onChange={(e) => setStyle(e.target.value as TripStyle)}
                   className="w-full bg-transparent font-bold text-gray-900 appearance-none focus:outline-none cursor-pointer py-2"
                 >
                   {Object.values(TripStyle).map((s) => (
-                    <option key={s} value={s}>{s}</option>
+                    <option key={s} value={s}>
+                      {s}
+                    </option>
                   ))}
                 </select>
                 <ChevronDown size={18} className="text-gray-400 pointer-events-none absolute right-2" />
@@ -237,17 +243,16 @@ export const TripPlannerForm: React.FC<Props> = ({ compact = false }) => {
 
           {/* Submit Button */}
           <div className="md:pl-4">
-            <button 
-              type="submit" 
+            <button
+              type="submit"
               className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-5 px-8 rounded-2xl transition-all shadow-[0_10px_25px_rgba(37,99,235,0.4)] flex items-center justify-center gap-3 group active:scale-[0.98]"
             >
-              {t('startPlanning')}
+              {t("startPlanning")}
               <div className="bg-white/20 p-1 rounded-lg group-hover:translate-x-1 transition-transform">
                 <ArrowRight size={18} />
               </div>
             </button>
           </div>
-
         </form>
       </div>
     </div>

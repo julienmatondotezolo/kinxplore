@@ -1,6 +1,6 @@
-import React from 'react';
-import { Star, Quote, ChevronLeft, ChevronRight } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { AnimatePresence, motion } from "framer-motion";
+import { ChevronLeft, ChevronRight, Quote, Star } from "lucide-react";
+import React from "react";
 
 const testimonials = [
   {
@@ -8,15 +8,15 @@ const testimonials = [
     role: "Digital Nomad",
     text: "A fantastic experience from start to finish! The team made our trip effortless and memorable with their excellent service and attention to detail. Highly recommend for hassle-free travel planning!",
     avatar: "https://picsum.photos/100/100?random=201",
-    rating: 5
+    rating: 5,
   },
   {
     name: "Sarah Lukusa",
     role: "Family Traveler",
     text: "KinXplore saved us so much time. Planning a family trip to Kinshasa used to be stressful, but the AI generated a perfect itinerary that kept everyone happy.",
     avatar: "https://picsum.photos/100/100?random=202",
-    rating: 5
-  }
+    rating: 5,
+  },
 ];
 
 export const Testimonials: React.FC = () => {
@@ -28,19 +28,21 @@ export const Testimonials: React.FC = () => {
   return (
     <div className="py-24 bg-white relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4">
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900 tracking-tight">What our client say about us</h2>
+          <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900 tracking-tight">
+            What our client say about us
+          </h2>
         </motion.div>
 
         <div className="relative max-w-5xl mx-auto">
           <AnimatePresence mode="wait">
-            <motion.div 
+            <motion.div
               key={currentIndex}
               initial={{ opacity: 0, x: 50 }}
               animate={{ opacity: 1, x: 0 }}
@@ -51,9 +53,9 @@ export const Testimonials: React.FC = () => {
               <div className="w-full md:w-1/3">
                 <div className="relative">
                   <div className="absolute -inset-4 bg-blue-100 rounded-full blur-2xl opacity-50 -z-10" />
-                  <img 
-                    src={testimonials[currentIndex].avatar} 
-                    alt={testimonials[currentIndex].name} 
+                  <img
+                    src={testimonials[currentIndex].avatar}
+                    alt={testimonials[currentIndex].name}
                     className="w-full aspect-square object-cover rounded-[2.5rem] border-8 border-white shadow-xl"
                   />
                 </div>
@@ -65,7 +67,7 @@ export const Testimonials: React.FC = () => {
                     <Star key={i} size={20} fill="currentColor" />
                   ))}
                 </div>
-                
+
                 <div className="relative">
                   <Quote className="absolute -top-4 -left-8 text-blue-100 w-16 h-16 -z-10" />
                   <h3 className="text-3xl font-bold text-gray-900 mb-4 italic">Feedback</h3>
@@ -84,13 +86,13 @@ export const Testimonials: React.FC = () => {
 
           {/* Navigation Buttons */}
           <div className="flex justify-center mt-12 gap-4">
-            <button 
+            <button
               onClick={prev}
               className="w-14 h-14 rounded-full border-2 border-gray-100 flex items-center justify-center text-gray-400 hover:bg-blue-600 hover:text-white hover:border-blue-600 transition-all shadow-lg active:scale-95"
             >
               <ChevronLeft size={24} />
             </button>
-            <button 
+            <button
               onClick={next}
               className="w-14 h-14 rounded-full bg-blue-600 flex items-center justify-center text-white shadow-lg shadow-blue-500/30 hover:bg-blue-700 transition-all active:scale-95"
             >

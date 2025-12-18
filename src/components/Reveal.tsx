@@ -1,7 +1,7 @@
 "use client";
 
+import { motion, useAnimation, useInView } from "framer-motion";
 import React, { useEffect, useRef } from "react";
-import { motion, useInView, useAnimation } from "framer-motion";
 
 interface Props {
   children: JSX.Element;
@@ -37,15 +37,9 @@ export const Reveal = ({ children, width = "fit-content", delay = 0.25, directio
 
   return (
     <div ref={ref} style={{ position: "relative", width, overflow: "hidden" }}>
-      <motion.div
-        variants={variants}
-        initial="hidden"
-        animate={mainControls}
-        transition={{ duration: 0.5, delay }}
-      >
+      <motion.div variants={variants} initial="hidden" animate={mainControls} transition={{ duration: 0.5, delay }}>
         {children}
       </motion.div>
     </div>
   );
 };
-

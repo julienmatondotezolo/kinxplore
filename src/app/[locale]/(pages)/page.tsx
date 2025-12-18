@@ -1,16 +1,16 @@
 "use client";
 
-import { Navigation } from "@/components/Navigation";
-import { Hero } from "@/components/Hero";
-import { Footer } from "@/components/Footer";
-import { PopularDestinations } from "@/components/PopularDestinations";
 import { BrandReel } from "@/components/BrandReel";
-import { OurServices } from "@/components/OurServices";
-import { WhyChooseUs } from "@/components/WhyChooseUs";
-import { Testimonials } from "@/components/Testimonials";
 import { Community } from "@/components/Community";
 import { CTA } from "@/components/CTA";
+import { Footer } from "@/components/Footer";
+import { Hero } from "@/components/Hero";
+import { Navigation } from "@/components/Navigation";
+import { OurServices } from "@/components/OurServices";
+import { PopularDestinations } from "@/components/PopularDestinations";
 import { Reveal } from "@/components/Reveal";
+import { Testimonials } from "@/components/Testimonials";
+import { WhyChooseUs } from "@/components/WhyChooseUs";
 
 export default function HomePage() {
   return (

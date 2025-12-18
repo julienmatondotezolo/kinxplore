@@ -10,7 +10,8 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "KinXplore - Kinshasa Trip Planner",
-  description: "Experience the vibrant heart of the DRC. Plan your perfect journey in Kinshasa with AI-powered itineraries.",
+  description:
+    "Experience the vibrant heart of the DRC. Plan your perfect journey in Kinshasa with AI-powered itineraries.",
 };
 
 export default async function RootLayout({
@@ -21,7 +22,7 @@ export default async function RootLayout({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
-  
+
   return (
     <html suppressHydrationWarning={true} lang={locale}>
       <body className={`${inter.className} antialiased`}>
