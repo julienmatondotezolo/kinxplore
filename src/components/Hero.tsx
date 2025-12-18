@@ -1,10 +1,38 @@
 import React from 'react';
-import { ArrowRight, Star, Plus } from 'lucide-react';
+import { ArrowRight, Star, Plus, Plane, MapPin, Compass } from 'lucide-react';
 
 export const Hero: React.FC = () => {
   return (
-    <div className="relative pt-40 pb-48 px-4 overflow-hidden bg-[#FAFBFF]">
-      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+    <div className="relative pt-40 pb-48 px-4 overflow-hidden bg-gradient-to-br from-blue-50/50 via-purple-50/30 to-pink-50/40">
+      {/* Animated Background Blobs */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {/* Large primary blob - top right */}
+        <div className="absolute -top-40 -right-40 w-[500px] h-[500px] bg-gradient-to-br from-blue-400/20 to-purple-400/20 rounded-full blur-3xl animate-pulse" />
+        
+        {/* Secondary blob - bottom left */}
+        <div className="absolute -bottom-20 -left-20 w-[400px] h-[400px] bg-gradient-to-tr from-pink-400/15 to-orange-400/15 rounded-full blur-3xl animate-pulse delay-1000" />
+        
+        {/* Accent blob - middle */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-r from-cyan-400/10 to-blue-400/10 rounded-full blur-3xl animate-pulse delay-500" />
+        
+        {/* Floating decorative shapes */}
+        <div className="absolute top-20 left-[10%] w-20 h-20 bg-gradient-to-br from-blue-500/10 to-purple-500/10 rounded-2xl rotate-12 animate-float" />
+        <div className="absolute bottom-40 right-[15%] w-16 h-16 bg-gradient-to-br from-pink-500/10 to-orange-500/10 rounded-full animate-float-delayed" />
+        <div className="absolute top-[60%] left-[5%] w-12 h-12 bg-gradient-to-br from-cyan-500/10 to-blue-500/10 rounded-lg -rotate-12 animate-float-slow" />
+        
+        {/* Icon decorations */}
+        <div className="absolute top-32 right-[20%] text-blue-400/20 animate-float">
+          <Plane size={40} className="rotate-45" />
+        </div>
+        <div className="absolute bottom-32 left-[15%] text-purple-400/20 animate-float-delayed">
+          <Compass size={36} />
+        </div>
+        <div className="absolute top-[45%] right-[10%] text-pink-400/20 animate-float-slow">
+          <MapPin size={32} />
+        </div>
+      </div>
+
+      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center relative z-10">
         
         {/* Left Content */}
         <div className="space-y-10 relative z-10">

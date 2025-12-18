@@ -20,6 +20,12 @@ export const TripPlannerForm: React.FC<Props> = ({ onGenerate, isLoading }) => {
 
   return (
     <div className="relative z-30 mx-4 md:mx-auto max-w-6xl -mt-24">
+      {/* Decorative background elements for the form area */}
+      <div className="absolute inset-0 -z-10 overflow-hidden pointer-events-none">
+        <div className="absolute -top-20 -left-20 w-64 h-64 bg-gradient-to-br from-blue-400/10 to-purple-400/10 rounded-full blur-3xl" />
+        <div className="absolute -bottom-20 -right-20 w-72 h-72 bg-gradient-to-tl from-pink-400/10 to-orange-400/10 rounded-full blur-3xl" />
+      </div>
+
       {/* Tabs like in example 2 */}
       <div className="flex gap-1 mb-0 ml-4 md:ml-0">
         {[
@@ -32,8 +38,8 @@ export const TripPlannerForm: React.FC<Props> = ({ onGenerate, isLoading }) => {
             onClick={() => setActiveTab(tab.id as any)}
             className={`px-8 py-4 rounded-t-2xl font-bold text-sm transition-all ${
               activeTab === tab.id 
-                ? 'bg-blue-600 text-white' 
-                : 'bg-white/90 backdrop-blur-sm text-gray-500 hover:text-gray-700'
+                ? 'bg-gradient-to-r from-blue-600 to-blue-500 text-white shadow-lg shadow-blue-500/30' 
+                : 'glass text-gray-500 hover:text-gray-700'
             }`}
           >
             {tab.label}
@@ -41,7 +47,7 @@ export const TripPlannerForm: React.FC<Props> = ({ onGenerate, isLoading }) => {
         ))}
       </div>
 
-      <div className="bg-white rounded-3xl md:rounded-tl-none shadow-[0_20px_50px_rgba(0,0,0,0.1)] p-6 md:p-10 border border-gray-100">
+      <div className="glass rounded-3xl md:rounded-tl-none shadow-[0_20px_50px_rgba(0,0,0,0.1)] p-6 md:p-10 border border-white/40">
         <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-4 gap-8 items-center">
           
           {/* Location */}
