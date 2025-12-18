@@ -1,5 +1,6 @@
 import React from 'react';
 import { Smartphone, CheckCircle2, ChevronRight } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 export const WhyChooseUs: React.FC = () => {
   const points = [
@@ -13,7 +14,13 @@ export const WhyChooseUs: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 flex flex-col lg:flex-row items-center gap-20">
         
         {/* Left Side: Content */}
-        <div className="flex-1 space-y-10">
+        <motion.div 
+          initial={{ opacity: 0, x: -50 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+          className="flex-1 space-y-10"
+        >
           <div className="space-y-6">
             <h2 className="text-4xl md:text-6xl font-extrabold text-gray-900 tracking-tight leading-tight">
               Why choose us?
@@ -25,7 +32,14 @@ export const WhyChooseUs: React.FC = () => {
 
           <div className="space-y-8">
             {points.map((point, i) => (
-              <div key={i} className="flex gap-6 items-start group">
+              <motion.div 
+                key={i} 
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: i * 0.1 }}
+                className="flex gap-6 items-start group"
+              >
                 <div className="mt-1 w-12 h-12 rounded-2xl bg-blue-50 text-blue-600 flex flex-shrink-0 items-center justify-center group-hover:bg-blue-600 group-hover:text-white transition-all duration-300">
                   <CheckCircle2 size={24} />
                 </div>
@@ -33,17 +47,23 @@ export const WhyChooseUs: React.FC = () => {
                   <h4 className="text-xl font-bold text-gray-900">{point.title}</h4>
                   <p className="text-gray-500 font-medium">{point.desc}</p>
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
 
           <button className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-10 rounded-2xl shadow-xl shadow-blue-500/30 transition-all hover:scale-105 active:scale-95 flex items-center gap-2">
             Learn More <ChevronRight size={20} />
           </button>
-        </div>
+        </motion.div>
 
         {/* Right Side: Device Mockup (Mobile-optimized web app) */}
-        <div className="flex-1 relative">
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.8 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+          className="flex-1 relative"
+        >
           {/* Background circle decoration */}
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-blue-100/50 rounded-full blur-3xl -z-10" />
           
@@ -92,7 +112,11 @@ export const WhyChooseUs: React.FC = () => {
             </div>
 
             {/* Floating Element beside phone */}
-            <div className="absolute -right-12 bottom-20 w-40 h-40 glass rounded-[2rem] p-4 shadow-2xl flex flex-col justify-center gap-3 animate-float">
+            <motion.div 
+              animate={{ y: [0, -20, 0] }}
+              transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+              className="absolute -right-12 bottom-20 w-40 h-40 glass rounded-[2rem] p-4 shadow-2xl flex flex-col justify-center gap-3"
+            >
               <div className="flex items-center gap-2">
                 <div className="w-8 h-8 rounded-full bg-green-500 flex items-center justify-center text-white shadow-sm">
                   <CheckCircle2 size={16} />
@@ -100,9 +124,9 @@ export const WhyChooseUs: React.FC = () => {
                 <p className="text-[10px] font-bold text-gray-900 uppercase">Success</p>
               </div>
               <p className="text-xs font-bold text-gray-500 leading-tight">Itinerary generated instantly!</p>
-            </div>
+            </motion.div>
           </div>
-        </div>
+        </motion.div>
       </div>
     </div>
   );

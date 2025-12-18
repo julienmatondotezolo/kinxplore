@@ -2,6 +2,7 @@ import React from 'react';
 import { ArrowRight, Star, Plus, Plane, MapPin, Compass, ArrowUpRight } from 'lucide-react';
 import { TripPlannerForm } from './TripPlannerForm';
 import { UserPreferences } from '@/types';
+import { motion } from 'framer-motion';
 
 interface HeroProps {
   onGenerate: (prefs: UserPreferences) => void;
@@ -35,6 +36,40 @@ export const Hero: React.FC<HeroProps> = ({ onGenerate, isLoading }) => {
     },
   ];
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.5,
+        ease: "easeOut",
+      },
+    },
+  };
+
+  const cardVariants = {
+    hidden: { opacity: 0, scale: 0.95 },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      transition: {
+        duration: 0.5,
+        ease: "easeOut",
+      },
+    },
+  };
+
   return (
     <div className="relative pt-32 pb-48 px-4 overflow-hidden bg-gradient-to-br from-blue-50/50 via-purple-50/30 to-pink-50/40">
       {/* ... Background Blobs ... */}
@@ -65,17 +100,28 @@ export const Hero: React.FC<HeroProps> = ({ onGenerate, isLoading }) => {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-start relative z-10">
+      <motion.div 
+        className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-start relative z-10"
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+      >
         
         {/* Left Content */}
         <div className="space-y-10 relative z-10">
-          <div className="inline-flex items-center gap-2 bg-gray-900/5 backdrop-blur-sm text-gray-900 px-5 py-2.5 rounded-full text-xs font-bold border border-gray-900/10 tracking-widest uppercase">
+          <motion.div 
+            variants={itemVariants}
+            className="inline-flex items-center gap-2 bg-gray-900/5 backdrop-blur-sm text-gray-900 px-5 py-2.5 rounded-full text-xs font-bold border border-gray-900/10 tracking-widest uppercase"
+          >
             <span className="w-2 h-2 bg-blue-600 rounded-full animate-pulse"></span>
             Kinshasa Awaits
-          </div>
+          </motion.div>
           
           <div className="space-y-6">
-            <h1 className="text-4xl md:text-[4.2rem] font-black text-gray-900 leading-[1.1] tracking-tight">
+            <motion.h1 
+              variants={itemVariants}
+              className="text-4xl md:text-[4.2rem] font-black text-gray-900 leading-[1.1] tracking-tight"
+            >
               <span className="block">Explore</span>
               <span className="flex items-center gap-3 flex-wrap">
                 Kinshasa,
@@ -85,23 +131,26 @@ export const Hero: React.FC<HeroProps> = ({ onGenerate, isLoading }) => {
                 Your
               </span>
               <span className="block text-gray-900">Way.</span>
-            </h1>
+            </motion.h1>
             
-            <p className="text-base md:text-lg text-gray-500 max-w-lg leading-relaxed font-medium">
+            <motion.p 
+              variants={itemVariants}
+              className="text-base md:text-lg text-gray-500 max-w-lg leading-relaxed font-medium"
+            >
               <span className="text-gray-900 font-bold">The heartbeat of Congo.</span> Tell us your trip style, and our AI will craft the perfect itinerary for your stay in Kinshasa.
-            </p>
+            </motion.p>
           </div>
 
           {/* Search Form Integrated */}
-          <div className="pt-2">
+          <motion.div variants={itemVariants} className="pt-2">
             <TripPlannerForm onGenerate={onGenerate} isLoading={isLoading} compact={true} />
-          </div>
+          </motion.div>
         </div>
 
         {/* Right Content - Modern Destination Packages Grid */}
         <div className="relative hidden lg:flex flex-col gap-6 h-full">
             {/* Top Row: Review */}
-            <div className="flex flex-col gap-3 pl-12">
+            <motion.div variants={itemVariants} className="flex flex-col gap-3 pl-12">
                 <div className="flex items-center gap-4">
                     <div className="flex -space-x-3">
                         {[1, 2, 3, 4].map(i => (
@@ -115,12 +164,16 @@ export const Hero: React.FC<HeroProps> = ({ onGenerate, isLoading }) => {
                         <p className="text-[10px] text-gray-400 font-medium uppercase tracking-widest mt-0.5">Top-Rated Experiences</p>
                     </div>
                 </div>
-            </div>
+            </motion.div>
 
             {/* Grid of Destination Cards */}
             <div className="grid grid-cols-2 gap-4 relative h-full max-h-[420px]">
                 {/* Large Left Package Card */}
-                <div className="relative rounded-[2rem] overflow-hidden shadow-2xl border-4 border-white group cursor-pointer h-full row-span-2">
+                <motion.div 
+                  variants={cardVariants}
+                  whileHover={{ y: -5 }}
+                  className="relative rounded-[2rem] overflow-hidden shadow-2xl border-4 border-white group cursor-pointer h-full row-span-2"
+                >
                     <img src={packages[0].img} alt={packages[0].title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-60 group-hover:opacity-80 transition-opacity" />
                     
@@ -146,10 +199,14 @@ export const Hero: React.FC<HeroProps> = ({ onGenerate, isLoading }) => {
                             </div>
                         </div>
                     </div>
-                </div>
+                </motion.div>
 
                 {/* Top Right Package Card */}
-                <div className="relative rounded-[2rem] overflow-hidden shadow-xl border-4 border-white group cursor-pointer h-48">
+                <motion.div 
+                  variants={cardVariants}
+                  whileHover={{ y: -5 }}
+                  className="relative rounded-[2rem] overflow-hidden shadow-xl border-4 border-white group cursor-pointer h-48"
+                >
                     <img src={packages[1].img} alt={packages[1].title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-50 group-hover:opacity-70 transition-opacity" />
                     
@@ -164,10 +221,14 @@ export const Hero: React.FC<HeroProps> = ({ onGenerate, isLoading }) => {
                             <span className="text-blue-400">{packages[1].price}</span>
                         </div>
                     </div>
-                </div>
+                </motion.div>
 
                 {/* Bottom Right Package Card */}
-                <div className="relative rounded-[2rem] overflow-hidden shadow-xl border-4 border-white group cursor-pointer h-40 mt-auto">
+                <motion.div 
+                  variants={cardVariants}
+                  whileHover={{ y: -5 }}
+                  className="relative rounded-[2rem] overflow-hidden shadow-xl border-4 border-white group cursor-pointer h-40 mt-auto"
+                >
                     <img src={packages[2].img} alt={packages[2].title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-50 group-hover:opacity-70 transition-opacity" />
                     
@@ -182,19 +243,19 @@ export const Hero: React.FC<HeroProps> = ({ onGenerate, isLoading }) => {
                             <span className="text-blue-400">{packages[2].price}</span>
                         </div>
                     </div>
-                </div>
+                </motion.div>
             </div>
 
             {/* Footer Link */}
-            <div className="pt-2 self-start pl-12">
+            <motion.div variants={itemVariants} className="pt-2 self-start pl-12">
                 <button className="flex items-center gap-2 text-blue-600 font-bold text-xs uppercase tracking-[0.2em] group border-b-2 border-transparent hover:border-blue-600 pb-1 transition-all">
                     Explore All Packages
                     <ArrowRight size={14} className="-rotate-45 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
                 </button>
-            </div>
+            </motion.div>
         </div>
 
-      </div>
+      </motion.div>
     </div>
   );
 };

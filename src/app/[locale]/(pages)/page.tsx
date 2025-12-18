@@ -14,6 +14,7 @@ import { WhyChooseUs } from "@/components/WhyChooseUs";
 import { Testimonials } from "@/components/Testimonials";
 import { Community } from "@/components/Community";
 import { CTA } from "@/components/CTA";
+import { Reveal } from "@/components/Reveal";
 
 export default function HomePage() {
   const [itinerary, setItinerary] = useState<Itinerary | null>(null);
@@ -61,19 +62,31 @@ export default function HomePage() {
               </div>
             )}
 
-            <div className="relative z-10">
-              <PopularDestinations />
-            </div>
+            <Reveal width="100%">
+              <div className="relative z-10">
+                <PopularDestinations />
+              </div>
+            </Reveal>
 
-            <OurServices />
+            <Reveal width="100%" delay={0.3}>
+              <OurServices />
+            </Reveal>
 
-            <WhyChooseUs />
+            <Reveal width="100%">
+              <WhyChooseUs />
+            </Reveal>
 
-            <Testimonials />
+            <Reveal width="100%">
+              <Testimonials />
+            </Reveal>
 
-            <Community />
+            <Reveal width="100%">
+              <Community />
+            </Reveal>
 
-            <CTA />
+            <Reveal width="100%">
+              <CTA />
+            </Reveal>
           </div>
         </>
       ) : (

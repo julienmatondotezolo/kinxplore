@@ -1,4 +1,5 @@
 import React from 'react';
+import { motion } from 'framer-motion';
 
 const users = [
   { id: 1, img: "https://picsum.photos/100/100?random=301", size: "w-20 h-20", pos: "top-[10%] left-[15%]" },
@@ -23,17 +24,32 @@ export const Community: React.FC = () => {
         <div className="relative min-h-[600px] flex flex-col items-center justify-center">
           {/* Avatar Cloud */}
           {users.map((user) => (
-            <div 
+            <motion.div 
               key={user.id} 
-              className={`absolute ${user.pos} ${user.size} rounded-full border-4 border-white shadow-xl overflow-hidden animate-float-slow hover:scale-110 transition-transform duration-500 cursor-pointer hidden md:block`}
-              style={{ animationDelay: `${user.id * 0.5}s` }}
+              initial={{ opacity: 0, scale: 0 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: user.id * 0.1 }}
+              className={`absolute ${user.pos} ${user.size} rounded-full border-4 border-white shadow-xl overflow-hidden hover:scale-110 transition-transform duration-500 cursor-pointer hidden md:block`}
             >
-              <img src={user.img} alt="Community Member" className="w-full h-full object-cover" />
-            </div>
+              <motion.img 
+                animate={{ y: [0, -10, 0] }}
+                transition={{ duration: 4 + Math.random() * 2, repeat: Infinity, ease: "easeInOut" }}
+                src={user.img} 
+                alt="Community Member" 
+                className="w-full h-full object-cover" 
+              />
+            </motion.div>
           ))}
 
           {/* Central Content Card */}
-          <div className="z-10 space-y-8 max-w-2xl px-4">
+          <motion.div 
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="z-10 space-y-8 max-w-2xl px-4"
+          >
             <div className="space-y-4">
               <h2 className="text-4xl md:text-6xl font-extrabold text-gray-900 tracking-tight leading-tight">
                 Join with our community
@@ -44,7 +60,10 @@ export const Community: React.FC = () => {
             </div>
 
             {/* Central Card with Image (from template) */}
-            <div className="relative group max-w-md mx-auto">
+            <motion.div 
+              whileHover={{ scale: 1.02 }}
+              className="relative group max-w-md mx-auto"
+            >
               <div className="absolute -inset-4 bg-gradient-to-r from-blue-600 to-purple-600 rounded-[3rem] blur-xl opacity-20 group-hover:opacity-40 transition-opacity" />
               <div className="relative rounded-[2.5rem] overflow-hidden border-8 border-white shadow-2xl aspect-[4/3]">
                 <img src="https://picsum.photos/800/600?random=350" alt="Kinshasa Landmark" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" />
@@ -58,12 +77,12 @@ export const Community: React.FC = () => {
                   </div>
                 </div>
               </div>
-            </div>
+            </motion.div>
 
             <button className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-12 rounded-2xl shadow-xl shadow-blue-500/30 transition-all hover:scale-105 active:scale-95">
               Join Now
             </button>
-          </div>
+          </motion.div>
         </div>
       </div>
     </div>

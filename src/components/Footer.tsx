@@ -3,7 +3,7 @@ import { Mail, Github, Twitter, Instagram, Globe } from 'lucide-react';
 
 export const Footer: React.FC = () => {
   return (
-    <footer className="bg-white pt-24 pb-12">
+    <footer className="bg-white pt-24 pb-12" id="contact">
       <div className="max-w-7xl mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-20">
           {/* Logo & Bio */}
@@ -36,7 +36,7 @@ export const Footer: React.FC = () => {
             </ul>
           </div>
 
-          <div className="space-y-8">
+          <div className="space-y-8" id="faq">
             <h4 className="text-lg font-bold text-gray-900">Support</h4>
             <ul className="space-y-4">
               {['Help Center', 'Safety Information', 'Terms of Service', 'Privacy Policy'].map((item) => (

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, Globe, User, Heart, ShoppingBag } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 export const Navigation: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -12,13 +13,26 @@ export const Navigation: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const scrollToSection = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
+    e.preventDefault();
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
-    <nav className={`w-full flex justify-between items-center transition-all duration-500 z-[100] ${
-      isScrolled 
-        ? 'fixed top-0 bg-white/70 backdrop-blur-xl py-3 px-4 md:px-12 shadow-sm border-b border-gray-100/50' 
-        : 'absolute top-0 bg-transparent py-6 px-4 md:px-12'
-    }`}>
-      <div className="flex items-center gap-2">
+    <motion.nav 
+      initial={{ y: -100 }}
+      animate={{ y: 0 }}
+      transition={{ duration: 0.6 }}
+      className={`w-full flex justify-between items-center transition-all duration-500 z-[100] ${
+        isScrolled 
+          ? 'fixed top-0 bg-white/70 backdrop-blur-xl py-3 px-4 md:px-12 shadow-sm border-b border-gray-100/50' 
+          : 'absolute top-0 bg-transparent py-6 px-4 md:px-12'
+      }`}
+    >
+      <div className="flex items-center gap-2 cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
         <span className="text-2xl font-bold tracking-tight text-gray-900">KinXplore</span>
       </div>
 
@@ -31,10 +45,10 @@ export const Navigation: React.FC = () => {
           <span className="w-1.5 h-1.5 bg-blue-600 rounded-full"></span>
           Home
         </a>
-        <a href="#destinations" className="hover:text-blue-600 transition">Destination</a>
-        <a href="#services" className="hover:text-blue-600 transition">Services</a>
-        <a href="#faq" className="hover:text-blue-600 transition">FAQ</a>
-        <a href="#contact" className="hover:text-blue-600 transition">Contact</a>
+        <a href="#destinations" onClick={(e) => scrollToSection(e, 'destinations')} className="hover:text-blue-600 transition">Destination</a>
+        <a href="#services" onClick={(e) => scrollToSection(e, 'services')} className="hover:text-blue-600 transition">Services</a>
+        <a href="#faq" onClick={(e) => scrollToSection(e, 'faq')} className="hover:text-blue-600 transition">FAQ</a>
+        <a href="#contact" onClick={(e) => scrollToSection(e, 'contact')} className="hover:text-blue-600 transition">Contact</a>
       </div>
 
       <div className="flex items-center gap-6">
@@ -61,6 +75,6 @@ export const Navigation: React.FC = () => {
           <Menu size={24} className="text-gray-700" />
         </button>
       </div>
-    </nav>
+    </motion.nav>
   );
 };
