@@ -318,15 +318,15 @@ export default function DestinationDetailPage() {
 
                 <div className="space-y-4">
                   <button className="w-full bg-blue-600 hover:bg-blue-700 text-white py-6 rounded-[24px] font-black text-lg shadow-xl shadow-blue-500/25 active:scale-95 transition-all">
-                    Book Now
+                    {t('bookNow')}
                   </button>
                   <button className="w-full bg-white hover:bg-gray-50 text-gray-900 py-6 rounded-[24px] font-bold text-[15px] border border-gray-100 active:scale-95 transition-all">
-                    Inquiry Now
+                    {t('inquiryNow')}
                   </button>
                 </div>
                 
                 <p className="text-center text-gray-400 text-[13px] font-bold cursor-pointer hover:text-blue-600 hover:underline transition-all uppercase tracking-widest">
-                  Ask manager a Question
+                  {t('askQuestion')}
                 </p>
               </div>
             </div>
@@ -340,7 +340,7 @@ export default function DestinationDetailPage() {
             className="bg-white hover:bg-black hover:text-white text-gray-900 px-8 py-5 rounded-full shadow-2xl border border-gray-100 flex items-center gap-3 transition-all active:scale-95 group font-black uppercase tracking-widest text-[13px]"
           >
             <ArrowLeft size={20} className="group-hover:-translate-x-2 transition-transform" />
-            <span>Go back</span>
+            <span>{t('goBack')}</span>
           </button>
         </div>
       </main>
