@@ -1,23 +1,56 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { ArrowUpRight, Calendar, CircleDollarSign, Compass, MapPin, Plane, Search, Star, Users } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { ArrowUpRight, Calendar, CircleDollarSign, Compass, MapPin, Plane, Search, Star, Users, X } from "lucide-react";
 import { useTranslations } from "next-intl";
-import React, { useMemo, useState } from "react";
+import React, { useEffect } from "react";
 
 import { Footer } from "@/components/Footer";
 import { Navigation } from "@/components/Navigation";
+import { DestinationSearch } from "@/components/DestinationSearch";
+import { ResultsCounter } from "@/components/ResultsCounter";
 import { useCategories } from "@/hooks/useCategories";
 import { useDestinations } from "@/hooks/useDestinations";
+import { useDestinationStore } from "@/store/useDestinationStore";
 
 export default function DestinationsPage() {
   const t = useTranslations("Packages");
-  const [activeCategory, setActiveCategory] = useState("all");
 
   // Fetch data from backend using React Query
   const { data: destinations, isLoading: isLoadingDestinations, error: destinationsError } = useDestinations();
   const { data: categories, isLoading: isLoadingCategories, error: categoriesError } = useCategories();
 
+  // Zustand store
+  const {
+    activeCategory,
+    searchQuery,
+    setActiveCategory,
+    setDestinations,
+    setCategories,
+    getFilteredDestinations,
+    getCategoryList,
+  } = useDestinationStore();
+
+  // Update store when data is fetched
+  useEffect(() => {
+    if (destinations) {
+      setDestinations(destinations);
+    }
+  }, [destinations, setDestinations]);
+
+  useEffect(() => {
+    if (categories) {
+      setCategories(categories);
+    }
+  }, [categories, setCategories]);
+
+  // Get filtered destinations from store
+  const filteredDestinations = getFilteredDestinations();
+  const categoryList = getCategoryList();
+  const isFiltered = activeCategory !== "all" || searchQuery.trim() !== "";
+  const totalDestinations = destinations?.length || 0;
+
+  // Animation variants
   const pageVariants = {
     initial: { opacity: 0, x: 20 },
     animate: { opacity: 1, x: 0 },
@@ -29,37 +62,83 @@ export default function DestinationsPage() {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.1,
+        staggerChildren: 0.08,
+        delayChildren: 0.1,
       },
     },
   };
 
   const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
+    hidden: { 
+      opacity: 0, 
+      y: 30,
+      scale: 0.9,
+    },
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.5 },
+      scale: 1,
+      transition: { 
+        duration: 0.5,
+        ease: [0.25, 0.46, 0.45, 0.94],
+      },
+    },
+    exit: {
+      opacity: 0,
+      scale: 0.9,
+      y: -20,
+      transition: {
+        duration: 0.3,
+      },
     },
   };
 
-  // Create category list from API data
-  const categoryList = useMemo(() => {
-    if (!categories) return ["all"];
-    return ["all", ...categories.map((cat) => cat.name.toLowerCase())];
-  }, [categories]);
+  const categoryButtonVariants = {
+    inactive: {
+      scale: 1,
+      backgroundColor: "rgba(255, 255, 255, 0.8)",
+    },
+    active: {
+      scale: 1.05,
+      backgroundColor: "rgb(37, 99, 235)",
+      transition: {
+        type: "spring",
+        stiffness: 400,
+        damping: 17,
+      },
+    },
+    hover: {
+      scale: 1.08,
+      transition: {
+        type: "spring",
+        stiffness: 400,
+        damping: 17,
+      },
+    },
+    tap: {
+      scale: 0.95,
+    },
+  };
 
-  // Filter destinations by category
-  const filteredDestinations = useMemo(() => {
-    if (!destinations) return [];
-    if (activeCategory === "all") return destinations;
-
-    return destinations.filter((dest) =>
-      dest.categories.some(
-        (cat) => cat.parent.name.toLowerCase() === activeCategory.toLowerCase()
-      )
-    );
-  }, [destinations, activeCategory]);
+  const filterCountVariants = {
+    initial: { scale: 0, opacity: 0 },
+    animate: { 
+      scale: 1, 
+      opacity: 1,
+      transition: {
+        type: "spring",
+        stiffness: 500,
+        damping: 25,
+      },
+    },
+    exit: { 
+      scale: 0, 
+      opacity: 0,
+      transition: {
+        duration: 0.2,
+      },
+    },
+  };
 
   // Get primary category for a destination (first one)
   const getPrimaryCategory = (dest: any) => {
@@ -203,80 +282,260 @@ export default function DestinationsPage() {
           </button>
         </motion.div>
 
-        {/* Category Tabs */}
+        {/* Search Component */}
+        <DestinationSearch />
+
+        {/* Results Counter */}
+        <ResultsCounter 
+          count={filteredDestinations.length} 
+          total={totalDestinations}
+          isFiltered={isFiltered}
+        />
+
+        {/* Category Tabs with Animation */}
         <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.6 }}
-          className="flex flex-wrap items-center justify-center gap-2 md:gap-3 mb-16"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.6, duration: 0.6 }}
+          className="mb-16"
         >
-          {categoryList.map((cat) => (
-            <button
-              key={cat}
-              onClick={() => setActiveCategory(cat)}
-              className={`px-6 py-3 rounded-full text-[10px] md:text-xs font-black uppercase tracking-widest transition-all duration-300 ${
-                activeCategory === cat
-                  ? "bg-blue-600 text-white shadow-lg shadow-blue-500/30"
-                  : "bg-white/80 backdrop-blur-md text-gray-500 hover:text-blue-600 border border-white hover:border-blue-100"
-              }`}
-            >
-              {cat}
-            </button>
-          ))}
+          <div className="flex flex-wrap items-center justify-center gap-2 md:gap-3">
+            {categoryList.map((cat, index) => (
+              <motion.button
+                key={cat}
+                onClick={() => setActiveCategory(cat)}
+                variants={categoryButtonVariants}
+                initial="inactive"
+                animate={activeCategory === cat ? "active" : "inactive"}
+                whileHover="hover"
+                whileTap="tap"
+                transition={{
+                  delay: index * 0.05,
+                }}
+                className={`relative px-6 py-3 rounded-full text-[10px] md:text-xs font-black uppercase tracking-widest overflow-hidden ${
+                  activeCategory === cat
+                    ? "text-white shadow-lg shadow-blue-500/30"
+                    : "backdrop-blur-md text-gray-500 hover:text-blue-600 border border-white hover:border-blue-100"
+                }`}
+              >
+                {/* Animated background for active state */}
+                {activeCategory === cat && (
+                  <motion.div
+                    layoutId="activeCategory"
+                    className="absolute inset-0 bg-blue-600 -z-10"
+                    transition={{
+                      type: "spring",
+                      stiffness: 380,
+                      damping: 30,
+                    }}
+                  />
+                )}
+                
+                <span className="relative z-10">{cat}</span>
+                
+                {/* Count badge */}
+                <AnimatePresence>
+                  {activeCategory === cat && (
+                    <motion.span
+                      variants={filterCountVariants}
+                      initial="initial"
+                      animate="animate"
+                      exit="exit"
+                      className="ml-2 inline-flex items-center justify-center w-5 h-5 text-[8px] font-bold bg-white text-blue-600 rounded-full"
+                    >
+                      {filteredDestinations.length}
+                    </motion.span>
+                  )}
+                </AnimatePresence>
+              </motion.button>
+            ))}
+          </div>
+          
+          {/* Active filter indicator with animation */}
+          <AnimatePresence>
+            {activeCategory !== "all" && (
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ delay: 0.2 }}
+                className="flex items-center justify-center gap-2 mt-6"
+              >
+                <motion.div
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ type: "spring", stiffness: 500, damping: 25 }}
+                  className="bg-blue-50 border border-blue-200 text-blue-700 px-4 py-2 rounded-full text-xs font-semibold flex items-center gap-2"
+                >
+                  <span>Filtering by: {activeCategory}</span>
+                  <motion.button
+                    whileHover={{ scale: 1.2, rotate: 90 }}
+                    whileTap={{ scale: 0.9 }}
+                    onClick={() => setActiveCategory("all")}
+                    className="hover:text-blue-900 transition-colors"
+                  >
+                    <X size={14} />
+                  </motion.button>
+                </motion.div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </motion.div>
 
-        {/* Destinations Grid */}
-        {filteredDestinations.length === 0 ? (
-          <div className="text-center py-20">
-            <Compass size={64} className="mx-auto text-gray-300 mb-4" />
-            <h3 className="text-2xl font-bold text-gray-900 mb-2">No destinations found</h3>
-            <p className="text-gray-600">Try selecting a different category</p>
-          </div>
-        ) : (
-          <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-          >
-            {filteredDestinations.map((dest, i) => (
+        {/* Destinations Grid with AnimatePresence */}
+        <AnimatePresence mode="wait">
+          {filteredDestinations.length === 0 ? (
+            <motion.div
+              key="empty-state"
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.9 }}
+              transition={{ duration: 0.4 }}
+              className="text-center py-20"
+            >
               <motion.div
-                key={dest.id}
-                variants={itemVariants}
-                whileHover={{ y: -10 }}
-                className="group relative rounded-[2.5rem] overflow-hidden bg-white shadow-2xl border-4 border-white cursor-pointer h-full"
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={{ 
+                  type: "spring",
+                  stiffness: 260,
+                  damping: 20,
+                  delay: 0.1,
+                }}
               >
+                <Compass size={64} className="mx-auto text-gray-300 mb-4" />
+              </motion.div>
+              <motion.h3
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2 }}
+                className="text-2xl font-bold text-gray-900 mb-2"
+              >
+                No destinations found
+              </motion.h3>
+              <motion.p
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 }}
+                className="text-gray-600 mb-4"
+              >
+                Try selecting a different category
+              </motion.p>
+              <motion.button
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4 }}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => setActiveCategory("all")}
+                className="bg-blue-600 text-white px-6 py-3 rounded-full font-semibold hover:bg-blue-700 transition-colors"
+              >
+                Show All Destinations
+              </motion.button>
+            </motion.div>
+          ) : (
+            <motion.div
+              key="destinations-grid"
+              variants={containerVariants}
+              initial="hidden"
+              animate="visible"
+              exit="hidden"
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+            >
+              <AnimatePresence mode="popLayout">
+                {filteredDestinations.map((dest, i) => (
+                  <motion.div
+                    key={dest.id}
+                    layout
+                    variants={itemVariants}
+                    initial="hidden"
+                    animate="visible"
+                    exit="exit"
+                    whileHover={{ 
+                      y: -10,
+                      transition: { duration: 0.3 },
+                    }}
+                    className="group relative rounded-[2.5rem] overflow-hidden bg-white shadow-2xl border-4 border-white cursor-pointer h-full"
+                  >
                 <div className="relative aspect-[4/5] overflow-hidden">
-                  <img
+                  <motion.img
                     src={dest.image || "https://picsum.photos/800/600?random=" + i}
                     alt={dest.name}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000"
+                    className="w-full h-full object-cover"
+                    whileHover={{ scale: 1.1 }}
+                    transition={{ duration: 0.6, ease: "easeOut" }}
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-70 group-hover:opacity-85 transition-opacity" />
+                  <motion.div 
+                    className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent"
+                    initial={{ opacity: 0.7 }}
+                    whileHover={{ opacity: 0.85 }}
+                    transition={{ duration: 0.3 }}
+                  />
 
-                  {/* Badges */}
+                  {/* Badges with animation */}
                   <div className="absolute top-6 left-6 flex flex-col gap-2 items-start">
-                    <div className="bg-blue-600 text-white text-[9px] font-black uppercase tracking-widest px-3 py-1.5 rounded-full shadow-lg">
+                    <motion.div 
+                      initial={{ x: -20, opacity: 0 }}
+                      animate={{ x: 0, opacity: 1 }}
+                      transition={{ delay: i * 0.1 + 0.2 }}
+                      whileHover={{ scale: 1.05 }}
+                      className="bg-blue-600 text-white text-[9px] font-black uppercase tracking-widest px-3 py-1.5 rounded-full shadow-lg"
+                    >
                       {getDestinationTag(dest)}
-                    </div>
+                    </motion.div>
                     {i === 0 && (
-                      <div className="bg-orange-500 text-white text-[9px] font-black uppercase tracking-widest px-3 py-1.5 rounded-full shadow-lg">
+                      <motion.div 
+                        initial={{ x: -20, opacity: 0 }}
+                        animate={{ x: 0, opacity: 1 }}
+                        transition={{ delay: i * 0.1 + 0.3 }}
+                        whileHover={{ scale: 1.05 }}
+                        className="bg-orange-500 text-white text-[9px] font-black uppercase tracking-widest px-3 py-1.5 rounded-full shadow-lg"
+                      >
                         Bestseller
-                      </div>
+                      </motion.div>
                     )}
                   </div>
 
-                  {/* Rating Badge */}
-                  <div className="absolute top-6 right-6 bg-white/20 backdrop-blur-md rounded-full px-3 py-1.5 flex items-center gap-1.5 border border-white/20">
-                    <Star size={12} className="text-yellow-400 fill-yellow-400" />
+                  {/* Rating Badge with animation */}
+                  <motion.div 
+                    initial={{ x: 20, opacity: 0 }}
+                    animate={{ x: 0, opacity: 1 }}
+                    transition={{ delay: i * 0.1 + 0.2 }}
+                    whileHover={{ scale: 1.1 }}
+                    className="absolute top-6 right-6 bg-white/20 backdrop-blur-md rounded-full px-3 py-1.5 flex items-center gap-1.5 border border-white/20"
+                  >
+                    <motion.div
+                      animate={{ rotate: [0, 15, -15, 0] }}
+                      transition={{ 
+                        duration: 2,
+                        repeat: Infinity,
+                        repeatDelay: 3,
+                      }}
+                    >
+                      <Star size={12} className="text-yellow-400 fill-yellow-400" />
+                    </motion.div>
                     <span className="text-[10px] font-black text-white">{dest.ratings.toFixed(1)}</span>
-                  </div>
+                  </motion.div>
 
-                  {/* Arrow Button */}
-                  <div className="absolute bottom-32 right-8 w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-2xl group-hover:bg-blue-600 group-hover:text-white transition-all duration-500 opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0">
-                    <ArrowUpRight size={20} />
-                  </div>
+                  {/* Arrow Button with animation */}
+                  <motion.div 
+                    initial={{ opacity: 0, y: 20 }}
+                    whileHover={{ 
+                      opacity: 1, 
+                      y: 0,
+                      backgroundColor: "rgb(37, 99, 235)",
+                      color: "white",
+                    }}
+                    transition={{ duration: 0.3 }}
+                    className="absolute bottom-32 right-8 w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-2xl opacity-0 group-hover:opacity-100"
+                  >
+                    <motion.div
+                      whileHover={{ x: 3, y: -3 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      <ArrowUpRight size={20} />
+                    </motion.div>
+                  </motion.div>
 
                   {/* Content Overlay */}
                   <div className="absolute bottom-8 left-8 right-8 text-white">
@@ -300,8 +559,10 @@ export default function DestinationsPage() {
                 </div>
               </motion.div>
             ))}
-          </motion.div>
-        )}
+              </AnimatePresence>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </motion.main>
 
       <Footer />
