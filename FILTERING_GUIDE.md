@@ -306,3 +306,4 @@ if (newFilter) {
 4. Add animations for smooth transitions
 
 
+
