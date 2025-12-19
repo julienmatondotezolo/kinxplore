@@ -84,3 +84,4 @@ export function ResultsCounter({ count, total, isFiltered }: ResultsCounterProps
   );
 }
 
+

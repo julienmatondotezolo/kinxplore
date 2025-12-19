@@ -231,3 +231,4 @@ To test the implementation:
 - Persistence only saves filters, not large data arrays
 - Animations use GPU acceleration via `transform` and `opacity`
 
+
