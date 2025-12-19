@@ -230,3 +230,4 @@ To test the implementation:
 - Filters are computed on-demand, not stored
 - Persistence only saves filters, not large data arrays
 - Animations use GPU acceleration via `transform` and `opacity`
+

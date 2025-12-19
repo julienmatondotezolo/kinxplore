@@ -1,20 +1,54 @@
 "use client";
 
-import { motion, AnimatePresence } from "framer-motion";
-import { ArrowUpRight, Calendar, CircleDollarSign, Compass, MapPin, Plane, Search, Star, Users, X } from "lucide-react";
+import { 
+  Compass, 
+  MapPin, 
+  Star, 
+  X,
+  Palmtree,
+  Home,
+  Building2,
+  Warehouse,
+  Bed,
+  Leaf,
+  Waves,
+  Hotel,
+  Mountain,
+  Map as MapIcon,
+  List,
+  SlidersHorizontal,
+  Users,
+  ChevronLeft,
+  ChevronRight
+} from "lucide-react";
 import { useTranslations } from "next-intl";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 import { Footer } from "@/components/Footer";
 import { Navigation } from "@/components/Navigation";
 import { DestinationSearch } from "@/components/DestinationSearch";
-import { ResultsCounter } from "@/components/ResultsCounter";
 import { useCategories } from "@/hooks/useCategories";
 import { useDestinations } from "@/hooks/useDestinations";
 import { useDestinationStore } from "@/store/useDestinationStore";
 
+// Icon mapping for categories
+const categoryIcons: Record<string, React.ReactNode> = {
+  all: <Compass size={24} />,
+  resort: <Palmtree size={24} />,
+  villa: <Home size={24} />,
+  hotel: <Building2 size={24} />,
+  cottage: <Warehouse size={24} />,
+  homestay: <Users size={24} />,
+  guesthouse: <Bed size={24} />,
+  ecoLodge: <Leaf size={24} />,
+  beach: <Waves size={24} />,
+  nature: <Mountain size={24} />,
+  luxury: <Hotel size={24} />,
+};
+
 export default function DestinationsPage() {
   const t = useTranslations("Packages");
+  const [showMap, setShowMap] = useState(false);
 
   // Fetch data from backend using React Query
   const { data: destinations, isLoading: isLoadingDestinations, error: destinationsError } = useDestinations();
@@ -24,11 +58,20 @@ export default function DestinationsPage() {
   const {
     activeCategory,
     searchQuery,
+    currentPage,
+    pageSize,
     setActiveCategory,
     setDestinations,
     setCategories,
     getFilteredDestinations,
+    getPaginatedDestinations,
     getCategoryList,
+    getTotalCount,
+    getCountByCategory,
+    getTotalPages,
+    setCurrentPage,
+    viewMode,
+    setViewMode,
   } = useDestinationStore();
 
   // Update store when data is fetched
@@ -44,120 +87,21 @@ export default function DestinationsPage() {
     }
   }, [categories, setCategories]);
 
-  // Get filtered destinations from store
+  // Get data from store
   const filteredDestinations = getFilteredDestinations();
+  const paginatedDestinations = getPaginatedDestinations();
   const categoryList = getCategoryList();
-  const isFiltered = activeCategory !== "all" || searchQuery.trim() !== "";
-  const totalDestinations = destinations?.length || 0;
-
-  // Animation variants
-  const pageVariants = {
-    initial: { opacity: 0, x: 20 },
-    animate: { opacity: 1, x: 0 },
-    exit: { opacity: 0, x: -20 },
-  };
-
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.08,
-        delayChildren: 0.1,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { 
-      opacity: 0, 
-      y: 30,
-      scale: 0.9,
-    },
-    visible: {
-      opacity: 1,
-      y: 0,
-      scale: 1,
-      transition: { 
-        duration: 0.5,
-        ease: [0.25, 0.46, 0.45, 0.94],
-      },
-    },
-    exit: {
-      opacity: 0,
-      scale: 0.9,
-      y: -20,
-      transition: {
-        duration: 0.3,
-      },
-    },
-  };
-
-  const categoryButtonVariants = {
-    inactive: {
-      scale: 1,
-      backgroundColor: "rgba(255, 255, 255, 0.8)",
-    },
-    active: {
-      scale: 1.05,
-      backgroundColor: "rgb(37, 99, 235)",
-      transition: {
-        type: "spring",
-        stiffness: 400,
-        damping: 17,
-      },
-    },
-    hover: {
-      scale: 1.08,
-      transition: {
-        type: "spring",
-        stiffness: 400,
-        damping: 17,
-      },
-    },
-    tap: {
-      scale: 0.95,
-    },
-  };
-
-  const filterCountVariants = {
-    initial: { scale: 0, opacity: 0 },
-    animate: { 
-      scale: 1, 
-      opacity: 1,
-      transition: {
-        type: "spring",
-        stiffness: 500,
-        damping: 25,
-      },
-    },
-    exit: { 
-      scale: 0, 
-      opacity: 0,
-      transition: {
-        duration: 0.2,
-      },
-    },
-  };
-
-  // Get primary category for a destination (first one)
-  const getPrimaryCategory = (dest: any) => {
-    return dest.categories?.[0]?.parent?.name || "Destination";
-  };
-
-  // Get tag based on category or subcategory
-  const getDestinationTag = (dest: any) => {
-    const subcategory = dest.categories?.[0]?.subcategory?.name;
-    return subcategory || dest.categories?.[0]?.parent?.name || "Featured";
-  };
+  const totalCount = getTotalCount();
+  const filteredCount = filteredDestinations.length;
+  const totalPages = getTotalPages();
 
   // Loading state
   if (isLoadingDestinations || isLoadingCategories) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50/50 via-purple-50/30 to-pink-50/40 flex items-center justify-center">
+      <div className="min-h-screen bg-white flex items-center justify-center">
         <div className="text-center">
-          <div className="w-16 h-16 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-gray-600 font-semibold">Loading destinations...</p>
+          <div className="w-12 h-12 border-4 border-black border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-gray-500 font-medium">Loading...</p>
         </div>
       </div>
     );
@@ -166,20 +110,15 @@ export default function DestinationsPage() {
   // Error state
   if (destinationsError || categoriesError) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50/50 via-purple-50/30 to-pink-50/40 flex items-center justify-center">
+      <div className="min-h-screen bg-white flex items-center justify-center">
         <div className="text-center max-w-md mx-auto p-8">
-          <div className="text-red-500 mb-4">
-            <svg className="w-16 h-16 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-            </svg>
-          </div>
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">Failed to load destinations</h2>
-          <p className="text-gray-600 mb-4">
-            {destinationsError?.message || categoriesError?.message || "Please try again later"}
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">Something went wrong</h2>
+          <p className="text-gray-600 mb-6">
+            {destinationsError?.message || categoriesError?.message || "Failed to load destinations"}
           </p>
           <button
             onClick={() => window.location.reload()}
-            className="bg-blue-600 text-white px-6 py-3 rounded-full font-semibold hover:bg-blue-700 transition-colors"
+            className="bg-black text-white px-8 py-3 rounded-xl font-semibold hover:bg-gray-800 transition-colors"
           >
             Retry
           </button>
@@ -189,383 +128,329 @@ export default function DestinationsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50/50 via-purple-50/30 to-pink-50/40 text-gray-900 font-sans selection:bg-blue-100 selection:text-blue-900 overflow-x-hidden">
+    <div className="min-h-screen bg-white text-gray-900 font-sans selection:bg-gray-100 overflow-x-hidden">
       <Navigation />
 
-      {/* Animated Background Blobs - Same as Hero */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
-        <div className="absolute -top-40 -right-40 w-[500px] h-[500px] bg-gradient-to-br from-blue-400/20 to-purple-400/20 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute -bottom-20 -left-20 w-[400px] h-[400px] bg-gradient-to-tr from-pink-400/15 to-orange-400/15 rounded-full blur-3xl animate-pulse delay-1000" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-r from-yellow-400/10 to-blue-400/10 rounded-full blur-3xl animate-pulse delay-500" />
-
-        {/* Floating decorative shapes */}
-        <div className="absolute top-20 left-[10%] w-20 h-20 bg-gradient-to-br from-yellow-500/10 to-orange-500/10 rounded-2xl rotate-12 animate-float" />
-        <div className="absolute bottom-40 right-[15%] w-16 h-16 bg-gradient-to-br from-pink-500/10 to-orange-500/10 rounded-full animate-float-delayed" />
-
-        {/* Icon decorations */}
-        <div className="absolute top-32 right-[20%] text-blue-400/20 animate-float">
-          <Plane size={40} className="rotate-45" />
-        </div>
-        <div className="absolute bottom-32 left-[15%] text-purple-400/20 animate-float-delayed">
-          <Compass size={36} />
-        </div>
-      </div>
-
-      <motion.main
-        initial="initial"
-        animate="animate"
-        exit="exit"
-        variants={pageVariants}
-        transition={{ duration: 0.6, ease: "easeOut" }}
-        className="pt-32 pb-24 px-4 md:px-12 max-w-7xl mx-auto relative z-10"
-      >
+      <main className="pt-24 pb-24 relative z-10">
         {/* Title Section */}
-        <div className="text-center mb-12 md:mb-16 space-y-4">
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="inline-flex items-center gap-2 bg-blue-50/80 backdrop-blur-sm text-blue-600 px-4 py-2 rounded-full text-[10px] font-bold border border-blue-100/50 tracking-widest uppercase"
-          >
-            KinXplore Recommendations
-          </motion.div>
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2, duration: 0.8 }}
-            className="text-4xl md:text-7xl font-black text-gray-900 leading-[1.1] tracking-tight max-w-5xl mx-auto"
-          >
-            {t("title")}
-          </motion.h1>
+        <div className="max-w-[2520px] mx-auto px-4 sm:px-8 md:px-12 lg:px-16 mb-8">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+            <div className="space-y-2">
+              <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-gray-900">
+                {searchQuery.trim() !== "" 
+                  ? `${filteredCount} results for "${searchQuery}"`
+                  : activeCategory === 'all' 
+                    ? `${totalCount} destinations in Kinshasa` 
+                    : `${getCountByCategory(activeCategory)} ${activeCategory}s in Kinshasa`}
+              </h1>
+              <p className="text-gray-500 text-lg font-light">
+                {activeCategory === 'all' 
+                  ? "Explore all our available properties in the heart of Kinshasa."
+                  : `Browse our curated selection of ${activeCategory}s for your perfect stay.`}
+              </p>
+            </div>
+            <DestinationSearch />
+          </div>
         </div>
 
-        {/* Filter Bar - Modernized with Blue Theme */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4, duration: 0.8 }}
-          className="bg-white rounded-[2rem] md:rounded-full shadow-[0_20px_60px_rgba(0,0,0,0.08)] border border-white p-3 flex flex-col md:flex-row items-center gap-3 mb-12 max-w-5xl mx-auto"
-        >
-          <div className="flex-1 w-full px-8 py-3 border-b md:border-b-0 md:border-r border-gray-100 flex items-center gap-4 group cursor-pointer hover:bg-gray-50/50 rounded-2xl md:rounded-none transition-colors">
-            <Calendar size={20} className="text-blue-600" />
-            <div className="flex flex-col">
-              <span className="text-[9px] font-bold text-gray-400 uppercase tracking-widest leading-none mb-1.5">
-                {t("date")}
-              </span>
-              <span className="text-sm font-black text-gray-900">Select Date</span>
-            </div>
-          </div>
-
-          <div className="flex-1 w-full px-8 py-3 border-b md:border-b-0 md:border-r border-gray-100 flex items-center gap-4 group cursor-pointer hover:bg-gray-50/50 rounded-2xl md:rounded-none transition-colors">
-            <CircleDollarSign size={20} className="text-blue-600" />
-            <div className="flex flex-col">
-              <span className="text-[9px] font-bold text-gray-400 uppercase tracking-widest leading-none mb-1.5">
-                {t("budget")}
-              </span>
-              <span className="text-sm font-black text-gray-900">$200 - $1,000+</span>
-            </div>
-          </div>
-
-          <div className="flex-1 w-full px-8 py-3 flex items-center gap-4 group cursor-pointer hover:bg-gray-50/50 rounded-2xl md:rounded-none transition-colors">
-            <Users size={20} className="text-blue-600" />
-            <div className="flex flex-col">
-              <span className="text-[9px] font-bold text-gray-400 uppercase tracking-widest leading-none mb-1.5">
-                {t("guests")}
-              </span>
-              <span className="text-sm font-black text-gray-900">2 Guests</span>
-            </div>
-          </div>
-
-          <button className="bg-blue-600 text-white px-10 py-5 rounded-[1.5rem] md:rounded-full font-black text-xs tracking-widest uppercase hover:bg-blue-700 transition-all shadow-xl shadow-blue-500/30 active:scale-95 flex items-center gap-3 w-full md:w-auto justify-center group">
-            <Search size={18} className="group-hover:scale-110 transition-transform" />
-            {t("search")}
-          </button>
-        </motion.div>
-
-        {/* Search Component */}
-        <DestinationSearch />
-
-        {/* Results Counter */}
-        <ResultsCounter 
-          count={filteredDestinations.length} 
-          total={totalDestinations}
-          isFiltered={isFiltered}
-        />
-
-        {/* Category Tabs with Animation */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.6, duration: 0.6 }}
-          className="mb-16"
-        >
-          <div className="flex flex-wrap items-center justify-center gap-2 md:gap-3">
-            {categoryList.map((cat, index) => (
-              <motion.button
-                key={cat}
-                onClick={() => setActiveCategory(cat)}
-                variants={categoryButtonVariants}
-                initial="inactive"
-                animate={activeCategory === cat ? "active" : "inactive"}
-                whileHover="hover"
-                whileTap="tap"
-                transition={{
-                  delay: index * 0.05,
-                }}
-                className={`relative px-6 py-3 rounded-full text-[10px] md:text-xs font-black uppercase tracking-widest overflow-hidden ${
-                  activeCategory === cat
-                    ? "text-white shadow-lg shadow-blue-500/30"
-                    : "backdrop-blur-md text-gray-500 hover:text-blue-600 border border-white hover:border-blue-100"
-                }`}
-              >
-                {/* Animated background for active state */}
-                {activeCategory === cat && (
-                  <motion.div
-                    layoutId="activeCategory"
-                    className="absolute inset-0 bg-blue-600 -z-10"
-                    transition={{
-                      type: "spring",
-                      stiffness: 380,
-                      damping: 30,
-                    }}
-                  />
-                )}
-                
-                <span className="relative z-10">{cat}</span>
-                
-                {/* Count badge */}
-                <AnimatePresence>
-                  {activeCategory === cat && (
-                    <motion.span
-                      variants={filterCountVariants}
-                      initial="initial"
-                      animate="animate"
-                      exit="exit"
-                      className="ml-2 inline-flex items-center justify-center w-5 h-5 text-[8px] font-bold bg-white text-blue-600 rounded-full"
-                    >
-                      {filteredDestinations.length}
-                    </motion.span>
-                  )}
-                </AnimatePresence>
-              </motion.button>
-            ))}
-          </div>
-          
-          {/* Active filter indicator with animation */}
-          <AnimatePresence>
-            {activeCategory !== "all" && (
-              <motion.div
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                transition={{ delay: 0.2 }}
-                className="flex items-center justify-center gap-2 mt-6"
-              >
-                <motion.div
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  transition={{ type: "spring", stiffness: 500, damping: 25 }}
-                  className="bg-blue-50 border border-blue-200 text-blue-700 px-4 py-2 rounded-full text-xs font-semibold flex items-center gap-2"
-                >
-                  <span>Filtering by: {activeCategory}</span>
-                  <motion.button
-                    whileHover={{ scale: 1.2, rotate: 90 }}
-                    whileTap={{ scale: 0.9 }}
-                    onClick={() => setActiveCategory("all")}
-                    className="hover:text-blue-900 transition-colors"
+        {/* Category Header - Airbnb Style */}
+        <div className="sticky top-[72px] z-50 bg-white border-b border-gray-100 shadow-sm mb-10">
+          <div className="max-w-[2520px] mx-auto px-4 sm:px-8 md:px-12 lg:px-16 flex items-center gap-6">
+            {/* Horizontal Scrollable Categories */}
+            <div className="flex-1 overflow-x-auto scrollbar-none py-4 flex items-center gap-10 md:gap-14">
+              {categoryList.map((cat) => {
+                const count = getCountByCategory(cat);
+                return (
+                  <button
+                    key={cat}
+                    onClick={() => setActiveCategory(cat)}
+                    className={`flex flex-col items-center gap-3 group transition-all duration-200 min-w-fit border-b-2 pb-4 pt-2 relative ${
+                      activeCategory === cat
+                        ? "border-black text-black opacity-100"
+                        : "border-transparent text-gray-400 opacity-70 hover:opacity-100 hover:border-gray-200"
+                    }`}
                   >
-                    <X size={14} />
-                  </motion.button>
-                </motion.div>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </motion.div>
-
-        {/* Destinations Grid with AnimatePresence */}
-        <AnimatePresence mode="wait">
-          {filteredDestinations.length === 0 ? (
-            <motion.div
-              key="empty-state"
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.9 }}
-              transition={{ duration: 0.4 }}
-              className="text-center py-20"
-            >
-              <motion.div
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
-                transition={{ 
-                  type: "spring",
-                  stiffness: 260,
-                  damping: 20,
-                  delay: 0.1,
-                }}
-              >
-                <Compass size={64} className="mx-auto text-gray-300 mb-4" />
-              </motion.div>
-              <motion.h3
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 }}
-                className="text-2xl font-bold text-gray-900 mb-2"
-              >
-                No destinations found
-              </motion.h3>
-              <motion.p
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3 }}
-                className="text-gray-600 mb-4"
-              >
-                Try selecting a different category
-              </motion.p>
-              <motion.button
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.4 }}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={() => setActiveCategory("all")}
-                className="bg-blue-600 text-white px-6 py-3 rounded-full font-semibold hover:bg-blue-700 transition-colors"
-              >
-                Show All Destinations
-              </motion.button>
-            </motion.div>
-          ) : (
-            <motion.div
-              key="destinations-grid"
-              variants={containerVariants}
-              initial="hidden"
-              animate="visible"
-              exit="hidden"
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-            >
-              <AnimatePresence mode="popLayout">
-                {filteredDestinations.map((dest, i) => (
-                  <motion.div
-                    key={dest.id}
-                    layout
-                    variants={itemVariants}
-                    initial="hidden"
-                    animate="visible"
-                    exit="exit"
-                    whileHover={{ 
-                      y: -10,
-                      transition: { duration: 0.3 },
-                    }}
-                    className="group relative rounded-[2.5rem] overflow-hidden bg-white shadow-2xl border-4 border-white cursor-pointer h-full"
-                  >
-                <div className="relative aspect-[4/5] overflow-hidden">
-                  <motion.img
-                    src={dest.image || "https://picsum.photos/800/600?random=" + i}
-                    alt={dest.name}
-                    className="w-full h-full object-cover"
-                    whileHover={{ scale: 1.1 }}
-                    transition={{ duration: 0.6, ease: "easeOut" }}
-                  />
-                  <motion.div 
-                    className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent"
-                    initial={{ opacity: 0.7 }}
-                    whileHover={{ opacity: 0.85 }}
-                    transition={{ duration: 0.3 }}
-                  />
-
-                  {/* Badges with animation */}
-                  <div className="absolute top-6 left-6 flex flex-col gap-2 items-start">
-                    <motion.div 
-                      initial={{ x: -20, opacity: 0 }}
-                      animate={{ x: 0, opacity: 1 }}
-                      transition={{ delay: i * 0.1 + 0.2 }}
-                      whileHover={{ scale: 1.05 }}
-                      className="bg-blue-600 text-white text-[9px] font-black uppercase tracking-widest px-3 py-1.5 rounded-full shadow-lg"
-                    >
-                      {getDestinationTag(dest)}
-                    </motion.div>
-                    {i === 0 && (
-                      <motion.div 
-                        initial={{ x: -20, opacity: 0 }}
-                        animate={{ x: 0, opacity: 1 }}
-                        transition={{ delay: i * 0.1 + 0.3 }}
-                        whileHover={{ scale: 1.05 }}
-                        className="bg-orange-500 text-white text-[9px] font-black uppercase tracking-widest px-3 py-1.5 rounded-full shadow-lg"
-                      >
-                        Bestseller
-                      </motion.div>
-                    )}
-                  </div>
-
-                  {/* Rating Badge with animation */}
-                  <motion.div 
-                    initial={{ x: 20, opacity: 0 }}
-                    animate={{ x: 0, opacity: 1 }}
-                    transition={{ delay: i * 0.1 + 0.2 }}
-                    whileHover={{ scale: 1.1 }}
-                    className="absolute top-6 right-6 bg-white/20 backdrop-blur-md rounded-full px-3 py-1.5 flex items-center gap-1.5 border border-white/20"
-                  >
-                    <motion.div
-                      animate={{ rotate: [0, 15, -15, 0] }}
-                      transition={{ 
-                        duration: 2,
-                        repeat: Infinity,
-                        repeatDelay: 3,
-                      }}
-                    >
-                      <Star size={12} className="text-yellow-400 fill-yellow-400" />
-                    </motion.div>
-                    <span className="text-[10px] font-black text-white">{dest.ratings.toFixed(1)}</span>
-                  </motion.div>
-
-                  {/* Arrow Button with animation */}
-                  <motion.div 
-                    initial={{ opacity: 0, y: 20 }}
-                    whileHover={{ 
-                      opacity: 1, 
-                      y: 0,
-                      backgroundColor: "rgb(37, 99, 235)",
-                      color: "white",
-                    }}
-                    transition={{ duration: 0.3 }}
-                    className="absolute bottom-32 right-8 w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-2xl opacity-0 group-hover:opacity-100"
-                  >
-                    <motion.div
-                      whileHover={{ x: 3, y: -3 }}
-                      transition={{ duration: 0.2 }}
-                    >
-                      <ArrowUpRight size={20} />
-                    </motion.div>
-                  </motion.div>
-
-                  {/* Content Overlay */}
-                  <div className="absolute bottom-8 left-8 right-8 text-white">
-                    <p className="text-[10px] font-black text-blue-400 uppercase tracking-[0.3em] mb-3">
-                      {getPrimaryCategory(dest)}
-                    </p>
-                    <h3 className="text-2xl md:text-3xl font-black mb-3 leading-tight uppercase tracking-tight">
-                      {dest.name}
-                    </h3>
-                    <div className="flex items-end justify-between border-t border-white/10 pt-4">
-                      <div className="flex items-center gap-2 text-white/60">
-                        <MapPin size={14} className="text-blue-400" />
-                        <span className="text-[10px] font-bold tracking-widest uppercase">{dest.location}</span>
-                      </div>
-                      <div className="text-right">
-                        <p className="text-[10px] font-bold text-white/40 uppercase tracking-widest mb-0.5">From</p>
-                        <p className="text-3xl font-black tracking-tighter text-blue-400">${dest.price}</p>
-                      </div>
+                    <div className={`transition-transform duration-200 group-hover:scale-110 ${activeCategory === cat ? 'scale-110' : ''}`}>
+                      {categoryIcons[cat.toLowerCase()] || <Compass size={24} />}
                     </div>
+                    <div className="flex items-center gap-1.5">
+                      <span className="text-[12px] font-semibold capitalize whitespace-nowrap">
+                        {cat}
+                      </span>
+                      <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded-md ${
+                        activeCategory === cat ? "bg-black text-white" : "bg-gray-100 text-gray-500"
+                      }`}>
+                        {count}
+                      </span>
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Filters Button */}
+            <div className="hidden md:flex items-center shrink-0">
+              <button className="flex items-center gap-2.5 border border-gray-200 rounded-xl px-5 py-3.5 hover:border-black transition-all group shadow-sm bg-white">
+                <SlidersHorizontal size={18} className="group-hover:scale-110 transition-transform" />
+                <span className="text-sm font-bold">Filters</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div className={`max-w-[2520px] mx-auto px-4 sm:px-8 md:px-12 lg:px-16`}>
+          <div className={`flex flex-col lg:flex-row gap-10 ${showMap ? "lg:h-[calc(100vh-220px)] overflow-hidden" : ""}`}>
+            
+            {/* List / Grid Section */}
+            <div className={`${showMap ? "lg:w-[60%] lg:overflow-y-auto lg:pr-6 scrollbar-thin" : "w-full"}`}>
+              {/* View Mode Toggle - Only shown when map is visible */}
+              {showMap && (
+                <div className="flex items-center justify-between mb-6">
+                  <div className="flex items-center gap-2">
+                    <button className="px-4 py-2 border border-gray-200 rounded-lg text-sm font-semibold hover:border-black transition-all">
+                      Sort by date
+                    </button>
+                    <button className="px-4 py-2 border border-gray-200 rounded-lg text-sm font-semibold hover:border-black transition-all text-gray-400">
+                      Sort by price
+                    </button>
+                  </div>
+                  <div className="flex items-center border border-gray-200 rounded-xl p-1 bg-gray-50">
+                    <button
+                      onClick={() => setViewMode("list")}
+                      className={`flex items-center gap-2 px-4 py-1.5 rounded-lg text-sm font-bold transition-all ${
+                        viewMode === "list"
+                          ? "bg-white shadow-sm text-black"
+                          : "text-gray-400 hover:text-gray-600"
+                      }`}
+                    >
+                      <List size={16} />
+                      <span>List</span>
+                    </button>
+                    <button
+                      onClick={() => setViewMode("grid")}
+                      className={`flex items-center gap-2 px-4 py-1.5 rounded-lg text-sm font-bold transition-all ${
+                        viewMode === "grid"
+                          ? "bg-white shadow-sm text-black"
+                          : "text-gray-400 hover:text-gray-600"
+                      }`}
+                    >
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="1" y="1" width="6" height="6" rx="1" stroke="currentColor" strokeWidth="2"/>
+                        <rect x="9" y="1" width="6" height="6" rx="1" stroke="currentColor" strokeWidth="2"/>
+                        <rect x="1" y="9" width="6" height="6" rx="1" stroke="currentColor" strokeWidth="2"/>
+                        <rect x="9" y="9" width="6" height="6" rx="1" stroke="currentColor" strokeWidth="2"/>
+                      </svg>
+                      <span>Grid</span>
+                    </button>
                   </div>
                 </div>
-              </motion.div>
-            ))}
-              </AnimatePresence>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </motion.main>
+              )}
 
-      <Footer />
+              {paginatedDestinations.length === 0 ? (
+                <div className="text-center py-32 bg-gray-50 rounded-3xl border-2 border-dashed border-gray-200">
+                  <Compass size={64} className="mx-auto text-gray-300 mb-6 stroke-[1.5]" />
+                  <h3 className="text-2xl font-bold text-gray-900 mb-3">No results found</h3>
+                  <p className="text-gray-500 mb-8 max-w-sm mx-auto">We couldn't find any destinations matching your current filters. Try broadening your search.</p>
+                  <button
+                    onClick={() => setActiveCategory("all")}
+                    className="bg-black text-white px-10 py-3.5 rounded-full font-bold hover:bg-gray-800 transition-all shadow-lg hover:shadow-xl active:scale-95"
+                  >
+                    Show all destinations
+                  </button>
+                </div>
+              ) : (
+                <div className="space-y-12">
+                  <div className={
+                    viewMode === "grid" 
+                      ? `grid grid-cols-1 sm:grid-cols-2 ${showMap ? "xl:grid-cols-2" : "md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5"} gap-x-6 gap-y-10`
+                      : "flex flex-col gap-8"
+                  }>
+                    {paginatedDestinations.map((dest, i) => (
+                      <div
+                        key={dest.id}
+                        className={`group cursor-pointer flex ${viewMode === "grid" ? "flex-col gap-4" : "flex-row gap-6 border-b border-gray-100 pb-8"}`}
+                      >
+                        <div className={`relative overflow-hidden rounded-2xl bg-gray-100 shadow-sm shrink-0 ${viewMode === "grid" ? "aspect-square w-full" : "w-48 h-48 md:w-64 md:h-64"}`}>
+                          <img
+                            src={dest.image || `https://picsum.photos/800/800?random=${dest.id}`}
+                            alt={dest.name}
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                            loading="lazy"
+                          />
+                          
+                          {/* Heart Icon */}
+                          <button className="absolute top-4 right-4 p-2.5 text-white/90 hover:text-red-500 transition-colors drop-shadow-md">
+                            <svg viewBox="0 0 32 32" className="w-6 h-6 fill-black/30 stroke-white stroke-[2.5px]">
+                              <path d="M16 28c7-4.73 14-10 14-17.08 0-3.17-2.5-6.92-7-6.92-2.38 0-4.7 1.55-7 3.75-2.3-2.2-4.62-3.75-7-3.75-4.5 0-7 3.75-7 6.92 0 7.08 7 12.35 14 17.08z" />
+                            </svg>
+                          </button>
+
+                          {/* Tag */}
+                          <div className="absolute top-4 left-4 bg-white/95 backdrop-blur-sm px-3.5 py-1.5 rounded-lg shadow-sm">
+                            <span className="text-[11px] font-bold uppercase tracking-wider text-gray-900">
+                              {dest.categories?.[0]?.parent?.name || "Featured"}
+                            </span>
+                          </div>
+                        </div>
+
+                        <div className="flex flex-col flex-1 gap-1.5 justify-between py-1">
+                          <div className="flex flex-col gap-1.5">
+                            <div className="flex items-center justify-between gap-2">
+                              <h3 className={`font-bold truncate leading-tight ${viewMode === 'grid' ? 'text-[16px]' : 'text-lg md:text-xl'}`}>{dest.name}</h3>
+                              <div className="flex items-center gap-1 shrink-0">
+                                <Star size={14} className="fill-black" />
+                                <span className="text-sm font-medium">{dest.ratings.toFixed(1)}</span>
+                              </div>
+                            </div>
+                            <p className="text-gray-500 text-[15px] truncate font-light leading-none">{dest.location}</p>
+                            <p className={`text-gray-400 font-light leading-tight ${viewMode === 'grid' ? 'text-sm line-clamp-1' : 'text-base line-clamp-2'}`}>{dest.description}</p>
+                            
+                            {viewMode === "list" && (
+                              <div className="flex items-center gap-4 mt-2">
+                                <div className="flex items-center gap-1 text-gray-400 text-xs">
+                                  <Users size={14} />
+                                  <span>2 guests</span>
+                                </div>
+                                <div className="flex items-center gap-1 text-gray-400 text-xs">
+                                  <Home size={14} />
+                                  <span>1 bedroom</span>
+                                </div>
+                                <div className="flex items-center gap-1 text-gray-400 text-xs">
+                                  <Bed size={14} />
+                                  <span>1 bed</span>
+                                </div>
+                              </div>
+                            )}
+                          </div>
+
+                          <div className="mt-2 flex items-baseline justify-between">
+                            <div className="flex items-baseline gap-1.5">
+                              <span className={`font-bold text-gray-900 ${viewMode === 'grid' ? 'text-[17px]' : 'text-xl'}`}>${dest.price}</span>
+                              <span className="text-gray-500 text-sm font-light">total before taxes</span>
+                            </div>
+                            
+                            {viewMode === "list" && (
+                              <div className="hidden md:flex items-center gap-1 text-xs font-bold text-gray-900 border border-gray-200 px-3 py-1.5 rounded-full">
+                                <Star size={12} className="fill-black" />
+                                <span>Guest favorite</span>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Pagination Section */}
+                  {totalPages > 1 && (
+                    <div className="pt-12 pb-6 border-t border-gray-100 flex flex-col items-center gap-6">
+                      <div className="flex items-center gap-2">
+                        <button
+                          onClick={() => {
+                            setCurrentPage(Math.max(1, currentPage - 1));
+                            window.scrollTo({ top: 0, behavior: "smooth" });
+                          }}
+                          disabled={currentPage === 1}
+                          className="p-3 rounded-full hover:bg-gray-100 disabled:opacity-30 disabled:hover:bg-transparent transition-colors"
+                        >
+                          <ChevronLeft size={20} />
+                        </button>
+                        
+                        <div className="flex items-center gap-1">
+                          {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                            <button
+                              key={page}
+                              onClick={() => {
+                                setCurrentPage(page);
+                                window.scrollTo({ top: 0, behavior: "smooth" });
+                              }}
+                              className={`w-10 h-10 rounded-full text-sm font-bold transition-all ${
+                                currentPage === page
+                                  ? "bg-black text-white shadow-md scale-110"
+                                  : "text-gray-500 hover:bg-gray-100"
+                              }`}
+                            >
+                              {page}
+                            </button>
+                          ))}
+                        </div>
+
+                        <button
+                          onClick={() => {
+                            setCurrentPage(Math.min(totalPages, currentPage + 1));
+                            window.scrollTo({ top: 0, behavior: "smooth" });
+                          }}
+                          disabled={currentPage === totalPages}
+                          className="p-3 rounded-full hover:bg-gray-100 disabled:opacity-30 disabled:hover:bg-transparent transition-colors"
+                        >
+                          <ChevronRight size={20} />
+                        </button>
+                      </div>
+                      <p className="text-sm text-gray-400 font-medium">
+                        Showing {(currentPage - 1) * pageSize + 1} - {Math.min(currentPage * pageSize, filteredCount)} of {filteredCount} destinations
+                      </p>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+
+            {/* Map Section */}
+            {showMap && (
+              <div className="hidden lg:block lg:w-[40%] h-full min-h-[600px] rounded-3xl overflow-hidden sticky top-[180px] bg-gray-50 border border-gray-100 shadow-sm group/map">
+                <div className="w-full h-full flex items-center justify-center relative">
+                  <div className="absolute inset-0 bg-[url('https://api.mapbox.com/styles/v1/mapbox/light-v10/static/0,0,0,0,0/800x800?access_token=pk.placeholder')] bg-cover opacity-15 grayscale contrast-[0.8]" />
+                  
+                  <div className="z-10 text-center px-10">
+                    <div className="w-20 h-20 bg-white rounded-3xl flex items-center justify-center shadow-xl mx-auto mb-6 transform transition-transform group-hover/map:scale-110">
+                      <MapIcon size={40} className="text-black stroke-[1.5]" />
+                    </div>
+                    <h4 className="text-xl font-bold mb-3 text-gray-800">Map Explorer</h4>
+                    <p className="text-gray-400 text-[15px] max-w-xs mx-auto font-light leading-relaxed">
+                      Visualize all {filteredCount} destinations on an interactive map to find the perfect location.
+                    </p>
+                  </div>
+
+                  {paginatedDestinations.slice(0, 8).map((dest, i) => (
+                    <div 
+                      key={dest.id}
+                      className="absolute bg-white px-3.5 py-1.5 rounded-full shadow-lg font-bold text-[13px] border border-gray-100 hover:scale-110 hover:bg-black hover:text-white transition-all cursor-pointer hover:z-50"
+                      style={{
+                        top: `${15 + (i * 10)}%`,
+                        left: `${15 + (i * 8)}%`
+                      }}
+                    >
+                      ${dest.price}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Floating Toggle Button */}
+        <div className="fixed bottom-12 left-1/2 -translate-x-1/2 z-[100]">
+          <button
+            onClick={() => setShowMap(!showMap)}
+            className="bg-[#222222] hover:bg-black text-white px-[19px] py-[14px] rounded-full shadow-2xl flex items-center gap-2 transition-all active:scale-95 whitespace-nowrap"
+          >
+            {showMap ? (
+              <>
+                <List size={16} strokeWidth={2.5} />
+                <span className="text-[14px] font-bold">Show list</span>
+              </>
+            ) : (
+              <>
+                <MapIcon size={16} strokeWidth={2.5} />
+                <span className="text-[14px] font-bold">Show map</span>
+              </>
+            )}
+          </button>
+        </div>
+      </main>
+
+      {!showMap && <Footer />}
     </div>
   );
 }

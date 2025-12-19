@@ -19,6 +19,13 @@ interface DestinationStore {
   searchQuery: string;
   priceRange: { min: number; max: number };
   
+  // Pagination
+  currentPage: number;
+  pageSize: number;
+  
+  // View Mode
+  viewMode: "grid" | "list";
+  
   // Loading states
   isLoading: boolean;
   error: string | null;
@@ -29,12 +36,18 @@ interface DestinationStore {
   setActiveCategory: (category: string) => void;
   setSearchQuery: (query: string) => void;
   setPriceRange: (range: { min: number; max: number }) => void;
+  setCurrentPage: (page: number) => void;
+  setViewMode: (mode: "grid" | "list") => void;
   setLoading: (loading: boolean) => void;
   setError: (error: string | null) => void;
   
   // Computed/Helper functions
   getFilteredDestinations: () => DestinationWithCategories[];
+  getPaginatedDestinations: () => DestinationWithCategories[];
   getCategoryList: () => string[];
+  getTotalCount: () => number;
+  getCountByCategory: (category: string) => number;
+  getTotalPages: () => number;
   resetFilters: () => void;
 }
 
@@ -48,6 +61,9 @@ export const useDestinationStore = create<DestinationStore>()(
         activeCategory: "all",
         searchQuery: "",
         priceRange: { min: 0, max: 10000 },
+        currentPage: 1,
+        pageSize: 10,
+        viewMode: "grid",
         isLoading: false,
         error: null,
 
@@ -59,13 +75,19 @@ export const useDestinationStore = create<DestinationStore>()(
           set({ categories }, false, "setCategories"),
 
         setActiveCategory: (category) =>
-          set({ activeCategory: category }, false, "setActiveCategory"),
+          set({ activeCategory: category, currentPage: 1 }, false, "setActiveCategory"),
 
         setSearchQuery: (query) =>
-          set({ searchQuery: query }, false, "setSearchQuery"),
+          set({ searchQuery: query, currentPage: 1 }, false, "setSearchQuery"),
 
         setPriceRange: (range) =>
-          set({ priceRange: range }, false, "setPriceRange"),
+          set({ priceRange: range, currentPage: 1 }, false, "setPriceRange"),
+
+        setCurrentPage: (page) =>
+          set({ currentPage: page }, false, "setCurrentPage"),
+
+        setViewMode: (mode) =>
+          set({ viewMode: mode }, false, "setViewMode"),
 
         setLoading: (loading) =>
           set({ isLoading: loading }, false, "setLoading"),
@@ -114,10 +136,35 @@ export const useDestinationStore = create<DestinationStore>()(
           return filtered;
         },
 
+        getPaginatedDestinations: () => {
+          const filtered = get().getFilteredDestinations();
+          const { currentPage, pageSize } = get();
+          const start = (currentPage - 1) * pageSize;
+          const end = start + pageSize;
+          return filtered.slice(start, end);
+        },
+
         getCategoryList: () => {
           const { categories } = get();
           if (!categories || categories.length === 0) return ["all"];
           return ["all", ...categories.map((cat) => cat.name.toLowerCase())];
+        },
+
+        getTotalCount: () => get().destinations.length,
+
+        getCountByCategory: (category) => {
+          const { destinations } = get();
+          if (category === "all") return destinations.length;
+          return destinations.filter((dest) =>
+            dest.categories.some(
+              (cat) => cat.parent.name.toLowerCase() === category.toLowerCase()
+            )
+          ).length;
+        },
+
+        getTotalPages: () => {
+          const filtered = get().getFilteredDestinations();
+          return Math.ceil(filtered.length / get().pageSize);
         },
 
         resetFilters: () =>
@@ -126,6 +173,7 @@ export const useDestinationStore = create<DestinationStore>()(
               activeCategory: "all",
               searchQuery: "",
               priceRange: { min: 0, max: 10000 },
+              currentPage: 1,
             },
             false,
             "resetFilters"
@@ -134,12 +182,14 @@ export const useDestinationStore = create<DestinationStore>()(
       {
         name: "destination-storage",
         partialize: (state) => ({
-          // Only persist filters, not the data
+          // Only persist filters and view mode, not the data
           activeCategory: state.activeCategory,
           searchQuery: state.searchQuery,
           priceRange: state.priceRange,
+          viewMode: state.viewMode,
         }),
       }
     )
   )
 );
+

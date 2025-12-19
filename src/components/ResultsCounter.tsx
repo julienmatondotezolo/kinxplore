@@ -83,3 +83,4 @@ export function ResultsCounter({ count, total, isFiltered }: ResultsCounterProps
     </motion.div>
   );
 }
+
