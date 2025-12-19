@@ -23,6 +23,7 @@ import {
 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import React, { useEffect, useState } from "react";
+import { Link, useRouter } from "@/navigation";
 
 import { Footer } from "@/components/Footer";
 import { Navigation } from "@/components/Navigation";
@@ -49,6 +50,7 @@ const categoryIcons: Record<string, React.ReactNode> = {
 export default function DestinationsPage() {
   const t = useTranslations("Packages");
   const [showMap, setShowMap] = useState(false);
+  const [showMobileFilters, setShowMobileFilters] = useState(false);
 
   // Fetch data from backend using React Query
   const { data: destinations, isLoading: isLoadingDestinations, error: destinationsError } = useDestinations();
@@ -152,32 +154,62 @@ export default function DestinationsPage() {
           <div className="absolute bottom-40 right-[15%] w-16 h-16 bg-gradient-to-br from-pink-500/10 to-orange-500/10 rounded-full animate-float" style={{ animationDelay: '2000ms' }} />
         </div>
 
-        {/* Title Section */}
-        <div className="max-w-[2520px] mx-auto px-4 sm:px-8 md:px-12 lg:px-16 mb-8 relative z-10">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
-            <div className="space-y-2">
-              <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-gray-900">
-                {searchQuery.trim() !== "" 
-                  ? `${filteredCount} results for "${searchQuery}"`
-                  : activeCategory === 'all' 
-                    ? `${totalCount} destinations in Kinshasa` 
-                    : `${getCountByCategory(activeCategory)} ${activeCategory}s in Kinshasa`}
-              </h1>
-              <p className="text-gray-500 text-lg font-light">
-                {activeCategory === 'all' 
-                  ? "Explore all our available properties in the heart of Kinshasa."
-                  : `Browse our curated selection of ${activeCategory}s for your perfect stay.`}
-              </p>
+          {/* Title Section - Desktop */}
+          <div className="hidden md:block max-w-[2520px] mx-auto px-4 sm:px-8 md:px-12 lg:px-16 mb-8 relative z-10">
+            <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+              <div className="space-y-2">
+                <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-gray-900">
+                  {searchQuery.trim() !== ""
+                    ? `${filteredCount} results for "${searchQuery}"`
+                    : activeCategory === 'all'
+                      ? `${totalCount} destinations in Kinshasa`
+                      : `${getCountByCategory(activeCategory)} ${activeCategory}s in Kinshasa`}
+                </h1>
+                <p className="text-gray-500 text-lg font-light">
+                  {activeCategory === 'all'
+                    ? "Explore all our available properties in the heart of Kinshasa."
+                    : `Browse our curated selection of ${activeCategory}s for your perfect stay.`}
+                </p>
+              </div>
+              <DestinationSearch />
             </div>
-            <DestinationSearch />
           </div>
-        </div>
 
-        {/* Category Header - Airbnb Style */}
-        <div className="sticky top-[72px] z-50 bg-white/80 backdrop-blur-md border-b border-blue-100/50 shadow-sm mb-10">
-          <div className="max-w-[2520px] mx-auto px-4 sm:px-8 md:px-12 lg:px-16 flex items-center gap-6">
-            {/* Horizontal Scrollable Categories */}
-            <div className="flex-1 overflow-x-auto scrollbar-none py-4 flex items-center gap-10 md:gap-14">
+          {/* Mobile Title Section */}
+          <div className="md:hidden max-w-[2520px] mx-auto px-4 mb-6 relative z-10">
+            <h1 className="text-2xl font-bold tracking-tight text-gray-900 mb-2">
+              {searchQuery.trim() !== ""
+                ? `${filteredCount} results`
+                : activeCategory === 'all'
+                  ? `${totalCount} destinations`
+                  : `${getCountByCategory(activeCategory)} ${activeCategory}s`}
+            </h1>
+            <p className="text-gray-500 text-sm font-light">
+              in Kinshasa
+            </p>
+          </div>
+
+          {/* Mobile Search Bar */}
+          <div className="md:hidden sticky top-[72px] z-50 bg-white/95 backdrop-blur-md border-b border-gray-100 px-4 py-3">
+            <div className="flex items-center gap-2">
+              <div className="flex-1">
+                <DestinationSearch />
+              </div>
+              <button 
+                onClick={() => setShowMobileFilters(true)}
+                className="flex items-center gap-2 border border-gray-200 rounded-xl px-4 py-3 hover:border-blue-600 transition-all bg-white shrink-0"
+              >
+                <SlidersHorizontal size={18} className="text-blue-600" />
+                <span className="text-sm font-bold">Filters</span>
+              </button>
+            </div>
+          </div>
+
+          {/* Category Header - Airbnb Style */}
+          <div className="hidden md:block sticky top-[72px] z-50 bg-white/80 backdrop-blur-md border-b border-blue-100/50 shadow-sm mb-10">
+            <div className="max-w-[2520px] mx-auto px-4 sm:px-8 md:px-12 lg:px-16 flex items-center gap-6">
+              {/* Horizontal Scrollable Categories */}
+              <div className="flex-1 overflow-x-auto scrollbar-none py-4 flex items-center gap-10 md:gap-14">
               {categoryList.map((cat) => {
                 const count = getCountByCategory(cat);
                 return (
@@ -218,11 +250,11 @@ export default function DestinationsPage() {
           </div>
         </div>
 
-        <div className={`max-w-[2520px] mx-auto px-4 sm:px-8 md:px-12 lg:px-16`}>
-          <div className={`flex flex-col lg:flex-row gap-10 ${showMap ? "lg:h-[calc(100vh-220px)] overflow-hidden" : ""}`}>
-            
-            {/* List / Grid Section */}
-            <div className={`${showMap ? "lg:w-[60%] lg:overflow-y-auto lg:pr-6 scrollbar-thin" : "w-full"}`}>
+            <div className={`max-w-[2520px] mx-auto px-4 sm:px-8 md:px-12 lg:px-16`}>
+              <div className={`flex flex-col lg:flex-row gap-10 ${showMap ? "lg:h-[calc(100vh-220px)] overflow-hidden" : ""}`}>
+
+                {/* List / Grid Section */}
+                <div className={`${showMap ? "lg:w-[60%] lg:overflow-y-auto lg:pr-6 scrollbar-thin" : "w-full"} mb-32 md:mb-0`}>
               {/* View Mode Toggle - Only shown when map is visible */}
               {showMap && (
                 <div className="flex items-center justify-end mb-6">
@@ -274,12 +306,13 @@ export default function DestinationsPage() {
                 <div className="space-y-12">
                   <div className={
                     viewMode === "grid" 
-                      ? `grid grid-cols-1 sm:grid-cols-2 ${showMap ? "xl:grid-cols-2" : "md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5"} gap-x-6 gap-y-10`
+                      ? `grid grid-cols-1 sm:grid-cols-2 ${showMap ? "xl:grid-cols-2" : "md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5"} gap-x-4 gap-y-8 md:gap-x-6 md:gap-y-10`
                       : "flex flex-col gap-8"
                   }>
                     {paginatedDestinations.map((dest, i) => (
-                      <div
+                      <Link
                         key={dest.id}
+                        href={`/destinations/${dest.id}`}
                         className={`group cursor-pointer flex ${viewMode === "grid" ? "flex-col gap-4" : "flex-row gap-6 border-b border-gray-100 pb-8"}`}
                       >
                         <div className={`relative overflow-hidden rounded-2xl bg-gray-100 shadow-sm shrink-0 ${viewMode === "grid" ? "aspect-square w-full" : "w-48 h-48 md:w-64 md:h-64"}`}>
@@ -291,7 +324,14 @@ export default function DestinationsPage() {
                           />
                           
                           {/* Heart Icon */}
-                          <button className="absolute top-4 right-4 p-2.5 text-white/90 hover:text-red-500 transition-colors drop-shadow-md">
+                          <button 
+                            onClick={(e) => {
+                              e.preventDefault();
+                              e.stopPropagation();
+                              // Toggle favorite logic here
+                            }}
+                            className="absolute top-4 right-4 p-2.5 text-white/90 hover:text-red-500 transition-colors drop-shadow-md z-10"
+                          >
                             <svg viewBox="0 0 32 32" className="w-6 h-6 fill-black/30 stroke-white stroke-[2.5px]">
                               <path d="M16 28c7-4.73 14-10 14-17.08 0-3.17-2.5-6.92-7-6.92-2.38 0-4.7 1.55-7 3.75-2.3-2.2-4.62-3.75-7-3.75-4.5 0-7 3.75-7 6.92 0 7.08 7 12.35 14 17.08z" />
                             </svg>
@@ -349,7 +389,7 @@ export default function DestinationsPage() {
                             )}
                           </div>
                         </div>
-                      </div>
+                      </Link>
                     ))}
                   </div>
 
@@ -446,8 +486,8 @@ export default function DestinationsPage() {
           </div>
         )}
 
-        {/* Floating Toggle Button - Fixed at right bottom */}
-        <div className="fixed bottom-6 right-6 z-[100]">
+        {/* Floating Toggle Button - Hidden on mobile */}
+        <div className="hidden md:block fixed bottom-6 right-6 z-[100]">
           <button
             onClick={handleToggleMap}
             className="bg-blue-600 hover:bg-blue-700 text-white px-[19px] py-[14px] rounded-full shadow-2xl shadow-blue-500/40 flex items-center gap-2 transition-all active:scale-95 whitespace-nowrap"
@@ -465,6 +505,107 @@ export default function DestinationsPage() {
             )}
           </button>
         </div>
+
+        {/* Mobile Filter Modal */}
+        {showMobileFilters && (
+          <div className="md:hidden fixed inset-0 z-[200] bg-black/50 backdrop-blur-sm animate-in fade-in duration-200">
+            <div className="absolute inset-x-0 bottom-0 bg-white rounded-t-[32px] max-h-[85vh] overflow-hidden flex flex-col animate-in slide-in-from-bottom duration-300">
+              {/* Modal Header */}
+              <div className="flex items-center justify-between px-6 py-5 border-b border-gray-100">
+                <h2 className="text-xl font-bold text-gray-900">Filters</h2>
+                <button 
+                  onClick={() => setShowMobileFilters(false)}
+                  className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+                >
+                  <X size={24} />
+                </button>
+              </div>
+
+              {/* Filter Content */}
+              <div className="flex-1 overflow-y-auto px-6 py-6">
+                <div className="space-y-8">
+                  {/* Categories Section */}
+                  <div className="space-y-4">
+                    <h3 className="text-sm font-bold uppercase tracking-wider text-gray-400">Categories</h3>
+                    <div className="grid grid-cols-2 gap-3">
+                      {categoryList.map((cat) => {
+                        const count = getCountByCategory(cat);
+                        return (
+                          <button
+                            key={cat}
+                            onClick={() => {
+                              setActiveCategory(cat);
+                            }}
+                            className={`flex flex-col items-center gap-3 p-4 rounded-2xl border-2 transition-all ${
+                              activeCategory === cat
+                                ? "border-blue-600 bg-blue-50"
+                                : "border-gray-100 bg-white hover:border-blue-200"
+                            }`}
+                          >
+                            <div className={`w-12 h-12 rounded-xl flex items-center justify-center transition-colors ${
+                              activeCategory === cat
+                                ? "bg-blue-600 text-white"
+                                : "bg-gray-50 text-gray-400"
+                            }`}>
+                              {categoryIcons[cat.toLowerCase()] || <Compass size={24} />}
+                            </div>
+                            <div className="text-center">
+                              <span className={`text-sm font-bold block ${
+                                activeCategory === cat ? "text-blue-600" : "text-gray-900"
+                              }`}>
+                                {cat}
+                              </span>
+                              <span className="text-xs text-gray-400">{count} places</span>
+                            </div>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  {/* Price Range Section (Placeholder for future implementation) */}
+                  <div className="space-y-4 pt-6 border-t border-gray-100">
+                    <h3 className="text-sm font-bold uppercase tracking-wider text-gray-400">Price Range</h3>
+                    <div className="space-y-4">
+                      <div className="flex items-center justify-between text-sm">
+                        <span className="text-gray-600">Min: $0</span>
+                        <span className="text-gray-600">Max: $500</span>
+                      </div>
+                      <div className="h-2 bg-gray-100 rounded-full">
+                        <div className="h-full w-full bg-blue-600 rounded-full"></div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Results Count */}
+                  <div className="pt-6 border-t border-gray-100">
+                    <p className="text-center text-gray-500 text-sm">
+                      Showing <span className="font-bold text-gray-900">{filteredCount}</span> destinations
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Modal Footer */}
+              <div className="px-6 py-5 border-t border-gray-100 bg-white flex items-center gap-3">
+                <button
+                  onClick={() => {
+                    setActiveCategory("all");
+                  }}
+                  className="flex-1 px-6 py-4 rounded-2xl border border-gray-200 font-bold text-gray-900 hover:bg-gray-50 transition-all"
+                >
+                  Clear all
+                </button>
+                <button
+                  onClick={() => setShowMobileFilters(false)}
+                  className="flex-1 px-6 py-4 rounded-2xl bg-blue-600 font-bold text-white hover:bg-blue-700 transition-all shadow-lg shadow-blue-500/30"
+                >
+                  Show {filteredCount} results
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </main>
 
       {!showMap && <Footer />}
