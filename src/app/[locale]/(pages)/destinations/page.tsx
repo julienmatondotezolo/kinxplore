@@ -74,6 +74,15 @@ export default function DestinationsPage() {
     setViewMode,
   } = useDestinationStore();
 
+  // Reset to grid view when hiding map
+  const handleToggleMap = () => {
+    if (showMap) {
+      // When going back to list view (hiding map), set to grid
+      setViewMode("grid");
+    }
+    setShowMap(!showMap);
+  };
+
   // Update store when data is fetched
   useEffect(() => {
     if (destinations) {
@@ -128,12 +137,23 @@ export default function DestinationsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-white text-gray-900 font-sans selection:bg-gray-100 overflow-x-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50/50 via-purple-50/30 to-pink-50/40 text-gray-900 font-sans selection:bg-blue-100 selection:text-blue-900 overflow-x-hidden">
       <Navigation />
 
       <main className="pt-24 pb-24 relative z-10">
+        {/* Animated Background Blobs */}
+        <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
+          <div className="absolute -top-40 -right-40 w-[500px] h-[500px] bg-gradient-to-br from-blue-400/20 to-purple-400/20 rounded-full blur-3xl animate-pulse" />
+          <div className="absolute -bottom-20 -left-20 w-[400px] h-[400px] bg-gradient-to-tr from-pink-400/15 to-orange-400/15 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1000ms' }} />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-r from-yellow-400/10 to-blue-400/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '500ms' }} />
+          
+          {/* Floating decorative shapes */}
+          <div className="absolute top-20 left-[10%] w-20 h-20 bg-gradient-to-br from-yellow-500/10 to-orange-500/10 rounded-2xl rotate-12 animate-float" />
+          <div className="absolute bottom-40 right-[15%] w-16 h-16 bg-gradient-to-br from-pink-500/10 to-orange-500/10 rounded-full animate-float" style={{ animationDelay: '2000ms' }} />
+        </div>
+
         {/* Title Section */}
-        <div className="max-w-[2520px] mx-auto px-4 sm:px-8 md:px-12 lg:px-16 mb-8">
+        <div className="max-w-[2520px] mx-auto px-4 sm:px-8 md:px-12 lg:px-16 mb-8 relative z-10">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
             <div className="space-y-2">
               <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-gray-900">
@@ -154,7 +174,7 @@ export default function DestinationsPage() {
         </div>
 
         {/* Category Header - Airbnb Style */}
-        <div className="sticky top-[72px] z-50 bg-white border-b border-gray-100 shadow-sm mb-10">
+        <div className="sticky top-[72px] z-50 bg-white/80 backdrop-blur-md border-b border-blue-100/50 shadow-sm mb-10">
           <div className="max-w-[2520px] mx-auto px-4 sm:px-8 md:px-12 lg:px-16 flex items-center gap-6">
             {/* Horizontal Scrollable Categories */}
             <div className="flex-1 overflow-x-auto scrollbar-none py-4 flex items-center gap-10 md:gap-14">
@@ -166,8 +186,8 @@ export default function DestinationsPage() {
                     onClick={() => setActiveCategory(cat)}
                     className={`flex flex-col items-center gap-3 group transition-all duration-200 min-w-fit border-b-2 pb-4 pt-2 relative ${
                       activeCategory === cat
-                        ? "border-black text-black opacity-100"
-                        : "border-transparent text-gray-400 opacity-70 hover:opacity-100 hover:border-gray-200"
+                        ? "border-blue-600 text-blue-600 opacity-100"
+                        : "border-transparent text-gray-400 opacity-70 hover:opacity-100 hover:border-blue-200"
                     }`}
                   >
                     <div className={`transition-transform duration-200 group-hover:scale-110 ${activeCategory === cat ? 'scale-110' : ''}`}>
@@ -178,7 +198,7 @@ export default function DestinationsPage() {
                         {cat}
                       </span>
                       <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded-md ${
-                        activeCategory === cat ? "bg-black text-white" : "bg-gray-100 text-gray-500"
+                        activeCategory === cat ? "bg-blue-600 text-white" : "bg-blue-50 text-blue-600"
                       }`}>
                         {count}
                       </span>
@@ -190,9 +210,9 @@ export default function DestinationsPage() {
 
             {/* Filters Button */}
             <div className="hidden md:flex items-center shrink-0">
-              <button className="flex items-center gap-2.5 border border-gray-200 rounded-xl px-5 py-3.5 hover:border-black transition-all group shadow-sm bg-white">
-                <SlidersHorizontal size={18} className="group-hover:scale-110 transition-transform" />
-                <span className="text-sm font-bold">Filters</span>
+              <button className="flex items-center gap-2.5 border border-blue-200 rounded-xl px-5 py-3.5 hover:border-blue-600 hover:bg-blue-50 transition-all group shadow-sm bg-white">
+                <SlidersHorizontal size={18} className="group-hover:scale-110 transition-transform text-blue-600" />
+                <span className="text-sm font-bold text-gray-900">Filters</span>
               </button>
             </div>
           </div>
@@ -205,22 +225,14 @@ export default function DestinationsPage() {
             <div className={`${showMap ? "lg:w-[60%] lg:overflow-y-auto lg:pr-6 scrollbar-thin" : "w-full"}`}>
               {/* View Mode Toggle - Only shown when map is visible */}
               {showMap && (
-                <div className="flex items-center justify-between mb-6">
-                  <div className="flex items-center gap-2">
-                    <button className="px-4 py-2 border border-gray-200 rounded-lg text-sm font-semibold hover:border-black transition-all">
-                      Sort by date
-                    </button>
-                    <button className="px-4 py-2 border border-gray-200 rounded-lg text-sm font-semibold hover:border-black transition-all text-gray-400">
-                      Sort by price
-                    </button>
-                  </div>
-                  <div className="flex items-center border border-gray-200 rounded-xl p-1 bg-gray-50">
+                <div className="flex items-center justify-end mb-6">
+                  <div className="flex items-center border border-blue-200 rounded-xl p-1 bg-blue-50/50">
                     <button
                       onClick={() => setViewMode("list")}
                       className={`flex items-center gap-2 px-4 py-1.5 rounded-lg text-sm font-bold transition-all ${
                         viewMode === "list"
-                          ? "bg-white shadow-sm text-black"
-                          : "text-gray-400 hover:text-gray-600"
+                          ? "bg-white shadow-sm text-blue-600"
+                          : "text-gray-400 hover:text-blue-600"
                       }`}
                     >
                       <List size={16} />
@@ -230,8 +242,8 @@ export default function DestinationsPage() {
                       onClick={() => setViewMode("grid")}
                       className={`flex items-center gap-2 px-4 py-1.5 rounded-lg text-sm font-bold transition-all ${
                         viewMode === "grid"
-                          ? "bg-white shadow-sm text-black"
-                          : "text-gray-400 hover:text-gray-600"
+                          ? "bg-white shadow-sm text-blue-600"
+                          : "text-gray-400 hover:text-blue-600"
                       }`}
                     >
                       <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -247,13 +259,13 @@ export default function DestinationsPage() {
               )}
 
               {paginatedDestinations.length === 0 ? (
-                <div className="text-center py-32 bg-gray-50 rounded-3xl border-2 border-dashed border-gray-200">
-                  <Compass size={64} className="mx-auto text-gray-300 mb-6 stroke-[1.5]" />
+                <div className="text-center py-32 bg-blue-50/50 rounded-3xl border-2 border-dashed border-blue-200">
+                  <Compass size={64} className="mx-auto text-blue-300 mb-6 stroke-[1.5]" />
                   <h3 className="text-2xl font-bold text-gray-900 mb-3">No results found</h3>
                   <p className="text-gray-500 mb-8 max-w-sm mx-auto">We couldn't find any destinations matching your current filters. Try broadening your search.</p>
                   <button
                     onClick={() => setActiveCategory("all")}
-                    className="bg-black text-white px-10 py-3.5 rounded-full font-bold hover:bg-gray-800 transition-all shadow-lg hover:shadow-xl active:scale-95"
+                    className="bg-blue-600 text-white px-10 py-3.5 rounded-full font-bold hover:bg-blue-700 transition-all shadow-lg shadow-blue-500/30 hover:shadow-xl active:scale-95"
                   >
                     Show all destinations
                   </button>
@@ -286,8 +298,8 @@ export default function DestinationsPage() {
                           </button>
 
                           {/* Tag */}
-                          <div className="absolute top-4 left-4 bg-white/95 backdrop-blur-sm px-3.5 py-1.5 rounded-lg shadow-sm">
-                            <span className="text-[11px] font-bold uppercase tracking-wider text-gray-900">
+                          <div className="absolute top-4 left-4 bg-blue-600 backdrop-blur-sm px-3.5 py-1.5 rounded-lg shadow-sm">
+                            <span className="text-[11px] font-bold uppercase tracking-wider text-white">
                               {dest.categories?.[0]?.parent?.name || "Featured"}
                             </span>
                           </div>
@@ -297,10 +309,10 @@ export default function DestinationsPage() {
                           <div className="flex flex-col gap-1.5">
                             <div className="flex items-center justify-between gap-2">
                               <h3 className={`font-bold truncate leading-tight ${viewMode === 'grid' ? 'text-[16px]' : 'text-lg md:text-xl'}`}>{dest.name}</h3>
-                              <div className="flex items-center gap-1 shrink-0">
-                                <Star size={14} className="fill-black" />
-                                <span className="text-sm font-medium">{dest.ratings.toFixed(1)}</span>
-                              </div>
+                            <div className="flex items-center gap-1 shrink-0">
+                              <Star size={14} className="fill-yellow-400 text-yellow-400" />
+                              <span className="text-sm font-medium">{dest.ratings.toFixed(1)}</span>
+                            </div>
                             </div>
                             <p className="text-gray-500 text-[15px] truncate font-light leading-none">{dest.location}</p>
                             <p className={`text-gray-400 font-light leading-tight ${viewMode === 'grid' ? 'text-sm line-clamp-1' : 'text-base line-clamp-2'}`}>{dest.description}</p>
@@ -330,8 +342,8 @@ export default function DestinationsPage() {
                             </div>
                             
                             {viewMode === "list" && (
-                              <div className="hidden md:flex items-center gap-1 text-xs font-bold text-gray-900 border border-gray-200 px-3 py-1.5 rounded-full">
-                                <Star size={12} className="fill-black" />
+                              <div className="hidden md:flex items-center gap-1 text-xs font-bold text-orange-600 border border-orange-200 bg-orange-50 px-3 py-1.5 rounded-full">
+                                <Star size={12} className="fill-orange-400 text-orange-400" />
                                 <span>Guest favorite</span>
                               </div>
                             )}
@@ -341,72 +353,24 @@ export default function DestinationsPage() {
                     ))}
                   </div>
 
-                  {/* Pagination Section */}
-                  {totalPages > 1 && (
-                    <div className="pt-12 pb-6 border-t border-gray-100 flex flex-col items-center gap-6">
-                      <div className="flex items-center gap-2">
-                        <button
-                          onClick={() => {
-                            setCurrentPage(Math.max(1, currentPage - 1));
-                            window.scrollTo({ top: 0, behavior: "smooth" });
-                          }}
-                          disabled={currentPage === 1}
-                          className="p-3 rounded-full hover:bg-gray-100 disabled:opacity-30 disabled:hover:bg-transparent transition-colors"
-                        >
-                          <ChevronLeft size={20} />
-                        </button>
-                        
-                        <div className="flex items-center gap-1">
-                          {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-                            <button
-                              key={page}
-                              onClick={() => {
-                                setCurrentPage(page);
-                                window.scrollTo({ top: 0, behavior: "smooth" });
-                              }}
-                              className={`w-10 h-10 rounded-full text-sm font-bold transition-all ${
-                                currentPage === page
-                                  ? "bg-black text-white shadow-md scale-110"
-                                  : "text-gray-500 hover:bg-gray-100"
-                              }`}
-                            >
-                              {page}
-                            </button>
-                          ))}
-                        </div>
-
-                        <button
-                          onClick={() => {
-                            setCurrentPage(Math.min(totalPages, currentPage + 1));
-                            window.scrollTo({ top: 0, behavior: "smooth" });
-                          }}
-                          disabled={currentPage === totalPages}
-                          className="p-3 rounded-full hover:bg-gray-100 disabled:opacity-30 disabled:hover:bg-transparent transition-colors"
-                        >
-                          <ChevronRight size={20} />
-                        </button>
-                      </div>
-                      <p className="text-sm text-gray-400 font-medium">
-                        Showing {(currentPage - 1) * pageSize + 1} - {Math.min(currentPage * pageSize, filteredCount)} of {filteredCount} destinations
-                      </p>
-                    </div>
-                  )}
+                  {/* Spacer for fixed pagination */}
+                  {totalPages > 1 && <div className="h-32" />}
                 </div>
               )}
             </div>
 
             {/* Map Section */}
             {showMap && (
-              <div className="hidden lg:block lg:w-[40%] h-full min-h-[600px] rounded-3xl overflow-hidden sticky top-[180px] bg-gray-50 border border-gray-100 shadow-sm group/map">
+              <div className="hidden lg:block lg:w-[40%] h-full min-h-[600px] rounded-3xl overflow-hidden sticky top-[180px] bg-blue-50/30 border border-blue-100 shadow-lg group/map">
                 <div className="w-full h-full flex items-center justify-center relative">
                   <div className="absolute inset-0 bg-[url('https://api.mapbox.com/styles/v1/mapbox/light-v10/static/0,0,0,0,0/800x800?access_token=pk.placeholder')] bg-cover opacity-15 grayscale contrast-[0.8]" />
                   
                   <div className="z-10 text-center px-10">
-                    <div className="w-20 h-20 bg-white rounded-3xl flex items-center justify-center shadow-xl mx-auto mb-6 transform transition-transform group-hover/map:scale-110">
-                      <MapIcon size={40} className="text-black stroke-[1.5]" />
+                    <div className="w-20 h-20 bg-gradient-to-br from-blue-600 to-purple-600 rounded-3xl flex items-center justify-center shadow-xl mx-auto mb-6 transform transition-transform group-hover/map:scale-110">
+                      <MapIcon size={40} className="text-white stroke-[1.5]" />
                     </div>
                     <h4 className="text-xl font-bold mb-3 text-gray-800">Map Explorer</h4>
-                    <p className="text-gray-400 text-[15px] max-w-xs mx-auto font-light leading-relaxed">
+                    <p className="text-gray-500 text-[15px] max-w-xs mx-auto font-light leading-relaxed">
                       Visualize all {filteredCount} destinations on an interactive map to find the perfect location.
                     </p>
                   </div>
@@ -414,7 +378,7 @@ export default function DestinationsPage() {
                   {paginatedDestinations.slice(0, 8).map((dest, i) => (
                     <div 
                       key={dest.id}
-                      className="absolute bg-white px-3.5 py-1.5 rounded-full shadow-lg font-bold text-[13px] border border-gray-100 hover:scale-110 hover:bg-black hover:text-white transition-all cursor-pointer hover:z-50"
+                      className="absolute bg-white px-3.5 py-1.5 rounded-full shadow-lg font-bold text-[13px] border border-blue-100 hover:scale-110 hover:bg-blue-600 hover:text-white transition-all cursor-pointer hover:z-50"
                       style={{
                         top: `${15 + (i * 10)}%`,
                         left: `${15 + (i * 8)}%`
@@ -429,11 +393,64 @@ export default function DestinationsPage() {
           </div>
         </div>
 
-        {/* Floating Toggle Button */}
-        <div className="fixed bottom-12 left-1/2 -translate-x-1/2 z-[100]">
+        {/* Pagination Section - Fixed at bottom center */}
+        {totalPages > 1 && (
+          <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[90] bg-white/95 backdrop-blur-md rounded-full shadow-2xl border border-gray-100 px-6 py-4">
+            <div className="flex flex-col items-center gap-3">
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => {
+                    setCurrentPage(Math.max(1, currentPage - 1));
+                    window.scrollTo({ top: 0, behavior: "smooth" });
+                  }}
+                  disabled={currentPage === 1}
+                  className="p-2 rounded-full hover:bg-blue-50 disabled:opacity-30 disabled:hover:bg-transparent transition-colors"
+                >
+                  <ChevronLeft size={18} />
+                </button>
+                
+                <div className="flex items-center gap-1">
+                  {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                    <button
+                      key={page}
+                      onClick={() => {
+                        setCurrentPage(page);
+                        window.scrollTo({ top: 0, behavior: "smooth" });
+                      }}
+                      className={`w-9 h-9 rounded-full text-sm font-bold transition-all ${
+                        currentPage === page
+                          ? "bg-blue-600 text-white shadow-md shadow-blue-500/30 scale-110"
+                          : "text-gray-500 hover:bg-blue-50"
+                      }`}
+                    >
+                      {page}
+                    </button>
+                  ))}
+                </div>
+
+                <button
+                  onClick={() => {
+                    setCurrentPage(Math.min(totalPages, currentPage + 1));
+                    window.scrollTo({ top: 0, behavior: "smooth" });
+                  }}
+                  disabled={currentPage === totalPages}
+                  className="p-2 rounded-full hover:bg-blue-50 disabled:opacity-30 disabled:hover:bg-transparent transition-colors"
+                >
+                  <ChevronRight size={18} />
+                </button>
+              </div>
+              <p className="text-xs text-gray-400 font-medium">
+                Showing {(currentPage - 1) * pageSize + 1} - {Math.min(currentPage * pageSize, filteredCount)} of {filteredCount} destinations
+              </p>
+            </div>
+          </div>
+        )}
+
+        {/* Floating Toggle Button - Fixed at right bottom */}
+        <div className="fixed bottom-6 right-6 z-[100]">
           <button
-            onClick={() => setShowMap(!showMap)}
-            className="bg-[#222222] hover:bg-black text-white px-[19px] py-[14px] rounded-full shadow-2xl flex items-center gap-2 transition-all active:scale-95 whitespace-nowrap"
+            onClick={handleToggleMap}
+            className="bg-blue-600 hover:bg-blue-700 text-white px-[19px] py-[14px] rounded-full shadow-2xl shadow-blue-500/40 flex items-center gap-2 transition-all active:scale-95 whitespace-nowrap"
           >
             {showMap ? (
               <>
