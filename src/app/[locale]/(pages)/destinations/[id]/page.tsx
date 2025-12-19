@@ -32,7 +32,7 @@ export default function DestinationDetailPage() {
   const params = useParams();
   const id = params.id as string;
   const router = useRouter();
-  const t = useTranslations("Packages");
+  const t = useTranslations("DestinationDetail");
   const [activeTab, setActiveTab] = useState("overview");
 
   const { data: destination, isLoading, error } = useDestination(id);
@@ -48,13 +48,13 @@ export default function DestinationDetailPage() {
   if (error || !destination) {
     return (
       <div className="min-h-screen bg-white flex flex-col items-center justify-center gap-4">
-        <h2 className="text-2xl font-bold text-gray-900">Destination not found</h2>
+        <h2 className="text-2xl font-bold text-gray-900">{t('notFound')}</h2>
         <button 
           onClick={() => router.back()}
           className="flex items-center gap-2 text-blue-600 font-bold"
         >
           <ArrowLeft size={20} />
-          Back to destinations
+          {t('backToDestinations')}
         </button>
       </div>
     );
@@ -86,14 +86,14 @@ export default function DestinationDetailPage() {
           {/* Breadcrumbs */}
           <nav className="flex items-center gap-2 text-[13px] text-gray-400 mb-8 font-medium">
             <Link href="/" className="hover:text-black transition-colors">
-              Home
+              {t('breadcrumbs.home')}
             </Link>
             <ChevronRight size={12} />
             <Link href="/destinations" className="hover:text-black transition-colors">
-              Destination
+              {t('breadcrumbs.destination')}
             </Link>
             <ChevronRight size={12} />
-            <span className="text-blue-600">Destination Details</span>
+            <span className="text-blue-600">{t('breadcrumbs.details')}</span>
           </nav>
 
           {/* Header Section */}
@@ -105,8 +105,8 @@ export default function DestinationDetailPage() {
               <div className="flex flex-wrap items-center gap-5 text-[15px]">
                 <div className="flex items-center gap-1.5">
                   <Star size={18} className="fill-yellow-400 text-yellow-400" />
-                  <span className="font-bold">4.9</span>
-                  <span className="text-gray-400 font-light underline decoration-gray-300 underline-offset-4 cursor-pointer hover:text-gray-600">(12 Reviews)</span>
+                  <span className="font-bold">{destination.ratings.toFixed(1)}</span>
+                  <span className="text-gray-400 font-light underline decoration-gray-300 underline-offset-4 cursor-pointer hover:text-gray-600">({t('reviews', { count: 12 })})</span>
                 </div>
                 <div className="flex items-center gap-1.5 text-gray-500">
                   <MapPin size={18} className="text-blue-600" />
@@ -118,11 +118,11 @@ export default function DestinationDetailPage() {
             <div className="flex items-center gap-3">
               <button className="flex items-center gap-2 px-5 py-3 rounded-2xl border border-gray-100 hover:border-blue-600 hover:bg-blue-50 transition-all font-bold text-sm shadow-sm bg-white">
                 <Share2 size={18} />
-                <span>Share</span>
+                <span>{t('share')}</span>
               </button>
               <button className="flex items-center gap-2 px-5 py-3 rounded-2xl border border-gray-100 hover:border-red-600 hover:bg-red-50 transition-all font-bold text-sm text-red-600 shadow-sm bg-white">
                 <Heart size={18} />
-                <span>Save</span>
+                <span>{t('save')}</span>
               </button>
             </div>
           </div>
@@ -165,7 +165,7 @@ export default function DestinationDetailPage() {
               />
               <button className="absolute bottom-6 right-6 bg-white/95 backdrop-blur-md px-6 py-3 rounded-2xl text-[13px] font-bold shadow-2xl border border-gray-100 flex items-center gap-2 hover:bg-black hover:text-white transition-all z-10">
                 <MoreHorizontal size={18} />
-                Show all photos
+                {t('showAllPhotos')}
               </button>
             </div>
           </div>
@@ -177,7 +177,7 @@ export default function DestinationDetailPage() {
                 <Clock size={24} />
               </div>
               <div>
-                <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1">Duration</p>
+                <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1">{t('duration')}</p>
                 <p className="text-lg font-black">9 hr</p>
               </div>
             </div>
@@ -186,8 +186,8 @@ export default function DestinationDetailPage() {
                 <Palmtree size={24} />
               </div>
               <div>
-                <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1">Tour Type</p>
-                <p className="text-lg font-black">Daily Tour</p>
+                <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1">{t('tourType')}</p>
+                <p className="text-lg font-black">{t('dailyTour')}</p>
               </div>
             </div>
             <div className="flex items-center gap-4 px-4 border-l border-gray-100">
@@ -195,8 +195,8 @@ export default function DestinationDetailPage() {
                 <Users size={24} />
               </div>
               <div>
-                <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1">Group Size</p>
-                <p className="text-lg font-black">40 person</p>
+                <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1">{t('groupSize')}</p>
+                <p className="text-lg font-black">40 {t('person')}</p>
               </div>
             </div>
             <div className="flex items-center gap-4 px-4 border-l border-gray-100">
@@ -204,7 +204,7 @@ export default function DestinationDetailPage() {
                 <Globe size={24} />
               </div>
               <div>
-                <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1">Languages</p>
+                <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1">{t('languages')}</p>
                 <p className="text-lg font-black">EN, FR</p>
               </div>
             </div>
@@ -216,7 +216,7 @@ export default function DestinationDetailPage() {
               
               {/* Overview */}
               <section className="space-y-6">
-                <h2 className="text-2xl font-black text-gray-900">Overview</h2>
+                <h2 className="text-2xl font-black text-gray-900">{t('overview')}</h2>
                 <p className="text-gray-500 leading-relaxed font-light text-[17px]">
                   {destination.description} This full-day PRIVATE tour to discover the landmarks of the capital of Oman since 1793. 
                   In this tour, you will enjoy panoramic views of Muscat and we will explore Oman's rich cultural heritage, 
@@ -226,7 +226,7 @@ export default function DestinationDetailPage() {
 
               {/* Highlights */}
               <section className="space-y-6">
-                <h2 className="text-2xl font-black text-gray-900">Highlights</h2>
+                <h2 className="text-2xl font-black text-gray-900">{t('highlights')}</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-y-5 gap-x-10">
                   {highlights.map((highlight, i) => (
                     <div key={i} className="flex items-start gap-4">
@@ -241,7 +241,7 @@ export default function DestinationDetailPage() {
 
               {/* Facilities */}
               <section className="space-y-10 pt-10 border-t border-gray-100">
-                <h2 className="text-2xl font-black text-gray-900">Our Best Facilities</h2>
+                <h2 className="text-2xl font-black text-gray-900">{t('facilities')}</h2>
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-y-10 gap-x-6">
                   {facilities.map((facility, i) => (
                     <div key={i} className="flex items-center gap-5 group">
@@ -257,8 +257,8 @@ export default function DestinationDetailPage() {
               {/* Location */}
               <section className="space-y-8 pt-10 border-t border-gray-100">
                 <div className="flex items-center justify-between">
-                  <h2 className="text-2xl font-black text-gray-900">Location</h2>
-                  <button className="text-blue-600 font-bold text-[15px] hover:underline underline-offset-4">Show on map</button>
+                  <h2 className="text-2xl font-black text-gray-900">{t('location')}</h2>
+                  <button className="text-blue-600 font-bold text-[15px] hover:underline underline-offset-4">{t('showOnMap')}</button>
                 </div>
                 <div className="aspect-[2/1] bg-blue-50/30 rounded-[40px] border border-blue-100 overflow-hidden relative group cursor-pointer">
                   <div className="absolute inset-0 bg-[url('https://api.mapbox.com/styles/v1/mapbox/light-v10/static/0,0,0,0,0/800x800?access_token=pk.placeholder')] bg-cover opacity-20 grayscale transition-transform duration-1000 group-hover:scale-105" />
@@ -276,25 +276,25 @@ export default function DestinationDetailPage() {
               <div className="sticky top-32 bg-white rounded-[40px] border border-gray-100 shadow-2xl shadow-blue-500/10 p-10 space-y-10">
                 <div className="flex items-baseline justify-between">
                   <div className="space-y-1">
-                    <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Price starts from</p>
+                    <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">{t('priceStartsFrom')}</p>
                     <div className="flex items-baseline gap-1.5">
                       <span className="text-4xl font-black text-gray-900">${destination.price.toFixed(2)}</span>
-                      <span className="text-gray-400 font-light text-[15px]">/ night</span>
+                      <span className="text-gray-400 font-light text-[15px]">{t('perNight')}</span>
                     </div>
                   </div>
                   <div className="bg-orange-50 text-orange-600 px-4 py-2.5 rounded-full text-[11px] font-black uppercase tracking-wider flex items-center gap-2">
                     <Info size={14} />
-                    <span>Best Price</span>
+                    <span>{t('bestPrice')}</span>
                   </div>
                 </div>
 
                 <div className="flex border border-gray-100 rounded-[24px] overflow-hidden bg-gray-50/50">
                   <button className="flex-1 px-6 py-5 flex flex-col items-start gap-1.5 hover:bg-white transition-colors border-r border-gray-100">
-                    <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Check In</span>
+                    <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">{t('checkIn')}</span>
                     <span className="text-[15px] font-black">Aug 2, 2024</span>
                   </button>
                   <button className="flex-1 px-6 py-5 flex flex-col items-start gap-1.5 hover:bg-white transition-colors">
-                    <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Check Out</span>
+                    <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">{t('checkOut')}</span>
                     <span className="text-[15px] font-black">Aug 5, 2024</span>
                   </button>
                 </div>
@@ -302,16 +302,16 @@ export default function DestinationDetailPage() {
                 <div className="space-y-5">
                   <div className="flex items-center justify-between text-gray-500 text-[15px] font-medium">
                     <div className="flex items-center gap-2 underline decoration-gray-200 decoration-dotted underline-offset-4">
-                      <span>${destination.price.toFixed(2)} x 3 nights</span>
+                      <span>${destination.price.toFixed(2)} x {t('nights', { count: 3 })}</span>
                     </div>
                     <span>${(destination.price * 3).toFixed(2)}</span>
                   </div>
                   <div className="flex items-center justify-between text-gray-500 text-[15px] font-medium">
-                    <span className="underline decoration-gray-200 decoration-dotted underline-offset-4">Service Fee</span>
+                    <span className="underline decoration-gray-200 decoration-dotted underline-offset-4">{t('serviceFee')}</span>
                     <span>$0.00</span>
                   </div>
                   <div className="pt-8 border-t border-gray-100 flex items-center justify-between">
-                    <span className="text-lg font-black text-gray-900">Total Price</span>
+                    <span className="text-lg font-black text-gray-900">{t('totalPrice')}</span>
                     <span className="text-3xl font-black text-blue-600">${(destination.price * 3).toFixed(2)}</span>
                   </div>
                 </div>
@@ -349,3 +349,4 @@ export default function DestinationDetailPage() {
     </div>
   );
 }
+

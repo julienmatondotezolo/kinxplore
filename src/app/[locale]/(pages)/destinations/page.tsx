@@ -48,7 +48,7 @@ const categoryIcons: Record<string, React.ReactNode> = {
 };
 
 export default function DestinationsPage() {
-  const t = useTranslations("Packages");
+  const t = useTranslations("Destinations");
   const [showMap, setShowMap] = useState(false);
   const [showMobileFilters, setShowMobileFilters] = useState(false);
 
@@ -112,7 +112,7 @@ export default function DestinationsPage() {
       <div className="min-h-screen bg-white flex items-center justify-center">
         <div className="text-center">
           <div className="w-12 h-12 border-4 border-black border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-gray-500 font-medium">Loading...</p>
+          <p className="text-gray-500 font-medium">{t('loading')}</p>
         </div>
       </div>
     );
@@ -158,18 +158,18 @@ export default function DestinationsPage() {
           <div className="hidden md:block max-w-[2520px] mx-auto px-4 sm:px-8 md:px-12 lg:px-16 mb-8 relative z-10">
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
               <div className="space-y-2">
-                <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-gray-900">
-                  {searchQuery.trim() !== ""
-                    ? `${filteredCount} results for "${searchQuery}"`
-                    : activeCategory === 'all'
-                      ? `${totalCount} destinations in Kinshasa`
-                      : `${getCountByCategory(activeCategory)} ${activeCategory}s in Kinshasa`}
-                </h1>
-                <p className="text-gray-500 text-lg font-light">
-                  {activeCategory === 'all'
-                    ? "Explore all our available properties in the heart of Kinshasa."
-                    : `Browse our curated selection of ${activeCategory}s for your perfect stay.`}
-                </p>
+            <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-gray-900">
+              {searchQuery.trim() !== ""
+                ? t('searchResults', { count: filteredCount, query: searchQuery })
+                : activeCategory === 'all'
+                  ? t('title', { count: totalCount })
+                  : t('titleWithCategory', { count: getCountByCategory(activeCategory), category: activeCategory })}
+            </h1>
+            <p className="text-gray-500 text-lg font-light">
+              {activeCategory === 'all'
+                ? t('subtitle')
+                : t('subtitleCategory', { category: activeCategory })}
+            </p>
               </div>
               <DestinationSearch />
             </div>
@@ -179,34 +179,72 @@ export default function DestinationsPage() {
           <div className="md:hidden max-w-[2520px] mx-auto px-4 mb-6 relative z-10">
             <h1 className="text-2xl font-bold tracking-tight text-gray-900 mb-2">
               {searchQuery.trim() !== ""
-                ? `${filteredCount} results`
+                ? t('searchResults', { count: filteredCount, query: searchQuery }).split(' pour ')[0].split(' for ')[0]
                 : activeCategory === 'all'
-                  ? `${totalCount} destinations`
-                  : `${getCountByCategory(activeCategory)} ${activeCategory}s`}
+                  ? t('title', { count: totalCount }).split(' à Kinshasa')[0].split(' in Kinshasa')[0]
+                  : t('titleWithCategory', { count: getCountByCategory(activeCategory), category: activeCategory }).split(' à Kinshasa')[0].split(' in Kinshasa')[0]}
             </h1>
             <p className="text-gray-500 text-sm font-light">
-              in Kinshasa
+              {searchQuery.trim() !== "" && `${t('searchPlaceholder').includes('Rechercher') ? 'pour' : 'for'} "${searchQuery}"`}
+              {searchQuery.trim() === "" && (t('title', { count: 0 }).includes('à Kinshasa') ? 'à Kinshasa' : 'in Kinshasa')}
             </p>
           </div>
 
           {/* Mobile Search Bar */}
-          <div className="md:hidden sticky top-[72px] z-50 bg-white/95 backdrop-blur-md border-b border-gray-100 px-4 py-3">
-            <div className="flex items-center gap-2">
-              <div className="flex-1">
-                <DestinationSearch />
-              </div>
-              <button 
-                onClick={() => setShowMobileFilters(true)}
-                className="flex items-center gap-2 border border-gray-200 rounded-xl px-4 py-3 hover:border-blue-600 transition-all bg-white shrink-0"
-              >
+          <div className="md:hidden sticky top-[72px] z-50 bg-white/95 backdrop-blur-md border-b border-gray-100">
+            <div className="px-4 py-3">
+              <div className="flex items-center gap-2">
+                <div className="flex-1">
+                  <DestinationSearch />
+                </div>
+                <button 
+                  onClick={() => setShowMobileFilters(true)}
+                  className="flex items-center gap-2 border border-gray-200 rounded-xl px-4 py-3 hover:border-blue-600 transition-all bg-white shrink-0"
+                >
                 <SlidersHorizontal size={18} className="text-blue-600" />
-                <span className="text-sm font-bold">Filters</span>
-              </button>
+                <span className="text-sm font-bold">{t('filters')}</span>
+                </button>
+              </div>
+
+              {/* Active Filters - Mobile (Inside sticky bar) */}
+              {(activeCategory !== 'all' || searchQuery.trim() !== '') && (
+                <div className="flex items-center gap-2 flex-wrap mt-3 pt-3 border-t border-gray-100">
+                  {activeCategory !== 'all' && (
+                    <button
+                      onClick={() => setActiveCategory('all')}
+                      className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-50 border border-blue-200 rounded-full text-xs font-bold text-blue-600 hover:bg-blue-100 transition-all"
+                    >
+                      <span className="capitalize">{activeCategory}</span>
+                      <X size={12} />
+                    </button>
+                  )}
+
+                  {searchQuery.trim() !== '' && (
+                    <button
+                      onClick={() => useDestinationStore.getState().setSearchQuery('')}
+                      className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-50 border border-blue-200 rounded-full text-xs font-bold text-blue-600 hover:bg-blue-100 transition-all"
+                    >
+                      <span className="max-w-[120px] truncate">"{searchQuery}"</span>
+                      <X size={12} />
+                    </button>
+                  )}
+
+                  <button
+                    onClick={() => {
+                      setActiveCategory('all');
+                      useDestinationStore.getState().setSearchQuery('');
+                    }}
+                    className="text-xs font-bold text-gray-400 hover:text-gray-600 underline underline-offset-2 transition-colors ml-auto"
+                  >
+                    {t('clearAll')}
+                  </button>
+                </div>
+              )}
             </div>
           </div>
 
           {/* Category Header - Airbnb Style */}
-          <div className="hidden md:block sticky top-[72px] z-50 bg-white/80 backdrop-blur-md border-b border-blue-100/50 shadow-sm mb-10">
+          <div className="hidden md:block sticky top-[72px] z-50 bg-white/80 backdrop-blur-md border-b border-blue-100/50 shadow-sm mb-6">
             <div className="max-w-[2520px] mx-auto px-4 sm:px-8 md:px-12 lg:px-16 flex items-center gap-6">
               {/* Horizontal Scrollable Categories */}
               <div className="flex-1 overflow-x-auto scrollbar-none py-4 flex items-center gap-10 md:gap-14">
@@ -241,14 +279,54 @@ export default function DestinationsPage() {
             </div>
 
             {/* Filters Button */}
-            <div className="hidden md:flex items-center shrink-0">
-              <button className="flex items-center gap-2.5 border border-blue-200 rounded-xl px-5 py-3.5 hover:border-blue-600 hover:bg-blue-50 transition-all group shadow-sm bg-white">
-                <SlidersHorizontal size={18} className="group-hover:scale-110 transition-transform text-blue-600" />
-                <span className="text-sm font-bold text-gray-900">Filters</span>
-              </button>
+              <div className="hidden md:flex items-center shrink-0">
+                <button className="flex items-center gap-2.5 border border-blue-200 rounded-xl px-5 py-3.5 hover:border-blue-600 hover:bg-blue-50 transition-all group shadow-sm bg-white">
+                  <SlidersHorizontal size={18} className="group-hover:scale-110 transition-transform text-blue-600" />
+                  <span className="text-sm font-bold text-gray-900">{t('filters')}</span>
+                </button>
+              </div>
             </div>
           </div>
-        </div>
+
+          {/* Active Filters - Desktop */}
+          {(activeCategory !== 'all' || searchQuery.trim() !== '') && (
+            <div className="hidden md:block max-w-[2520px] mx-auto px-4 sm:px-8 md:px-12 lg:px-16 mb-8">
+              <div className="flex items-center gap-3 flex-wrap">
+                <span className="text-sm font-bold text-gray-400 uppercase tracking-wider">{t('activeFilters')}</span>
+                
+                {activeCategory !== 'all' && (
+                  <button
+                    onClick={() => setActiveCategory('all')}
+                    className="flex items-center gap-2 px-4 py-2 bg-blue-50 border border-blue-200 rounded-full text-sm font-bold text-blue-600 hover:bg-blue-100 transition-all group"
+                  >
+                    <span className="capitalize">{activeCategory}</span>
+                    <X size={14} className="group-hover:scale-110 transition-transform" />
+                  </button>
+                )}
+
+                {searchQuery.trim() !== '' && (
+                  <button
+                    onClick={() => useDestinationStore.getState().setSearchQuery('')}
+                    className="flex items-center gap-2 px-4 py-2 bg-blue-50 border border-blue-200 rounded-full text-sm font-bold text-blue-600 hover:bg-blue-100 transition-all group"
+                  >
+                    <span>Search: "{searchQuery}"</span>
+                    <X size={14} className="group-hover:scale-110 transition-transform" />
+                  </button>
+                )}
+
+                <button
+                  onClick={() => {
+                    setActiveCategory('all');
+                    useDestinationStore.getState().setSearchQuery('');
+                  }}
+                  className="text-sm font-bold text-gray-400 hover:text-gray-600 underline underline-offset-4 transition-colors"
+                >
+                  {t('clearAll')}
+                </button>
+              </div>
+            </div>
+          )}
+
 
             <div className={`max-w-[2520px] mx-auto px-4 sm:px-8 md:px-12 lg:px-16`}>
               <div className={`flex flex-col lg:flex-row gap-10 ${showMap ? "lg:h-[calc(100vh-220px)] overflow-hidden" : ""}`}>
@@ -268,7 +346,7 @@ export default function DestinationsPage() {
                       }`}
                     >
                       <List size={16} />
-                      <span>List</span>
+                      <span>{t('listView')}</span>
                     </button>
                     <button
                       onClick={() => setViewMode("grid")}
@@ -284,7 +362,7 @@ export default function DestinationsPage() {
                         <rect x="1" y="9" width="6" height="6" rx="1" stroke="currentColor" strokeWidth="2"/>
                         <rect x="9" y="9" width="6" height="6" rx="1" stroke="currentColor" strokeWidth="2"/>
                       </svg>
-                      <span>Grid</span>
+                      <span>{t('gridView')}</span>
                     </button>
                   </div>
                 </div>
@@ -293,13 +371,13 @@ export default function DestinationsPage() {
               {paginatedDestinations.length === 0 ? (
                 <div className="text-center py-32 bg-blue-50/50 rounded-3xl border-2 border-dashed border-blue-200">
                   <Compass size={64} className="mx-auto text-blue-300 mb-6 stroke-[1.5]" />
-                  <h3 className="text-2xl font-bold text-gray-900 mb-3">No results found</h3>
-                  <p className="text-gray-500 mb-8 max-w-sm mx-auto">We couldn't find any destinations matching your current filters. Try broadening your search.</p>
+                  <h3 className="text-2xl font-bold text-gray-900 mb-3">{t('noResults')}</h3>
+                  <p className="text-gray-500 mb-8 max-w-sm mx-auto">{t('noResultsDesc')}</p>
                   <button
                     onClick={() => setActiveCategory("all")}
                     className="bg-blue-600 text-white px-10 py-3.5 rounded-full font-bold hover:bg-blue-700 transition-all shadow-lg shadow-blue-500/30 hover:shadow-xl active:scale-95"
                   >
-                    Show all destinations
+                    {t('showAllDestinations')}
                   </button>
                 </div>
               ) : (
@@ -378,13 +456,13 @@ export default function DestinationsPage() {
                           <div className="mt-2 flex items-baseline justify-between">
                             <div className="flex items-baseline gap-1.5">
                               <span className={`font-bold text-gray-900 ${viewMode === 'grid' ? 'text-[17px]' : 'text-xl'}`}>${dest.price}</span>
-                              <span className="text-gray-500 text-sm font-light">total before taxes</span>
+                              <span className="text-gray-500 text-sm font-light">{t('totalBeforeTaxes')}</span>
                             </div>
                             
                             {viewMode === "list" && (
                               <div className="hidden md:flex items-center gap-1 text-xs font-bold text-orange-600 border border-orange-200 bg-orange-50 px-3 py-1.5 rounded-full">
                                 <Star size={12} className="fill-orange-400 text-orange-400" />
-                                <span>Guest favorite</span>
+                                <span>{t('guestFavorite')}</span>
                               </div>
                             )}
                           </div>
@@ -480,7 +558,11 @@ export default function DestinationsPage() {
                 </button>
               </div>
               <p className="text-xs text-gray-400 font-medium">
-                Showing {(currentPage - 1) * pageSize + 1} - {Math.min(currentPage * pageSize, filteredCount)} of {filteredCount} destinations
+                {t('showing', { 
+                  start: (currentPage - 1) * pageSize + 1, 
+                  end: Math.min(currentPage * pageSize, filteredCount), 
+                  total: filteredCount 
+                })}
               </p>
             </div>
           </div>
@@ -495,12 +577,12 @@ export default function DestinationsPage() {
             {showMap ? (
               <>
                 <List size={16} strokeWidth={2.5} />
-                <span className="text-[14px] font-bold">Show list</span>
+                <span className="text-[14px] font-bold">{t('showList')}</span>
               </>
             ) : (
               <>
                 <MapIcon size={16} strokeWidth={2.5} />
-                <span className="text-[14px] font-bold">Show map</span>
+                <span className="text-[14px] font-bold">{t('showMap')}</span>
               </>
             )}
           </button>
@@ -512,7 +594,7 @@ export default function DestinationsPage() {
             <div className="absolute inset-x-0 bottom-0 bg-white rounded-t-[32px] max-h-[85vh] overflow-hidden flex flex-col animate-in slide-in-from-bottom duration-300">
               {/* Modal Header */}
               <div className="flex items-center justify-between px-6 py-5 border-b border-gray-100">
-                <h2 className="text-xl font-bold text-gray-900">Filters</h2>
+                <h2 className="text-xl font-bold text-gray-900">{t('filters')}</h2>
                 <button 
                   onClick={() => setShowMobileFilters(false)}
                   className="p-2 hover:bg-gray-100 rounded-full transition-colors"
@@ -526,7 +608,7 @@ export default function DestinationsPage() {
                 <div className="space-y-8">
                   {/* Categories Section */}
                   <div className="space-y-4">
-                    <h3 className="text-sm font-bold uppercase tracking-wider text-gray-400">Categories</h3>
+                    <h3 className="text-sm font-bold uppercase tracking-wider text-gray-400">{t('filters')}</h3>
                     <div className="grid grid-cols-2 gap-3">
                       {categoryList.map((cat) => {
                         const count = getCountByCategory(cat);
@@ -565,7 +647,7 @@ export default function DestinationsPage() {
 
                   {/* Price Range Section (Placeholder for future implementation) */}
                   <div className="space-y-4 pt-6 border-t border-gray-100">
-                    <h3 className="text-sm font-bold uppercase tracking-wider text-gray-400">Price Range</h3>
+                    <h3 className="text-sm font-bold uppercase tracking-wider text-gray-400">{t('priceRange')}</h3>
                     <div className="space-y-4">
                       <div className="flex items-center justify-between text-sm">
                         <span className="text-gray-600">Min: $0</span>
@@ -580,7 +662,7 @@ export default function DestinationsPage() {
                   {/* Results Count */}
                   <div className="pt-6 border-t border-gray-100">
                     <p className="text-center text-gray-500 text-sm">
-                      Showing <span className="font-bold text-gray-900">{filteredCount}</span> destinations
+                      {t('showing', { start: 1, end: filteredCount, total: filteredCount }).split('-')[0]} <span className="font-bold text-gray-900">{filteredCount}</span> {t('title', { count: 0 }).split(' ').pop()}
                     </p>
                   </div>
                 </div>
@@ -594,13 +676,13 @@ export default function DestinationsPage() {
                   }}
                   className="flex-1 px-6 py-4 rounded-2xl border border-gray-200 font-bold text-gray-900 hover:bg-gray-50 transition-all"
                 >
-                  Clear all
+                  {t('clearAll')}
                 </button>
                 <button
                   onClick={() => setShowMobileFilters(false)}
                   className="flex-1 px-6 py-4 rounded-2xl bg-blue-600 font-bold text-white hover:bg-blue-700 transition-all shadow-lg shadow-blue-500/30"
                 >
-                  Show {filteredCount} results
+                  {t('showResults', { count: filteredCount })}
                 </button>
               </div>
             </div>
