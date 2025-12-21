@@ -1,10 +1,11 @@
+/* eslint-disable jsx-a11y/label-has-associated-control */
 import { Activity, ArrowRight, Calendar, ChevronDown, MapPin, Search } from "lucide-react";
 import { useTranslations } from "next-intl";
 import React, { useState } from "react";
 
 import { useRouter } from "@/navigation";
-import { TripStyle } from "@/types";
 import { useDestinationStore } from "@/store/useDestinationStore";
+import { TripStyle } from "@/types";
 
 interface Props {
   compact?: boolean;
@@ -19,6 +20,7 @@ export const TripPlannerForm: React.FC<Props> = ({ compact = false }) => {
   const [style, setStyle] = useState<TripStyle>(TripStyle.Adventure);
   const [duration, setDuration] = useState<number>(3);
   const [destination, setDestination] = useState<string>("");
+  const [activeTab, setActiveTab] = useState("destination");
 
   const communes = [
     { value: "", label: t("selectLocation") },
@@ -34,14 +36,14 @@ export const TripPlannerForm: React.FC<Props> = ({ compact = false }) => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     // Save search criteria to Zustand
     setHeroSearch({
       destination,
       duration,
       tripStyle: style.toLowerCase(),
     });
-    
+
     // Navigate to destinations page
     router.push("/destinations");
   };

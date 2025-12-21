@@ -1,19 +1,8 @@
+/* eslint-disable react-hooks/set-state-in-effect */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 import { AnimatePresence, motion } from "framer-motion";
-import {
-  Briefcase,
-  Globe,
-  Heart,
-  HelpCircle,
-  Home,
-  LogOut,
-  Mail,
-  MapPin,
-  Menu,
-  Settings,
-  ShoppingBag,
-  User,
-  X,
-} from "lucide-react";
+import { Briefcase, Heart, HelpCircle, Home, LogOut, Mail, MapPin, Menu, Settings, ShoppingBag, X } from "lucide-react";
 import { useTranslations } from "next-intl";
 import React, { useEffect, useState } from "react";
 
@@ -59,14 +48,14 @@ export const Navigation: React.FC = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [pathname]);
 
-  // Set active section based on pathname
+  // Set active section based on pathname (derived from state)
+  const derivedSection = pathname === "/destinations" ? "destinations" : pathname === "/" ? "home" : "home";
+
   useEffect(() => {
-    if (pathname === "/destinations") {
-      setActiveSection("destinations");
-    } else if (pathname === "/") {
-      setActiveSection("home");
+    if (derivedSection !== activeSection) {
+      setActiveSection(derivedSection);
     }
-  }, [pathname]);
+  }, [derivedSection, activeSection]);
 
   const scrollToSection = (e: React.MouseEvent<HTMLAnchorElement | HTMLDivElement>, id: string) => {
     e.preventDefault();

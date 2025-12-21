@@ -2,7 +2,8 @@
  * React Query hooks for Categories
  */
 
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+
 import { categoriesApi } from "@/lib/api";
 import { ParentCategoryWithSubcategories } from "@/types/api.types";
 
@@ -57,13 +58,7 @@ export function useCategoryMutation() {
   });
 
   const updateCategory = useMutation({
-    mutationFn: async ({
-      id,
-      data,
-    }: {
-      id: string;
-      data: Partial<ParentCategoryWithSubcategories>;
-    }) => {
+    mutationFn: async ({ id, data }: { id: string; data: Partial<ParentCategoryWithSubcategories> }) => {
       // Placeholder - implement when backend endpoint is ready
       throw new Error("Update category endpoint not yet implemented");
     },

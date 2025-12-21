@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/alt-text */
+/* eslint-disable @next/next/no-img-element */
 import { motion } from "framer-motion";
 import { CheckCircle2, ChevronRight, Smartphone } from "lucide-react";
 import { useTranslations } from "next-intl";

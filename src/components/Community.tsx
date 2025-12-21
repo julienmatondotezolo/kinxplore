@@ -3,16 +3,76 @@ import { useTranslations } from "next-intl";
 import React from "react";
 
 const users = [
-  { id: 1, img: "https://picsum.photos/100/100?random=301", size: "w-20 h-20", pos: "top-[10%] left-[15%]", duration: 4.5 },
-  { id: 2, img: "https://picsum.photos/100/100?random=302", size: "w-16 h-16", pos: "top-[25%] left-[5%]", duration: 5.2 },
-  { id: 3, img: "https://picsum.photos/100/100?random=303", size: "w-24 h-24", pos: "top-[45%] left-[12%]", duration: 4.8 },
-  { id: 4, img: "https://picsum.photos/100/100?random=304", size: "w-14 h-14", pos: "bottom-[15%] left-[8%]", duration: 5.5 },
-  { id: 5, img: "https://picsum.photos/100/100?random=305", size: "w-20 h-20", pos: "top-[12%] right-[18%]", duration: 4.2 },
-  { id: 6, img: "https://picsum.photos/100/100?random=306", size: "w-16 h-16", pos: "top-[28%] right-[6%]", duration: 5.1 },
-  { id: 7, img: "https://picsum.photos/100/100?random=307", size: "w-24 h-24", pos: "top-[48%] right-[14%]", duration: 4.9 },
-  { id: 8, img: "https://picsum.photos/100/100?random=308", size: "w-14 h-14", pos: "bottom-[18%] right-[10%]", duration: 5.3 },
-  { id: 9, img: "https://picsum.photos/100/100?random=309", size: "w-12 h-12", pos: "bottom-[10%] left-[30%]", duration: 4.6 },
-  { id: 10, img: "https://picsum.photos/100/100?random=310", size: "w-12 h-12", pos: "bottom-[12%] right-[32%]", duration: 5.4 },
+  {
+    id: 1,
+    img: "https://picsum.photos/100/100?random=301",
+    size: "w-20 h-20",
+    pos: "top-[10%] left-[15%]",
+    duration: 4.5,
+  },
+  {
+    id: 2,
+    img: "https://picsum.photos/100/100?random=302",
+    size: "w-16 h-16",
+    pos: "top-[25%] left-[5%]",
+    duration: 5.2,
+  },
+  {
+    id: 3,
+    img: "https://picsum.photos/100/100?random=303",
+    size: "w-24 h-24",
+    pos: "top-[45%] left-[12%]",
+    duration: 4.8,
+  },
+  {
+    id: 4,
+    img: "https://picsum.photos/100/100?random=304",
+    size: "w-14 h-14",
+    pos: "bottom-[15%] left-[8%]",
+    duration: 5.5,
+  },
+  {
+    id: 5,
+    img: "https://picsum.photos/100/100?random=305",
+    size: "w-20 h-20",
+    pos: "top-[12%] right-[18%]",
+    duration: 4.2,
+  },
+  {
+    id: 6,
+    img: "https://picsum.photos/100/100?random=306",
+    size: "w-16 h-16",
+    pos: "top-[28%] right-[6%]",
+    duration: 5.1,
+  },
+  {
+    id: 7,
+    img: "https://picsum.photos/100/100?random=307",
+    size: "w-24 h-24",
+    pos: "top-[48%] right-[14%]",
+    duration: 4.9,
+  },
+  {
+    id: 8,
+    img: "https://picsum.photos/100/100?random=308",
+    size: "w-14 h-14",
+    pos: "bottom-[18%] right-[10%]",
+    duration: 5.3,
+  },
+  {
+    id: 9,
+    img: "https://picsum.photos/100/100?random=309",
+    size: "w-12 h-12",
+    pos: "bottom-[10%] left-[30%]",
+    duration: 4.6,
+  },
+  {
+    id: 10,
+    img: "https://picsum.photos/100/100?random=310",
+    size: "w-12 h-12",
+    pos: "bottom-[12%] right-[32%]",
+    duration: 5.4,
+  },
 ];
 
 export const Community: React.FC = () => {
@@ -35,12 +95,12 @@ export const Community: React.FC = () => {
               transition={{ duration: 0.5, delay: user.id * 0.1 }}
               className={`absolute ${user.pos} ${user.size} rounded-full border-4 border-white shadow-xl overflow-hidden hover:scale-110 transition-transform duration-500 cursor-pointer hidden md:block`}
             >
-              <motion.img 
+              <motion.img
                 animate={{ y: [0, -10, 0] }}
                 transition={{ duration: user.duration, repeat: Infinity, ease: "easeInOut" }}
-                src={user.img} 
-                alt="Community Member" 
-                className="w-full h-full object-cover" 
+                src={user.img}
+                alt="Community Member"
+                className="w-full h-full object-cover"
               />
             </motion.div>
           ))}

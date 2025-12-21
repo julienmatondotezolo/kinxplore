@@ -4,39 +4,37 @@
 
 import { create } from "zustand";
 import { devtools, persist } from "zustand/middleware";
-import {
-  DestinationWithCategories,
-  ParentCategoryWithSubcategories,
-} from "@/types/api.types";
+
+import { DestinationWithCategories, ParentCategoryWithSubcategories } from "@/types/api.types";
 
 interface DestinationStore {
   // Data
   destinations: DestinationWithCategories[];
   categories: ParentCategoryWithSubcategories[];
-  
+
   // Filters
   activeCategory: string;
   searchQuery: string;
   priceRange: { min: number; max: number };
-  
+
   // Hero Search Criteria
   heroSearch: {
     destination: string;
     duration: number;
     tripStyle: string;
   } | null;
-  
+
   // Pagination
   currentPage: number;
   pageSize: number;
-  
+
   // View Mode
   viewMode: "grid" | "list";
-  
+
   // Loading states
   isLoading: boolean;
   error: string | null;
-  
+
   // Actions
   setDestinations: (destinations: DestinationWithCategories[]) => void;
   setCategories: (categories: ParentCategoryWithSubcategories[]) => void;
@@ -48,7 +46,7 @@ interface DestinationStore {
   setViewMode: (mode: "grid" | "list") => void;
   setLoading: (loading: boolean) => void;
   setError: (error: string | null) => void;
-  
+
   // Computed/Helper functions
   getFilteredDestinations: () => DestinationWithCategories[];
   getPaginatedDestinations: () => DestinationWithCategories[];
@@ -77,54 +75,36 @@ export const useDestinationStore = create<DestinationStore>()(
         error: null,
 
         // Actions
-        setDestinations: (destinations) =>
-          set({ destinations }, false, "setDestinations"),
+        setDestinations: (destinations) => set({ destinations }, false, "setDestinations"),
 
-        setCategories: (categories) =>
-          set({ categories }, false, "setCategories"),
+        setCategories: (categories) => set({ categories }, false, "setCategories"),
 
-        setActiveCategory: (category) =>
-          set({ activeCategory: category, currentPage: 1 }, false, "setActiveCategory"),
+        setActiveCategory: (category) => set({ activeCategory: category, currentPage: 1 }, false, "setActiveCategory"),
 
-        setSearchQuery: (query) =>
-          set({ searchQuery: query, currentPage: 1 }, false, "setSearchQuery"),
+        setSearchQuery: (query) => set({ searchQuery: query, currentPage: 1 }, false, "setSearchQuery"),
 
-        setPriceRange: (range) =>
-          set({ priceRange: range, currentPage: 1 }, false, "setPriceRange"),
+        setPriceRange: (range) => set({ priceRange: range, currentPage: 1 }, false, "setPriceRange"),
 
-        setHeroSearch: (search) =>
-          set({ heroSearch: search }, false, "setHeroSearch"),
+        setHeroSearch: (search) => set({ heroSearch: search }, false, "setHeroSearch"),
 
-        setCurrentPage: (page) =>
-          set({ currentPage: page }, false, "setCurrentPage"),
+        setCurrentPage: (page) => set({ currentPage: page }, false, "setCurrentPage"),
 
-        setViewMode: (mode) =>
-          set({ viewMode: mode }, false, "setViewMode"),
+        setViewMode: (mode) => set({ viewMode: mode }, false, "setViewMode"),
 
-        setLoading: (loading) =>
-          set({ isLoading: loading }, false, "setLoading"),
+        setLoading: (loading) => set({ isLoading: loading }, false, "setLoading"),
 
-        setError: (error) =>
-          set({ error }, false, "setError"),
+        setError: (error) => set({ error }, false, "setError"),
 
         // Computed functions
         getFilteredDestinations: () => {
-          const {
-            destinations,
-            activeCategory,
-            searchQuery,
-            priceRange,
-          } = get();
+          const { destinations, activeCategory, searchQuery, priceRange } = get();
 
           let filtered = [...destinations];
 
           // Filter by category
           if (activeCategory !== "all") {
             filtered = filtered.filter((dest) =>
-              dest.categories.some(
-                (cat) =>
-                  cat.parent.name.toLowerCase() === activeCategory.toLowerCase()
-              )
+              dest.categories.some((cat) => cat.parent.name.toLowerCase() === activeCategory.toLowerCase()),
             );
           }
 
@@ -135,15 +115,12 @@ export const useDestinationStore = create<DestinationStore>()(
               (dest) =>
                 dest.name.toLowerCase().includes(query) ||
                 dest.location.toLowerCase().includes(query) ||
-                dest.description.toLowerCase().includes(query)
+                dest.description.toLowerCase().includes(query),
             );
           }
 
           // Filter by price range
-          filtered = filtered.filter(
-            (dest) =>
-              dest.price >= priceRange.min && dest.price <= priceRange.max
-          );
+          filtered = filtered.filter((dest) => dest.price >= priceRange.min && dest.price <= priceRange.max);
 
           return filtered;
         },
@@ -168,9 +145,7 @@ export const useDestinationStore = create<DestinationStore>()(
           const { destinations } = get();
           if (category === "all") return destinations.length;
           return destinations.filter((dest) =>
-            dest.categories.some(
-              (cat) => cat.parent.name.toLowerCase() === category.toLowerCase()
-            )
+            dest.categories.some((cat) => cat.parent.name.toLowerCase() === category.toLowerCase()),
           ).length;
         },
 
@@ -188,7 +163,7 @@ export const useDestinationStore = create<DestinationStore>()(
               currentPage: 1,
             },
             false,
-            "resetFilters"
+            "resetFilters",
           ),
       }),
       {
@@ -201,11 +176,7 @@ export const useDestinationStore = create<DestinationStore>()(
           viewMode: state.viewMode,
           heroSearch: state.heroSearch,
         }),
-      }
-    )
-  )
+      },
+    ),
+  ),
 );
-
-
-
-

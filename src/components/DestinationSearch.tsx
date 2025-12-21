@@ -1,7 +1,8 @@
 "use client";
 
 import { Search, X } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
+
 import { useDestinationStore } from "@/store/useDestinationStore";
 
 export function DestinationSearch() {
@@ -49,6 +50,3 @@ export function DestinationSearch() {
     </div>
   );
 }
-
-
-

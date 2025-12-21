@@ -1,32 +1,28 @@
 "use client";
 
-import { Search, MapPin, Calendar, Zap, ChevronDown } from "lucide-react";
-import { useState, useEffect } from "react";
-import { useDestinationStore } from "@/store/useDestinationStore";
+import { Calendar, ChevronDown, MapPin, Search, Zap } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { useEffect, useState } from "react";
+
+import { useDestinationStore } from "@/store/useDestinationStore";
 
 export function HeroSearchBar() {
   const t = useTranslations("Hero");
   const tStyles = useTranslations("TripStyles");
   const tCommunes = useTranslations("Communes");
   const { heroSearch, setHeroSearch, setSearchQuery } = useDestinationStore();
-  
-  const [location, setLocation] = useState(heroSearch?.destination || "");
-  const [duration, setDuration] = useState(heroSearch?.duration || 3);
-  const [tripStyle, setTripStyle] = useState(heroSearch?.tripStyle || "adventure");
 
-  // Apply hero search on mount if it exists
+  // Initialize state from heroSearch
+  const [location, setLocation] = useState(() => heroSearch?.destination || "");
+  const [duration, setDuration] = useState(() => heroSearch?.duration || 3);
+  const [tripStyle, setTripStyle] = useState(() => heroSearch?.tripStyle || "adventure");
+
+  // Apply hero search query on mount if it exists
   useEffect(() => {
-    if (heroSearch) {
-      setLocation(heroSearch.destination);
-      setDuration(heroSearch.duration);
-      setTripStyle(heroSearch.tripStyle);
-      // Apply the location as search query
-      if (heroSearch.destination) {
-        setSearchQuery(heroSearch.destination);
-      }
+    if (heroSearch?.destination) {
+      setSearchQuery(heroSearch.destination);
     }
-  }, []);
+  }, [heroSearch, setSearchQuery]);
 
   const handleSearch = () => {
     // Save to store
@@ -91,7 +87,10 @@ export function HeroSearchBar() {
                 </option>
               ))}
             </select>
-            <ChevronDown size={16} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
+            <ChevronDown
+              size={16}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"
+            />
           </div>
         </div>
 
@@ -154,7 +153,10 @@ export function HeroSearchBar() {
                 </option>
               ))}
             </select>
-            <ChevronDown size={16} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
+            <ChevronDown
+              size={16}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"
+            />
           </div>
         </div>
 

@@ -1,39 +1,38 @@
 "use client";
 
-import { 
-  Compass, 
-  MapPin, 
-  Star, 
-  X,
-  Palmtree,
-  Home,
-  Building2,
-  Warehouse,
+import {
   Bed,
-  Leaf,
-  Waves,
-  Hotel,
-  Mountain,
-  Map as MapIcon,
-  List,
-  SlidersHorizontal,
-  Users,
+  Building2,
   ChevronLeft,
-  ChevronRight
+  ChevronRight,
+  Compass,
+  Home,
+  Hotel,
+  Leaf,
+  List,
+  Map as MapIcon,
+  Mountain,
+  Palmtree,
+  SlidersHorizontal,
+  Star,
+  Users,
+  Warehouse,
+  Waves,
+  X,
 } from "lucide-react";
 import { useTranslations } from "next-intl";
-import React, { useEffect, useState } from "react";
-import { Link, useRouter } from "@/navigation";
+import React, { useEffect, useMemo, useState } from "react";
 
-import { Footer } from "@/components/Footer";
-import { Navigation } from "@/components/Navigation";
 import { DestinationSearch } from "@/components/DestinationSearch";
+import { Footer } from "@/components/Footer";
 import { HeroSearchBar } from "@/components/HeroSearchBar";
 import { MapView } from "@/components/MapView";
+import { Navigation } from "@/components/Navigation";
 import { useCategories } from "@/hooks/useCategories";
 import { useDestinations } from "@/hooks/useDestinations";
+import { generateGridCoordinates, getNeighborhoodCoordinates } from "@/lib/geocoding";
+import { Link, useRouter } from "@/navigation";
 import { useDestinationStore } from "@/store/useDestinationStore";
-import { getNeighborhoodCoordinates, generateGridCoordinates } from "@/lib/geocoding";
 
 // Icon mapping for categories
 const categoryIcons: Record<string, React.ReactNode> = {
@@ -79,6 +78,8 @@ export default function DestinationsPage() {
     setViewMode,
   } = useDestinationStore();
 
+  const router = useRouter();
+
   // Reset to grid view when hiding map
   const handleToggleMap = () => {
     if (showMap) {
@@ -109,13 +110,59 @@ export default function DestinationsPage() {
   const filteredCount = filteredDestinations.length;
   const totalPages = getTotalPages();
 
+  // Memoize map locations to avoid Math.random() being called during render
+  const mapLocations = useMemo(
+    () =>
+      paginatedDestinations.map((dest, index) => {
+        // Try to get coordinates in this order:
+        // 1. Use database coordinates if available
+        // 2. Try to match neighborhood from address
+        // 3. Fall back to grid pattern
+
+        let lat: number, lng: number;
+
+        if (dest.latitude && dest.longitude) {
+          // Use actual coordinates from database
+          lat = dest.latitude;
+          lng = dest.longitude;
+        } else {
+          // Try to match neighborhood from address
+          const neighborhoodCoords = getNeighborhoodCoordinates(dest.location);
+
+          if (neighborhoodCoords) {
+            // Add small random offset to avoid exact overlap (stable per destination)
+            const seed = dest.id; // Use destination ID as seed for consistent positioning
+            const hashCode = seed.split("").reduce((acc, char) => acc + char.charCodeAt(0), 0);
+            const pseudoRandom = (hashCode % 1000) / 1000; // Generate pseudo-random value between 0-1
+            lat = neighborhoodCoords.lat + (pseudoRandom - 0.5) * 0.005;
+            lng = neighborhoodCoords.lng + (pseudoRandom - 0.5) * 0.005;
+          } else {
+            // Use grid pattern as final fallback
+            const gridCoords = generateGridCoordinates(index, paginatedDestinations.length);
+            lat = gridCoords.lat;
+            lng = gridCoords.lng;
+          }
+        }
+
+        return {
+          id: dest.id,
+          name: dest.name,
+          price: dest.price,
+          address: dest.location,
+          lat,
+          lng,
+        };
+      }),
+    [paginatedDestinations],
+  );
+
   // Loading state
   if (isLoadingDestinations || isLoadingCategories) {
     return (
       <div className="min-h-screen bg-white flex items-center justify-center">
         <div className="text-center">
           <div className="w-12 h-12 border-4 border-black border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-gray-500 font-medium">{t('loading')}</p>
+          <p className="text-gray-500 font-medium">{t("loading")}</p>
         </div>
       </div>
     );
@@ -149,113 +196,124 @@ export default function DestinationsPage() {
         {/* Animated Background Blobs */}
         <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
           <div className="absolute -top-40 -right-40 w-[500px] h-[500px] bg-gradient-to-br from-blue-400/20 to-purple-400/20 rounded-full blur-3xl animate-pulse" />
-          <div className="absolute -bottom-20 -left-20 w-[400px] h-[400px] bg-gradient-to-tr from-pink-400/15 to-orange-400/15 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1000ms' }} />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-r from-yellow-400/10 to-blue-400/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '500ms' }} />
-          
+          <div
+            className="absolute -bottom-20 -left-20 w-[400px] h-[400px] bg-gradient-to-tr from-pink-400/15 to-orange-400/15 rounded-full blur-3xl animate-pulse"
+            style={{ animationDelay: "1000ms" }}
+          />
+          <div
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-r from-yellow-400/10 to-blue-400/10 rounded-full blur-3xl animate-pulse"
+            style={{ animationDelay: "500ms" }}
+          />
+
           {/* Floating decorative shapes */}
           <div className="absolute top-20 left-[10%] w-20 h-20 bg-gradient-to-br from-yellow-500/10 to-orange-500/10 rounded-2xl rotate-12 animate-float" />
-          <div className="absolute bottom-40 right-[15%] w-16 h-16 bg-gradient-to-br from-pink-500/10 to-orange-500/10 rounded-full animate-float" style={{ animationDelay: '2000ms' }} />
+          <div
+            className="absolute bottom-40 right-[15%] w-16 h-16 bg-gradient-to-br from-pink-500/10 to-orange-500/10 rounded-full animate-float"
+            style={{ animationDelay: "2000ms" }}
+          />
         </div>
 
-          {/* Title Section - Desktop */}
-          <div className="hidden md:block max-w-[2520px] mx-auto px-4 sm:px-8 md:px-12 lg:px-16 mb-8 relative z-10">
-            <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
-              <div className="space-y-2">
-            <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-gray-900">
-              {searchQuery.trim() !== ""
-                ? t('searchResults', { count: filteredCount, query: searchQuery })
-                : activeCategory === 'all'
-                  ? t('title', { count: totalCount })
-                  : t('titleWithCategory', { count: getCountByCategory(activeCategory), category: activeCategory })}
-            </h1>
-            <p className="text-gray-500 text-lg font-light">
-              {activeCategory === 'all'
-                ? t('subtitle')
-                : t('subtitleCategory', { category: activeCategory })}
-            </p>
-              </div>
-              <DestinationSearch />
+        {/* Title Section - Desktop */}
+        <div className="hidden md:block max-w-[2520px] mx-auto px-4 sm:px-8 md:px-12 lg:px-16 mb-8 relative z-10">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+            <div className="space-y-2">
+              <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-gray-900">
+                {searchQuery.trim() !== ""
+                  ? t("searchResults", { count: filteredCount, query: searchQuery })
+                  : activeCategory === "all"
+                    ? t("title", { count: totalCount })
+                    : t("titleWithCategory", { count: getCountByCategory(activeCategory), category: activeCategory })}
+              </h1>
+              <p className="text-gray-500 text-lg font-light">
+                {activeCategory === "all" ? t("subtitle") : t("subtitleCategory", { category: activeCategory })}
+              </p>
             </div>
+            <DestinationSearch />
           </div>
+        </div>
 
-          {/* Mobile Title Section */}
-          <div className="md:hidden max-w-[2520px] mx-auto px-4 mb-6 relative z-10">
-            <h1 className="text-2xl font-bold tracking-tight text-gray-900 mb-2">
-              {searchQuery.trim() !== ""
-                ? t('searchResults', { count: filteredCount, query: searchQuery }).split(' pour ')[0].split(' for ')[0]
-                : activeCategory === 'all'
-                  ? t('title', { count: totalCount }).split(' à Kinshasa')[0].split(' in Kinshasa')[0]
-                  : t('titleWithCategory', { count: getCountByCategory(activeCategory), category: activeCategory }).split(' à Kinshasa')[0].split(' in Kinshasa')[0]}
-            </h1>
-            <p className="text-gray-500 text-sm font-light">
-              {searchQuery.trim() !== "" && `${t('searchPlaceholder').includes('Rechercher') ? 'pour' : 'for'} "${searchQuery}"`}
-              {searchQuery.trim() === "" && (t('title', { count: 0 }).includes('à Kinshasa') ? 'à Kinshasa' : 'in Kinshasa')}
-            </p>
-          </div>
+        {/* Mobile Title Section */}
+        <div className="md:hidden max-w-[2520px] mx-auto px-4 mb-6 relative z-10">
+          <h1 className="text-2xl font-bold tracking-tight text-gray-900 mb-2">
+            {searchQuery.trim() !== ""
+              ? t("searchResults", { count: filteredCount, query: searchQuery }).split(" pour ")[0].split(" for ")[0]
+              : activeCategory === "all"
+                ? t("title", { count: totalCount }).split(" à Kinshasa")[0].split(" in Kinshasa")[0]
+                : t("titleWithCategory", { count: getCountByCategory(activeCategory), category: activeCategory })
+                    .split(" à Kinshasa")[0]
+                    .split(" in Kinshasa")[0]}
+          </h1>
+          <p className="text-gray-500 text-sm font-light">
+            {searchQuery.trim() !== "" &&
+              `${t("searchPlaceholder").includes("Rechercher") ? "pour" : "for"} &ldquo;${searchQuery}&rdquo;`}
+            {searchQuery.trim() === "" &&
+              (t("title", { count: 0 }).includes("à Kinshasa") ? "à Kinshasa" : "in Kinshasa")}
+          </p>
+        </div>
 
-          {/* Search Bar Section - Above Filters */}
-          <div className="max-w-[2520px] mx-auto px-4 sm:px-8 md:px-12 lg:px-16 mb-10 relative z-10">
-            <HeroSearchBar />
-          </div>
+        {/* Search Bar Section - Above Filters */}
+        <div className="max-w-[2520px] mx-auto px-4 sm:px-8 md:px-12 lg:px-16 mb-10 relative z-10">
+          <HeroSearchBar />
+        </div>
 
-          {/* Mobile Search Bar */}
-          <div className="md:hidden sticky top-[72px] z-50 bg-white/95 backdrop-blur-md border-b border-gray-100">
-            <div className="px-4 py-3">
-              <div className="flex items-center gap-2">
-                <div className="flex-1">
-                  <DestinationSearch />
-                </div>
-                <button 
-                  onClick={() => setShowMobileFilters(true)}
-                  className="flex items-center gap-2 border border-gray-200 rounded-xl px-4 py-3 hover:border-blue-600 transition-all bg-white shrink-0"
-                >
+        {/* Mobile Search Bar */}
+        <div className="md:hidden sticky top-[72px] z-50 bg-white/95 backdrop-blur-md border-b border-gray-100">
+          <div className="px-4 py-3">
+            <div className="flex items-center gap-2">
+              <div className="flex-1">
+                <DestinationSearch />
+              </div>
+              <button
+                onClick={() => setShowMobileFilters(true)}
+                className="flex items-center gap-2 border border-gray-200 rounded-xl px-4 py-3 hover:border-blue-600 transition-all bg-white shrink-0"
+              >
                 <SlidersHorizontal size={18} className="text-blue-600" />
-                <span className="text-sm font-bold">{t('filters')}</span>
+                <span className="text-sm font-bold">{t("filters")}</span>
+              </button>
+            </div>
+
+            {/* Active Filters - Mobile (Inside sticky bar) */}
+            {(activeCategory !== "all" || searchQuery.trim() !== "") && (
+              <div className="flex items-center gap-2 flex-wrap mt-3 pt-3 border-t border-gray-100">
+                {activeCategory !== "all" && (
+                  <button
+                    onClick={() => setActiveCategory("all")}
+                    className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-50 border border-blue-200 rounded-full text-xs font-bold text-blue-600 hover:bg-blue-100 transition-all"
+                  >
+                    <span className="capitalize">{activeCategory}</span>
+                    <X size={12} />
+                  </button>
+                )}
+
+                {searchQuery.trim() !== "" && (
+                  <button
+                    onClick={() => useDestinationStore.getState().setSearchQuery("")}
+                    className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-50 border border-blue-200 rounded-full text-xs font-bold text-blue-600 hover:bg-blue-100 transition-all"
+                  >
+                    <span className="max-w-[120px] truncate">&ldquo;{searchQuery}&rdquo;</span>
+                    <X size={12} />
+                  </button>
+                )}
+
+                <button
+                  onClick={() => {
+                    setActiveCategory("all");
+                    useDestinationStore.getState().setSearchQuery("");
+                  }}
+                  className="text-xs font-bold text-gray-400 hover:text-gray-600 underline underline-offset-2 transition-colors ml-auto"
+                >
+                  {t("clearAll")}
                 </button>
               </div>
-
-              {/* Active Filters - Mobile (Inside sticky bar) */}
-              {(activeCategory !== 'all' || searchQuery.trim() !== '') && (
-                <div className="flex items-center gap-2 flex-wrap mt-3 pt-3 border-t border-gray-100">
-                  {activeCategory !== 'all' && (
-                    <button
-                      onClick={() => setActiveCategory('all')}
-                      className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-50 border border-blue-200 rounded-full text-xs font-bold text-blue-600 hover:bg-blue-100 transition-all"
-                    >
-                      <span className="capitalize">{activeCategory}</span>
-                      <X size={12} />
-                    </button>
-                  )}
-
-                  {searchQuery.trim() !== '' && (
-                    <button
-                      onClick={() => useDestinationStore.getState().setSearchQuery('')}
-                      className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-50 border border-blue-200 rounded-full text-xs font-bold text-blue-600 hover:bg-blue-100 transition-all"
-                    >
-                      <span className="max-w-[120px] truncate">"{searchQuery}"</span>
-                      <X size={12} />
-                    </button>
-                  )}
-
-                  <button
-                    onClick={() => {
-                      setActiveCategory('all');
-                      useDestinationStore.getState().setSearchQuery('');
-                    }}
-                    className="text-xs font-bold text-gray-400 hover:text-gray-600 underline underline-offset-2 transition-colors ml-auto"
-                  >
-                    {t('clearAll')}
-                  </button>
-                </div>
-              )}
-            </div>
+            )}
           </div>
+        </div>
 
-          {/* Category Header - Airbnb Style */}
-          <div className="hidden md:block sticky top-[72px] z-50 bg-white/80 backdrop-blur-md border-b border-blue-100/50 shadow-sm mb-6">
-            <div className="max-w-[2520px] mx-auto px-4 sm:px-8 md:px-12 lg:px-16 flex items-center gap-6">
-              {/* Horizontal Scrollable Categories */}
-              <div className="flex-1 overflow-x-auto scrollbar-none py-4 flex items-center gap-10 md:gap-14">
+        {/* Category Header - Airbnb Style */}
+        <div className="hidden md:block sticky top-[72px] z-50 bg-white/80 backdrop-blur-md border-b border-blue-100/50 shadow-sm mb-6">
+          <div className="max-w-[2520px] mx-auto px-4 sm:px-8 md:px-12 lg:px-16 flex items-center gap-6">
+            {/* Horizontal Scrollable Categories */}
+            <div className="flex-1 overflow-x-auto scrollbar-none py-4 flex items-center gap-10 md:gap-14">
               {categoryList.map((cat) => {
                 const count = getCountByCategory(cat);
                 return (
@@ -268,16 +326,18 @@ export default function DestinationsPage() {
                         : "border-transparent text-gray-400 opacity-70 hover:opacity-100 hover:border-blue-200"
                     }`}
                   >
-                    <div className={`transition-transform duration-200 group-hover:scale-110 ${activeCategory === cat ? 'scale-110' : ''}`}>
+                    <div
+                      className={`transition-transform duration-200 group-hover:scale-110 ${activeCategory === cat ? "scale-110" : ""}`}
+                    >
                       {categoryIcons[cat.toLowerCase()] || <Compass size={24} />}
                     </div>
                     <div className="flex items-center gap-1.5">
-                      <span className="text-[12px] font-semibold capitalize whitespace-nowrap">
-                        {cat}
-                      </span>
-                      <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded-md ${
-                        activeCategory === cat ? "bg-blue-600 text-white" : "bg-blue-50 text-blue-600"
-                      }`}>
+                      <span className="text-[12px] font-semibold capitalize whitespace-nowrap">{cat}</span>
+                      <span
+                        className={`text-[10px] font-bold px-1.5 py-0.5 rounded-md ${
+                          activeCategory === cat ? "bg-blue-600 text-white" : "bg-blue-50 text-blue-600"
+                        }`}
+                      >
                         {count}
                       </span>
                     </div>
@@ -287,60 +347,62 @@ export default function DestinationsPage() {
             </div>
 
             {/* Filters Button */}
-              <div className="hidden md:flex items-center shrink-0">
-                <button className="flex items-center gap-2.5 border border-blue-200 rounded-xl px-5 py-3.5 hover:border-blue-600 hover:bg-blue-50 transition-all group shadow-sm bg-white">
-                  <SlidersHorizontal size={18} className="group-hover:scale-110 transition-transform text-blue-600" />
-                  <span className="text-sm font-bold text-gray-900">{t('filters')}</span>
-                </button>
-              </div>
+            <div className="hidden md:flex items-center shrink-0">
+              <button className="flex items-center gap-2.5 border border-blue-200 rounded-xl px-5 py-3.5 hover:border-blue-600 hover:bg-blue-50 transition-all group shadow-sm bg-white">
+                <SlidersHorizontal size={18} className="group-hover:scale-110 transition-transform text-blue-600" />
+                <span className="text-sm font-bold text-gray-900">{t("filters")}</span>
+              </button>
             </div>
           </div>
+        </div>
 
-          {/* Active Filters - Desktop */}
-          {(activeCategory !== 'all' || searchQuery.trim() !== '') && (
-            <div className="hidden md:block max-w-[2520px] mx-auto px-4 sm:px-8 md:px-12 lg:px-16 mb-8">
-              <div className="flex items-center gap-3 flex-wrap">
-                <span className="text-sm font-bold text-gray-400 uppercase tracking-wider">{t('activeFilters')}</span>
-                
-                {activeCategory !== 'all' && (
-                  <button
-                    onClick={() => setActiveCategory('all')}
-                    className="flex items-center gap-2 px-4 py-2 bg-blue-50 border border-blue-200 rounded-full text-sm font-bold text-blue-600 hover:bg-blue-100 transition-all group"
-                  >
-                    <span className="capitalize">{activeCategory}</span>
-                    <X size={14} className="group-hover:scale-110 transition-transform" />
-                  </button>
-                )}
+        {/* Active Filters - Desktop */}
+        {(activeCategory !== "all" || searchQuery.trim() !== "") && (
+          <div className="hidden md:block max-w-[2520px] mx-auto px-4 sm:px-8 md:px-12 lg:px-16 mb-8">
+            <div className="flex items-center gap-3 flex-wrap">
+              <span className="text-sm font-bold text-gray-400 uppercase tracking-wider">{t("activeFilters")}</span>
 
-                {searchQuery.trim() !== '' && (
-                  <button
-                    onClick={() => useDestinationStore.getState().setSearchQuery('')}
-                    className="flex items-center gap-2 px-4 py-2 bg-blue-50 border border-blue-200 rounded-full text-sm font-bold text-blue-600 hover:bg-blue-100 transition-all group"
-                  >
-                    <span>Search: "{searchQuery}"</span>
-                    <X size={14} className="group-hover:scale-110 transition-transform" />
-                  </button>
-                )}
-
+              {activeCategory !== "all" && (
                 <button
-                  onClick={() => {
-                    setActiveCategory('all');
-                    useDestinationStore.getState().setSearchQuery('');
-                  }}
-                  className="text-sm font-bold text-gray-400 hover:text-gray-600 underline underline-offset-4 transition-colors"
+                  onClick={() => setActiveCategory("all")}
+                  className="flex items-center gap-2 px-4 py-2 bg-blue-50 border border-blue-200 rounded-full text-sm font-bold text-blue-600 hover:bg-blue-100 transition-all group"
                 >
-                  {t('clearAll')}
+                  <span className="capitalize">{activeCategory}</span>
+                  <X size={14} className="group-hover:scale-110 transition-transform" />
                 </button>
-              </div>
+              )}
+
+              {searchQuery.trim() !== "" && (
+                <button
+                  onClick={() => useDestinationStore.getState().setSearchQuery("")}
+                  className="flex items-center gap-2 px-4 py-2 bg-blue-50 border border-blue-200 rounded-full text-sm font-bold text-blue-600 hover:bg-blue-100 transition-all group"
+                >
+                  <span>Search: &ldquo;{searchQuery}&rdquo;</span>
+                  <X size={14} className="group-hover:scale-110 transition-transform" />
+                </button>
+              )}
+
+              <button
+                onClick={() => {
+                  setActiveCategory("all");
+                  useDestinationStore.getState().setSearchQuery("");
+                }}
+                className="text-sm font-bold text-gray-400 hover:text-gray-600 underline underline-offset-4 transition-colors"
+              >
+                {t("clearAll")}
+              </button>
             </div>
-          )}
+          </div>
+        )}
 
-
-            <div className={`max-w-[2520px] mx-auto px-4 sm:px-8 md:px-12 lg:px-16`}>
-              <div className={`flex flex-col lg:flex-row gap-10 ${showMap ? "lg:h-[calc(100vh-220px)] overflow-hidden" : ""}`}>
-
-                {/* List / Grid Section */}
-                <div className={`${showMap ? "lg:w-[60%] lg:overflow-y-auto lg:pr-6 scrollbar-thin" : "w-full"} mb-32 md:mb-0`}>
+        <div className={`max-w-[2520px] mx-auto px-4 sm:px-8 md:px-12 lg:px-16`}>
+          <div
+            className={`flex flex-col lg:flex-row gap-10 ${showMap ? "lg:h-[calc(100vh-220px)] overflow-hidden" : ""}`}
+          >
+            {/* List / Grid Section */}
+            <div
+              className={`${showMap ? "lg:w-[60%] lg:overflow-y-auto lg:pr-6 scrollbar-thin" : "w-full"} mb-32 md:mb-0`}
+            >
               {/* View Mode Toggle - Only shown when map is visible */}
               {showMap && (
                 <div className="flex items-center justify-end mb-6">
@@ -348,29 +410,25 @@ export default function DestinationsPage() {
                     <button
                       onClick={() => setViewMode("list")}
                       className={`flex items-center gap-2 px-4 py-1.5 rounded-lg text-sm font-bold transition-all ${
-                        viewMode === "list"
-                          ? "bg-white shadow-sm text-blue-600"
-                          : "text-gray-400 hover:text-blue-600"
+                        viewMode === "list" ? "bg-white shadow-sm text-blue-600" : "text-gray-400 hover:text-blue-600"
                       }`}
                     >
                       <List size={16} />
-                      <span>{t('listView')}</span>
+                      <span>{t("listView")}</span>
                     </button>
                     <button
                       onClick={() => setViewMode("grid")}
                       className={`flex items-center gap-2 px-4 py-1.5 rounded-lg text-sm font-bold transition-all ${
-                        viewMode === "grid"
-                          ? "bg-white shadow-sm text-blue-600"
-                          : "text-gray-400 hover:text-blue-600"
+                        viewMode === "grid" ? "bg-white shadow-sm text-blue-600" : "text-gray-400 hover:text-blue-600"
                       }`}
                     >
                       <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <rect x="1" y="1" width="6" height="6" rx="1" stroke="currentColor" strokeWidth="2"/>
-                        <rect x="9" y="1" width="6" height="6" rx="1" stroke="currentColor" strokeWidth="2"/>
-                        <rect x="1" y="9" width="6" height="6" rx="1" stroke="currentColor" strokeWidth="2"/>
-                        <rect x="9" y="9" width="6" height="6" rx="1" stroke="currentColor" strokeWidth="2"/>
+                        <rect x="1" y="1" width="6" height="6" rx="1" stroke="currentColor" strokeWidth="2" />
+                        <rect x="9" y="1" width="6" height="6" rx="1" stroke="currentColor" strokeWidth="2" />
+                        <rect x="1" y="9" width="6" height="6" rx="1" stroke="currentColor" strokeWidth="2" />
+                        <rect x="9" y="9" width="6" height="6" rx="1" stroke="currentColor" strokeWidth="2" />
                       </svg>
-                      <span>{t('gridView')}</span>
+                      <span>{t("gridView")}</span>
                     </button>
                   </div>
                 </div>
@@ -379,38 +437,42 @@ export default function DestinationsPage() {
               {paginatedDestinations.length === 0 ? (
                 <div className="text-center py-32 bg-blue-50/50 rounded-3xl border-2 border-dashed border-blue-200">
                   <Compass size={64} className="mx-auto text-blue-300 mb-6 stroke-[1.5]" />
-                  <h3 className="text-2xl font-bold text-gray-900 mb-3">{t('noResults')}</h3>
-                  <p className="text-gray-500 mb-8 max-w-sm mx-auto">{t('noResultsDesc')}</p>
+                  <h3 className="text-2xl font-bold text-gray-900 mb-3">{t("noResults")}</h3>
+                  <p className="text-gray-500 mb-8 max-w-sm mx-auto">{t("noResultsDesc")}</p>
                   <button
                     onClick={() => setActiveCategory("all")}
                     className="bg-blue-600 text-white px-10 py-3.5 rounded-full font-bold hover:bg-blue-700 transition-all shadow-lg shadow-blue-500/30 hover:shadow-xl active:scale-95"
                   >
-                    {t('showAllDestinations')}
+                    {t("showAllDestinations")}
                   </button>
                 </div>
               ) : (
                 <div className="space-y-12">
-                  <div className={
-                    viewMode === "grid" 
-                      ? `grid grid-cols-1 sm:grid-cols-2 ${showMap ? "xl:grid-cols-2" : "md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5"} gap-x-4 gap-y-8 md:gap-x-6 md:gap-y-10`
-                      : "flex flex-col gap-8"
-                  }>
-                    {paginatedDestinations.map((dest, i) => (
+                  <div
+                    className={
+                      viewMode === "grid"
+                        ? `grid grid-cols-1 sm:grid-cols-2 ${showMap ? "xl:grid-cols-2" : "md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5"} gap-x-4 gap-y-8 md:gap-x-6 md:gap-y-10`
+                        : "flex flex-col gap-8"
+                    }
+                  >
+                    {paginatedDestinations.map((dest) => (
                       <Link
                         key={dest.id}
                         href={`/destinations/${dest.id}`}
                         className={`group cursor-pointer flex ${viewMode === "grid" ? "flex-col gap-4" : "flex-row gap-6 border-b border-gray-100 pb-8"}`}
                       >
-                        <div className={`relative overflow-hidden rounded-2xl bg-gray-100 shadow-sm shrink-0 ${viewMode === "grid" ? "aspect-square w-full" : "w-48 h-48 md:w-64 md:h-64"}`}>
+                        <div
+                          className={`relative overflow-hidden rounded-2xl bg-gray-100 shadow-sm shrink-0 ${viewMode === "grid" ? "aspect-square w-full" : "w-48 h-48 md:w-64 md:h-64"}`}
+                        >
                           <img
                             src={dest.image || `https://picsum.photos/800/800?random=${dest.id}`}
                             alt={dest.name}
                             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                             loading="lazy"
                           />
-                          
+
                           {/* Heart Icon */}
-                          <button 
+                          <button
                             onClick={(e) => {
                               e.preventDefault();
                               e.stopPropagation();
@@ -434,15 +496,25 @@ export default function DestinationsPage() {
                         <div className="flex flex-col flex-1 gap-1.5 justify-between py-1">
                           <div className="flex flex-col gap-1.5">
                             <div className="flex items-center justify-between gap-2">
-                              <h3 className={`font-bold truncate leading-tight ${viewMode === 'grid' ? 'text-[16px]' : 'text-lg md:text-xl'}`}>{dest.name}</h3>
-                            <div className="flex items-center gap-1 shrink-0">
-                              <Star size={14} className="fill-yellow-400 text-yellow-400" />
-                              <span className="text-sm font-medium">{dest.ratings.toFixed(1)}</span>
+                              <h3
+                                className={`font-bold truncate leading-tight ${viewMode === "grid" ? "text-[16px]" : "text-lg md:text-xl"}`}
+                              >
+                                {dest.name}
+                              </h3>
+                              <div className="flex items-center gap-1 shrink-0">
+                                <Star size={14} className="fill-yellow-400 text-yellow-400" />
+                                <span className="text-sm font-medium">{dest.ratings.toFixed(1)}</span>
+                              </div>
                             </div>
-                            </div>
-                            <p className="text-gray-500 text-[15px] truncate font-light leading-none">{dest.location}</p>
-                            <p className={`text-gray-400 font-light leading-tight ${viewMode === 'grid' ? 'text-sm line-clamp-1' : 'text-base line-clamp-2'}`}>{dest.description}</p>
-                            
+                            <p className="text-gray-500 text-[15px] truncate font-light leading-none">
+                              {dest.location}
+                            </p>
+                            <p
+                              className={`text-gray-400 font-light leading-tight ${viewMode === "grid" ? "text-sm line-clamp-1" : "text-base line-clamp-2"}`}
+                            >
+                              {dest.description}
+                            </p>
+
                             {viewMode === "list" && (
                               <div className="flex items-center gap-4 mt-2">
                                 <div className="flex items-center gap-1 text-gray-400 text-xs">
@@ -463,14 +535,18 @@ export default function DestinationsPage() {
 
                           <div className="mt-2 flex items-baseline justify-between">
                             <div className="flex items-baseline gap-1.5">
-                              <span className={`font-bold text-gray-900 ${viewMode === 'grid' ? 'text-[17px]' : 'text-xl'}`}>${dest.price}</span>
-                              <span className="text-gray-500 text-sm font-light">{t('totalBeforeTaxes')}</span>
+                              <span
+                                className={`font-bold text-gray-900 ${viewMode === "grid" ? "text-[17px]" : "text-xl"}`}
+                              >
+                                ${dest.price}
+                              </span>
+                              <span className="text-gray-500 text-sm font-light">{t("totalBeforeTaxes")}</span>
                             </div>
-                            
+
                             {viewMode === "list" && (
                               <div className="hidden md:flex items-center gap-1 text-xs font-bold text-orange-600 border border-orange-200 bg-orange-50 px-3 py-1.5 rounded-full">
                                 <Star size={12} className="fill-orange-400 text-orange-400" />
-                                <span>{t('guestFavorite')}</span>
+                                <span>{t("guestFavorite")}</span>
                               </div>
                             )}
                           </div>
@@ -489,43 +565,7 @@ export default function DestinationsPage() {
             {showMap && (
               <div className="hidden lg:block lg:w-[40%] h-full min-h-[600px] rounded-3xl overflow-hidden sticky top-[180px] border border-blue-100 shadow-lg">
                 <MapView
-                  locations={paginatedDestinations.map((dest, index) => {
-                    // Try to get coordinates in this order:
-                    // 1. Use database coordinates if available
-                    // 2. Try to match neighborhood from address
-                    // 3. Fall back to grid pattern
-                    
-                    let lat: number, lng: number;
-                    
-                    if (dest.latitude && dest.longitude) {
-                      // Use actual coordinates from database
-                      lat = dest.latitude;
-                      lng = dest.longitude;
-                    } else {
-                      // Try to match neighborhood from address
-                      const neighborhoodCoords = getNeighborhoodCoordinates(dest.location);
-                      
-                      if (neighborhoodCoords) {
-                        // Add small random offset to avoid exact overlap
-                        lat = neighborhoodCoords.lat + (Math.random() - 0.5) * 0.005;
-                        lng = neighborhoodCoords.lng + (Math.random() - 0.5) * 0.005;
-                      } else {
-                        // Use grid pattern as final fallback
-                        const gridCoords = generateGridCoordinates(index, paginatedDestinations.length);
-                        lat = gridCoords.lat;
-                        lng = gridCoords.lng;
-                      }
-                    }
-                    
-                    return {
-                      id: dest.id,
-                      name: dest.name,
-                      price: dest.price,
-                      address: dest.location,
-                      lat,
-                      lng,
-                    };
-                  })}
+                  locations={mapLocations}
                   onMarkerClick={(locationId) => {
                     // Navigate to destination detail page using router
                     router.push(`/destinations/${locationId}`);
@@ -551,7 +591,7 @@ export default function DestinationsPage() {
                 >
                   <ChevronLeft size={18} />
                 </button>
-                
+
                 <div className="flex items-center gap-1">
                   {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
                     <button
@@ -583,10 +623,10 @@ export default function DestinationsPage() {
                 </button>
               </div>
               <p className="text-xs text-gray-400 font-medium">
-                {t('showing', { 
-                  start: (currentPage - 1) * pageSize + 1, 
-                  end: Math.min(currentPage * pageSize, filteredCount), 
-                  total: filteredCount 
+                {t("showing", {
+                  start: (currentPage - 1) * pageSize + 1,
+                  end: Math.min(currentPage * pageSize, filteredCount),
+                  total: filteredCount,
                 })}
               </p>
             </div>
@@ -602,12 +642,12 @@ export default function DestinationsPage() {
             {showMap ? (
               <>
                 <List size={16} strokeWidth={2.5} />
-                <span className="text-[14px] font-bold">{t('showList')}</span>
+                <span className="text-[14px] font-bold">{t("showList")}</span>
               </>
             ) : (
               <>
                 <MapIcon size={16} strokeWidth={2.5} />
-                <span className="text-[14px] font-bold">{t('showMap')}</span>
+                <span className="text-[14px] font-bold">{t("showMap")}</span>
               </>
             )}
           </button>
@@ -619,8 +659,8 @@ export default function DestinationsPage() {
             <div className="absolute inset-x-0 bottom-0 bg-white rounded-t-[32px] max-h-[85vh] overflow-hidden flex flex-col animate-in slide-in-from-bottom duration-300">
               {/* Modal Header */}
               <div className="flex items-center justify-between px-6 py-5 border-b border-gray-100">
-                <h2 className="text-xl font-bold text-gray-900">{t('filters')}</h2>
-                <button 
+                <h2 className="text-xl font-bold text-gray-900">{t("filters")}</h2>
+                <button
                   onClick={() => setShowMobileFilters(false)}
                   className="p-2 hover:bg-gray-100 rounded-full transition-colors"
                 >
@@ -633,7 +673,7 @@ export default function DestinationsPage() {
                 <div className="space-y-8">
                   {/* Categories Section */}
                   <div className="space-y-4">
-                    <h3 className="text-sm font-bold uppercase tracking-wider text-gray-400">{t('filters')}</h3>
+                    <h3 className="text-sm font-bold uppercase tracking-wider text-gray-400">{t("filters")}</h3>
                     <div className="grid grid-cols-2 gap-3">
                       {categoryList.map((cat) => {
                         const count = getCountByCategory(cat);
@@ -649,17 +689,19 @@ export default function DestinationsPage() {
                                 : "border-gray-100 bg-white hover:border-blue-200"
                             }`}
                           >
-                            <div className={`w-12 h-12 rounded-xl flex items-center justify-center transition-colors ${
-                              activeCategory === cat
-                                ? "bg-blue-600 text-white"
-                                : "bg-gray-50 text-gray-400"
-                            }`}>
+                            <div
+                              className={`w-12 h-12 rounded-xl flex items-center justify-center transition-colors ${
+                                activeCategory === cat ? "bg-blue-600 text-white" : "bg-gray-50 text-gray-400"
+                              }`}
+                            >
                               {categoryIcons[cat.toLowerCase()] || <Compass size={24} />}
                             </div>
                             <div className="text-center">
-                              <span className={`text-sm font-bold block ${
-                                activeCategory === cat ? "text-blue-600" : "text-gray-900"
-                              }`}>
+                              <span
+                                className={`text-sm font-bold block ${
+                                  activeCategory === cat ? "text-blue-600" : "text-gray-900"
+                                }`}
+                              >
                                 {cat}
                               </span>
                               <span className="text-xs text-gray-400">{count} places</span>
@@ -672,7 +714,7 @@ export default function DestinationsPage() {
 
                   {/* Price Range Section (Placeholder for future implementation) */}
                   <div className="space-y-4 pt-6 border-t border-gray-100">
-                    <h3 className="text-sm font-bold uppercase tracking-wider text-gray-400">{t('priceRange')}</h3>
+                    <h3 className="text-sm font-bold uppercase tracking-wider text-gray-400">{t("priceRange")}</h3>
                     <div className="space-y-4">
                       <div className="flex items-center justify-between text-sm">
                         <span className="text-gray-600">Min: $0</span>
@@ -687,7 +729,9 @@ export default function DestinationsPage() {
                   {/* Results Count */}
                   <div className="pt-6 border-t border-gray-100">
                     <p className="text-center text-gray-500 text-sm">
-                      {t('showing', { start: 1, end: filteredCount, total: filteredCount }).split('-')[0]} <span className="font-bold text-gray-900">{filteredCount}</span> {t('title', { count: 0 }).split(' ').pop()}
+                      {t("showing", { start: 1, end: filteredCount, total: filteredCount }).split("-")[0]}{" "}
+                      <span className="font-bold text-gray-900">{filteredCount}</span>{" "}
+                      {t("title", { count: 0 }).split(" ").pop()}
                     </p>
                   </div>
                 </div>
@@ -701,13 +745,13 @@ export default function DestinationsPage() {
                   }}
                   className="flex-1 px-6 py-4 rounded-2xl border border-gray-200 font-bold text-gray-900 hover:bg-gray-50 transition-all"
                 >
-                  {t('clearAll')}
+                  {t("clearAll")}
                 </button>
                 <button
                   onClick={() => setShowMobileFilters(false)}
                   className="flex-1 px-6 py-4 rounded-2xl bg-blue-600 font-bold text-white hover:bg-blue-700 transition-all shadow-lg shadow-blue-500/30"
                 >
-                  {t('showResults', { count: filteredCount })}
+                  {t("showResults", { count: filteredCount })}
                 </button>
               </div>
             </div>

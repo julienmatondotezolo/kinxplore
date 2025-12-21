@@ -27,37 +27,37 @@ declare global {
 }
 
 // Function to geocode addresses using Nominatim (free OpenStreetMap geocoding service)
-async function geocodeAddress(address: string): Promise<{ lat: number; lng: number } | null> {
-  try {
-    // Add "Kinshasa" to the address if not present to improve accuracy
-    const searchAddress = address.toLowerCase().includes("kinshasa")
-      ? address
-      : `${address}, Kinshasa, Democratic Republic of the Congo`;
-
-    const response = await fetch(
-      `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(searchAddress)}&limit=1`,
-      {
-        headers: {
-          "User-Agent": "KinXplore/1.0", // Required by Nominatim
-        },
-      },
-    );
-
-    const data = await response.json();
-
-    if (data && data.length > 0) {
-      return {
-        lat: parseFloat(data[0].lat),
-        lng: parseFloat(data[0].lon),
-      };
-    }
-
-    return null;
-  } catch (error) {
-    console.error("Geocoding error:", error);
-    return null;
-  }
-}
+// Currently unused but kept for future use
+// async function geocodeAddress(address: string): Promise<{ lat: number; lng: number } | null> {
+//   try {
+//     const searchAddress = address.toLowerCase().includes("kinshasa")
+//       ? address
+//       : `${address}, Kinshasa, Democratic Republic of the Congo`;
+//
+//     const response = await fetch(
+//       `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(searchAddress)}&limit=1`,
+//       {
+//         headers: {
+//           "User-Agent": "KinXplore/1.0",
+//         },
+//       },
+//     );
+//
+//     const data = await response.json();
+//
+//     if (data && data.length > 0) {
+//       return {
+//         lat: parseFloat(data[0].lat),
+//         lng: parseFloat(data[0].lon),
+//       };
+//     }
+//
+//     return null;
+//   } catch (error) {
+//     console.error("Geocoding error:", error);
+//     return null;
+//   }
+// }
 
 export function MapView({
   locations,
@@ -213,7 +213,7 @@ export function MapView({
       markersRef.current.forEach((marker) => {
         try {
           marker.remove();
-        } catch (e) {
+        } catch {
           // Ignore cleanup errors
         }
       });

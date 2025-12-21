@@ -2,7 +2,8 @@
  * React Query hooks for Destinations
  */
 
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+
 import { destinationsApi } from "@/lib/api";
 import { DestinationWithCategories } from "@/types/api.types";
 
@@ -57,13 +58,7 @@ export function useDestinationMutation() {
   });
 
   const updateDestination = useMutation({
-    mutationFn: async ({
-      id,
-      data,
-    }: {
-      id: string;
-      data: Partial<DestinationWithCategories>;
-    }) => {
+    mutationFn: async ({ id, data }: { id: string; data: Partial<DestinationWithCategories> }) => {
       // Placeholder - implement when backend endpoint is ready
       throw new Error("Update destination endpoint not yet implemented");
     },

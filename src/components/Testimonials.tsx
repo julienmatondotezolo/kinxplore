@@ -72,7 +72,7 @@ export const Testimonials: React.FC = () => {
                   <Quote className="absolute -top-4 -left-8 text-blue-100 w-16 h-16 -z-10" />
                   <h3 className="text-3xl font-bold text-gray-900 mb-4 italic">Feedback</h3>
                   <p className="text-xl text-gray-600 leading-relaxed font-medium">
-                    "{testimonials[currentIndex].text}"
+                    &ldquo;{testimonials[currentIndex].text}&rdquo;
                   </p>
                 </div>
 

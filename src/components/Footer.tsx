@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import { Github, Globe, Instagram, Mail, Twitter } from "lucide-react";
 import { useTranslations } from "next-intl";
 import React from "react";

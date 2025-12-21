@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { MapPin } from "lucide-react";
 import { useEffect, useState } from "react";
 
@@ -44,7 +44,7 @@ export function ResultsCounter({ count, total, isFiltered }: ResultsCounterProps
         key={count}
         initial={{ scale: 1.2, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
-        transition={{ 
+        transition={{
           type: "spring",
           stiffness: 300,
           damping: 20,
@@ -65,7 +65,7 @@ export function ResultsCounter({ count, total, isFiltered }: ResultsCounterProps
             {isFiltered ? "filtered" : "total"} destination{count !== 1 ? "s" : ""}
           </span>
         </div>
-        
+
         <AnimatePresence>
           {isFiltered && (
             <motion.div
@@ -83,7 +83,3 @@ export function ResultsCounter({ count, total, isFiltered }: ResultsCounterProps
     </motion.div>
   );
 }
-
-
-
-
