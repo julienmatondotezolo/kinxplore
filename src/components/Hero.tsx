@@ -3,7 +3,7 @@ import { ArrowRight, ArrowUpRight, Bed, Compass, Heart, LayoutGrid, MapPin, Plan
 import { useTranslations } from "next-intl";
 import React from "react";
 
-import { TripPlannerForm } from "./TripPlannerForm";
+import { ChatSearch } from "./ChatSearch";
 
 export const Hero: React.FC = () => {
   const t = useTranslations("Hero");
@@ -120,9 +120,9 @@ export const Hero: React.FC = () => {
               variants={itemVariants}
               className="text-4xl md:text-[4.2rem] font-black text-gray-900 leading-[1.2] md:leading-[1.1] tracking-tight"
             >
-              <span className="block">{t("title")}</span>
+              {/* <span className="block">{t("title")}</span> */}
               <span className="flex items-center justify-center lg:justify-start gap-3 flex-wrap">
-                {t("titleCity")}
+                {t("title")} {t("titleCity")}
                 <span className="inline-block w-16 h-8 md:w-24 md:h-12 bg-gray-100 rounded-full overflow-hidden border-2 md:border-4 border-white shadow-sm -rotate-2 transform hover:rotate-0 transition-transform duration-500">
                   <img
                     src="https://picsum.photos/400/300?random=50"
@@ -144,7 +144,7 @@ export const Hero: React.FC = () => {
 
           {/* Search Form Integrated */}
           <motion.div variants={itemVariants} className="pt-4 md:pt-2 w-full mx-auto lg:mx-0">
-            <TripPlannerForm compact={true} />
+            <ChatSearch />
           </motion.div>
 
           {/* Mobile Recommended Section - Screenshot 2 Style */}
