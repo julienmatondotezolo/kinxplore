@@ -8,16 +8,33 @@ export interface StreamChunk {
   done?: boolean;
 }
 
-export interface ChatRecommendation {
-  destinations: Array<{
+export interface CategoryInfo {
+  parent: {
     id: string;
     name: string;
-    location: string;
-    categories: any[];
-    description: string;
-    price: number;
-    ratings: number;
-  }>;
+  };
+  subcategory?: {
+    id: string;
+    name: string;
+  };
+}
+
+export interface DestinationRecommendation {
+  id: string;
+  name: string;
+  location: string;
+  categories: CategoryInfo[];
+  description: string;
+  price: number;
+  ratings: number;
+  reason: string;
+  image_url?: string;
+  created_at?: string;
+  updated_at?: string;
+}
+
+export interface ChatRecommendation {
+  destinations: DestinationRecommendation[];
   itinerary: string;
   summary: string;
 }
