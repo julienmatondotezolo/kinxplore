@@ -175,10 +175,7 @@ export const TripChat: React.FC<TripChatProps> = ({ initialMessage, onClose }) =
             </div>
             <div className="max-w-[85%] md:max-w-[75%] bg-white text-gray-900 border border-gray-100 rounded-2xl rounded-tl-none px-4 py-3 shadow-sm">
               <p className="text-sm md:text-base whitespace-pre-wrap">
-                {/* Hide FINAL_RECOMMENDATIONS section from display */}
-                {currentResponse.includes("FINAL_RECOMMENDATIONS") 
-                  ? currentResponse.split("FINAL_RECOMMENDATIONS:")[0].trim()
-                  : currentResponse}
+                {currentResponse}
                 <span className="inline-block w-1 h-4 bg-blue-600 ml-1 animate-pulse" />
               </p>
             </div>
