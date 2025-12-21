@@ -31,6 +31,8 @@ export interface Destination {
   image: string;
   price: number;
   location: string;
+  latitude?: number;  // Optional coordinates for map display
+  longitude?: number; // Optional coordinates for map display
   category_id: string; // Legacy field - deprecated
   ratings: number;
   created_at: string;

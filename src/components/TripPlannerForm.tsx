@@ -4,6 +4,7 @@ import React, { useState } from "react";
 
 import { useRouter } from "@/navigation";
 import { TripStyle } from "@/types";
+import { useDestinationStore } from "@/store/useDestinationStore";
 
 interface Props {
   compact?: boolean;
@@ -12,12 +13,36 @@ interface Props {
 export const TripPlannerForm: React.FC<Props> = ({ compact = false }) => {
   const t = useTranslations("Hero");
   const tStyles = useTranslations("TripStyles");
+  const tCommunes = useTranslations("Communes");
   const router = useRouter();
+  const { setHeroSearch } = useDestinationStore();
   const [style, setStyle] = useState<TripStyle>(TripStyle.Adventure);
   const [duration, setDuration] = useState<number>(3);
+  const [destination, setDestination] = useState<string>("");
+
+  const communes = [
+    { value: "", label: t("selectLocation") },
+    { value: "gombe", label: tCommunes("gombe") },
+    { value: "maluku", label: tCommunes("maluku") },
+    { value: "limete", label: tCommunes("limete") },
+    { value: "lingwala", label: tCommunes("lingwala") },
+    { value: "ngaliema", label: tCommunes("ngaliema") },
+    { value: "kintambo", label: tCommunes("kintambo") },
+    { value: "nsele", label: tCommunes("nsele") },
+    { value: "bandalungwa", label: tCommunes("bandalungwa") },
+  ];
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Save search criteria to Zustand
+    setHeroSearch({
+      destination,
+      duration,
+      tripStyle: style.toLowerCase(),
+    });
+    
+    // Navigate to destinations page
     router.push("/destinations");
   };
 
@@ -27,11 +52,23 @@ export const TripPlannerForm: React.FC<Props> = ({ compact = false }) => {
         {/* Desktop Pill Version */}
         <div className="hidden md:flex bg-white rounded-full shadow-[0_20px_50px_rgba(0,0,0,0.1)] border border-gray-100 p-2 items-center gap-2">
           {/* Destination */}
-          <div className="flex-1 px-6 py-2 border-r border-gray-100 hover:bg-gray-50/50 rounded-full transition-colors cursor-pointer group">
-            <p className="text-[9px] font-bold text-gray-400 uppercase tracking-widest mb-0.5">{t("destination")}</p>
+          <div className="flex-1 px-6 py-2 border-r border-gray-100 hover:bg-gray-50/50 rounded-full transition-colors cursor-pointer group relative">
+            <p className="text-[9px] font-bold text-gray-400 uppercase tracking-widest mb-0.5">{t("location")}</p>
             <div className="flex items-center gap-2">
               <MapPin size={14} className="text-blue-600" />
-              <span className="text-sm font-bold text-gray-900 truncate">{t("destinationValue")}</span>
+              <select
+                value={destination}
+                onChange={(e) => setDestination(e.target.value)}
+                onClick={(e) => e.stopPropagation()}
+                className="bg-transparent text-sm font-bold text-gray-900 focus:outline-none w-full appearance-none cursor-pointer pr-4"
+              >
+                {communes.map((commune) => (
+                  <option key={commune.value} value={commune.label}>
+                    {commune.label}
+                  </option>
+                ))}
+              </select>
+              <ChevronDown size={12} className="text-gray-400 absolute right-4" />
             </div>
           </div>
 
@@ -89,10 +126,21 @@ export const TripPlannerForm: React.FC<Props> = ({ compact = false }) => {
           <div className="bg-white rounded-3xl shadow-xl border border-gray-100 p-4 space-y-4">
             {/* Destination */}
             <div className="space-y-1 px-2">
-              <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Destination</p>
-              <div className="flex items-center gap-3 py-1 border-b border-gray-50">
+              <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">{t("location")}</p>
+              <div className="flex items-center gap-3 py-1 border-b border-gray-50 relative">
                 <MapPin size={18} className="text-blue-600 flex-shrink-0" />
-                <span className="text-base font-bold text-gray-900">Kinshasa, DRC</span>
+                <select
+                  value={destination}
+                  onChange={(e) => setDestination(e.target.value)}
+                  className="bg-transparent text-base font-bold text-gray-900 focus:outline-none w-full appearance-none cursor-pointer pr-6"
+                >
+                  {communes.map((commune) => (
+                    <option key={commune.value} value={commune.label}>
+                      {commune.label}
+                    </option>
+                  ))}
+                </select>
+                <ChevronDown size={14} className="text-gray-400 absolute right-0 pointer-events-none" />
               </div>
             </div>
 
@@ -184,14 +232,24 @@ export const TripPlannerForm: React.FC<Props> = ({ compact = false }) => {
         <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-4 gap-8 items-center">
           {/* Location */}
           <div className="space-y-3">
-            <label className="text-sm font-bold text-gray-900 ml-1">Location</label>
+            <label className="text-sm font-bold text-gray-900 ml-1">{t("location")}</label>
             <div className="relative group">
-              <div className="absolute left-0 top-1/2 -translate-y-1/2 text-blue-600">
+              <div className="absolute left-0 top-1/2 -translate-y-1/2 text-blue-600 z-10">
                 <MapPin size={20} />
               </div>
-              <div className="w-full flex items-center justify-between pl-8 pr-2 py-3 border-b border-gray-200 group-hover:border-blue-600 transition-colors cursor-pointer">
-                <span className="font-bold text-gray-900">Kinshasa, DRC</span>
-                <ChevronDown size={18} className="text-gray-400" />
+              <div className="w-full flex items-center justify-between pl-8 pr-0 py-1 border-b border-gray-200 group-hover:border-blue-600 transition-colors">
+                <select
+                  value={destination}
+                  onChange={(e) => setDestination(e.target.value)}
+                  className="w-full bg-transparent font-bold text-gray-900 appearance-none focus:outline-none cursor-pointer py-2"
+                >
+                  {communes.map((commune) => (
+                    <option key={commune.value} value={commune.label}>
+                      {commune.label}
+                    </option>
+                  ))}
+                </select>
+                <ChevronDown size={18} className="text-gray-400 pointer-events-none absolute right-2" />
               </div>
             </div>
           </div>

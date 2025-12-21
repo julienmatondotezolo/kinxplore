@@ -19,6 +19,13 @@ interface DestinationStore {
   searchQuery: string;
   priceRange: { min: number; max: number };
   
+  // Hero Search Criteria
+  heroSearch: {
+    destination: string;
+    duration: number;
+    tripStyle: string;
+  } | null;
+  
   // Pagination
   currentPage: number;
   pageSize: number;
@@ -36,6 +43,7 @@ interface DestinationStore {
   setActiveCategory: (category: string) => void;
   setSearchQuery: (query: string) => void;
   setPriceRange: (range: { min: number; max: number }) => void;
+  setHeroSearch: (search: { destination: string; duration: number; tripStyle: string } | null) => void;
   setCurrentPage: (page: number) => void;
   setViewMode: (mode: "grid" | "list") => void;
   setLoading: (loading: boolean) => void;
@@ -61,6 +69,7 @@ export const useDestinationStore = create<DestinationStore>()(
         activeCategory: "all",
         searchQuery: "",
         priceRange: { min: 0, max: 10000 },
+        heroSearch: null,
         currentPage: 1,
         pageSize: 10,
         viewMode: "grid",
@@ -82,6 +91,9 @@ export const useDestinationStore = create<DestinationStore>()(
 
         setPriceRange: (range) =>
           set({ priceRange: range, currentPage: 1 }, false, "setPriceRange"),
+
+        setHeroSearch: (search) =>
+          set({ heroSearch: search }, false, "setHeroSearch"),
 
         setCurrentPage: (page) =>
           set({ currentPage: page }, false, "setCurrentPage"),
@@ -187,11 +199,13 @@ export const useDestinationStore = create<DestinationStore>()(
           searchQuery: state.searchQuery,
           priceRange: state.priceRange,
           viewMode: state.viewMode,
+          heroSearch: state.heroSearch,
         }),
       }
     )
   )
 );
+
 
 
 

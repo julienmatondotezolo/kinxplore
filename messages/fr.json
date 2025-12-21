@@ -18,6 +18,8 @@
     "description": "Dites-nous votre style de voyage et notre IA créera l'itinéraire parfait pour votre séjour à Kinshasa.",
     "destination": "Destination",
     "destinationValue": "Kinshasa, RDC",
+    "location": "Localisation",
+    "selectLocation": "Sélectionner une commune",
     "duration": "Durée",
     "days": "Jours",
     "tripStyle": "Style de Voyage",
@@ -27,7 +29,9 @@
     "reviewsRating": "4,8 sur 5",
     "reviewsStats": "4,9/5 de 2k+ Voyageurs",
     "topRated": "Expériences les Mieux Notées",
-    "explorePackages": "Découvrir tous les packages"
+    "explorePackages": "Découvrir tous les packages",
+    "search": "Rechercher",
+    "activeFilters": "Filtres actifs"
   },
   "TripStyles": {
     "adventure": "Aventure",
@@ -36,6 +40,16 @@
     "party": "Fête",
     "family": "Famille",
     "business": "Affaires"
+  },
+  "Communes": {
+    "gombe": "Gombe",
+    "maluku": "Maluku",
+    "limete": "Limete",
+    "lingwala": "Lingwala",
+    "ngaliema": "Ngaliema",
+    "kintambo": "Kintambo Mbudi",
+    "nsele": "Nsele",
+    "bandalungwa": "Bandalungwa"
   },
   "PopularDestinations": {
     "title": "Destinations Populaires",

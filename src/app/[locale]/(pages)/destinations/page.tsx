@@ -28,9 +28,12 @@ import { Link, useRouter } from "@/navigation";
 import { Footer } from "@/components/Footer";
 import { Navigation } from "@/components/Navigation";
 import { DestinationSearch } from "@/components/DestinationSearch";
+import { HeroSearchBar } from "@/components/HeroSearchBar";
+import { MapView } from "@/components/MapView";
 import { useCategories } from "@/hooks/useCategories";
 import { useDestinations } from "@/hooks/useDestinations";
 import { useDestinationStore } from "@/store/useDestinationStore";
+import { getNeighborhoodCoordinates, generateGridCoordinates } from "@/lib/geocoding";
 
 // Icon mapping for categories
 const categoryIcons: Record<string, React.ReactNode> = {
@@ -188,6 +191,11 @@ export default function DestinationsPage() {
               {searchQuery.trim() !== "" && `${t('searchPlaceholder').includes('Rechercher') ? 'pour' : 'for'} "${searchQuery}"`}
               {searchQuery.trim() === "" && (t('title', { count: 0 }).includes('à Kinshasa') ? 'à Kinshasa' : 'in Kinshasa')}
             </p>
+          </div>
+
+          {/* Search Bar Section - Above Filters */}
+          <div className="max-w-[2520px] mx-auto px-4 sm:px-8 md:px-12 lg:px-16 mb-10 relative z-10">
+            <HeroSearchBar />
           </div>
 
           {/* Mobile Search Bar */}
@@ -479,33 +487,50 @@ export default function DestinationsPage() {
 
             {/* Map Section */}
             {showMap && (
-              <div className="hidden lg:block lg:w-[40%] h-full min-h-[600px] rounded-3xl overflow-hidden sticky top-[180px] bg-blue-50/30 border border-blue-100 shadow-lg group/map">
-                <div className="w-full h-full flex items-center justify-center relative">
-                  <div className="absolute inset-0 bg-[url('https://api.mapbox.com/styles/v1/mapbox/light-v10/static/0,0,0,0,0/800x800?access_token=pk.placeholder')] bg-cover opacity-15 grayscale contrast-[0.8]" />
-                  
-                  <div className="z-10 text-center px-10">
-                    <div className="w-20 h-20 bg-gradient-to-br from-blue-600 to-purple-600 rounded-3xl flex items-center justify-center shadow-xl mx-auto mb-6 transform transition-transform group-hover/map:scale-110">
-                      <MapIcon size={40} className="text-white stroke-[1.5]" />
-                    </div>
-                    <h4 className="text-xl font-bold mb-3 text-gray-800">Map Explorer</h4>
-                    <p className="text-gray-500 text-[15px] max-w-xs mx-auto font-light leading-relaxed">
-                      Visualize all {filteredCount} destinations on an interactive map to find the perfect location.
-                    </p>
-                  </div>
-
-                  {paginatedDestinations.slice(0, 8).map((dest, i) => (
-                    <div 
-                      key={dest.id}
-                      className="absolute bg-white px-3.5 py-1.5 rounded-full shadow-lg font-bold text-[13px] border border-blue-100 hover:scale-110 hover:bg-blue-600 hover:text-white transition-all cursor-pointer hover:z-50"
-                      style={{
-                        top: `${15 + (i * 10)}%`,
-                        left: `${15 + (i * 8)}%`
-                      }}
-                    >
-                      ${dest.price}
-                    </div>
-                  ))}
-                </div>
+              <div className="hidden lg:block lg:w-[40%] h-full min-h-[600px] rounded-3xl overflow-hidden sticky top-[180px] border border-blue-100 shadow-lg">
+                <MapView
+                  locations={paginatedDestinations.map((dest, index) => {
+                    // Try to get coordinates in this order:
+                    // 1. Use database coordinates if available
+                    // 2. Try to match neighborhood from address
+                    // 3. Fall back to grid pattern
+                    
+                    let lat: number, lng: number;
+                    
+                    if (dest.latitude && dest.longitude) {
+                      // Use actual coordinates from database
+                      lat = dest.latitude;
+                      lng = dest.longitude;
+                    } else {
+                      // Try to match neighborhood from address
+                      const neighborhoodCoords = getNeighborhoodCoordinates(dest.location);
+                      
+                      if (neighborhoodCoords) {
+                        // Add small random offset to avoid exact overlap
+                        lat = neighborhoodCoords.lat + (Math.random() - 0.5) * 0.005;
+                        lng = neighborhoodCoords.lng + (Math.random() - 0.5) * 0.005;
+                      } else {
+                        // Use grid pattern as final fallback
+                        const gridCoords = generateGridCoordinates(index, paginatedDestinations.length);
+                        lat = gridCoords.lat;
+                        lng = gridCoords.lng;
+                      }
+                    }
+                    
+                    return {
+                      id: dest.id,
+                      name: dest.name,
+                      price: dest.price,
+                      address: dest.location,
+                      lat,
+                      lng,
+                    };
+                  })}
+                  onMarkerClick={(locationId) => {
+                    // Navigate to destination detail page using router
+                    router.push(`/destinations/${locationId}`);
+                  }}
+                />
               </div>
             )}
           </div>
