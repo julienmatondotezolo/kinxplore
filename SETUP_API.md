@@ -4,7 +4,7 @@ This guide explains how to set up the frontend to connect to the backend API.
 
 ## Prerequisites
 
-- Backend server running at `http://localhost:5001`
+- Backend server running at `http://localhost:2431`
 - Node.js and npm installed
 
 ## Environment Variables
@@ -12,7 +12,7 @@ This guide explains how to set up the frontend to connect to the backend API.
 Create a `.env.local` file in the root of the frontend project with the following content:
 
 ```env
-NEXT_PUBLIC_API_URL=http://localhost:5001/api
+NEXT_PUBLIC_API_URL=http://localhost:2431/api
 ```
 
 ## API Integration
@@ -107,7 +107,7 @@ If you encounter CORS errors, make sure the backend has CORS enabled for `http:/
 If you see "Connection refused" errors:
 1. Verify the backend is running
 2. Check that the `NEXT_PUBLIC_API_URL` in `.env.local` matches your backend URL
-3. Ensure the backend is listening on port 5001
+3. Ensure the backend is listening on port 2431
 
 ### No Data Displayed
 
@@ -115,6 +115,6 @@ If you see "Connection refused" errors:
 2. Verify the backend has data in the database
 3. Test the API endpoints directly using curl or Postman:
    ```bash
-   curl http://localhost:5001/api/destinations
-   curl http://localhost:5001/api/categories
+   curl http://localhost:2431/api/destinations
+   curl http://localhost:2431/api/categories
    ```

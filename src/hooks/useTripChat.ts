@@ -4,7 +4,7 @@ import { useState, useCallback } from "react";
 
 import type { ChatMessage, StreamChunk, ChatRecommendation } from "@/types/chat.types";
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5001";
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:2431";
 
 export function useTripChat() {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
