@@ -183,8 +183,13 @@ export function MapView({
           // Filter out invalid coordinates
           const validLocations = locations.filter(
             (loc) =>
+              loc &&
+              typeof loc.lat === "number" &&
+              typeof loc.lng === "number" &&
               !isNaN(loc.lat) &&
               !isNaN(loc.lng) &&
+              isFinite(loc.lat) &&
+              isFinite(loc.lng) &&
               loc.lat !== null &&
               loc.lng !== null &&
               loc.lat >= -90 &&
@@ -193,9 +198,30 @@ export function MapView({
               loc.lng <= 180,
           );
 
-          if (validLocations.length > 0) {
-            const bounds = L.latLngBounds(validLocations.map((loc) => [loc.lat, loc.lng]));
-            mapInstanceRef.current.fitBounds(bounds, { padding: [50, 50], maxZoom: 14 });
+          if (validLocations.length > 1) {
+            // Need at least 2 points for valid bounds
+            const latLngs = validLocations.map((loc) => [loc.lat, loc.lng]);
+            const bounds = L.latLngBounds(latLngs);
+            
+            // Validate bounds before using
+            if (bounds && bounds.isValid()) {
+              const ne = bounds.getNorthEast();
+              const sw = bounds.getSouthWest();
+              const hasArea = Math.abs(ne.lat - sw.lat) > 0.0001 && Math.abs(ne.lng - sw.lng) > 0.0001;
+              
+              if (hasArea) {
+                mapInstanceRef.current.fitBounds(bounds, { padding: [50, 50], maxZoom: 14 });
+              } else {
+                // Points too close together, just center on first point
+                mapInstanceRef.current.setView([validLocations[0].lat, validLocations[0].lng], 13);
+              }
+            } else {
+              // Invalid bounds, center on first location
+              mapInstanceRef.current.setView([validLocations[0].lat, validLocations[0].lng], 13);
+            }
+          } else if (validLocations.length === 1) {
+            // Only one location, center on it
+            mapInstanceRef.current.setView([validLocations[0].lat, validLocations[0].lng], 13);
           } else {
             // If no valid locations, center on Kinshasa
             mapInstanceRef.current.setView([center.lat, center.lng], zoom);
@@ -203,7 +229,11 @@ export function MapView({
         } catch (error) {
           console.error("Error fitting bounds:", error);
           // Fallback to default center
-          mapInstanceRef.current.setView([center.lat, center.lng], zoom);
+          try {
+            mapInstanceRef.current.setView([center.lat, center.lng], zoom);
+          } catch (fallbackError) {
+            console.error("Error setting fallback view:", fallbackError);
+          }
         }
       }
     }
@@ -229,7 +259,11 @@ export function MapView({
         integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
         crossOrigin=""
       />
-      <div ref={mapRef} className="w-full h-full rounded-[32px] overflow-hidden" style={{ minHeight: "600px" }} />
+      <div 
+        ref={mapRef} 
+        className="w-full h-full rounded-2xl sm:rounded-3xl overflow-hidden shadow-lg" 
+        style={{ minHeight: "400px" }} 
+      />
     </>
   );
 }

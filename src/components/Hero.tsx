@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { ArrowRight, ArrowUpRight, Bed, Compass, Heart, LayoutGrid, MapPin, Plane, Plus, Star } from "lucide-react";
+import { ArrowRight, ArrowUpRight, Compass, MapPin, Plane, Star } from "lucide-react";
 import { useTranslations } from "next-intl";
 import React from "react";
 
@@ -66,31 +66,31 @@ export const Hero: React.FC = () => {
   };
 
   return (
-    <div className="relative pt-24 md:pt-32 pb-32 md:pb-48 px-4 overflow-hidden bg-gradient-to-br from-blue-50/50 via-purple-50/30 to-pink-50/40">
+    <div className="relative pt-20 sm:pt-24 md:pt-32 pb-20 sm:pb-32 md:pb-48 px-3 sm:px-4 overflow-hidden bg-gradient-to-br from-blue-50/50 via-purple-50/30 to-pink-50/40">
       {/* ... Background Blobs ... */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {/* Large primary blob - top right */}
-        <div className="absolute -top-40 -right-40 w-[500px] h-[500px] bg-gradient-to-br from-blue-400/20 to-purple-400/20 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute -top-40 -right-40 w-[300px] sm:w-[500px] h-[300px] sm:h-[500px] bg-gradient-to-br from-blue-400/20 to-purple-400/20 rounded-full blur-3xl animate-pulse" />
 
         {/* Secondary blob - bottom left */}
-        <div className="absolute -bottom-20 -left-20 w-[400px] h-[400px] bg-gradient-to-tr from-pink-400/15 to-orange-400/15 rounded-full blur-3xl animate-pulse delay-1000" />
+        <div className="absolute -bottom-20 -left-20 w-[250px] sm:w-[400px] h-[250px] sm:h-[400px] bg-gradient-to-tr from-pink-400/15 to-orange-400/15 rounded-full blur-3xl animate-pulse delay-1000" />
 
         {/* Accent blob - middle */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-r from-yellow-400/10 to-blue-400/10 rounded-full blur-3xl animate-pulse delay-500" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] sm:w-[600px] h-[400px] sm:h-[600px] bg-gradient-to-r from-yellow-400/10 to-blue-400/10 rounded-full blur-3xl animate-pulse delay-500" />
 
-        {/* Floating decorative shapes */}
-        <div className="absolute top-20 left-[10%] w-20 h-20 bg-gradient-to-br from-yellow-500/10 to-orange-500/10 rounded-2xl rotate-12 animate-float" />
-        <div className="absolute bottom-40 right-[15%] w-16 h-16 bg-gradient-to-br from-pink-500/10 to-orange-500/10 rounded-full animate-float-delayed" />
-        <div className="absolute top-[60%] left-[5%] w-12 h-12 bg-gradient-to-br from-cyan-500/10 to-blue-500/10 rounded-lg -rotate-12 animate-float-slow" />
+        {/* Floating decorative shapes - hidden on small mobile */}
+        <div className="hidden sm:block absolute top-20 left-[10%] w-20 h-20 bg-gradient-to-br from-yellow-500/10 to-orange-500/10 rounded-2xl rotate-12 animate-float" />
+        <div className="hidden sm:block absolute bottom-40 right-[15%] w-16 h-16 bg-gradient-to-br from-pink-500/10 to-orange-500/10 rounded-full animate-float-delayed" />
+        <div className="hidden sm:block absolute top-[60%] left-[5%] w-12 h-12 bg-gradient-to-br from-cyan-500/10 to-blue-500/10 rounded-lg -rotate-12 animate-float-slow" />
 
-        {/* Icon decorations */}
-        <div className="absolute top-32 right-[20%] text-blue-400/20 animate-float">
+        {/* Icon decorations - hidden on small mobile */}
+        <div className="hidden md:block absolute top-32 right-[20%] text-blue-400/20 animate-float">
           <Plane size={40} className="rotate-45" />
         </div>
-        <div className="absolute bottom-32 left-[15%] text-purple-400/20 animate-float-delayed">
+        <div className="hidden md:block absolute bottom-32 left-[15%] text-purple-400/20 animate-float-delayed">
           <Compass size={36} />
         </div>
-        <div className="absolute top-[45%] right-[10%] text-pink-400/20 animate-float-slow">
+        <div className="hidden md:block absolute top-[45%] right-[10%] text-pink-400/20 animate-float-slow">
           <MapPin size={32} />
         </div>
       </div>
@@ -102,28 +102,28 @@ export const Hero: React.FC = () => {
         animate="visible"
       >
         {/* Left Content */}
-        <div className="space-y-8 md:space-y-10 relative z-10 w-[95%] mx-auto lg:w-full lg:mx-0">
+        <div className="space-y-6 sm:space-y-8 md:space-y-10 relative z-10 w-full px-2 sm:px-0 sm:w-[95%] mx-auto lg:w-full lg:mx-0">
           <div className="flex justify-center lg:justify-start">
             <motion.div
               variants={itemVariants}
               animate={{ y: [0, -5, 0] }}
               transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-              className="inline-flex items-center gap-2 bg-gradient-to-r from-orange-50 via-white to-orange-50 backdrop-blur-sm text-orange-600 px-5 py-2.5 rounded-full text-[10px] md:text-xs font-bold border border-orange-100/50 tracking-wide shadow-sm"
+              className="inline-flex items-center gap-2 bg-gradient-to-r from-orange-50 via-white to-orange-50 backdrop-blur-sm text-orange-600 px-4 sm:px-5 py-2 sm:py-2.5 rounded-full text-[11px] sm:text-xs font-bold border border-orange-100/50 tracking-wide shadow-sm"
             >
               <span className="w-2 h-2 bg-orange-500 rounded-full animate-pulse"></span>
               {t("badge")}
             </motion.div>
           </div>
 
-          <div className="space-y-4 md:space-y-6 text-center lg:text-left max-w-[90%] mx-auto lg:max-w-none lg:mx-0">
+          <div className="space-y-3 sm:space-y-4 md:space-y-6 text-center lg:text-left max-w-full sm:max-w-[90%] mx-auto lg:max-w-none lg:mx-0">
             <motion.h1
               variants={itemVariants}
-              className="text-4xl md:text-[4.2rem] font-black text-gray-900 leading-[1.2] md:leading-[1.1] tracking-tight"
+              className="text-[2rem] sm:text-4xl md:text-[4.2rem] font-black text-gray-900 leading-[1.15] sm:leading-[1.2] md:leading-[1.1] tracking-tight px-1"
             >
               {/* <span className="block">{t("title")}</span> */}
-              <span className="flex items-center justify-center lg:justify-start gap-3 flex-wrap">
+              <span className="flex items-center justify-center lg:justify-start gap-2 sm:gap-3 flex-wrap">
                 {t("title")} {t("titleCity")}
-                <span className="inline-block w-16 h-8 md:w-24 md:h-12 bg-gray-100 rounded-full overflow-hidden border-2 md:border-4 border-white shadow-sm -rotate-2 transform hover:rotate-0 transition-transform duration-500">
+                <span className="inline-block w-14 h-7 sm:w-16 sm:h-8 md:w-24 md:h-12 bg-gray-100 rounded-full overflow-hidden border-2 md:border-4 border-white shadow-sm -rotate-2 transform hover:rotate-0 transition-transform duration-500">
                   <img
                     src="https://picsum.photos/400/300?random=50"
                     className="w-full h-full object-cover"
@@ -136,27 +136,27 @@ export const Hero: React.FC = () => {
 
             <motion.p
               variants={itemVariants}
-              className="text-sm md:text-lg text-gray-500 max-w-lg leading-relaxed font-medium mx-auto lg:mx-0"
+              className="text-[13px] sm:text-sm md:text-lg text-gray-500 max-w-lg leading-relaxed font-medium mx-auto lg:mx-0 px-1"
             >
               <span className="text-gray-900 font-bold">{t("subtitle")}</span> {t("description")}
             </motion.p>
           </div>
 
           {/* Search Form Integrated */}
-          <motion.div variants={itemVariants} className="pt-4 md:pt-2 w-full mx-auto lg:mx-0">
+          <motion.div variants={itemVariants} className="pt-2 sm:pt-4 md:pt-2 w-full mx-auto lg:mx-0">
             <ChatSearch />
           </motion.div>
 
           {/* Mobile Recommended Section - Screenshot 2 Style */}
-          <motion.div variants={itemVariants} className="lg:hidden space-y-8 pt-10">
+          <motion.div variants={itemVariants} className="lg:hidden space-y-6 sm:space-y-8 pt-6 sm:pt-10">
             {/* Top Row: Review */}
-            <div className="flex items-center gap-4 px-4">
-              <div className="flex -space-x-3">
+            <div className="flex items-center gap-3 sm:gap-4 px-2 sm:px-4">
+              <div className="flex -space-x-2 sm:-space-x-3">
                 {[1, 2, 3, 4].map((i) => (
                   <img
                     key={i}
                     src={`https://picsum.photos/100/100?random=${i + 30}`}
-                    className="w-10 h-10 rounded-full border-4 border-white object-cover shadow-sm"
+                    className="w-9 h-9 sm:w-10 sm:h-10 rounded-full border-3 sm:border-4 border-white object-cover shadow-sm"
                     alt="User"
                   />
                 ))}
@@ -164,43 +164,49 @@ export const Hero: React.FC = () => {
               <div className="flex flex-col">
                 <div className="flex items-center gap-0.5">
                   {[1, 2, 3, 4, 5].map((i) => (
-                    <Star key={i} size={12} className="text-yellow-400 fill-yellow-400" />
+                    <Star key={i} size={11} className="text-yellow-400 fill-yellow-400 sm:w-3 sm:h-3" />
                   ))}
                 </div>
-                <p className="text-[11px] font-bold text-gray-900 tracking-tight mt-0.5">{t("reviewsStats")}</p>
+                <p className="text-[10px] sm:text-[11px] font-bold text-gray-900 tracking-tight mt-0.5">
+                  {t("reviewsStats")}
+                </p>
               </div>
             </div>
 
             {/* Packages Grid for Mobile */}
-            <div className="space-y-4 px-2">
+            <div className="space-y-3 sm:space-y-4 px-1 sm:px-2">
               {packages.map((pkg, i) => (
                 <motion.div
                   key={i}
                   variants={cardVariants}
                   whileTap={{ scale: 0.98 }}
-                  className="relative rounded-[2.5rem] overflow-hidden shadow-xl border-4 border-white group cursor-pointer aspect-[16/10]"
+                  className="relative rounded-[2rem] sm:rounded-[2.5rem] overflow-hidden shadow-lg sm:shadow-xl border-3 sm:border-4 border-white group cursor-pointer aspect-[16/9] sm:aspect-[16/10] active:shadow-2xl transition-shadow"
                 >
                   <img src={pkg.img} alt={pkg.title} className="w-full h-full object-cover" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-60" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
 
                   {/* Badge */}
                   {pkg.badge && (
-                    <div className="absolute top-4 left-4 px-3 py-1 bg-blue-600 text-white text-[9px] font-bold rounded-full uppercase tracking-wider shadow-lg">
+                    <div className="absolute top-3 sm:top-4 left-3 sm:left-4 px-2.5 sm:px-3 py-1 bg-blue-600 text-white text-[8px] sm:text-[9px] font-bold rounded-full uppercase tracking-wider shadow-lg">
                       {pkg.badge}
                     </div>
                   )}
 
-                  <div className="absolute top-4 right-4 w-8 h-8 bg-white/90 backdrop-blur rounded-full flex items-center justify-center shadow-lg">
-                    <ArrowUpRight size={16} className="text-gray-900" />
+                  <div className="absolute top-3 sm:top-4 right-3 sm:right-4 w-9 h-9 sm:w-10 sm:h-10 bg-white/90 backdrop-blur rounded-full flex items-center justify-center shadow-lg active:bg-blue-600 active:text-white transition-colors">
+                    <ArrowUpRight size={16} className="text-gray-900 sm:w-4 sm:h-4" />
                   </div>
 
-                  <div className="absolute bottom-6 left-6 right-6 text-white text-left">
-                    <p className="text-[9px] font-bold text-blue-400 uppercase tracking-[0.2em] mb-1">{pkg.tag}</p>
-                    <h4 className="text-xl font-extrabold mb-2 leading-tight">{pkg.title}</h4>
-                    <div className="flex items-center gap-2">
-                      <span className="text-xs font-bold opacity-90">{pkg.duration}</span>
+                  <div className="absolute bottom-4 sm:bottom-6 left-4 sm:left-6 right-4 sm:right-6 text-white text-left">
+                    <p className="text-[8px] sm:text-[9px] font-bold text-blue-300 sm:text-blue-400 uppercase tracking-[0.15em] sm:tracking-[0.2em] mb-1">
+                      {pkg.tag}
+                    </p>
+                    <h4 className="text-lg sm:text-xl font-extrabold mb-1.5 sm:mb-2 leading-tight">{pkg.title}</h4>
+                    <div className="flex items-center gap-1.5 sm:gap-2">
+                      <span className="text-[11px] sm:text-xs font-bold opacity-90">{pkg.duration}</span>
                       <span className="w-1 h-1 bg-white/40 rounded-full" />
-                      <span className="text-xs font-bold text-blue-400">From {pkg.price}</span>
+                      <span className="text-[11px] sm:text-xs font-bold text-blue-300 sm:text-blue-400">
+                        From {pkg.price}
+                      </span>
                     </div>
                   </div>
                 </motion.div>
@@ -208,12 +214,12 @@ export const Hero: React.FC = () => {
             </div>
 
             {/* Footer Link */}
-            <div className="pt-2 text-center">
-              <button className="inline-flex items-center gap-2 text-blue-600 font-black text-[10px] uppercase tracking-[0.2em] group border-b-2 border-transparent hover:border-blue-600 pb-1 transition-all">
+            <div className="pt-1 sm:pt-2 text-center pb-4">
+              <button className="inline-flex items-center gap-2 text-blue-600 font-black text-[9px] sm:text-[10px] uppercase tracking-[0.15em] sm:tracking-[0.2em] group border-b-2 border-transparent active:border-blue-600 pb-1 transition-all touch-manipulation">
                 {t("explorePackages")}
                 <ArrowRight
-                  size={14}
-                  className="-rotate-45 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform"
+                  size={12}
+                  className="-rotate-45 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform sm:w-3.5 sm:h-3.5"
                 />
               </button>
             </div>

@@ -2,7 +2,7 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import { AnimatePresence, motion } from "framer-motion";
-import { Briefcase, Heart, HelpCircle, Home, LogOut, Mail, MapPin, Menu, Settings, ShoppingBag, X } from "lucide-react";
+import { Briefcase, Heart, HelpCircle, Home, LogOut, Mail, MapPin, Menu, Settings, ShoppingBag, X, Plane } from "lucide-react";
 import { useTranslations } from "next-intl";
 import React, { useEffect, useState } from "react";
 
@@ -149,7 +149,14 @@ export const Navigation: React.FC = () => {
         </div>
 
         <div className="flex items-center gap-4 md:gap-6">
-          <div className="hidden md:flex items-center gap-5 text-gray-700">
+          <div className="hidden md:flex items-center gap-3 text-gray-700">
+            <button
+              onClick={() => router.push("/trips")}
+              className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-full font-bold text-sm transition-all shadow-md hover:shadow-lg active:scale-95"
+            >
+              <Plane size={16} />
+              My Trips
+            </button>
             <button className="hover:text-blue-600 transition">
               <Heart size={20} />
             </button>
@@ -216,6 +223,21 @@ export const Navigation: React.FC = () => {
               <div className="flex-1 space-y-6">
                 <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-4">Main Menu</p>
                 <div className="space-y-2">
+                  {/* My Trips - Featured */}
+                  <div
+                    onClick={() => {
+                      setIsMobileMenuOpen(false);
+                      router.push("/trips");
+                    }}
+                    className="flex items-center justify-between p-4 rounded-2xl cursor-pointer transition-all bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg hover:shadow-xl active:scale-95"
+                  >
+                    <div className="flex items-center gap-4">
+                      <Plane size={20} />
+                      <span className="font-bold">My Trips</span>
+                    </div>
+                    <div className="w-1.5 h-1.5 bg-white rounded-full animate-pulse" />
+                  </div>
+
                   {navLinks.map((link) => (
                     <div
                       key={link.id}
