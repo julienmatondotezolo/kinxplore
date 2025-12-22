@@ -113,12 +113,9 @@ export const SavedTrips: React.FC = () => {
   }
 
   return (
-    <div className="py-6 px-3 sm:px-4 lg:px-6">
+    <div className="py-4 sm:py-6 px-3 sm:px-4 lg:px-6">
       {/* Header */}
-      <div className="mb-6 sm:mb-8">
-        <h2 className="text-2xl sm:text-3xl font-extrabold text-gray-900 mb-2">
-          My Saved Trips
-        </h2>
+      <div className="mb-4 sm:mb-6">
         <p className="text-sm sm:text-base text-gray-600">
           You have {savedTrips.length} saved {savedTrips.length === 1 ? "trip" : "trips"}
         </p>

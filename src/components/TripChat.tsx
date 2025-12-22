@@ -286,7 +286,9 @@ export const TripChat: React.FC<TripChatProps> = ({ initialMessage, onClose }) =
       </div>
 
         {/* Input Area */}
-        <div className="bg-white border-t border-gray-100 px-3 sm:px-4 md:px-6 py-3 sm:py-4">
+        <div className={`bg-white border-t border-gray-100 px-3 sm:px-4 md:px-6 py-3 sm:py-4 ${
+          showRecommendations && recommendations ? "pb-20 lg:pb-4" : ""
+        }`}>
           <form onSubmit={handleSubmit} className="flex gap-2 items-end">
             <div className="flex-1 bg-gray-50 border border-gray-200 rounded-xl sm:rounded-2xl px-3 sm:px-4 py-2.5 sm:py-3 focus-within:border-blue-400 focus-within:bg-white focus-within:ring-2 focus-within:ring-blue-100 transition-all">
               <input
@@ -465,7 +467,7 @@ export const TripChat: React.FC<TripChatProps> = ({ initialMessage, onClose }) =
             </div>
 
             {/* Fixed Save Button at Bottom */}
-            <div className="absolute bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-gray-200 px-3 sm:px-4 lg:px-6 py-3 sm:py-4 shadow-2xl">
+            <div className="absolute bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-gray-200 px-3 sm:px-4 lg:px-6 py-3 sm:py-4 pb-20 lg:pb-4 shadow-2xl">
               <button
                 onClick={handleSaveTrip}
                 disabled={isSaving || isSaved || isLoadingRecommendations}
@@ -499,45 +501,6 @@ export const TripChat: React.FC<TripChatProps> = ({ initialMessage, onClose }) =
           </motion.div>
         )}
       </AnimatePresence>
-
-      {/* Floating Action Buttons for Mobile */}
-      {showRecommendations && recommendations && (
-        <>
-          {/* Chat FAB - Shows when viewing itinerary on mobile */}
-          <AnimatePresence>
-            {mobileView === "itinerary" && (
-              <motion.button
-                initial={{ scale: 0, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                exit={{ scale: 0, opacity: 0 }}
-                transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                onClick={() => setMobileView("chat")}
-                className="lg:hidden fixed bottom-24 right-4 z-50 w-14 h-14 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-full shadow-2xl flex items-center justify-center active:scale-95 transition-transform touch-manipulation"
-                aria-label="Back to chat"
-              >
-                <MessageCircle size={24} />
-              </motion.button>
-            )}
-          </AnimatePresence>
-
-          {/* Itinerary FAB - Shows when viewing chat on mobile */}
-          <AnimatePresence>
-            {mobileView === "chat" && (
-              <motion.button
-                initial={{ scale: 0, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                exit={{ scale: 0, opacity: 0 }}
-                transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                onClick={() => setMobileView("itinerary")}
-                className="lg:hidden fixed bottom-24 right-4 z-50 w-14 h-14 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-full shadow-2xl flex items-center justify-center active:scale-95 transition-transform touch-manipulation"
-                aria-label="View itinerary"
-              >
-                <MapPin size={24} />
-              </motion.button>
-            )}
-          </AnimatePresence>
-        </>
-      )}
 
       {/* Mobile Bottom Navigation */}
       {showRecommendations && recommendations && (

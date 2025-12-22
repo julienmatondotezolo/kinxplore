@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { Home, MapPin, MessageCircle, Plane, User } from "lucide-react";
 import React from "react";
 
+import { useSavedTripsModal } from "@/hooks/useSavedTripsModal";
 import { useRouter } from "@/navigation";
 
 interface MobileBottomNavProps {
@@ -18,6 +19,7 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
   showChatToggle = false,
 }) => {
   const router = useRouter();
+  const { openModal } = useSavedTripsModal();
 
   const navItems = [
     {
@@ -30,7 +32,7 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
       id: "trips",
       icon: Plane,
       label: "Trips",
-      action: () => router.push("/trips"),
+      action: () => openModal(),
     },
     ...(showChatToggle
       ? [

@@ -6,12 +6,15 @@ import { Briefcase, Heart, HelpCircle, Home, LogOut, Mail, MapPin, Menu, Setting
 import { useTranslations } from "next-intl";
 import React, { useEffect, useState } from "react";
 
+import { SavedTripsModal } from "./SavedTripsModal";
+import { useSavedTripsModal } from "@/hooks/useSavedTripsModal";
 import { usePathname, useRouter } from "@/navigation";
 
 export const Navigation: React.FC = () => {
   const t = useTranslations("Navigation");
   const router = useRouter();
   const pathname = usePathname();
+  const { isOpen: isTripsModalOpen, openModal: openTripsModal, closeModal: closeTripsModal } = useSavedTripsModal();
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -151,7 +154,7 @@ export const Navigation: React.FC = () => {
         <div className="flex items-center gap-4 md:gap-6">
           <div className="hidden md:flex items-center gap-3 text-gray-700">
             <button
-              onClick={() => router.push("/trips")}
+              onClick={openTripsModal}
               className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-full font-bold text-sm transition-all shadow-md hover:shadow-lg active:scale-95"
             >
               <Plane size={16} />
@@ -227,7 +230,7 @@ export const Navigation: React.FC = () => {
                   <div
                     onClick={() => {
                       setIsMobileMenuOpen(false);
-                      router.push("/trips");
+                      openTripsModal();
                     }}
                     className="flex items-center justify-between p-4 rounded-2xl cursor-pointer transition-all bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg hover:shadow-xl active:scale-95"
                   >
@@ -286,6 +289,9 @@ export const Navigation: React.FC = () => {
           </>
         )}
       </AnimatePresence>
+
+      {/* Saved Trips Modal */}
+      <SavedTripsModal isOpen={isTripsModalOpen} onClose={closeTripsModal} />
     </>
   );
 };
