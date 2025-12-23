@@ -78,3 +78,4 @@ export const SavedTripsModal: React.FC<SavedTripsModalProps> = ({ isOpen, onClos
   );
 };
 
+

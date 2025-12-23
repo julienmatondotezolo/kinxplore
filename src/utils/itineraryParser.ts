@@ -77,3 +77,4 @@ function extractActivities(text: string): string[] {
   return activities;
 }
 
+

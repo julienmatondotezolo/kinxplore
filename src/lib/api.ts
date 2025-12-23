@@ -4,7 +4,7 @@
 
 import { DestinationWithCategories, ParentCategoryWithSubcategories } from "@/types/api.types";
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:2431/api";
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:2431";
 
 class ApiError extends Error {
   constructor(
@@ -18,7 +18,7 @@ class ApiError extends Error {
 }
 
 async function fetchApi<T>(endpoint: string, options?: RequestInit): Promise<T> {
-  const url = `${API_BASE_URL}${endpoint}`;
+  const url = `${API_BASE_URL}/api/${endpoint}`;
 
   try {
     const response = await fetch(url, {

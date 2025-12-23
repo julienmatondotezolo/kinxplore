@@ -158,3 +158,4 @@ async function loadTripsFromIndexedDB(): Promise<SavedTrip[]> {
   }
 }
 
+

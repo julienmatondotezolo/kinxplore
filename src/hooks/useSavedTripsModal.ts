@@ -16,3 +16,4 @@ export const useSavedTripsModal = create<SavedTripsModalStore>((set) => ({
   toggleModal: () => set((state) => ({ isOpen: !state.isOpen })),
 }));
 
+
