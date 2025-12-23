@@ -18,7 +18,7 @@ class ApiError extends Error {
 }
 
 async function fetchApi<T>(endpoint: string, options?: RequestInit): Promise<T> {
-  const url = `${API_BASE_URL}/api/${endpoint}`;
+  const url = `${API_BASE_URL}/api${endpoint}`;
 
   try {
     const response = await fetch(url, {
