@@ -24,6 +24,16 @@ export interface CategoryInfo {
   subcategory?: Subcategory;
 }
 
+export interface Facility {
+  id: string;
+  name: string;
+  icon?: string;
+  description?: string;
+  category_id?: string;
+  created_at?: string;
+  updated_at?: string;
+}
+
 export interface Destination {
   id: string;
   name: string;
@@ -41,6 +51,7 @@ export interface Destination {
 
 export interface DestinationWithCategories extends Destination {
   categories: CategoryInfo[];
+  facilities?: Facility[];
 }
 
 export interface ParentCategoryWithSubcategories extends ParentCategory {

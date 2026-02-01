@@ -114,14 +114,18 @@ export default function DestinationDetailPage() {
     );
   }
 
-  const facilities = [
-    { icon: <Wifi size={20} />, label: "Wifi" },
-    { icon: <Waves size={20} />, label: "Swimming Pool" },
-    { icon: <Palmtree size={20} />, label: "Backyard" },
-    { icon: <Car size={20} />, label: "Free Parking" },
-    { icon: <Wind size={20} />, label: "Air Conditioner" },
-    { icon: <CheckCircle2 size={20} />, label: "Security" },
-  ];
+  // Get facilities from destination data or use empty array
+  const destinationFacilities = destination.facilities || [];
+  
+  // Helper function to render facility icon (emoji or default icon)
+  const renderFacilityIcon = (facility: any) => {
+    if (facility.icon) {
+      // If icon is an emoji, render it directly
+      return <span className="text-2xl">{facility.icon}</span>;
+    }
+    // Default icon if no icon provided
+    return <CheckCircle2 size={20} />;
+  };
 
   const highlights = ["The Sultan Qaboos Grand Mosque", "The Royal Opera House", "The National Museum", "Muttrah Souq"];
 
@@ -285,21 +289,23 @@ export default function DestinationDetailPage() {
               </section>
 
               {/* Facilities */}
-              <section className="space-y-10 pt-10 border-t border-gray-100">
-                <h2 className="text-2xl font-black text-gray-900">{t("facilities")}</h2>
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-y-10 gap-x-6">
-                  {facilities.map((facility, i) => (
-                    <div key={i} className="flex items-center gap-5 group">
-                      <div className="w-14 h-14 rounded-2xl bg-gray-50 text-gray-400 flex items-center justify-center group-hover:bg-blue-600 group-hover:text-white transition-all duration-300 border border-gray-100 group-hover:border-blue-600 group-hover:shadow-xl group-hover:shadow-blue-500/20">
-                        {facility.icon}
+              {destinationFacilities.length > 0 && (
+                <section className="space-y-10 pt-10 border-t border-gray-100">
+                  <h2 className="text-2xl font-black text-gray-900">{t("facilities")}</h2>
+                  <div className="grid grid-cols-2 md:grid-cols-3 gap-y-10 gap-x-6">
+                    {destinationFacilities.map((facility) => (
+                      <div key={facility.id} className="flex items-center gap-5 group" title={facility.description}>
+                        <div className="w-14 h-14 rounded-2xl bg-gray-50 text-gray-400 flex items-center justify-center group-hover:bg-blue-600 group-hover:text-white transition-all duration-300 border border-gray-100 group-hover:border-blue-600 group-hover:shadow-xl group-hover:shadow-blue-500/20">
+                          {renderFacilityIcon(facility)}
+                        </div>
+                        <span className="text-[15px] font-bold text-gray-600 group-hover:text-black transition-colors">
+                          {facility.name}
+                        </span>
                       </div>
-                      <span className="text-[15px] font-bold text-gray-600 group-hover:text-black transition-colors">
-                        {facility.label}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </section>
+                    ))}
+                  </div>
+                </section>
+              )}
 
               {/* Location */}
               {destination.location && showLocationSection && (
