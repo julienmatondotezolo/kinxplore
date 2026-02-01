@@ -4,7 +4,6 @@
 import { AnimatePresence, motion } from "framer-motion";
 import {
   Briefcase,
-  Heart,
   HelpCircle,
   Home,
   LogIn,
@@ -14,7 +13,6 @@ import {
   Menu,
   Plane,
   Settings,
-  ShoppingBag,
   UserPlus,
   X,
 } from "lucide-react";
@@ -22,16 +20,12 @@ import { useTranslations } from "next-intl";
 import React, { useEffect, useState } from "react";
 
 import { useAuth } from "@/hooks/useAuth";
-import { useSavedTripsModal } from "@/hooks/useSavedTripsModal";
 import { usePathname, useRouter } from "@/navigation";
-
-import { SavedTripsModal } from "./SavedTripsModal";
 
 export const Navigation: React.FC = () => {
   const t = useTranslations("Navigation");
   const router = useRouter();
   const pathname = usePathname();
-  const { isOpen: isTripsModalOpen, openModal: openTripsModal, closeModal: closeTripsModal } = useSavedTripsModal();
   const { user, profile, loading: authLoading, signOut } = useAuth();
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
@@ -181,21 +175,11 @@ export const Navigation: React.FC = () => {
             <>
               <div className="hidden md:flex items-center gap-6 text-gray-700">
                 <button
-                  onClick={openTripsModal}
+                  onClick={() => router.push("/bookings")}
                   className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-full font-bold text-sm transition-all shadow-md hover:shadow-lg active:scale-95"
                 >
                   <Plane size={16} />
-                  My Trips
-                </button>
-                <button className="hover:text-blue-600 transition">
-                  <Heart size={20} />
-                </button>
-                <button
-                  onClick={() => router.push("/bookings")}
-                  className="hover:text-blue-600 transition"
-                  title="My Bookings"
-                >
-                  <ShoppingBag size={20} />
+                  My Bookings
                 </button>
               </div>
 
@@ -450,9 +434,6 @@ export const Navigation: React.FC = () => {
           </>
         )}
       </AnimatePresence>
-
-      {/* Saved Trips Modal */}
-      <SavedTripsModal isOpen={isTripsModalOpen} onClose={closeTripsModal} />
     </>
   );
 };
