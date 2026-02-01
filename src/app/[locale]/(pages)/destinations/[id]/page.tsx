@@ -310,28 +310,28 @@ export default function DestinationDetailPage() {
             </div>
 
             {/* Booking Card */}
-            <div className="lg:w-[420px]">
-              <div className="sticky top-32 bg-white rounded-[40px] border border-gray-100 shadow-2xl shadow-blue-500/10 p-10 space-y-10">
+            <div className="lg:w-[360px]">
+              <div className="sticky top-32 bg-white rounded-[24px] border border-gray-100 shadow-xl shadow-blue-500/10 p-6 space-y-6">
                 <div className="flex items-baseline justify-between">
                   <div className="space-y-1">
-                    <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">
+                    <p className="text-[9px] font-bold text-gray-400 uppercase tracking-widest">
                       {t("priceStartsFrom")}
                     </p>
-                    <div className="flex items-baseline gap-1.5">
-                      <span className="text-4xl font-black text-gray-900">${destination.price.toFixed(2)}</span>
-                      <span className="text-gray-400 font-light text-[15px]">{t("perNight")}</span>
+                    <div className="flex items-baseline gap-1">
+                      <span className="text-2xl font-black text-gray-900">${destination.price.toFixed(2)}</span>
+                      <span className="text-gray-400 font-light text-sm">{t("perNight")}</span>
                     </div>
                   </div>
-                  <div className="bg-orange-50 text-orange-600 px-4 py-2.5 rounded-full text-[11px] font-black uppercase tracking-wider flex items-center gap-2">
-                    <Info size={14} />
+                  <div className="bg-orange-50 text-orange-600 px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-wider flex items-center gap-1.5">
+                    <Info size={12} />
                     <span>{t("bestPrice")}</span>
                   </div>
                 </div>
 
-                <div className="flex border border-gray-100 rounded-[24px] overflow-hidden bg-gray-50/50">
-                  <div className="flex-1 px-6 py-5 flex flex-col items-start gap-1.5 hover:bg-white hover:shadow-sm transition-all border-r border-gray-100 relative group cursor-pointer">
-                    <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest flex items-center gap-1.5">
-                      <Calendar size={12} />
+                <div className="flex border border-gray-100 rounded-xl overflow-hidden bg-gray-50/50">
+                  <div className="flex-1 px-4 py-3 flex flex-col items-start gap-1 hover:bg-white hover:shadow-sm transition-all border-r border-gray-100 relative group cursor-pointer">
+                    <label className="text-[9px] font-bold text-gray-400 uppercase tracking-widest flex items-center gap-1">
+                      <Calendar size={10} />
                       {t("checkIn")}
                     </label>
                     <input
@@ -339,15 +339,15 @@ export default function DestinationDetailPage() {
                       value={formatDateForInput(checkInDate)}
                       onChange={handleCheckInChange}
                       min={formatDateForInput(new Date())}
-                      className="text-[15px] font-black bg-transparent border-none outline-none cursor-pointer w-full appearance-none hover:text-blue-600 transition-colors [&::-webkit-calendar-picker-indicator]:cursor-pointer [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:inset-0 [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:h-full"
+                      className="text-sm font-bold bg-transparent border-none outline-none cursor-pointer w-full appearance-none hover:text-blue-600 transition-colors [&::-webkit-calendar-picker-indicator]:cursor-pointer [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:inset-0 [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:h-full"
                     />
-                    <div className="absolute inset-0 flex items-center justify-end pr-6 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity">
-                      <Calendar size={16} className="text-blue-600" />
+                    <div className="absolute inset-0 flex items-center justify-end pr-4 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity">
+                      <Calendar size={14} className="text-blue-600" />
                     </div>
                   </div>
-                  <div className="flex-1 px-6 py-5 flex flex-col items-start gap-1.5 hover:bg-white hover:shadow-sm transition-all relative group cursor-pointer">
-                    <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest flex items-center gap-1.5">
-                      <Calendar size={12} />
+                  <div className="flex-1 px-4 py-3 flex flex-col items-start gap-1 hover:bg-white hover:shadow-sm transition-all relative group cursor-pointer">
+                    <label className="text-[9px] font-bold text-gray-400 uppercase tracking-widest flex items-center gap-1">
+                      <Calendar size={10} />
                       {t("checkOut")}
                     </label>
                     <input
@@ -355,16 +355,16 @@ export default function DestinationDetailPage() {
                       value={formatDateForInput(checkOutDate)}
                       onChange={handleCheckOutChange}
                       min={formatDateForInput(new Date(checkInDate.getTime() + 86400000))}
-                      className="text-[15px] font-black bg-transparent border-none outline-none cursor-pointer w-full appearance-none hover:text-blue-600 transition-colors [&::-webkit-calendar-picker-indicator]:cursor-pointer [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:inset-0 [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:h-full"
+                      className="text-sm font-bold bg-transparent border-none outline-none cursor-pointer w-full appearance-none hover:text-blue-600 transition-colors [&::-webkit-calendar-picker-indicator]:cursor-pointer [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:inset-0 [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:h-full"
                     />
-                    <div className="absolute inset-0 flex items-center justify-end pr-6 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity">
-                      <Calendar size={16} className="text-blue-600" />
+                    <div className="absolute inset-0 flex items-center justify-end pr-4 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity">
+                      <Calendar size={14} className="text-blue-600" />
                     </div>
                   </div>
                 </div>
 
-                <div className="space-y-5">
-                  <div className="flex items-center justify-between text-gray-500 text-[15px] font-medium">
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between text-gray-500 text-sm font-medium">
                     <div className="flex items-center gap-2 underline decoration-gray-200 decoration-dotted underline-offset-4">
                       <span>
                         ${destination.price.toFixed(2)} x {nights} {nights === 1 ? "night" : "nights"}
@@ -372,31 +372,31 @@ export default function DestinationDetailPage() {
                     </div>
                     <span>${(destination.price * nights).toFixed(2)}</span>
                   </div>
-                  <div className="flex items-center justify-between text-gray-500 text-[15px] font-medium">
+                  <div className="flex items-center justify-between text-gray-500 text-sm font-medium">
                     <span className="underline decoration-gray-200 decoration-dotted underline-offset-4">
                       {t("serviceFee")}
                     </span>
                     <span>$0.00</span>
                   </div>
-                  <div className="pt-8 border-t border-gray-100 flex items-center justify-between">
-                    <span className="text-lg font-black text-gray-900">{t("totalPrice")}</span>
-                    <span className="text-3xl font-black text-blue-600">${(destination.price * nights).toFixed(2)}</span>
+                  <div className="pt-4 border-t border-gray-100 flex items-center justify-between">
+                    <span className="text-base font-black text-gray-900">{t("totalPrice")}</span>
+                    <span className="text-2xl font-black text-blue-600">${(destination.price * nights).toFixed(2)}</span>
                   </div>
                 </div>
 
-                <div className="space-y-4">
+                <div className="space-y-2.5">
                   <button
                     onClick={handleBookNow}
-                    className="w-full bg-blue-600 hover:bg-blue-700 text-white py-6 rounded-[24px] font-black text-lg shadow-xl shadow-blue-500/25 active:scale-95 transition-all"
+                    className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl font-bold text-sm shadow-lg shadow-blue-500/25 active:scale-95 transition-all"
                   >
                     {t("bookNow")}
                   </button>
-                  <button className="w-full bg-white hover:bg-gray-50 text-gray-900 py-6 rounded-[24px] font-bold text-[15px] border border-gray-100 active:scale-95 transition-all">
+                  <button className="w-full bg-white hover:bg-gray-50 text-gray-900 py-3 rounded-xl font-semibold text-sm border border-gray-100 active:scale-95 transition-all">
                     {t("inquiryNow")}
                   </button>
                 </div>
 
-                <p className="text-center text-gray-400 text-[13px] font-bold cursor-pointer hover:text-blue-600 hover:underline transition-all uppercase tracking-widest">
+                <p className="text-center text-gray-400 text-xs font-bold cursor-pointer hover:text-blue-600 hover:underline transition-all uppercase tracking-widest">
                   {t("askQuestion")}
                 </p>
               </div>
