@@ -3,7 +3,6 @@
 import "leaflet/dist/leaflet.css";
 
 import L from "leaflet";
-import { MapPin } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 
@@ -18,18 +17,27 @@ L.Icon.Default.mergeOptions({
 });
 
 interface DestinationMapProps {
-  address: string;
+  address: string | null | undefined;
   destinationName: string;
   className?: string;
+  onLoadError?: () => void; // Callback when geocoding fails
 }
 
-export function DestinationMap({ address, destinationName, className = "" }: DestinationMapProps) {
+export function DestinationMap({ address, destinationName, className = "", onLoadError }: DestinationMapProps) {
   const [coordinates, setCoordinates] = useState<GeocodingResult | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     async function fetchCoordinates() {
+      // Check if address is valid
+      if (!address || address.trim() === "") {
+        setError("No address available");
+        setIsLoading(false);
+        onLoadError?.();
+        return;
+      }
+
       try {
         setIsLoading(true);
         setError(null);
@@ -41,19 +49,19 @@ export function DestinationMap({ address, destinationName, className = "" }: Des
           setCoordinates(result);
         } else {
           setError("Unable to locate this address on the map");
+          onLoadError?.();
         }
       } catch (err) {
         console.error("Error geocoding address:", err);
         setError("Failed to load map");
+        onLoadError?.();
       } finally {
         setIsLoading(false);
       }
     }
 
-    if (address) {
-      fetchCoordinates();
-    }
-  }, [address]);
+    fetchCoordinates();
+  }, [address, onLoadError]);
 
   if (isLoading) {
     return (
@@ -66,15 +74,9 @@ export function DestinationMap({ address, destinationName, className = "" }: Des
     );
   }
 
+  // If geocoding failed or no coordinates, don't render anything
   if (error || !coordinates) {
-    return (
-      <div className={`bg-gray-50 rounded-2xl border-2 border-dashed border-gray-200 flex items-center justify-center ${className}`}>
-        <div className="text-center p-6">
-          <MapPin className="w-12 h-12 text-gray-300 mx-auto mb-3" />
-          <p className="text-sm text-gray-500">{error || "Location not available"}</p>
-        </div>
-      </div>
-    );
+    return null;
   }
 
   return (

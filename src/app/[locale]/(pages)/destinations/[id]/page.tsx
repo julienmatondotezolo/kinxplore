@@ -49,6 +49,9 @@ export default function DestinationDetailPage() {
     return date;
   });
 
+  // Track if map loaded successfully
+  const [showLocationSection, setShowLocationSection] = useState(true);
+
   const { data: destination, isLoading, error } = useDestination(id);
 
   const nights = Math.ceil((checkOutDate.getTime() - checkInDate.getTime()) / (1000 * 60 * 60 * 24));
@@ -292,7 +295,7 @@ export default function DestinationDetailPage() {
               </section>
 
               {/* Location */}
-              {destination.location && (
+              {destination.location && showLocationSection && (
                 <section className="space-y-8 pt-10 border-t border-gray-100">
                   <div className="flex items-center justify-between">
                     <h2 className="text-2xl font-black text-gray-900">{t("location")}</h2>
@@ -305,6 +308,7 @@ export default function DestinationDetailPage() {
                     address={destination.location}
                     destinationName={destination.name}
                     className="h-[400px] w-full"
+                    onLoadError={() => setShowLocationSection(false)}
                   />
                 </section>
               )}
