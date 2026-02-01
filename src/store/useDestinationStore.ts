@@ -124,7 +124,7 @@ export const useDestinationStore = create<DestinationStore>()(
             filtered = filtered.filter(
               (dest) =>
                 dest.name.toLowerCase().includes(query) ||
-                dest.location.toLowerCase().includes(query) ||
+                (dest.location && dest.location.toLowerCase().includes(query)) ||
                 dest.description.toLowerCase().includes(query),
             );
           }
