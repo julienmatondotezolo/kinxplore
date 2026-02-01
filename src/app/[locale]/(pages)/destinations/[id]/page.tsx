@@ -20,15 +20,28 @@ import {
   Wifi,
   Wind,
 } from "lucide-react";
+import dynamic from "next/dynamic";
 import { useParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 import React, { useState } from "react";
 
-import { DestinationMap } from "@/components/DestinationMap";
 import { Footer } from "@/components/Footer";
 import { Navigation } from "@/components/Navigation";
 import { useDestination } from "@/hooks/useDestinations";
 import { Link, useRouter } from "@/navigation";
+
+// Dynamically import DestinationMap with SSR disabled to avoid "window is not defined" error
+const DestinationMap = dynamic(() => import("@/components/DestinationMap").then((mod) => mod.DestinationMap), {
+  ssr: false,
+  loading: () => (
+    <div className="bg-gray-100 rounded-2xl flex items-center justify-center h-[400px] w-full">
+      <div className="text-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-2"></div>
+        <p className="text-sm text-gray-600">Loading map...</p>
+      </div>
+    </div>
+  ),
+});
 
 export default function DestinationDetailPage() {
   const params = useParams();
