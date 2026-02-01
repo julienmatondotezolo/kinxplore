@@ -171,6 +171,8 @@
     "loading": "Loading...",
     "priceRange": "Price Range",
     "showResults": "Show {count} results",
+    "rating": "Rating",
+    "amenities": "Amenities",
     "categories": {
       "all": "All",
       "bar": "Bar",

@@ -52,6 +52,7 @@ export default function DestinationsPage() {
   const t = useTranslations("Destinations");
   const [showMap, setShowMap] = useState(false);
   const [showMobileFilters, setShowMobileFilters] = useState(false);
+  const [showDesktopFilters, setShowDesktopFilters] = useState(false);
 
   // Fetch data from backend using React Query
   const { data: destinations, isLoading: isLoadingDestinations, error: destinationsError } = useDestinations();
@@ -63,9 +64,15 @@ export default function DestinationsPage() {
     searchQuery,
     currentPage,
     pageSize,
+    priceRange,
+    selectedRating,
+    selectedAmenities,
     setActiveCategory,
     setDestinations,
     setCategories,
+    setPriceRange,
+    setSelectedRating,
+    setSelectedAmenities,
     getFilteredDestinations,
     getPaginatedDestinations,
     getCategoryList,
@@ -349,7 +356,10 @@ export default function DestinationsPage() {
 
             {/* Filters Button */}
             <div className="hidden md:flex items-center shrink-0">
-              <button className="flex items-center gap-2.5 border border-blue-200 rounded-xl px-5 py-3.5 hover:border-blue-600 hover:bg-blue-50 transition-all group shadow-sm bg-white">
+              <button 
+                onClick={() => setShowDesktopFilters(true)}
+                className="flex items-center gap-2.5 border border-blue-200 rounded-xl px-5 py-3.5 hover:border-blue-600 hover:bg-blue-50 transition-all group shadow-sm bg-white"
+              >
                 <SlidersHorizontal size={18} className="group-hover:scale-110 transition-transform text-blue-600" />
                 <span className="text-sm font-bold text-gray-900">{t("filters")}</span>
               </button>
@@ -654,9 +664,244 @@ export default function DestinationsPage() {
           </button>
         </div>
 
+        {/* Desktop Filter Modal */}
+        {showDesktopFilters && (
+          <div className="fixed inset-0 z-[9999] bg-black/50 backdrop-blur-sm animate-in fade-in duration-200 flex items-center justify-center">
+            <div className="bg-white rounded-3xl w-full max-w-2xl max-h-[90vh] overflow-hidden flex flex-col animate-in zoom-in-95 duration-300 m-4">
+              {/* Modal Header */}
+              <div className="flex items-center justify-between px-8 py-6 border-b border-gray-100">
+                <h2 className="text-2xl font-bold text-gray-900">{t("filters")}</h2>
+                <button
+                  onClick={() => setShowDesktopFilters(false)}
+                  className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+                >
+                  <X size={24} />
+                </button>
+              </div>
+
+              {/* Filter Content */}
+              <div className="flex-1 overflow-y-auto px-8 py-6">
+                <div className="space-y-8">
+                  {/* Price Range Section */}
+                  <div className="space-y-4">
+                    <h3 className="text-lg font-bold text-gray-900">Price Range</h3>
+                    <div className="space-y-4">
+                      <div className="flex items-center gap-4">
+                        <div className="flex-1">
+                          <label className="block text-sm font-medium text-gray-600 mb-2">Min Price</label>
+                          <div className="relative">
+                            <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 font-medium">$</span>
+                            <input
+                              type="number"
+                              value={priceRange.min}
+                              onChange={(e) => setPriceRange({ ...priceRange, min: Number(e.target.value) })}
+                              className="w-full pl-8 pr-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
+                              placeholder="0"
+                            />
+                          </div>
+                        </div>
+                        <div className="pt-8 text-gray-400">—</div>
+                        <div className="flex-1">
+                          <label className="block text-sm font-medium text-gray-600 mb-2">Max Price</label>
+                          <div className="relative">
+                            <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 font-medium">$</span>
+                            <input
+                              type="number"
+                              value={priceRange.max}
+                              onChange={(e) => setPriceRange({ ...priceRange, max: Number(e.target.value) })}
+                              className="w-full pl-8 pr-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
+                              placeholder="500"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      
+                      {/* Price Range Slider */}
+                      <div className="relative pt-2">
+                        <input
+                          type="range"
+                          min="0"
+                          max="500"
+                          value={priceRange.min}
+                          onChange={(e) => {
+                            const newMin = Number(e.target.value);
+                            if (newMin <= priceRange.max) {
+                              setPriceRange({ ...priceRange, min: newMin });
+                            }
+                          }}
+                          className="absolute w-full h-2 bg-transparent appearance-none pointer-events-auto cursor-pointer z-20"
+                          style={{
+                            background: 'transparent',
+                          }}
+                        />
+                        <input
+                          type="range"
+                          min="0"
+                          max="500"
+                          value={priceRange.max}
+                          onChange={(e) => {
+                            const newMax = Number(e.target.value);
+                            if (newMax >= priceRange.min) {
+                              setPriceRange({ ...priceRange, max: newMax });
+                            }
+                          }}
+                          className="absolute w-full h-2 bg-transparent appearance-none pointer-events-auto cursor-pointer z-20"
+                          style={{
+                            background: 'transparent',
+                          }}
+                        />
+                        <div className="h-2 bg-gray-100 rounded-full relative">
+                          <div 
+                            className="h-full bg-blue-600 rounded-full absolute"
+                            style={{
+                              left: `${(priceRange.min / 500) * 100}%`,
+                              right: `${100 - (priceRange.max / 500) * 100}%`
+                            }}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Rating Section */}
+                  <div className="space-y-4 pt-6 border-t border-gray-100">
+                    <h3 className="text-lg font-bold text-gray-900">Rating</h3>
+                    <div className="grid grid-cols-5 gap-3">
+                      {[5, 4, 3, 2, 1].map((rating) => (
+                        <button
+                          key={rating}
+                          onClick={() => setSelectedRating(selectedRating === rating ? null : rating)}
+                          className={`flex flex-col items-center gap-2 p-4 rounded-xl border-2 transition-all ${
+                            selectedRating === rating
+                              ? "border-blue-600 bg-blue-50"
+                              : "border-gray-100 bg-white hover:border-blue-200"
+                          }`}
+                        >
+                          <div className="flex items-center gap-1">
+                            <Star size={16} className={selectedRating === rating ? "fill-yellow-400 text-yellow-400" : "fill-gray-300 text-gray-300"} />
+                            <span className={`text-sm font-bold ${selectedRating === rating ? "text-blue-600" : "text-gray-900"}`}>
+                              {rating}+
+                            </span>
+                          </div>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Categories Section */}
+                  <div className="space-y-4 pt-6 border-t border-gray-100">
+                    <h3 className="text-lg font-bold text-gray-900">Categories</h3>
+                    <div className="grid grid-cols-3 gap-3">
+                      {categoryList.slice(1).map((cat) => {
+                        const count = getCountByCategory(cat);
+                        const isActive = activeCategory === cat;
+                        return (
+                          <button
+                            key={cat}
+                            onClick={() => setActiveCategory(cat)}
+                            className={`flex flex-col items-center gap-3 p-4 rounded-xl border-2 transition-all ${
+                              isActive
+                                ? "border-blue-600 bg-blue-50"
+                                : "border-gray-100 bg-white hover:border-blue-200"
+                            }`}
+                          >
+                            <div
+                              className={`w-10 h-10 rounded-lg flex items-center justify-center transition-colors ${
+                                isActive ? "bg-blue-600 text-white" : "bg-gray-50 text-gray-400"
+                              }`}
+                            >
+                              {categoryIcons[cat.toLowerCase()] || <Compass size={20} />}
+                            </div>
+                            <div className="text-center">
+                              <span
+                                className={`text-xs font-bold block capitalize ${
+                                  isActive ? "text-blue-600" : "text-gray-900"
+                                }`}
+                              >
+                                {cat}
+                              </span>
+                              <span className="text-[10px] text-gray-400">{count}</span>
+                            </div>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  {/* Amenities Section */}
+                  <div className="space-y-4 pt-6 border-t border-gray-100">
+                    <h3 className="text-lg font-bold text-gray-900">Amenities</h3>
+                    <div className="grid grid-cols-2 gap-3">
+                      {["WiFi", "Parking", "Pool", "Restaurant", "Bar", "Gym", "Spa", "Air Conditioning"].map((amenity) => (
+                        <button
+                          key={amenity}
+                          onClick={() => {
+                            setSelectedAmenities(prev => 
+                              prev.includes(amenity) 
+                                ? prev.filter(a => a !== amenity)
+                                : [...prev, amenity]
+                            );
+                          }}
+                          className={`flex items-center gap-3 p-3 rounded-xl border-2 transition-all text-left ${
+                            selectedAmenities.includes(amenity)
+                              ? "border-blue-600 bg-blue-50"
+                              : "border-gray-100 bg-white hover:border-blue-200"
+                          }`}
+                        >
+                          <div className={`w-5 h-5 rounded border-2 flex items-center justify-center ${
+                            selectedAmenities.includes(amenity)
+                              ? "border-blue-600 bg-blue-600"
+                              : "border-gray-300"
+                          }`}>
+                            {selectedAmenities.includes(amenity) && (
+                              <svg className="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                              </svg>
+                            )}
+                          </div>
+                          <span className={`text-sm font-medium ${
+                            selectedAmenities.includes(amenity) ? "text-blue-600" : "text-gray-900"
+                          }`}>
+                            {amenity}
+                          </span>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Results Count */}
+                  <div className="pt-6 border-t border-gray-100">
+                    <p className="text-center text-gray-500 text-sm">
+                      <span className="font-bold text-gray-900">{filteredCount}</span> destinations match your filters
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Modal Footer */}
+              <div className="px-8 py-6 border-t border-gray-100 bg-white flex items-center gap-4">
+                <button
+                  onClick={() => {
+                    resetFilters();
+                  }}
+                  className="flex-1 px-6 py-4 rounded-xl border-2 border-gray-200 font-bold text-gray-900 hover:bg-gray-50 transition-all"
+                >
+                  Clear All
+                </button>
+                <button
+                  onClick={() => setShowDesktopFilters(false)}
+                  className="flex-1 px-6 py-4 rounded-xl bg-blue-600 font-bold text-white hover:bg-blue-700 transition-all shadow-lg shadow-blue-500/30"
+                >
+                  Show {filteredCount} Results
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Mobile Filter Modal */}
         {showMobileFilters && (
-          <div className="md:hidden fixed inset-0 z-[200] bg-black/50 backdrop-blur-sm animate-in fade-in duration-200">
+          <div className="md:hidden fixed inset-0 z-[9999] bg-black/50 backdrop-blur-sm animate-in fade-in duration-200">
             <div className="absolute inset-x-0 bottom-0 bg-white rounded-t-[32px] max-h-[85vh] overflow-hidden flex flex-col animate-in slide-in-from-bottom duration-300">
               {/* Modal Header */}
               <div className="flex items-center justify-between px-6 py-5 border-b border-gray-100">
@@ -672,9 +917,113 @@ export default function DestinationsPage() {
               {/* Filter Content */}
               <div className="flex-1 overflow-y-auto px-6 py-6">
                 <div className="space-y-8">
-                  {/* Categories Section */}
+                  {/* Price Range Section */}
                   <div className="space-y-4">
-                    <h3 className="text-sm font-bold uppercase tracking-wider text-gray-400">{t("filters")}</h3>
+                    <h3 className="text-base font-bold text-gray-900">Price Range</h3>
+                    <div className="space-y-4">
+                      <div className="flex items-center gap-3">
+                        <div className="flex-1">
+                          <label className="block text-xs font-medium text-gray-600 mb-2">Min</label>
+                          <div className="relative">
+                            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 text-sm">$</span>
+                            <input
+                              type="number"
+                              value={priceRange.min}
+                              onChange={(e) => setPriceRange({ ...priceRange, min: Number(e.target.value) })}
+                              className="w-full pl-7 pr-3 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm bg-white"
+                              placeholder="0"
+                            />
+                          </div>
+                        </div>
+                        <div className="pt-6 text-gray-400">—</div>
+                        <div className="flex-1">
+                          <label className="block text-xs font-medium text-gray-600 mb-2">Max</label>
+                          <div className="relative">
+                            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 text-sm">$</span>
+                            <input
+                              type="number"
+                              value={priceRange.max}
+                              onChange={(e) => setPriceRange({ ...priceRange, max: Number(e.target.value) })}
+                              className="w-full pl-7 pr-3 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm bg-white"
+                              placeholder="500"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      
+                      {/* Price Range Slider - Mobile */}
+                      <div className="relative pt-2">
+                        <input
+                          type="range"
+                          min="0"
+                          max="500"
+                          value={priceRange.min}
+                          onChange={(e) => {
+                            const newMin = Number(e.target.value);
+                            if (newMin <= priceRange.max) {
+                              setPriceRange({ ...priceRange, min: newMin });
+                            }
+                          }}
+                          className="absolute w-full h-2 bg-transparent appearance-none pointer-events-auto cursor-pointer z-20"
+                          style={{
+                            background: 'transparent',
+                          }}
+                        />
+                        <input
+                          type="range"
+                          min="0"
+                          max="500"
+                          value={priceRange.max}
+                          onChange={(e) => {
+                            const newMax = Number(e.target.value);
+                            if (newMax >= priceRange.min) {
+                              setPriceRange({ ...priceRange, max: newMax });
+                            }
+                          }}
+                          className="absolute w-full h-2 bg-transparent appearance-none pointer-events-auto cursor-pointer z-20"
+                          style={{
+                            background: 'transparent',
+                          }}
+                        />
+                        <div className="h-2 bg-gray-100 rounded-full relative">
+                          <div 
+                            className="h-full bg-blue-600 rounded-full absolute"
+                            style={{
+                              left: `${(priceRange.min / 500) * 100}%`,
+                              right: `${100 - (priceRange.max / 500) * 100}%`
+                            }}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Rating Section */}
+                  <div className="space-y-4 pt-6 border-t border-gray-100">
+                    <h3 className="text-base font-bold text-gray-900">Rating</h3>
+                    <div className="grid grid-cols-5 gap-2">
+                      {[5, 4, 3, 2, 1].map((rating) => (
+                        <button
+                          key={rating}
+                          onClick={() => setSelectedRating(selectedRating === rating ? null : rating)}
+                          className={`flex flex-col items-center gap-2 p-3 rounded-lg border-2 transition-all ${
+                            selectedRating === rating
+                              ? "border-blue-600 bg-blue-50"
+                              : "border-gray-100 bg-white hover:border-blue-200"
+                          }`}
+                        >
+                          <Star size={14} className={selectedRating === rating ? "fill-yellow-400 text-yellow-400" : "fill-gray-300 text-gray-300"} />
+                          <span className={`text-xs font-bold ${selectedRating === rating ? "text-blue-600" : "text-gray-900"}`}>
+                            {rating}+
+                          </span>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Categories Section */}
+                  <div className="space-y-4 pt-6 border-t border-gray-100">
+                    <h3 className="text-base font-bold text-gray-900">Categories</h3>
                     <div className="grid grid-cols-2 gap-3">
                       {categoryList.map((cat) => {
                         const count = getCountByCategory(cat);
@@ -713,26 +1062,51 @@ export default function DestinationsPage() {
                     </div>
                   </div>
 
-                  {/* Price Range Section (Placeholder for future implementation) */}
+                  {/* Amenities Section */}
                   <div className="space-y-4 pt-6 border-t border-gray-100">
-                    <h3 className="text-sm font-bold uppercase tracking-wider text-gray-400">{t("priceRange")}</h3>
-                    <div className="space-y-4">
-                      <div className="flex items-center justify-between text-sm">
-                        <span className="text-gray-600">Min: $0</span>
-                        <span className="text-gray-600">Max: $500</span>
-                      </div>
-                      <div className="h-2 bg-gray-100 rounded-full">
-                        <div className="h-full w-full bg-blue-600 rounded-full"></div>
-                      </div>
+                    <h3 className="text-base font-bold text-gray-900">Amenities</h3>
+                    <div className="grid grid-cols-1 gap-2">
+                      {["WiFi", "Parking", "Pool", "Restaurant", "Bar", "Gym", "Spa", "Air Conditioning"].map((amenity) => (
+                        <button
+                          key={amenity}
+                          onClick={() => {
+                            setSelectedAmenities(prev => 
+                              prev.includes(amenity) 
+                                ? prev.filter(a => a !== amenity)
+                                : [...prev, amenity]
+                            );
+                          }}
+                          className={`flex items-center gap-3 p-3 rounded-lg border-2 transition-all text-left ${
+                            selectedAmenities.includes(amenity)
+                              ? "border-blue-600 bg-blue-50"
+                              : "border-gray-100 bg-white hover:border-blue-200"
+                          }`}
+                        >
+                          <div className={`w-5 h-5 rounded border-2 flex items-center justify-center shrink-0 ${
+                            selectedAmenities.includes(amenity)
+                              ? "border-blue-600 bg-blue-600"
+                              : "border-gray-300"
+                          }`}>
+                            {selectedAmenities.includes(amenity) && (
+                              <svg className="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                              </svg>
+                            )}
+                          </div>
+                          <span className={`text-sm font-medium ${
+                            selectedAmenities.includes(amenity) ? "text-blue-600" : "text-gray-900"
+                          }`}>
+                            {amenity}
+                          </span>
+                        </button>
+                      ))}
                     </div>
                   </div>
 
                   {/* Results Count */}
                   <div className="pt-6 border-t border-gray-100">
                     <p className="text-center text-gray-500 text-sm">
-                      {t("showing", { start: 1, end: filteredCount, total: filteredCount }).split("-")[0]}{" "}
-                      <span className="font-bold text-gray-900">{filteredCount}</span>{" "}
-                      {t("title", { count: 0 }).split(" ").pop()}
+                      <span className="font-bold text-gray-900">{filteredCount}</span> destinations match your filters
                     </p>
                   </div>
                 </div>
@@ -742,7 +1116,7 @@ export default function DestinationsPage() {
               <div className="px-6 py-5 border-t border-gray-100 bg-white flex items-center gap-3">
                 <button
                   onClick={() => {
-                    setActiveCategory("all");
+                    resetFilters();
                   }}
                   className="flex-1 px-6 py-4 rounded-2xl border border-gray-200 font-bold text-gray-900 hover:bg-gray-50 transition-all"
                 >

@@ -171,6 +171,8 @@
     "loading": "Chargement...",
     "priceRange": "Gamme de Prix",
     "showResults": "Afficher {count} résultats",
+    "rating": "Évaluation",
+    "amenities": "Équipements",
     "categories": {
       "all": "Tous",
       "bar": "Bar",

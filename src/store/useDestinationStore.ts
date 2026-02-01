@@ -16,6 +16,8 @@ interface DestinationStore {
   activeCategory: string;
   searchQuery: string;
   priceRange: { min: number; max: number };
+  selectedRating: number | null;
+  selectedAmenities: string[];
 
   // Hero Search Criteria
   heroSearch: {
@@ -41,6 +43,8 @@ interface DestinationStore {
   setActiveCategory: (category: string) => void;
   setSearchQuery: (query: string) => void;
   setPriceRange: (range: { min: number; max: number }) => void;
+  setSelectedRating: (rating: number | null) => void;
+  setSelectedAmenities: (amenities: string[]) => void;
   setHeroSearch: (search: { destination: string; duration: number; tripStyle: string } | null) => void;
   setCurrentPage: (page: number) => void;
   setViewMode: (mode: "grid" | "list") => void;
@@ -67,6 +71,8 @@ export const useDestinationStore = create<DestinationStore>()(
         activeCategory: "all",
         searchQuery: "",
         priceRange: { min: 0, max: 10000 },
+        selectedRating: null,
+        selectedAmenities: [],
         heroSearch: null,
         currentPage: 1,
         pageSize: 10,
@@ -85,6 +91,10 @@ export const useDestinationStore = create<DestinationStore>()(
 
         setPriceRange: (range) => set({ priceRange: range, currentPage: 1 }, false, "setPriceRange"),
 
+        setSelectedRating: (rating) => set({ selectedRating: rating, currentPage: 1 }, false, "setSelectedRating"),
+
+        setSelectedAmenities: (amenities) => set({ selectedAmenities: amenities, currentPage: 1 }, false, "setSelectedAmenities"),
+
         setHeroSearch: (search) => set({ heroSearch: search }, false, "setHeroSearch"),
 
         setCurrentPage: (page) => set({ currentPage: page }, false, "setCurrentPage"),
@@ -97,7 +107,7 @@ export const useDestinationStore = create<DestinationStore>()(
 
         // Computed functions
         getFilteredDestinations: () => {
-          const { destinations, activeCategory, searchQuery, priceRange } = get();
+          const { destinations, activeCategory, searchQuery, priceRange, selectedRating, selectedAmenities } = get();
 
           let filtered = [...destinations];
 
@@ -121,6 +131,28 @@ export const useDestinationStore = create<DestinationStore>()(
 
           // Filter by price range
           filtered = filtered.filter((dest) => dest.price >= priceRange.min && dest.price <= priceRange.max);
+
+          // Filter by rating
+          if (selectedRating !== null) {
+            filtered = filtered.filter((dest) => dest.ratings >= selectedRating);
+          }
+
+          // Filter by amenities (if destination has amenities field)
+          // Note: This assumes destinations have an amenities array field
+          // If not present in your data model, this filter will be skipped
+          if (selectedAmenities.length > 0) {
+            filtered = filtered.filter((dest) => {
+              // Check if destination has amenities field
+              const destAmenities = (dest as any).amenities;
+              if (!destAmenities || !Array.isArray(destAmenities)) {
+                return false; // Skip destinations without amenities
+              }
+              // Check if destination has all selected amenities
+              return selectedAmenities.every((amenity) =>
+                destAmenities.some((a: string) => a.toLowerCase() === amenity.toLowerCase())
+              );
+            });
+          }
 
           return filtered;
         },
@@ -160,6 +192,8 @@ export const useDestinationStore = create<DestinationStore>()(
               activeCategory: "all",
               searchQuery: "",
               priceRange: { min: 0, max: 10000 },
+              selectedRating: null,
+              selectedAmenities: [],
               currentPage: 1,
               heroSearch: null,
             },
@@ -174,6 +208,8 @@ export const useDestinationStore = create<DestinationStore>()(
           activeCategory: state.activeCategory,
           searchQuery: state.searchQuery,
           priceRange: state.priceRange,
+          selectedRating: state.selectedRating,
+          selectedAmenities: state.selectedAmenities,
           viewMode: state.viewMode,
           heroSearch: state.heroSearch,
         }),
