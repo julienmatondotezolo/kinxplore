@@ -275,7 +275,8 @@
     "addressPlaceholder": "123 Main Street",
     "cityPlaceholder": "New York",
     "zipPlaceholder": "10001",
-    "countryPlaceholder": "USA"
+    "countryPlaceholder": "USA",
+    "processing": "Processing..."
   },
   "Bookings": {
     "breadcrumbs": {

@@ -52,7 +52,8 @@
     "addressPlaceholder": "Hoofdstraat 123",
     "cityPlaceholder": "Amsterdam",
     "zipPlaceholder": "1012 AB",
-    "countryPlaceholder": "Nederland"
+    "countryPlaceholder": "Nederland",
+    "processing": "Verwerken..."
   },
   "Bookings": {
     "breadcrumbs": {

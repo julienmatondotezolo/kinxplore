@@ -1,22 +1,15 @@
 "use client";
 
 import { motion } from "framer-motion";
-import {
-  ArrowLeft,
-  Calendar,
-  Check,
-  CheckCircle2,
-  ChevronRight,
-  Mail,
-  MapPin,
-  Phone,
-  User,
-} from "lucide-react";
+import { ArrowLeft, Calendar, Check, CheckCircle2, ChevronRight, Mail, MapPin, Phone, User } from "lucide-react";
 import { useParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 import React, { useState } from "react";
 
+import { useAuth } from "@/hooks/useAuth";
 import { useDestination } from "@/hooks/useDestinations";
+import { bookingsApi } from "@/lib/api";
+import { supabase } from "@/lib/supabase";
 import { useRouter } from "@/navigation";
 import { BookingGuestInfo, BookingStep } from "@/types/booking.types";
 
@@ -25,11 +18,14 @@ export default function BookingPage() {
   const id = params.id as string;
   const router = useRouter();
   const t = useTranslations("Booking");
+  const { user } = useAuth();
 
   const { data: destination, isLoading, error } = useDestination(id);
 
   const [currentStep, setCurrentStep] = useState<BookingStep>("info");
   const [bookingId, setBookingId] = useState<string>("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   const [checkIn, setCheckIn] = useState<Date>(() => {
     const date = new Date();
@@ -80,9 +76,7 @@ export default function BookingPage() {
   const serviceFee = 0;
   const finalPrice = totalPrice + serviceFee;
 
-  const formatDateForInput = (date: Date) => {
-    return date.toISOString().split("T")[0];
-  };
+  const formatDateForInput = (date: Date) => date.toISOString().split("T")[0];
 
   const handleCheckInChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newDate = new Date(e.target.value);
@@ -105,23 +99,102 @@ export default function BookingPage() {
     setGuestInfo((prev) => ({ ...prev, [field]: value }));
   };
 
-  const isGuestInfoValid = () => {
-    return (
-      guestInfo.firstName.trim() !== "" &&
-      guestInfo.lastName.trim() !== "" &&
-      guestInfo.email.trim() !== "" &&
-      guestInfo.phone.trim() !== "" &&
-      guestInfo.country.trim() !== "" &&
-      guestInfo.address.trim() !== "" &&
-      guestInfo.city.trim() !== "" &&
-      guestInfo.zipCode.trim() !== ""
-    );
-  };
+  const isGuestInfoValid = () =>
+    guestInfo.firstName.trim() !== "" &&
+    guestInfo.lastName.trim() !== "" &&
+    guestInfo.email.trim() !== "" &&
+    guestInfo.phone.trim() !== "" &&
+    guestInfo.country.trim() !== "" &&
+    guestInfo.address.trim() !== "" &&
+    guestInfo.city.trim() !== "" &&
+    guestInfo.zipCode.trim() !== "";
 
-  const handleConfirmBooking = () => {
-    const newBookingId = `BK${Date.now()}${Math.random().toString(36).substr(2, 9).toUpperCase()}`;
-    setBookingId(newBookingId);
-    setCurrentStep("confirmation");
+  const handleConfirmBooking = async () => {
+    if (!user) {
+      setSubmitError("You must be logged in to create a booking");
+      router.push(`/login?returnUrl=/destinations/${id}/booking`);
+      return;
+    }
+
+    setIsSubmitting(true);
+    setSubmitError(null);
+
+    try {
+      console.log("[Booking] Starting booking creation process...");
+
+      // Get user's session token
+      const {
+        data: { session },
+        error: sessionError,
+      } = await supabase.auth.getSession();
+
+      if (sessionError) {
+        console.error("[Booking] Session error:", sessionError);
+        throw new Error(`Authentication error: ${sessionError.message}`);
+      }
+
+      if (!session) {
+        console.error("[Booking] No session found");
+        throw new Error("Authentication required. Please log in.");
+      }
+
+      const token = session.access_token;
+      console.log("[Booking] Token retrieved:", token ? "Yes" : "No");
+
+      if (!token) {
+        console.error("[Booking] No access token in session");
+        throw new Error("Authentication token not found. Please log in again.");
+      }
+
+      // Create booking data
+      const bookingData = {
+        destination_id: id,
+        check_in_date: checkIn.toISOString().split("T")[0],
+        check_out_date: checkOut.toISOString().split("T")[0],
+        number_of_guests: nights,
+        total_price: finalPrice,
+        guest_first_name: guestInfo.firstName,
+        guest_last_name: guestInfo.lastName,
+        contact_email: guestInfo.email,
+        contact_phone: guestInfo.phone,
+        guest_country: guestInfo.country,
+        guest_address: guestInfo.address,
+        guest_city: guestInfo.city,
+        guest_zip_code: guestInfo.zipCode,
+        special_requests: guestInfo.specialRequests || undefined,
+      };
+
+      console.log("[Booking] Booking data prepared:", bookingData);
+      console.log("[Booking] Sending request to backend...");
+
+      // Send booking to backend
+      const booking = await bookingsApi.createBooking(bookingData, token);
+
+      console.log("[Booking] Booking created successfully:", booking.id);
+
+      // Set booking ID and move to confirmation
+      setBookingId(booking.id);
+      setCurrentStep("confirmation");
+    } catch (err: any) {
+      console.error("[Booking] Error creating booking:", err);
+      console.error("[Booking] Error details:", {
+        message: err.message,
+        status: err.status,
+        data: err.data,
+      });
+
+      let errorMessage = "Failed to create booking. Please try again.";
+
+      if (err.status === 401) {
+        errorMessage = "Your session has expired. Please log in again.";
+      } else if (err.message) {
+        errorMessage = err.message;
+      }
+
+      setSubmitError(errorMessage);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleBackToDestination = () => {
@@ -199,7 +272,11 @@ export default function BookingPage() {
           {/* Content Sections */}
           <div className="space-y-5 sm:space-y-6">
             {currentStep === "info" && (
-              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-5 sm:space-y-6">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="space-y-5 sm:space-y-6"
+              >
                 {/* Dates Selection */}
                 <div className="bg-white rounded-xl p-5 sm:p-6 shadow-sm border border-gray-100">
                   <h3 className="text-sm sm:text-base font-bold text-gray-900 mb-4">{t("selectYourDates")}</h3>
@@ -232,10 +309,10 @@ export default function BookingPage() {
                     </div>
                   </div>
                   <div className="flex items-center justify-between text-xs sm:text-sm text-gray-600 px-2 mt-3">
-                    <span className="font-medium">
-                      {t(nights === 1 ? "night" : "nights", { count: nights })}
+                    <span className="font-medium">{t(nights === 1 ? "night" : "nights", { count: nights })}</span>
+                    <span className="font-bold text-blue-600">
+                      {t("total")}: ${finalPrice.toFixed(2)}
                     </span>
-                    <span className="font-bold text-blue-600">{t("total")}: ${finalPrice.toFixed(2)}</span>
                   </div>
                 </div>
 
@@ -388,7 +465,11 @@ export default function BookingPage() {
             )}
 
             {currentStep === "review" && (
-              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-5 sm:space-y-6">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="space-y-5 sm:space-y-6"
+              >
                 {/* Destination Summary */}
                 <div className="bg-white rounded-xl p-5 sm:p-6 shadow-sm border border-gray-100">
                   <div className="flex flex-col sm:flex-row gap-4">
@@ -436,14 +517,18 @@ export default function BookingPage() {
                       <p className="text-sm sm:text-base text-gray-900 font-semibold">{guestInfo.country}</p>
                     </div>
                     <div className="sm:col-span-2">
-                      <p className="text-[10px] sm:text-xs font-bold text-gray-400 uppercase mb-1">{t("streetAddress")}</p>
+                      <p className="text-[10px] sm:text-xs font-bold text-gray-400 uppercase mb-1">
+                        {t("streetAddress")}
+                      </p>
                       <p className="text-sm sm:text-base text-gray-900 font-semibold">
                         {guestInfo.address}, {guestInfo.city}, {guestInfo.zipCode}
                       </p>
                     </div>
                     {guestInfo.specialRequests && (
                       <div className="sm:col-span-2">
-                        <p className="text-[10px] sm:text-xs font-bold text-gray-400 uppercase mb-1">{t("specialRequests")}</p>
+                        <p className="text-[10px] sm:text-xs font-bold text-gray-400 uppercase mb-1">
+                          {t("specialRequests")}
+                        </p>
                         <p className="text-sm text-gray-600">{guestInfo.specialRequests}</p>
                       </div>
                     )}
@@ -456,7 +541,8 @@ export default function BookingPage() {
                   <div className="space-y-2.5">
                     <div className="flex justify-between text-xs sm:text-sm text-gray-600">
                       <span>
-                        ${pricePerNight.toFixed(2)} x {nights} {nights === 1 ? t("night", { count: nights }) : t("nights", { count: nights })}
+                        ${pricePerNight.toFixed(2)} x {nights}{" "}
+                        {nights === 1 ? t("night", { count: nights }) : t("nights", { count: nights })}
                       </span>
                       <span className="font-semibold">${totalPrice.toFixed(2)}</span>
                     </div>
@@ -556,7 +642,8 @@ export default function BookingPage() {
                       <div className="flex items-center justify-between text-gray-500 text-xs sm:text-sm">
                         <div className="flex items-center gap-2">
                           <span className="underline decoration-gray-200 decoration-dotted underline-offset-4">
-                            ${pricePerNight.toFixed(2)} x {nights} {nights === 1 ? t("night", { count: nights }) : t("nights", { count: nights })}
+                            ${pricePerNight.toFixed(2)} x {nights}{" "}
+                            {nights === 1 ? t("night", { count: nights }) : t("nights", { count: nights })}
                           </span>
                         </div>
                         <span className="font-semibold text-gray-900">${totalPrice.toFixed(2)}</span>
@@ -596,8 +683,7 @@ export default function BookingPage() {
                   </div>
 
                   <p className="text-xs sm:text-sm text-gray-500">
-                    {t("confirmationEmailSent")}{" "}
-                    <span className="font-bold text-gray-900">{guestInfo.email}</span>
+                    {t("confirmationEmailSent")} <span className="font-bold text-gray-900">{guestInfo.email}</span>
                   </p>
 
                   <button
@@ -615,16 +701,23 @@ export default function BookingPage() {
           {currentStep !== "confirmation" && (
             <div className="fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-gray-100 shadow-lg">
               <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+                {submitError && (
+                  <div className="mb-3 p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
+                    {submitError}
+                  </div>
+                )}
                 <div className="flex items-center justify-between gap-3">
                   <button
                     onClick={() => {
                       if (currentStep === "review") {
                         setCurrentStep("info");
+                        setSubmitError(null);
                       } else {
                         handleBackToDestination();
                       }
                     }}
-                    className="flex items-center gap-2 px-4 sm:px-5 py-2.5 rounded-lg font-semibold hover:bg-gray-100 transition-all text-sm"
+                    disabled={isSubmitting}
+                    className="flex items-center gap-2 px-4 sm:px-5 py-2.5 rounded-lg font-semibold hover:bg-gray-100 transition-all text-sm disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     <ArrowLeft size={18} />
                     {currentStep === "review" ? t("back") : t("cancel")}
@@ -639,16 +732,25 @@ export default function BookingPage() {
                         window.scrollTo({ top: 0, behavior: "smooth" });
                       }
                     }}
-                    disabled={currentStep === "info" && !isGuestInfoValid()}
+                    disabled={(currentStep === "info" && !isGuestInfoValid()) || isSubmitting}
                     className="flex items-center gap-2 px-5 sm:px-6 py-2.5 sm:py-3 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed text-white rounded-lg font-semibold text-sm transition-all shadow-lg shadow-blue-500/25 active:scale-95"
                   >
-                    {currentStep === "info" && (
+                    {isSubmitting ? (
                       <>
-                        {t("continue")}
-                        <ChevronRight size={18} />
+                        <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                        {t("processing")}
+                      </>
+                    ) : (
+                      <>
+                        {currentStep === "info" && (
+                          <>
+                            {t("continue")}
+                            <ChevronRight size={18} />
+                          </>
+                        )}
+                        {currentStep === "review" && t("confirmBooking")}
                       </>
                     )}
-                    {currentStep === "review" && t("confirmBooking")}
                   </button>
                 </div>
               </div>

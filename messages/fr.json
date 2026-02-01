@@ -275,7 +275,8 @@
     "addressPlaceholder": "123 Rue Principale",
     "cityPlaceholder": "Paris",
     "zipPlaceholder": "75001",
-    "countryPlaceholder": "France"
+    "countryPlaceholder": "France",
+    "processing": "Traitement..."
   },
   "Bookings": {
     "breadcrumbs": {

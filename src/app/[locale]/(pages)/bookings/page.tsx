@@ -368,7 +368,8 @@ export default function BookingsPage() {
                               {t("bookingDate")}
                             </p>
                             <p className="text-sm font-bold text-gray-900">
-                              {new Date(booking.booking_date).toLocaleDateString()}
+                              {new Date(booking.check_in_date).toLocaleDateString()} -{" "}
+                              {new Date(booking.check_out_date).toLocaleDateString()}
                             </p>
                           </div>
                         </div>
