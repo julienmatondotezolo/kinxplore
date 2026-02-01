@@ -1,8 +1,8 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useAuth } from '@/hooks/useAuth';
-import { useRouter } from '@/navigation';
+import { useRouter, useSearchParams } from '@/navigation';
 import { motion } from 'framer-motion';
 import { Mail, Lock, ArrowRight, Loader2 } from 'lucide-react';
 import Link from 'next/link';
@@ -14,6 +14,8 @@ export default function LoginPage() {
   const [error, setError] = useState<string | null>(null);
   const { signIn } = useAuth();
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const returnUrl = searchParams.get('returnUrl');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -22,7 +24,8 @@ export default function LoginPage() {
 
     try {
       await signIn(email, password);
-      router.push('/');
+      // Redirect to returnUrl if provided, otherwise go to home
+      router.push(returnUrl || '/');
     } catch (err: any) {
       setError(err.message || 'Failed to sign in. Please check your credentials.');
     } finally {

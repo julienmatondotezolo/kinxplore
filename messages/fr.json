@@ -276,5 +276,56 @@
     "cityPlaceholder": "Paris",
     "zipPlaceholder": "75001",
     "countryPlaceholder": "France"
+  },
+  "Bookings": {
+    "breadcrumbs": {
+      "home": "Accueil",
+      "bookings": "Mes Réservations"
+    },
+    "title": "Mes Réservations",
+    "subtitle": "Gérez et consultez toutes vos réservations en un seul endroit",
+    "loading": "Chargement de vos réservations...",
+    "noBookings": "Vous n'avez pas encore de réservations",
+    "browseDestinations": "Parcourir les Destinations",
+    "stats": {
+      "total": "Total",
+      "pending": "En Attente",
+      "confirmed": "Confirmées",
+      "completed": "Terminées",
+      "totalSpent": "Total Dépensé"
+    },
+    "filters": {
+      "all": "Toutes les Réservations",
+      "pending": "En Attente",
+      "confirmed": "Confirmées",
+      "completed": "Terminées",
+      "cancelled": "Annulées"
+    },
+    "status": {
+      "pending": "En Attente",
+      "confirmed": "Confirmée",
+      "cancelled": "Annulée",
+      "completed": "Terminée"
+    },
+    "totalPrice": "Prix Total",
+    "bookingDate": "Date de Réservation",
+    "guests": "Invités",
+    "guest": "Invité",
+    "contact": "Contact",
+    "specialRequests": "Demandes Spéciales",
+    "cancellationReason": "Raison de l'Annulation",
+    "viewDestination": "Voir la Destination",
+    "cancelBooking": "Annuler la Réservation",
+    "bookedOn": "Réservé le",
+    "cancelModal": {
+      "title": "Annuler la Réservation",
+      "message": "Êtes-vous sûr de vouloir annuler cette réservation ? Cette action ne peut pas être annulée.",
+      "reasonLabel": "Raison de l'annulation",
+      "optional": "optionnel",
+      "reasonPlaceholder": "Veuillez nous indiquer pourquoi vous annulez...",
+      "keepBooking": "Conserver la Réservation",
+      "confirmCancel": "Oui, Annuler",
+      "cancelling": "Annulation..."
+    }
   }
 }

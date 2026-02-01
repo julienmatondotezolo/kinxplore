@@ -179,7 +179,7 @@ export const Navigation: React.FC = () => {
         <div className="flex items-center gap-4 md:gap-6">
           {user ? (
             <>
-              <div className="hidden md:flex items-center gap-4 text-gray-700">
+              <div className="hidden md:flex items-center gap-6 text-gray-700">
                 <button
                   onClick={openTripsModal}
                   className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-full font-bold text-sm transition-all shadow-md hover:shadow-lg active:scale-95"
@@ -190,7 +190,11 @@ export const Navigation: React.FC = () => {
                 <button className="hover:text-blue-600 transition">
                   <Heart size={20} />
                 </button>
-                <button className="hover:text-blue-600 transition">
+                <button
+                  onClick={() => router.push("/bookings")}
+                  className="hover:text-blue-600 transition"
+                  title="My Bookings"
+                >
                   <ShoppingBag size={20} />
                 </button>
               </div>

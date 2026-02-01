@@ -53,5 +53,56 @@
     "cityPlaceholder": "Amsterdam",
     "zipPlaceholder": "1012 AB",
     "countryPlaceholder": "Nederland"
+  },
+  "Bookings": {
+    "breadcrumbs": {
+      "home": "Home",
+      "bookings": "Mijn Boekingen"
+    },
+    "title": "Mijn Boekingen",
+    "subtitle": "Beheer en bekijk al uw boekingen op één plek",
+    "loading": "Uw boekingen laden...",
+    "noBookings": "U heeft nog geen boekingen",
+    "browseDestinations": "Bestemmingen Bekijken",
+    "stats": {
+      "total": "Totaal",
+      "pending": "In Afwachting",
+      "confirmed": "Bevestigd",
+      "completed": "Voltooid",
+      "totalSpent": "Totaal Uitgegeven"
+    },
+    "filters": {
+      "all": "Alle Boekingen",
+      "pending": "In Afwachting",
+      "confirmed": "Bevestigd",
+      "completed": "Voltooid",
+      "cancelled": "Geannuleerd"
+    },
+    "status": {
+      "pending": "In Afwachting",
+      "confirmed": "Bevestigd",
+      "cancelled": "Geannuleerd",
+      "completed": "Voltooid"
+    },
+    "totalPrice": "Totale Prijs",
+    "bookingDate": "Boekingsdatum",
+    "guests": "Gasten",
+    "guest": "Gast",
+    "contact": "Contact",
+    "specialRequests": "Speciale Verzoeken",
+    "cancellationReason": "Reden voor Annulering",
+    "viewDestination": "Bestemming Bekijken",
+    "cancelBooking": "Boeking Annuleren",
+    "bookedOn": "Geboekt op",
+    "cancelModal": {
+      "title": "Boeking Annuleren",
+      "message": "Weet u zeker dat u deze boeking wilt annuleren? Deze actie kan niet ongedaan worden gemaakt.",
+      "reasonLabel": "Reden voor annulering",
+      "optional": "optioneel",
+      "reasonPlaceholder": "Laat ons weten waarom u annuleert...",
+      "keepBooking": "Boeking Behouden",
+      "confirmCancel": "Ja, Annuleren",
+      "cancelling": "Annuleren..."
+    }
   }
 }

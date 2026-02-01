@@ -57,4 +57,105 @@ export const categoriesApi = {
   getById: (id: string) => fetchApi<ParentCategoryWithSubcategories>(`/categories/${id}`),
 };
 
+// Bookings API
+export interface Booking {
+  id: string;
+  user_id: string;
+  destination_id: string;
+  booking_date: string;
+  number_of_guests: number;
+  total_price: number;
+  status: "pending" | "confirmed" | "cancelled" | "completed";
+  special_requests?: string;
+  contact_email: string;
+  contact_phone?: string;
+  created_at: string;
+  updated_at: string;
+  cancelled_at?: string;
+  cancellation_reason?: string;
+  destination?: DestinationWithCategories;
+}
+
+export interface CreateBookingDto {
+  destination_id: string;
+  booking_date: string;
+  number_of_guests: number;
+  contact_email: string;
+  contact_phone?: string;
+  special_requests?: string;
+}
+
+export interface UpdateBookingDto {
+  booking_date?: string;
+  number_of_guests?: number;
+  contact_email?: string;
+  contact_phone?: string;
+  special_requests?: string;
+}
+
+export interface BookingStats {
+  total: number;
+  pending: number;
+  confirmed: number;
+  cancelled: number;
+  completed: number;
+  totalSpent: number;
+}
+
+export const bookingsApi = {
+  // Get all user's bookings
+  getMyBookings: (token: string) =>
+    fetchApi<Booking[]>("/bookings/my-bookings", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }),
+
+  // Get user's booking statistics
+  getMyBookingStats: (token: string) =>
+    fetchApi<BookingStats>("/bookings/my-bookings/stats", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }),
+
+  // Get a specific booking
+  getMyBooking: (id: string, token: string) =>
+    fetchApi<Booking>(`/bookings/my-bookings/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }),
+
+  // Create a new booking
+  createBooking: (data: CreateBookingDto, token: string) =>
+    fetchApi<Booking>("/bookings", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(data),
+    }),
+
+  // Update a booking
+  updateMyBooking: (id: string, data: UpdateBookingDto, token: string) =>
+    fetchApi<Booking>(`/bookings/my-bookings/${id}`, {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(data),
+    }),
+
+  // Cancel a booking
+  cancelMyBooking: (id: string, reason: string | undefined, token: string) =>
+    fetchApi<Booking>(`/bookings/my-bookings/${id}/cancel`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ reason }),
+    }),
+};
+
 export { ApiError };

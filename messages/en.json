@@ -276,5 +276,56 @@
     "cityPlaceholder": "New York",
     "zipPlaceholder": "10001",
     "countryPlaceholder": "USA"
+  },
+  "Bookings": {
+    "breadcrumbs": {
+      "home": "Home",
+      "bookings": "My Bookings"
+    },
+    "title": "My Bookings",
+    "subtitle": "Manage and view all your bookings in one place",
+    "loading": "Loading your bookings...",
+    "noBookings": "You don't have any bookings yet",
+    "browseDestinations": "Browse Destinations",
+    "stats": {
+      "total": "Total",
+      "pending": "Pending",
+      "confirmed": "Confirmed",
+      "completed": "Completed",
+      "totalSpent": "Total Spent"
+    },
+    "filters": {
+      "all": "All Bookings",
+      "pending": "Pending",
+      "confirmed": "Confirmed",
+      "completed": "Completed",
+      "cancelled": "Cancelled"
+    },
+    "status": {
+      "pending": "Pending",
+      "confirmed": "Confirmed",
+      "cancelled": "Cancelled",
+      "completed": "Completed"
+    },
+    "totalPrice": "Total Price",
+    "bookingDate": "Booking Date",
+    "guests": "Guests",
+    "guest": "Guest",
+    "contact": "Contact",
+    "specialRequests": "Special Requests",
+    "cancellationReason": "Cancellation Reason",
+    "viewDestination": "View Destination",
+    "cancelBooking": "Cancel Booking",
+    "bookedOn": "Booked on",
+    "cancelModal": {
+      "title": "Cancel Booking",
+      "message": "Are you sure you want to cancel this booking? This action cannot be undone.",
+      "reasonLabel": "Reason for cancellation",
+      "optional": "optional",
+      "reasonPlaceholder": "Please let us know why you're cancelling...",
+      "keepBooking": "Keep Booking",
+      "confirmCancel": "Yes, Cancel",
+      "cancelling": "Cancelling..."
+    }
   }
 }
