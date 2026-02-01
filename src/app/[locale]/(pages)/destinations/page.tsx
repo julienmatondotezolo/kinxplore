@@ -271,13 +271,14 @@ export default function DestinationsPage() {
               <div className="flex-1">
                 <DestinationSearch />
               </div>
-              <button
+              {/* Filters Button - Hidden */}
+              {/* <button
                 onClick={() => setShowMobileFilters(true)}
                 className="flex items-center gap-2 border border-gray-200 rounded-xl px-4 py-3 hover:border-blue-600 transition-all bg-white shrink-0"
               >
                 <SlidersHorizontal size={18} className="text-blue-600" />
                 <span className="text-sm font-bold">{t("filters")}</span>
-              </button>
+              </button> */}
             </div>
 
             {/* Active Filters - Mobile (Inside sticky bar) */}
@@ -354,8 +355,8 @@ export default function DestinationsPage() {
               })}
             </div>
 
-            {/* Filters Button */}
-            <div className="hidden md:flex items-center shrink-0">
+            {/* Filters Button - Hidden */}
+            {/* <div className="hidden md:flex items-center shrink-0">
               <button 
                 onClick={() => setShowDesktopFilters(true)}
                 className="flex items-center gap-2.5 border border-blue-200 rounded-xl px-5 py-3.5 hover:border-blue-600 hover:bg-blue-50 transition-all group shadow-sm bg-white"
@@ -363,7 +364,7 @@ export default function DestinationsPage() {
                 <SlidersHorizontal size={18} className="group-hover:scale-110 transition-transform text-blue-600" />
                 <span className="text-sm font-bold text-gray-900">{t("filters")}</span>
               </button>
-            </div>
+            </div> */}
           </div>
         </div>
 
