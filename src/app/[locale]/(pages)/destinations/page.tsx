@@ -518,11 +518,8 @@ export default function DestinationsPage() {
                                 <span className="text-sm font-medium">{dest.ratings.toFixed(1)}</span>
                               </div>
                             </div>
-                            <p className="text-gray-500 text-[15px] truncate font-light leading-none">
-                              {dest.location}
-                            </p>
                             <p
-                              className={`text-gray-400 font-light leading-tight ${viewMode === "grid" ? "text-sm line-clamp-1" : "text-base line-clamp-2"}`}
+                              className={`text-gray-500 font-light leading-tight ${viewMode === "grid" ? "text-sm line-clamp-2" : "text-base line-clamp-2"}`}
                             >
                               {dest.description}
                             </p>

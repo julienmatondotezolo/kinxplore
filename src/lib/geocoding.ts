@@ -14,10 +14,16 @@ export interface GeocodingResult {
  * Free service with usage policy: https://operations.osmfoundation.org/policies/nominatim/
  */
 export async function geocodeAddress(
-  address: string,
+  address: string | null | undefined,
   city: string = "Kinshasa",
   country: string = "Democratic Republic of the Congo",
 ): Promise<GeocodingResult | null> {
+  // Return null if address is not provided
+  if (!address || address.trim() === "") {
+    console.warn("No address provided for geocoding");
+    return null;
+  }
+
   try {
     // Build search query
     const searchQuery = `${address}, ${city}, ${country}`;
@@ -112,7 +118,12 @@ export const KINSHASA_NEIGHBORHOODS = {
  * Find the closest neighborhood to a given address string
  * Useful for generating approximate coordinates
  */
-export function getNeighborhoodCoordinates(address: string): GeocodingResult | null {
+export function getNeighborhoodCoordinates(address: string | null | undefined): GeocodingResult | null {
+  // Return null if address is not provided
+  if (!address) {
+    return null;
+  }
+
   const addressLower = address.toLowerCase();
 
   for (const [key, value] of Object.entries(KINSHASA_NEIGHBORHOODS)) {

@@ -24,6 +24,7 @@ import { useParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 import React, { useState } from "react";
 
+import { DestinationMap } from "@/components/DestinationMap";
 import { Footer } from "@/components/Footer";
 import { Navigation } from "@/components/Navigation";
 import { useDestination } from "@/hooks/useDestinations";
@@ -291,22 +292,22 @@ export default function DestinationDetailPage() {
               </section>
 
               {/* Location */}
-              <section className="space-y-8 pt-10 border-t border-gray-100">
-                <div className="flex items-center justify-between">
-                  <h2 className="text-2xl font-black text-gray-900">{t("location")}</h2>
-                  <button className="text-blue-600 font-bold text-[15px] hover:underline underline-offset-4">
-                    {t("showOnMap")}
-                  </button>
-                </div>
-                <div className="aspect-[2/1] bg-blue-50/30 rounded-[40px] border border-blue-100 overflow-hidden relative group cursor-pointer">
-                  <div className="absolute inset-0 bg-[url('https://api.mapbox.com/styles/v1/mapbox/light-v10/static/0,0,0,0,0/800x800?access_token=pk.placeholder')] bg-cover opacity-20 grayscale transition-transform duration-1000 group-hover:scale-105" />
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-2xl border border-gray-100 transform transition-all duration-500 group-hover:scale-110">
-                      <MapPin size={32} className="text-blue-600" />
+              {destination.location && (
+                <section className="space-y-8 pt-10 border-t border-gray-100">
+                  <div className="flex items-center justify-between">
+                    <h2 className="text-2xl font-black text-gray-900">{t("location")}</h2>
+                    <div className="flex items-center gap-2 text-gray-600">
+                      <MapPin size={16} />
+                      <span className="text-sm font-medium">{destination.location}</span>
                     </div>
                   </div>
-                </div>
-              </section>
+                  <DestinationMap
+                    address={destination.location}
+                    destinationName={destination.name}
+                    className="h-[400px] w-full"
+                  />
+                </section>
+              )}
             </div>
 
             {/* Booking Card */}
