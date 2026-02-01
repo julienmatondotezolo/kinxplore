@@ -237,8 +237,8 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                 {/* Dates Selection */}
                 <div className="space-y-4">
                   <h3 className="text-lg font-bold text-gray-900">Select Your Dates</h3>
-                  <div className="flex border border-gray-200 rounded-xl overflow-hidden bg-gray-50">
-                    <div className="flex-1 px-6 py-5 flex flex-col items-start gap-1.5 hover:bg-white transition-colors border-r border-gray-200 relative group">
+                  <div className="flex border border-gray-200 rounded-xl overflow-hidden bg-white">
+                    <div className="flex-1 px-6 py-5 flex flex-col items-start gap-1.5 transition-colors border-r border-gray-200 relative group">
                       <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest flex items-center gap-2">
                         <Calendar size={14} />
                         Check In
@@ -251,7 +251,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                         className="text-[15px] font-black bg-transparent border-none outline-none cursor-pointer w-full"
                       />
                     </div>
-                    <div className="flex-1 px-6 py-5 flex flex-col items-start gap-1.5 hover:bg-white transition-colors relative group">
+                    <div className="flex-1 px-6 py-5 flex flex-col items-start gap-1.5 transition-colors relative group">
                       <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest flex items-center gap-2">
                         <Calendar size={14} />
                         Check Out
@@ -285,7 +285,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                           type="text"
                           value={guestInfo.firstName}
                           onChange={(e) => handleGuestInfoChange("firstName", e.target.value)}
-                          className="w-full pl-12 pr-4 py-3 border border-gray-200 rounded-xl focus:border-blue-600 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all"
+                          className="w-full pl-12 pr-4 py-3 bg-white border border-gray-200 rounded-xl focus:border-blue-600 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all"
                           placeholder="John"
                         />
                       </div>
@@ -300,7 +300,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                           type="text"
                           value={guestInfo.lastName}
                           onChange={(e) => handleGuestInfoChange("lastName", e.target.value)}
-                          className="w-full pl-12 pr-4 py-3 border border-gray-200 rounded-xl focus:border-blue-600 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all"
+                          className="w-full pl-12 pr-4 py-3 bg-white border border-gray-200 rounded-xl focus:border-blue-600 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all"
                           placeholder="Doe"
                         />
                       </div>
@@ -320,7 +320,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                           type="email"
                           value={guestInfo.email}
                           onChange={(e) => handleGuestInfoChange("email", e.target.value)}
-                          className="w-full pl-12 pr-4 py-3 border border-gray-200 rounded-xl focus:border-blue-600 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all"
+                          className="w-full pl-12 pr-4 py-3 bg-white border border-gray-200 rounded-xl focus:border-blue-600 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all"
                           placeholder="john.doe@example.com"
                         />
                       </div>
@@ -333,7 +333,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                           type="tel"
                           value={guestInfo.phone}
                           onChange={(e) => handleGuestInfoChange("phone", e.target.value)}
-                          className="w-full pl-12 pr-4 py-3 border border-gray-200 rounded-xl focus:border-blue-600 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all"
+                          className="w-full pl-12 pr-4 py-3 bg-white border border-gray-200 rounded-xl focus:border-blue-600 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all"
                           placeholder="+1 (555) 000-0000"
                         />
                       </div>
@@ -355,7 +355,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                           type="text"
                           value={guestInfo.address}
                           onChange={(e) => handleGuestInfoChange("address", e.target.value)}
-                          className="w-full pl-12 pr-4 py-3 border border-gray-200 rounded-xl focus:border-blue-600 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all"
+                          className="w-full pl-12 pr-4 py-3 bg-white border border-gray-200 rounded-xl focus:border-blue-600 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all"
                           placeholder="123 Main Street"
                         />
                       </div>
@@ -367,7 +367,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                           type="text"
                           value={guestInfo.city}
                           onChange={(e) => handleGuestInfoChange("city", e.target.value)}
-                          className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:border-blue-600 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all"
+                          className="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl focus:border-blue-600 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all"
                           placeholder="New York"
                         />
                       </div>
@@ -379,7 +379,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                           type="text"
                           value={guestInfo.zipCode}
                           onChange={(e) => handleGuestInfoChange("zipCode", e.target.value)}
-                          className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:border-blue-600 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all"
+                          className="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl focus:border-blue-600 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all"
                           placeholder="10001"
                         />
                       </div>
@@ -391,7 +391,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                           type="text"
                           value={guestInfo.country}
                           onChange={(e) => handleGuestInfoChange("country", e.target.value)}
-                          className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:border-blue-600 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all"
+                          className="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl focus:border-blue-600 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all"
                           placeholder="USA"
                         />
                       </div>
@@ -405,7 +405,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                   <textarea
                     value={guestInfo.specialRequests}
                     onChange={(e) => handleGuestInfoChange("specialRequests", e.target.value)}
-                    className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:border-blue-600 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all resize-none"
+                    className="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl focus:border-blue-600 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all resize-none"
                     rows={4}
                     placeholder="Any special requests or requirements..."
                   />
@@ -553,7 +553,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                   </div>
                   
                   {/* Dates Display */}
-                  <div className="flex border border-gray-100 rounded-xl overflow-hidden bg-gray-50/50">
+                  <div className="flex border border-gray-100 rounded-xl overflow-hidden bg-white">
                     <div className="flex-1 px-4 py-3 flex flex-col items-start gap-1 border-r border-gray-100">
                       <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">
                         Check In

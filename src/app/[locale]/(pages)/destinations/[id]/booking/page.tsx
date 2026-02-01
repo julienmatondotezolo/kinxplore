@@ -13,6 +13,7 @@ import {
   User,
 } from "lucide-react";
 import { useParams } from "next/navigation";
+import { useTranslations } from "next-intl";
 import React, { useState } from "react";
 
 import { useDestination } from "@/hooks/useDestinations";
@@ -23,6 +24,7 @@ export default function BookingPage() {
   const params = useParams();
   const id = params.id as string;
   const router = useRouter();
+  const t = useTranslations("Booking");
 
   const { data: destination, isLoading, error } = useDestination(id);
 
@@ -55,18 +57,18 @@ export default function BookingPage() {
   if (isLoading) {
     return (
       <div className="min-h-screen bg-white flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+        <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-600"></div>
       </div>
     );
   }
 
   if (error || !destination) {
     return (
-      <div className="min-h-screen bg-white flex flex-col items-center justify-center gap-4">
-        <h2 className="text-2xl font-bold text-gray-900">Destination not found</h2>
-        <button onClick={() => router.back()} className="flex items-center gap-2 text-blue-600 font-bold">
-          <ArrowLeft size={20} />
-          Go back
+      <div className="min-h-screen bg-white flex flex-col items-center justify-center gap-3 px-4">
+        <h2 className="text-xl font-bold text-gray-900">{t("destinationNotFound")}</h2>
+        <button onClick={() => router.back()} className="flex items-center gap-2 text-blue-600 font-semibold text-sm">
+          <ArrowLeft size={18} />
+          {t("goBack")}
         </button>
       </div>
     );
@@ -130,22 +132,22 @@ export default function BookingPage() {
     <div className="min-h-screen bg-gradient-to-br from-blue-50/50 via-purple-50/30 to-pink-50/40 text-gray-900 font-sans">
       {/* Fixed Header */}
       <div className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100 shadow-sm">
-        <div className="max-w-5xl mx-auto px-4 sm:px-8 py-6">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-3">
               <button
                 onClick={handleBackToDestination}
                 className="p-2 hover:bg-gray-100 rounded-full transition-colors"
               >
-                <ArrowLeft size={24} />
+                <ArrowLeft size={20} />
               </button>
               <div>
-                <h1 className="text-2xl font-bold text-gray-900">
-                  {currentStep === "info" && "Guest Information"}
-                  {currentStep === "review" && "Review Your Booking"}
-                  {currentStep === "confirmation" && "Booking Confirmed!"}
+                <h1 className="text-lg sm:text-xl font-bold text-gray-900">
+                  {currentStep === "info" && t("guestInformation")}
+                  {currentStep === "review" && t("reviewYourBooking")}
+                  {currentStep === "confirmation" && t("bookingConfirmed")}
                 </h1>
-                <p className="text-sm text-gray-500">{destination.name}</p>
+                <p className="text-xs text-gray-500 hidden sm:block">{destination.name}</p>
               </div>
             </div>
           </div>
@@ -153,39 +155,41 @@ export default function BookingPage() {
       </div>
 
       {/* Main Content */}
-      <div className="pt-32 pb-24 px-4 sm:px-8">
-        <div className="max-w-5xl mx-auto">
+      <div className="pt-20 sm:pt-24 pb-24 sm:pb-28 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-4xl mx-auto">
           {/* Progress Steps */}
           {currentStep !== "confirmation" && (
-            <div className="mb-12 bg-white rounded-2xl p-8 shadow-sm border border-gray-100">
+            <div className="mb-8 bg-white rounded-xl p-5 sm:p-6 shadow-sm border border-gray-100">
               <div className="flex items-center justify-between max-w-md mx-auto">
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2 sm:gap-3">
                   <div
-                    className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm ${
+                    className={`w-8 h-8 sm:w-9 sm:h-9 rounded-full flex items-center justify-center font-bold text-xs sm:text-sm ${
                       currentStep === "info" ? "bg-blue-600 text-white" : "bg-green-500 text-white"
                     }`}
                   >
-                    {currentStep === "info" ? "1" : <Check size={20} />}
+                    {currentStep === "info" ? "1" : <Check size={18} />}
                   </div>
-                  <span className="font-bold text-gray-900">Information</span>
+                  <span className="font-semibold text-gray-900 text-xs sm:text-sm">{t("information")}</span>
                 </div>
-                <div className="flex-1 h-0.5 bg-gray-200 mx-4">
+                <div className="flex-1 h-0.5 bg-gray-200 mx-3 sm:mx-4">
                   <div
                     className={`h-full transition-all duration-500 ${
                       currentStep === "review" ? "bg-blue-600 w-full" : "bg-gray-200 w-0"
                     }`}
                   />
                 </div>
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2 sm:gap-3">
                   <div
-                    className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm ${
+                    className={`w-8 h-8 sm:w-9 sm:h-9 rounded-full flex items-center justify-center font-bold text-xs sm:text-sm ${
                       currentStep === "review" ? "bg-blue-600 text-white" : "bg-gray-200 text-gray-400"
                     }`}
                   >
                     2
                   </div>
-                  <span className={`font-bold ${currentStep === "review" ? "text-gray-900" : "text-gray-400"}`}>
-                    Review
+                  <span
+                    className={`font-semibold text-xs sm:text-sm ${currentStep === "review" ? "text-gray-900" : "text-gray-400"}`}
+                  >
+                    {t("review")}
                   </span>
                 </div>
               </div>
@@ -193,75 +197,79 @@ export default function BookingPage() {
           )}
 
           {/* Content Sections */}
-          <div className="space-y-8">
+          <div className="space-y-5 sm:space-y-6">
             {currentStep === "info" && (
-              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-8">
+              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-5 sm:space-y-6">
                 {/* Dates Selection */}
-                <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100">
-                  <h3 className="text-lg font-bold text-gray-900 mb-6">Select Your Dates</h3>
-                  <div className="flex border border-gray-200 rounded-xl overflow-hidden bg-gray-50">
-                    <div className="flex-1 px-6 py-5 flex flex-col items-start gap-1.5 hover:bg-white transition-colors border-r border-gray-200">
-                      <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest flex items-center gap-2">
-                        <Calendar size={14} />
-                        Check In
+                <div className="bg-white rounded-xl p-5 sm:p-6 shadow-sm border border-gray-100">
+                  <h3 className="text-sm sm:text-base font-bold text-gray-900 mb-4">{t("selectYourDates")}</h3>
+                  <div className="flex flex-col sm:flex-row border border-gray-200 rounded-lg overflow-hidden bg-white">
+                    <div className="flex-1 px-4 py-3 sm:py-4 flex flex-col items-start gap-1 transition-colors sm:border-r border-gray-200">
+                      <label className="text-[9px] sm:text-[10px] font-bold text-gray-400 uppercase tracking-widest flex items-center gap-1.5">
+                        <Calendar size={12} />
+                        {t("checkIn")}
                       </label>
                       <input
                         type="date"
                         value={formatDateForInput(checkIn)}
                         onChange={handleCheckInChange}
                         min={formatDateForInput(new Date())}
-                        className="text-[15px] font-black bg-transparent border-none outline-none cursor-pointer w-full"
+                        className="text-sm sm:text-[15px] font-bold bg-transparent border-none outline-none cursor-pointer w-full"
                       />
                     </div>
-                    <div className="flex-1 px-6 py-5 flex flex-col items-start gap-1.5 hover:bg-white transition-colors">
-                      <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest flex items-center gap-2">
-                        <Calendar size={14} />
-                        Check Out
+                    <div className="flex-1 px-4 py-3 sm:py-4 flex flex-col items-start gap-1 transition-colors border-t sm:border-t-0 border-gray-200">
+                      <label className="text-[9px] sm:text-[10px] font-bold text-gray-400 uppercase tracking-widest flex items-center gap-1.5">
+                        <Calendar size={12} />
+                        {t("checkOut")}
                       </label>
                       <input
                         type="date"
                         value={formatDateForInput(checkOut)}
                         onChange={handleCheckOutChange}
                         min={formatDateForInput(new Date(checkIn.getTime() + 86400000))}
-                        className="text-[15px] font-black bg-transparent border-none outline-none cursor-pointer w-full"
+                        className="text-sm sm:text-[15px] font-bold bg-transparent border-none outline-none cursor-pointer w-full"
                       />
                     </div>
                   </div>
-                  <div className="flex items-center justify-between text-sm text-gray-600 px-2 mt-4">
+                  <div className="flex items-center justify-between text-xs sm:text-sm text-gray-600 px-2 mt-3">
                     <span className="font-medium">
-                      {nights} {nights === 1 ? "night" : "nights"}
+                      {t(nights === 1 ? "night" : "nights", { count: nights })}
                     </span>
-                    <span className="font-bold text-blue-600">Total: ${finalPrice.toFixed(2)}</span>
+                    <span className="font-bold text-blue-600">{t("total")}: ${finalPrice.toFixed(2)}</span>
                   </div>
                 </div>
 
                 {/* Personal Information */}
-                <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100">
-                  <h3 className="text-lg font-bold text-gray-900 mb-6">Personal Information</h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="bg-white rounded-xl p-5 sm:p-6 shadow-sm border border-gray-100">
+                  <h3 className="text-sm sm:text-base font-bold text-gray-900 mb-4">{t("personalInformation")}</h3>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                     <div>
-                      <label className="block text-sm font-bold text-gray-700 mb-2">First Name *</label>
+                      <label className="block text-xs sm:text-sm font-semibold text-gray-700 mb-1.5">
+                        {t("firstName")} {t("required")}
+                      </label>
                       <div className="relative">
-                        <User size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
+                        <User size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
                         <input
                           type="text"
                           value={guestInfo.firstName}
                           onChange={(e) => handleGuestInfoChange("firstName", e.target.value)}
-                          className="w-full pl-12 pr-4 py-3 border border-gray-200 rounded-xl focus:border-blue-600 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all"
-                          placeholder="John"
+                          className="w-full pl-10 pr-3 py-2.5 text-sm bg-white border border-gray-200 rounded-lg focus:border-blue-600 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all"
+                          placeholder={t("firstNamePlaceholder")}
                         />
                       </div>
                     </div>
                     <div>
-                      <label className="block text-sm font-bold text-gray-700 mb-2">Last Name *</label>
+                      <label className="block text-xs sm:text-sm font-semibold text-gray-700 mb-1.5">
+                        {t("lastName")} {t("required")}
+                      </label>
                       <div className="relative">
-                        <User size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
+                        <User size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
                         <input
                           type="text"
                           value={guestInfo.lastName}
                           onChange={(e) => handleGuestInfoChange("lastName", e.target.value)}
-                          className="w-full pl-12 pr-4 py-3 border border-gray-200 rounded-xl focus:border-blue-600 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all"
-                          placeholder="Doe"
+                          className="w-full pl-10 pr-3 py-2.5 text-sm bg-white border border-gray-200 rounded-lg focus:border-blue-600 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all"
+                          placeholder={t("lastNamePlaceholder")}
                         />
                       </div>
                     </div>
@@ -269,32 +277,36 @@ export default function BookingPage() {
                 </div>
 
                 {/* Contact Information */}
-                <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100">
-                  <h3 className="text-lg font-bold text-gray-900 mb-6">Contact Information</h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="bg-white rounded-xl p-5 sm:p-6 shadow-sm border border-gray-100">
+                  <h3 className="text-sm sm:text-base font-bold text-gray-900 mb-4">{t("contactInformation")}</h3>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                     <div>
-                      <label className="block text-sm font-bold text-gray-700 mb-2">Email *</label>
+                      <label className="block text-xs sm:text-sm font-semibold text-gray-700 mb-1.5">
+                        {t("email")} {t("required")}
+                      </label>
                       <div className="relative">
-                        <Mail size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
+                        <Mail size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
                         <input
                           type="email"
                           value={guestInfo.email}
                           onChange={(e) => handleGuestInfoChange("email", e.target.value)}
-                          className="w-full pl-12 pr-4 py-3 border border-gray-200 rounded-xl focus:border-blue-600 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all"
-                          placeholder="john.doe@example.com"
+                          className="w-full pl-10 pr-3 py-2.5 text-sm bg-white border border-gray-200 rounded-lg focus:border-blue-600 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all"
+                          placeholder={t("emailPlaceholder")}
                         />
                       </div>
                     </div>
                     <div>
-                      <label className="block text-sm font-bold text-gray-700 mb-2">Phone *</label>
+                      <label className="block text-xs sm:text-sm font-semibold text-gray-700 mb-1.5">
+                        {t("phone")} {t("required")}
+                      </label>
                       <div className="relative">
-                        <Phone size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
+                        <Phone size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
                         <input
                           type="tel"
                           value={guestInfo.phone}
                           onChange={(e) => handleGuestInfoChange("phone", e.target.value)}
-                          className="w-full pl-12 pr-4 py-3 border border-gray-200 rounded-xl focus:border-blue-600 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all"
-                          placeholder="+1 (555) 000-0000"
+                          className="w-full pl-10 pr-3 py-2.5 text-sm bg-white border border-gray-200 rounded-lg focus:border-blue-600 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all"
+                          placeholder={t("phonePlaceholder")}
                         />
                       </div>
                     </div>
@@ -302,51 +314,59 @@ export default function BookingPage() {
                 </div>
 
                 {/* Address Information */}
-                <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100">
-                  <h3 className="text-lg font-bold text-gray-900 mb-6">Address Information</h3>
-                  <div className="space-y-4">
+                <div className="bg-white rounded-xl p-5 sm:p-6 shadow-sm border border-gray-100">
+                  <h3 className="text-sm sm:text-base font-bold text-gray-900 mb-4">{t("addressInformation")}</h3>
+                  <div className="space-y-3 sm:space-y-4">
                     <div>
-                      <label className="block text-sm font-bold text-gray-700 mb-2">Street Address *</label>
+                      <label className="block text-xs sm:text-sm font-semibold text-gray-700 mb-1.5">
+                        {t("streetAddress")} {t("required")}
+                      </label>
                       <div className="relative">
-                        <MapPin size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
+                        <MapPin size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
                         <input
                           type="text"
                           value={guestInfo.address}
                           onChange={(e) => handleGuestInfoChange("address", e.target.value)}
-                          className="w-full pl-12 pr-4 py-3 border border-gray-200 rounded-xl focus:border-blue-600 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all"
-                          placeholder="123 Main Street"
+                          className="w-full pl-10 pr-3 py-2.5 text-sm bg-white border border-gray-200 rounded-lg focus:border-blue-600 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all"
+                          placeholder={t("addressPlaceholder")}
                         />
                       </div>
                     </div>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
                       <div>
-                        <label className="block text-sm font-bold text-gray-700 mb-2">City *</label>
+                        <label className="block text-xs sm:text-sm font-semibold text-gray-700 mb-1.5">
+                          {t("city")} {t("required")}
+                        </label>
                         <input
                           type="text"
                           value={guestInfo.city}
                           onChange={(e) => handleGuestInfoChange("city", e.target.value)}
-                          className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:border-blue-600 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all"
-                          placeholder="New York"
+                          className="w-full px-3 py-2.5 text-sm bg-white border border-gray-200 rounded-lg focus:border-blue-600 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all"
+                          placeholder={t("cityPlaceholder")}
                         />
                       </div>
                       <div>
-                        <label className="block text-sm font-bold text-gray-700 mb-2">Zip Code *</label>
+                        <label className="block text-xs sm:text-sm font-semibold text-gray-700 mb-1.5">
+                          {t("zipCode")} {t("required")}
+                        </label>
                         <input
                           type="text"
                           value={guestInfo.zipCode}
                           onChange={(e) => handleGuestInfoChange("zipCode", e.target.value)}
-                          className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:border-blue-600 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all"
-                          placeholder="10001"
+                          className="w-full px-3 py-2.5 text-sm bg-white border border-gray-200 rounded-lg focus:border-blue-600 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all"
+                          placeholder={t("zipPlaceholder")}
                         />
                       </div>
                       <div>
-                        <label className="block text-sm font-bold text-gray-700 mb-2">Country *</label>
+                        <label className="block text-xs sm:text-sm font-semibold text-gray-700 mb-1.5">
+                          {t("country")} {t("required")}
+                        </label>
                         <input
                           type="text"
                           value={guestInfo.country}
                           onChange={(e) => handleGuestInfoChange("country", e.target.value)}
-                          className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:border-blue-600 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all"
-                          placeholder="USA"
+                          className="w-full px-3 py-2.5 text-sm bg-white border border-gray-200 rounded-lg focus:border-blue-600 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all"
+                          placeholder={t("countryPlaceholder")}
                         />
                       </div>
                     </div>
@@ -354,99 +374,99 @@ export default function BookingPage() {
                 </div>
 
                 {/* Special Requests */}
-                <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100">
-                  <h3 className="text-lg font-bold text-gray-900 mb-6">Special Requests (Optional)</h3>
+                <div className="bg-white rounded-xl p-5 sm:p-6 shadow-sm border border-gray-100">
+                  <h3 className="text-sm sm:text-base font-bold text-gray-900 mb-4">{t("specialRequestsOptional")}</h3>
                   <textarea
                     value={guestInfo.specialRequests}
                     onChange={(e) => handleGuestInfoChange("specialRequests", e.target.value)}
-                    className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:border-blue-600 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all resize-none"
-                    rows={4}
-                    placeholder="Any special requests or requirements..."
+                    className="w-full px-3 py-2.5 text-sm bg-white border border-gray-200 rounded-lg focus:border-blue-600 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all resize-none"
+                    rows={3}
+                    placeholder={t("specialRequestsPlaceholder")}
                   />
                 </div>
               </motion.div>
             )}
 
             {currentStep === "review" && (
-              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-8">
+              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-5 sm:space-y-6">
                 {/* Destination Summary */}
-                <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100">
-                  <div className="flex gap-6">
+                <div className="bg-white rounded-xl p-5 sm:p-6 shadow-sm border border-gray-100">
+                  <div className="flex flex-col sm:flex-row gap-4">
                     <img
                       src={destination.image || `https://picsum.photos/800/800?random=${destination.id}`}
                       alt={destination.name}
-                      className="w-32 h-32 rounded-xl object-cover"
+                      className="w-full sm:w-24 h-32 sm:h-24 rounded-lg object-cover"
                     />
                     <div className="flex-1">
-                      <h3 className="text-xl font-bold text-gray-900 mb-2">{destination.name}</h3>
-                      <div className="flex items-center gap-4 text-sm text-gray-600">
+                      <h3 className="text-base sm:text-lg font-bold text-gray-900 mb-2">{destination.name}</h3>
+                      <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 text-xs sm:text-sm text-gray-600">
                         <div className="flex items-center gap-2">
-                          <Calendar size={16} />
+                          <Calendar size={14} />
                           <span>
                             {checkIn.toLocaleDateString()} - {checkOut.toLocaleDateString()}
                           </span>
                         </div>
-                        <span>•</span>
-                        <span>{nights} nights</span>
+                        <span className="hidden sm:inline">•</span>
+                        <span>{t(nights === 1 ? "night" : "nights", { count: nights })}</span>
                       </div>
                     </div>
                   </div>
                 </div>
 
                 {/* Guest Information Review */}
-                <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100">
-                  <h3 className="text-lg font-bold text-gray-900 mb-6">Guest Information</h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="bg-white rounded-xl p-5 sm:p-6 shadow-sm border border-gray-100">
+                  <h3 className="text-sm sm:text-base font-bold text-gray-900 mb-4">{t("guestInfo")}</h3>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
                     <div>
-                      <p className="text-xs font-bold text-gray-400 uppercase mb-1">Name</p>
-                      <p className="text-gray-900 font-bold">
+                      <p className="text-[10px] sm:text-xs font-bold text-gray-400 uppercase mb-1">{t("name")}</p>
+                      <p className="text-sm sm:text-base text-gray-900 font-semibold">
                         {guestInfo.firstName} {guestInfo.lastName}
                       </p>
                     </div>
                     <div>
-                      <p className="text-xs font-bold text-gray-400 uppercase mb-1">Email</p>
-                      <p className="text-gray-900 font-bold">{guestInfo.email}</p>
+                      <p className="text-[10px] sm:text-xs font-bold text-gray-400 uppercase mb-1">{t("email")}</p>
+                      <p className="text-sm sm:text-base text-gray-900 font-semibold break-all">{guestInfo.email}</p>
                     </div>
                     <div>
-                      <p className="text-xs font-bold text-gray-400 uppercase mb-1">Phone</p>
-                      <p className="text-gray-900 font-bold">{guestInfo.phone}</p>
+                      <p className="text-[10px] sm:text-xs font-bold text-gray-400 uppercase mb-1">{t("phone")}</p>
+                      <p className="text-sm sm:text-base text-gray-900 font-semibold">{guestInfo.phone}</p>
                     </div>
                     <div>
-                      <p className="text-xs font-bold text-gray-400 uppercase mb-1">Country</p>
-                      <p className="text-gray-900 font-bold">{guestInfo.country}</p>
+                      <p className="text-[10px] sm:text-xs font-bold text-gray-400 uppercase mb-1">{t("country")}</p>
+                      <p className="text-sm sm:text-base text-gray-900 font-semibold">{guestInfo.country}</p>
                     </div>
-                    <div className="md:col-span-2">
-                      <p className="text-xs font-bold text-gray-400 uppercase mb-1">Address</p>
-                      <p className="text-gray-900 font-bold">
+                    <div className="sm:col-span-2">
+                      <p className="text-[10px] sm:text-xs font-bold text-gray-400 uppercase mb-1">{t("streetAddress")}</p>
+                      <p className="text-sm sm:text-base text-gray-900 font-semibold">
                         {guestInfo.address}, {guestInfo.city}, {guestInfo.zipCode}
                       </p>
                     </div>
                     {guestInfo.specialRequests && (
-                      <div className="md:col-span-2">
-                        <p className="text-xs font-bold text-gray-400 uppercase mb-1">Special Requests</p>
-                        <p className="text-gray-600">{guestInfo.specialRequests}</p>
+                      <div className="sm:col-span-2">
+                        <p className="text-[10px] sm:text-xs font-bold text-gray-400 uppercase mb-1">{t("specialRequests")}</p>
+                        <p className="text-sm text-gray-600">{guestInfo.specialRequests}</p>
                       </div>
                     )}
                   </div>
                 </div>
 
                 {/* Price Breakdown */}
-                <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100">
-                  <h3 className="text-lg font-bold text-gray-900 mb-6">Price Breakdown</h3>
-                  <div className="space-y-3">
-                    <div className="flex justify-between text-gray-600">
+                <div className="bg-white rounded-xl p-5 sm:p-6 shadow-sm border border-gray-100">
+                  <h3 className="text-sm sm:text-base font-bold text-gray-900 mb-4">{t("priceBreakdown")}</h3>
+                  <div className="space-y-2.5">
+                    <div className="flex justify-between text-xs sm:text-sm text-gray-600">
                       <span>
-                        ${pricePerNight.toFixed(2)} x {nights} nights
+                        ${pricePerNight.toFixed(2)} x {nights} {nights === 1 ? t("night", { count: nights }) : t("nights", { count: nights })}
                       </span>
-                      <span className="font-bold">${totalPrice.toFixed(2)}</span>
+                      <span className="font-semibold">${totalPrice.toFixed(2)}</span>
                     </div>
-                    <div className="flex justify-between text-gray-600">
-                      <span>Service Fee</span>
-                      <span className="font-bold">${serviceFee.toFixed(2)}</span>
+                    <div className="flex justify-between text-xs sm:text-sm text-gray-600">
+                      <span>{t("serviceFee")}</span>
+                      <span className="font-semibold">${serviceFee.toFixed(2)}</span>
                     </div>
-                    <div className="pt-3 border-t border-gray-200 flex justify-between items-center">
-                      <span className="text-lg font-bold text-gray-900">Total</span>
-                      <span className="text-2xl font-bold text-blue-600">${finalPrice.toFixed(2)}</span>
+                    <div className="pt-2.5 border-t border-gray-200 flex justify-between items-center">
+                      <span className="text-sm sm:text-base font-bold text-gray-900">{t("total")}</span>
+                      <span className="text-lg sm:text-xl font-bold text-blue-600">${finalPrice.toFixed(2)}</span>
                     </div>
                   </div>
                 </div>
@@ -455,31 +475,31 @@ export default function BookingPage() {
 
             {currentStep === "confirmation" && (
               <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }}>
-                <div className="bg-white rounded-2xl p-12 shadow-sm border border-gray-100 text-center space-y-8">
-                  <div className="w-24 h-24 bg-green-500 rounded-full flex items-center justify-center mx-auto">
-                    <CheckCircle2 size={48} className="text-white" />
+                <div className="bg-white rounded-xl p-6 sm:p-8 shadow-sm border border-gray-100 text-center space-y-6">
+                  <div className="w-16 h-16 sm:w-20 sm:h-20 bg-green-500 rounded-full flex items-center justify-center mx-auto">
+                    <CheckCircle2 size={32} className="text-white sm:w-10 sm:h-10" />
                   </div>
-                  <div className="space-y-3">
-                    <h3 className="text-3xl font-bold text-gray-900">Booking Confirmed!</h3>
-                    <p className="text-gray-600 text-lg">Your reservation has been successfully confirmed.</p>
+                  <div className="space-y-2">
+                    <h3 className="text-xl sm:text-2xl font-bold text-gray-900">{t("bookingConfirmed")}</h3>
+                    <p className="text-sm sm:text-base text-gray-600">{t("confirmationMessage")}</p>
                   </div>
 
-                  <div className="p-6 bg-blue-50 rounded-2xl border-2 border-blue-200 border-dashed">
-                    <p className="text-sm font-bold text-gray-600 mb-2">Booking Reference</p>
-                    <p className="text-3xl font-black text-blue-600 tracking-wider">{bookingId}</p>
+                  <div className="p-4 sm:p-5 bg-blue-50 rounded-xl border-2 border-blue-200 border-dashed">
+                    <p className="text-xs font-bold text-gray-600 mb-1.5">{t("bookingReference")}</p>
+                    <p className="text-lg sm:text-2xl font-black text-blue-600 tracking-wider break-all">{bookingId}</p>
                   </div>
 
                   {/* Destination Image & Name */}
-                  <div className="flex gap-6 p-6 bg-gray-50 rounded-2xl text-left">
+                  <div className="flex flex-col sm:flex-row gap-4 p-4 sm:p-5 bg-gray-50 rounded-xl text-left">
                     <img
                       src={destination.image || `https://picsum.photos/800/800?random=${destination.id}`}
                       alt={destination.name}
-                      className="w-24 h-24 rounded-xl object-cover"
+                      className="w-full sm:w-20 h-32 sm:h-20 rounded-lg object-cover"
                     />
                     <div className="flex-1">
-                      <h4 className="text-xl font-bold text-gray-900 mb-2">{destination.name}</h4>
-                      <div className="flex items-center gap-2 text-sm text-gray-600">
-                        <Calendar size={16} />
+                      <h4 className="text-base sm:text-lg font-bold text-gray-900 mb-1.5">{destination.name}</h4>
+                      <div className="flex items-center gap-2 text-xs sm:text-sm text-gray-600">
+                        <Calendar size={14} />
                         <span>
                           {checkIn.toLocaleDateString("en-US", {
                             month: "short",
@@ -498,18 +518,18 @@ export default function BookingPage() {
                   </div>
 
                   {/* Price Breakdown Card */}
-                  <div className="p-6 bg-white rounded-2xl border border-gray-200 text-left space-y-4">
-                    <div className="flex items-center justify-between pb-4 border-b border-gray-100">
-                      <h4 className="text-sm font-bold text-gray-400 uppercase tracking-wider">Price Details</h4>
+                  <div className="p-4 sm:p-5 bg-white rounded-xl border border-gray-200 text-left space-y-3">
+                    <div className="flex items-center justify-between pb-3 border-b border-gray-100">
+                      <h4 className="text-xs font-bold text-gray-400 uppercase tracking-wider">{t("priceDetails")}</h4>
                     </div>
 
                     {/* Dates Display */}
-                    <div className="flex border border-gray-100 rounded-xl overflow-hidden bg-gray-50/50">
-                      <div className="flex-1 px-4 py-3 flex flex-col items-start gap-1 border-r border-gray-100">
-                        <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">
-                          Check In
+                    <div className="flex flex-col sm:flex-row border border-gray-100 rounded-lg overflow-hidden bg-white">
+                      <div className="flex-1 px-3 py-2 flex flex-col items-start gap-0.5 sm:border-r border-gray-100">
+                        <span className="text-[9px] sm:text-[10px] font-bold text-gray-400 uppercase tracking-widest">
+                          {t("checkIn")}
                         </span>
-                        <span className="text-sm font-black text-gray-900">
+                        <span className="text-xs sm:text-sm font-bold text-gray-900">
                           {checkIn.toLocaleDateString("en-US", {
                             month: "2-digit",
                             day: "2-digit",
@@ -517,11 +537,11 @@ export default function BookingPage() {
                           })}
                         </span>
                       </div>
-                      <div className="flex-1 px-4 py-3 flex flex-col items-start gap-1">
-                        <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">
-                          Check Out
+                      <div className="flex-1 px-3 py-2 flex flex-col items-start gap-0.5 border-t sm:border-t-0 border-gray-100">
+                        <span className="text-[9px] sm:text-[10px] font-bold text-gray-400 uppercase tracking-widest">
+                          {t("checkOut")}
                         </span>
-                        <span className="text-sm font-black text-gray-900">
+                        <span className="text-xs sm:text-sm font-bold text-gray-900">
                           {checkOut.toLocaleDateString("en-US", {
                             month: "2-digit",
                             day: "2-digit",
@@ -532,59 +552,59 @@ export default function BookingPage() {
                     </div>
 
                     {/* Price Breakdown */}
-                    <div className="space-y-3 pt-2">
-                      <div className="flex items-center justify-between text-gray-500 text-sm">
+                    <div className="space-y-2 pt-1">
+                      <div className="flex items-center justify-between text-gray-500 text-xs sm:text-sm">
                         <div className="flex items-center gap-2">
                           <span className="underline decoration-gray-200 decoration-dotted underline-offset-4">
-                            ${pricePerNight.toFixed(2)} x {nights} {nights === 1 ? "night" : "nights"}
+                            ${pricePerNight.toFixed(2)} x {nights} {nights === 1 ? t("night", { count: nights }) : t("nights", { count: nights })}
                           </span>
                         </div>
-                        <span className="font-bold text-gray-900">${totalPrice.toFixed(2)}</span>
+                        <span className="font-semibold text-gray-900">${totalPrice.toFixed(2)}</span>
                       </div>
-                      <div className="flex items-center justify-between text-gray-500 text-sm">
+                      <div className="flex items-center justify-between text-gray-500 text-xs sm:text-sm">
                         <span className="underline decoration-gray-200 decoration-dotted underline-offset-4">
-                          Service Fee
+                          {t("serviceFee")}
                         </span>
-                        <span className="font-bold text-gray-900">${serviceFee.toFixed(2)}</span>
+                        <span className="font-semibold text-gray-900">${serviceFee.toFixed(2)}</span>
                       </div>
-                      <div className="pt-3 border-t border-gray-200 flex items-center justify-between">
-                        <span className="text-base font-black text-gray-900">Total Price</span>
-                        <span className="text-2xl font-black text-blue-600">${finalPrice.toFixed(2)}</span>
+                      <div className="pt-2 border-t border-gray-200 flex items-center justify-between">
+                        <span className="text-sm font-bold text-gray-900">{t("totalPrice")}</span>
+                        <span className="text-lg sm:text-xl font-bold text-blue-600">${finalPrice.toFixed(2)}</span>
                       </div>
                     </div>
                   </div>
 
                   {/* Guest Information */}
-                  <div className="p-6 bg-gray-50 rounded-2xl space-y-3 text-left">
-                    <h4 className="font-bold text-gray-900">Guest Information</h4>
-                    <div className="space-y-2 text-sm">
+                  <div className="p-4 sm:p-5 bg-gray-50 rounded-xl space-y-2.5 text-left">
+                    <h4 className="font-bold text-gray-900 text-sm">{t("guestInfo")}</h4>
+                    <div className="space-y-1.5 text-xs sm:text-sm">
                       <div className="flex justify-between">
-                        <span className="text-gray-600">Name:</span>
-                        <span className="font-bold text-gray-900">
+                        <span className="text-gray-600">{t("name")}:</span>
+                        <span className="font-semibold text-gray-900">
                           {guestInfo.firstName} {guestInfo.lastName}
                         </span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-gray-600">Email:</span>
-                        <span className="font-bold text-gray-900">{guestInfo.email}</span>
+                        <span className="text-gray-600">{t("email")}:</span>
+                        <span className="font-semibold text-gray-900 break-all">{guestInfo.email}</span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-gray-600">Phone:</span>
-                        <span className="font-bold text-gray-900">{guestInfo.phone}</span>
+                        <span className="text-gray-600">{t("phone")}:</span>
+                        <span className="font-semibold text-gray-900">{guestInfo.phone}</span>
                       </div>
                     </div>
                   </div>
 
-                  <p className="text-sm text-gray-500">
-                    A confirmation email has been sent to{" "}
+                  <p className="text-xs sm:text-sm text-gray-500">
+                    {t("confirmationEmailSent")}{" "}
                     <span className="font-bold text-gray-900">{guestInfo.email}</span>
                   </p>
 
                   <button
                     onClick={handleBackToDestination}
-                    className="w-full px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold transition-all shadow-lg shadow-blue-500/25 active:scale-95"
+                    className="w-full px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold text-sm transition-all shadow-lg shadow-blue-500/25 active:scale-95"
                   >
-                    Back to Destination
+                    {t("backToDestination")}
                   </button>
                 </div>
               </motion.div>
@@ -594,8 +614,8 @@ export default function BookingPage() {
           {/* Fixed Footer Actions */}
           {currentStep !== "confirmation" && (
             <div className="fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-gray-100 shadow-lg">
-              <div className="max-w-5xl mx-auto px-4 sm:px-8 py-6">
-                <div className="flex items-center justify-between gap-4">
+              <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+                <div className="flex items-center justify-between gap-3">
                   <button
                     onClick={() => {
                       if (currentStep === "review") {
@@ -604,10 +624,10 @@ export default function BookingPage() {
                         handleBackToDestination();
                       }
                     }}
-                    className="flex items-center gap-2 px-6 py-3 rounded-xl font-bold hover:bg-gray-100 transition-all"
+                    className="flex items-center gap-2 px-4 sm:px-5 py-2.5 rounded-lg font-semibold hover:bg-gray-100 transition-all text-sm"
                   >
-                    <ArrowLeft size={20} />
-                    {currentStep === "review" ? "Back" : "Cancel"}
+                    <ArrowLeft size={18} />
+                    {currentStep === "review" ? t("back") : t("cancel")}
                   </button>
                   <button
                     onClick={() => {
@@ -620,15 +640,15 @@ export default function BookingPage() {
                       }
                     }}
                     disabled={currentStep === "info" && !isGuestInfoValid()}
-                    className="flex items-center gap-2 px-8 py-4 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed text-white rounded-xl font-bold transition-all shadow-lg shadow-blue-500/25 active:scale-95"
+                    className="flex items-center gap-2 px-5 sm:px-6 py-2.5 sm:py-3 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed text-white rounded-lg font-semibold text-sm transition-all shadow-lg shadow-blue-500/25 active:scale-95"
                   >
                     {currentStep === "info" && (
                       <>
-                        Continue
-                        <ChevronRight size={20} />
+                        {t("continue")}
+                        <ChevronRight size={18} />
                       </>
                     )}
-                    {currentStep === "review" && "Confirm Booking"}
+                    {currentStep === "review" && t("confirmBooking")}
                   </button>
                 </div>
               </div>

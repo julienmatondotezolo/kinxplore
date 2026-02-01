@@ -290,7 +290,7 @@ export const TripChat: React.FC<TripChatProps> = ({ initialMessage, onClose }) =
           showRecommendations && recommendations ? "pb-20 lg:pb-4" : ""
         }`}>
           <form onSubmit={handleSubmit} className="flex gap-2 items-end">
-            <div className="flex-1 bg-gray-50 border border-gray-200 rounded-xl sm:rounded-2xl px-3 sm:px-4 py-2.5 sm:py-3 focus-within:border-blue-400 focus-within:bg-white focus-within:ring-2 focus-within:ring-blue-100 transition-all">
+            <div className="flex-1 bg-white border border-gray-200 rounded-xl sm:rounded-2xl px-3 sm:px-4 py-2.5 sm:py-3 focus-within:border-blue-400 focus-within:ring-2 focus-within:ring-blue-100 transition-all">
               <input
                 ref={inputRef}
                 type="text"
