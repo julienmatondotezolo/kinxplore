@@ -25,7 +25,6 @@ import React, { useEffect, useMemo, useState } from "react";
 
 import { DestinationSearch } from "@/components/DestinationSearch";
 import { Footer } from "@/components/Footer";
-import { HeroSearchBar } from "@/components/HeroSearchBar";
 import { MapView } from "@/components/MapView";
 import { Navigation } from "@/components/Navigation";
 import { useCategories } from "@/hooks/useCategories";
@@ -257,10 +256,6 @@ export default function DestinationsPage() {
           </p>
         </div>
 
-        {/* Search Bar Section - Above Filters */}
-        <div className="max-w-[2520px] mx-auto px-4 sm:px-8 md:px-12 lg:px-16 mb-10 relative z-10">
-          <HeroSearchBar />
-        </div>
 
         {/* Mobile Search Bar */}
         <div className="md:hidden sticky top-[72px] z-50 bg-white/95 backdrop-blur-md border-b border-gray-100">
