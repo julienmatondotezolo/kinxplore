@@ -38,6 +38,22 @@ export default function BookingsPage() {
   const [showCancelModal, setShowCancelModal] = useState(false);
   const [cancelReason, setCancelReason] = useState("");
   const [isCancelling, setIsCancelling] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [isUpdating, setIsUpdating] = useState(false);
+  const [editFormData, setEditFormData] = useState({
+    check_in_date: "",
+    check_out_date: "",
+    number_of_guests: 1,
+    guest_first_name: "",
+    guest_last_name: "",
+    contact_email: "",
+    contact_phone: "",
+    guest_country: "",
+    guest_address: "",
+    guest_city: "",
+    guest_zip_code: "",
+    special_requests: "",
+  });
   const [hasCheckedAuth, setHasCheckedAuth] = useState(false);
 
   // Check authentication once
@@ -110,6 +126,56 @@ export default function BookingsPage() {
       alert(err.message || "Failed to cancel booking");
     } finally {
       setIsCancelling(false);
+    }
+  };
+
+  const handleEditBooking = (booking: Booking) => {
+    setSelectedBooking(booking);
+    setEditFormData({
+      check_in_date: booking.check_in_date || "",
+      check_out_date: booking.check_out_date || "",
+      number_of_guests: booking.number_of_guests || 1,
+      guest_first_name: booking.guest_first_name || "",
+      guest_last_name: booking.guest_last_name || "",
+      contact_email: booking.contact_email || "",
+      contact_phone: booking.contact_phone || "",
+      guest_country: booking.guest_country || "",
+      guest_address: booking.guest_address || "",
+      guest_city: booking.guest_city || "",
+      guest_zip_code: booking.guest_zip_code || "",
+      special_requests: booking.special_requests || "",
+    });
+    setShowEditModal(true);
+  };
+
+  const handleUpdateBooking = async () => {
+    if (!selectedBooking) return;
+
+    try {
+      setIsUpdating(true);
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+      const token = session?.access_token;
+
+      if (!token) {
+        alert("Authentication session not found. Please refresh the page and try again.");
+        return;
+      }
+
+      await bookingsApi.updateMyBooking(selectedBooking.id, editFormData, token);
+
+      // Reload bookings
+      await loadBookings();
+
+      // Close modal
+      setShowEditModal(false);
+      setSelectedBooking(null);
+    } catch (err: any) {
+      console.error("Error updating booking:", err);
+      alert(err.message || "Failed to update booking");
+    } finally {
+      setIsUpdating(false);
     }
   };
 
@@ -421,16 +487,25 @@ export default function BookingsPage() {
                           {t("viewDestination")}
                         </Link>
                         {(booking.status === "pending" || booking.status === "confirmed") && (
-                          <button
-                            onClick={() => {
-                              setSelectedBooking(booking);
-                              setShowCancelModal(true);
-                            }}
-                            className="flex items-center gap-2 px-4 py-2 rounded-xl bg-red-50 text-red-600 font-bold text-sm hover:bg-red-100 transition-all border border-red-200"
-                          >
-                            <X size={16} />
-                            {t("cancelBooking")}
-                          </button>
+                          <>
+                            <button
+                              onClick={() => handleEditBooking(booking)}
+                              className="flex items-center gap-2 px-4 py-2 rounded-xl bg-gray-100 text-gray-700 font-bold text-sm hover:bg-gray-200 transition-all border border-gray-300"
+                            >
+                              <Edit2 size={16} />
+                              {t("editBooking")}
+                            </button>
+                            <button
+                              onClick={() => {
+                                setSelectedBooking(booking);
+                                setShowCancelModal(true);
+                              }}
+                              className="flex items-center gap-2 px-4 py-2 rounded-xl bg-red-50 text-red-600 font-bold text-sm hover:bg-red-100 transition-all border border-red-200"
+                            >
+                              <X size={16} />
+                              {t("cancelBooking")}
+                            </button>
+                          </>
                         )}
                       </div>
 
@@ -446,9 +521,207 @@ export default function BookingsPage() {
         </div>
       </main>
 
+      {/* Edit Modal */}
+      {showEditModal && selectedBooking && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[9999] flex items-center justify-center p-4 overflow-y-auto">
+          <div className="bg-white rounded-3xl max-w-2xl w-full p-8 shadow-2xl my-8">
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="text-2xl font-bold text-gray-900">{t("editModal.title")}</h3>
+              <button
+                onClick={() => {
+                  setShowEditModal(false);
+                  setSelectedBooking(null);
+                }}
+                className="text-gray-400 hover:text-gray-600 transition-colors"
+              >
+                <X size={24} />
+              </button>
+            </div>
+
+            <div className="space-y-4 mb-6 max-h-[60vh] overflow-y-auto pr-2">
+              {/* Dates */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-bold text-gray-700 mb-2">
+                    {t("editModal.checkInDate")}
+                  </label>
+                  <input
+                    type="date"
+                    value={editFormData.check_in_date}
+                    onChange={(e) => setEditFormData({ ...editFormData, check_in_date: e.target.value })}
+                    className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white focus:border-blue-600 focus:ring-2 focus:ring-blue-100 outline-none transition-all"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-bold text-gray-700 mb-2">
+                    {t("editModal.checkOutDate")}
+                  </label>
+                  <input
+                    type="date"
+                    value={editFormData.check_out_date}
+                    onChange={(e) => setEditFormData({ ...editFormData, check_out_date: e.target.value })}
+                    className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white focus:border-blue-600 focus:ring-2 focus:ring-blue-100 outline-none transition-all"
+                  />
+                </div>
+              </div>
+
+              {/* Number of Guests */}
+              <div>
+                <label className="block text-sm font-bold text-gray-700 mb-2">
+                  {t("editModal.numberOfGuests")}
+                </label>
+                <input
+                  type="number"
+                  min="1"
+                  value={editFormData.number_of_guests || 1}
+                  onChange={(e) => setEditFormData({ ...editFormData, number_of_guests: parseInt(e.target.value) || 1 })}
+                  className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white focus:border-blue-600 focus:ring-2 focus:ring-blue-100 outline-none transition-all"
+                />
+              </div>
+
+              {/* Guest Name */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-bold text-gray-700 mb-2">
+                    {t("editModal.firstName")}
+                  </label>
+                  <input
+                    type="text"
+                    value={editFormData.guest_first_name}
+                    onChange={(e) => setEditFormData({ ...editFormData, guest_first_name: e.target.value })}
+                    className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white focus:border-blue-600 focus:ring-2 focus:ring-blue-100 outline-none transition-all"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-bold text-gray-700 mb-2">
+                    {t("editModal.lastName")}
+                  </label>
+                  <input
+                    type="text"
+                    value={editFormData.guest_last_name}
+                    onChange={(e) => setEditFormData({ ...editFormData, guest_last_name: e.target.value })}
+                    className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white focus:border-blue-600 focus:ring-2 focus:ring-blue-100 outline-none transition-all"
+                  />
+                </div>
+              </div>
+
+              {/* Contact Info */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-bold text-gray-700 mb-2">
+                    {t("editModal.email")}
+                  </label>
+                  <input
+                    type="email"
+                    value={editFormData.contact_email}
+                    onChange={(e) => setEditFormData({ ...editFormData, contact_email: e.target.value })}
+                    className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white focus:border-blue-600 focus:ring-2 focus:ring-blue-100 outline-none transition-all"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-bold text-gray-700 mb-2">
+                    {t("editModal.phone")}
+                  </label>
+                  <input
+                    type="tel"
+                    value={editFormData.contact_phone}
+                    onChange={(e) => setEditFormData({ ...editFormData, contact_phone: e.target.value })}
+                    className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white focus:border-blue-600 focus:ring-2 focus:ring-blue-100 outline-none transition-all"
+                  />
+                </div>
+              </div>
+
+              {/* Address */}
+              <div>
+                <label className="block text-sm font-bold text-gray-700 mb-2">
+                  {t("editModal.address")}
+                </label>
+                <input
+                  type="text"
+                  value={editFormData.guest_address}
+                  onChange={(e) => setEditFormData({ ...editFormData, guest_address: e.target.value })}
+                  className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white focus:border-blue-600 focus:ring-2 focus:ring-blue-100 outline-none transition-all"
+                />
+              </div>
+
+              {/* City, Country, Zip */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div>
+                  <label className="block text-sm font-bold text-gray-700 mb-2">
+                    {t("editModal.city")}
+                  </label>
+                  <input
+                    type="text"
+                    value={editFormData.guest_city}
+                    onChange={(e) => setEditFormData({ ...editFormData, guest_city: e.target.value })}
+                    className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white focus:border-blue-600 focus:ring-2 focus:ring-blue-100 outline-none transition-all"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-bold text-gray-700 mb-2">
+                    {t("editModal.country")}
+                  </label>
+                  <input
+                    type="text"
+                    value={editFormData.guest_country}
+                    onChange={(e) => setEditFormData({ ...editFormData, guest_country: e.target.value })}
+                    className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white focus:border-blue-600 focus:ring-2 focus:ring-blue-100 outline-none transition-all"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-bold text-gray-700 mb-2">
+                    {t("editModal.zipCode")}
+                  </label>
+                  <input
+                    type="text"
+                    value={editFormData.guest_zip_code}
+                    onChange={(e) => setEditFormData({ ...editFormData, guest_zip_code: e.target.value })}
+                    className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white focus:border-blue-600 focus:ring-2 focus:ring-blue-100 outline-none transition-all"
+                  />
+                </div>
+              </div>
+
+              {/* Special Requests */}
+              <div>
+                <label className="block text-sm font-bold text-gray-700 mb-2">
+                  {t("editModal.specialRequests")} ({t("editModal.optional")})
+                </label>
+                <textarea
+                  value={editFormData.special_requests}
+                  onChange={(e) => setEditFormData({ ...editFormData, special_requests: e.target.value })}
+                  placeholder={t("editModal.specialRequestsPlaceholder")}
+                  className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white focus:border-blue-600 focus:ring-2 focus:ring-blue-100 outline-none transition-all resize-none"
+                  rows={3}
+                />
+              </div>
+            </div>
+
+            <div className="flex gap-3">
+              <button
+                onClick={() => {
+                  setShowEditModal(false);
+                  setSelectedBooking(null);
+                }}
+                className="flex-1 px-4 py-2 rounded-xl bg-gray-100 text-gray-700 font-bold hover:bg-gray-200 transition-all"
+                disabled={isUpdating}
+              >
+                {t("editModal.cancel")}
+              </button>
+              <button
+                onClick={handleUpdateBooking}
+                className="flex-1 px-4 py-2 rounded-xl bg-blue-600 text-white font-bold hover:bg-blue-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                disabled={isUpdating}
+              >
+                {isUpdating ? t("editModal.updating") : t("editModal.saveChanges")}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Cancel Modal */}
       {showCancelModal && selectedBooking && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[9999] flex items-center justify-center p-4">
           <div className="bg-white rounded-3xl max-w-md w-full p-8 shadow-2xl">
             <div className="flex items-center justify-between mb-6">
               <h3 className="text-2xl font-bold text-gray-900">{t("cancelModal.title")}</h3>
@@ -475,7 +748,7 @@ export default function BookingsPage() {
                   value={cancelReason}
                   onChange={(e) => setCancelReason(e.target.value)}
                   placeholder={t("cancelModal.reasonPlaceholder")}
-                  className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-blue-600 focus:ring-2 focus:ring-blue-100 outline-none transition-all resize-none"
+                  className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white focus:border-blue-600 focus:ring-2 focus:ring-blue-100 outline-none transition-all resize-none"
                   rows={4}
                 />
               </div>
@@ -488,14 +761,14 @@ export default function BookingsPage() {
                   setSelectedBooking(null);
                   setCancelReason("");
                 }}
-                className="flex-1 px-6 py-3 rounded-xl bg-gray-100 text-gray-700 font-bold hover:bg-gray-200 transition-all"
+                className="flex-1 px-4 py-2 rounded-xl bg-gray-100 text-gray-700 font-bold hover:bg-gray-200 transition-all"
                 disabled={isCancelling}
               >
                 {t("cancelModal.keepBooking")}
               </button>
               <button
                 onClick={handleCancelBooking}
-                className="flex-1 px-6 py-3 rounded-xl bg-red-600 text-white font-bold hover:bg-red-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                className="flex-1 px-4 py-2 rounded-xl bg-red-600 text-white font-bold hover:bg-red-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                 disabled={isCancelling}
               >
                 {isCancelling ? t("cancelModal.cancelling") : t("cancelModal.confirmCancel")}

@@ -101,10 +101,17 @@ export interface CreateBookingDto {
 }
 
 export interface UpdateBookingDto {
-  booking_date?: string;
+  check_in_date?: string;
+  check_out_date?: string;
   number_of_guests?: number;
+  guest_first_name?: string;
+  guest_last_name?: string;
   contact_email?: string;
   contact_phone?: string;
+  guest_country?: string;
+  guest_address?: string;
+  guest_city?: string;
+  guest_zip_code?: string;
   special_requests?: string;
 }
 

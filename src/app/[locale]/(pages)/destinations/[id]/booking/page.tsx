@@ -686,12 +686,20 @@ export default function BookingPage() {
                     {t("confirmationEmailSent")} <span className="font-bold text-gray-900">{guestInfo.email}</span>
                   </p>
 
-                  <button
-                    onClick={handleBackToDestination}
-                    className="w-full px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold text-sm transition-all shadow-lg shadow-blue-500/25 active:scale-95"
-                  >
-                    {t("backToDestination")}
-                  </button>
+                  <div className="flex flex-col sm:flex-row gap-3">
+                    <button
+                      onClick={() => router.push("/bookings")}
+                      className="flex-1 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold text-sm transition-all shadow-lg shadow-blue-500/25 active:scale-95"
+                    >
+                      {t("viewMyBookings")}
+                    </button>
+                    <button
+                      onClick={handleBackToDestination}
+                      className="flex-1 px-6 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg font-semibold text-sm transition-all active:scale-95"
+                    >
+                      {t("backToDestination")}
+                    </button>
+                  </div>
                 </div>
               </motion.div>
             )}
