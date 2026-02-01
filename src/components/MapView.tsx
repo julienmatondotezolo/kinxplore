@@ -17,6 +17,7 @@ interface MapViewProps {
   center?: { lat: number; lng: number };
   zoom?: number;
   onMarkerClick?: (locationId: string) => void;
+  locale?: string; // Current locale for routing
 }
 
 // Declare Leaflet type for global usage
@@ -64,6 +65,7 @@ export function MapView({
   center = { lat: -4.3276, lng: 15.3136 }, // Kinshasa coordinates
   zoom = 12,
   onMarkerClick,
+  locale = "en", // Default to English
 }: MapViewProps) {
   const mapRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<any>(null);
@@ -161,9 +163,29 @@ export function MapView({
                 `
                     : ""
                 }
-                <p style="color: #6b7280; font-size: 14px; margin: 0;">
+                <p style="color: #6b7280; font-size: 14px; margin-bottom: 12px;">
                   From <strong style="color: #2563eb; font-size: 16px;">$${location.price}</strong> / night
                 </p>
+                <div style="display: flex; justify-content: flex-end;">
+                  <button 
+                    onclick="window.location.href='/${locale}/destinations/${location.id}'" 
+                    style="
+                      background-color: #2563eb;
+                      color: white;
+                      padding: 8px 16px;
+                      border-radius: 8px;
+                      border: none;
+                      font-weight: 600;
+                      font-size: 13px;
+                      cursor: pointer;
+                      transition: background-color 0.2s;
+                    "
+                    onmouseover="this.style.backgroundColor='#1d4ed8'"
+                    onmouseout="this.style.backgroundColor='#2563eb'"
+                  >
+                    View
+                  </button>
+                </div>
               </div>
             `);
 
@@ -200,23 +222,49 @@ export function MapView({
 
           if (validLocations.length > 1) {
             // Need at least 2 points for valid bounds
-            const latLngs = validLocations.map((loc) => [loc.lat, loc.lng]);
-            const bounds = L.latLngBounds(latLngs);
-            
-            // Validate bounds before using
-            if (bounds && bounds.isValid()) {
-              const ne = bounds.getNorthEast();
-              const sw = bounds.getSouthWest();
-              const hasArea = Math.abs(ne.lat - sw.lat) > 0.0001 && Math.abs(ne.lng - sw.lng) > 0.0001;
+            try {
+              const latLngs = validLocations.map((loc) => [loc.lat, loc.lng] as [number, number]);
               
-              if (hasArea) {
-                mapInstanceRef.current.fitBounds(bounds, { padding: [50, 50], maxZoom: 14 });
+              // Additional validation: ensure we have valid LatLng pairs
+              const validLatLngs = latLngs.filter(
+                (coords) => 
+                  Array.isArray(coords) && 
+                  coords.length === 2 &&
+                  typeof coords[0] === 'number' && 
+                  typeof coords[1] === 'number' &&
+                  !isNaN(coords[0]) && 
+                  !isNaN(coords[1]) &&
+                  isFinite(coords[0]) && 
+                  isFinite(coords[1])
+              );
+
+              if (validLatLngs.length < 2) {
+                // Not enough valid points, center on first valid location
+                mapInstanceRef.current.setView([validLocations[0].lat, validLocations[0].lng], 13);
+                return;
+              }
+
+              const bounds = L.latLngBounds(validLatLngs);
+              
+              // Validate bounds before using
+              if (bounds && bounds.isValid()) {
+                const ne = bounds.getNorthEast();
+                const sw = bounds.getSouthWest();
+                const hasArea = Math.abs(ne.lat - sw.lat) > 0.0001 && Math.abs(ne.lng - sw.lng) > 0.0001;
+                
+                if (hasArea) {
+                  mapInstanceRef.current.fitBounds(bounds, { padding: [50, 50], maxZoom: 14 });
+                } else {
+                  // Points too close together, just center on first point
+                  mapInstanceRef.current.setView([validLocations[0].lat, validLocations[0].lng], 13);
+                }
               } else {
-                // Points too close together, just center on first point
+                // Invalid bounds, center on first location
                 mapInstanceRef.current.setView([validLocations[0].lat, validLocations[0].lng], 13);
               }
-            } else {
-              // Invalid bounds, center on first location
+            } catch (boundsError) {
+              console.error("Error creating bounds:", boundsError);
+              // Fallback to centering on first location
               mapInstanceRef.current.setView([validLocations[0].lat, validLocations[0].lng], 13);
             }
           } else if (validLocations.length === 1) {

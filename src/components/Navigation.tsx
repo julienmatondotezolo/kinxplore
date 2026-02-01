@@ -2,14 +2,30 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import { AnimatePresence, motion } from "framer-motion";
-import { Briefcase, Heart, HelpCircle, Home, LogOut, Mail, MapPin, Menu, Settings, ShoppingBag, X, Plane, LogIn, UserPlus } from "lucide-react";
+import {
+  Briefcase,
+  Heart,
+  HelpCircle,
+  Home,
+  LogIn,
+  LogOut,
+  Mail,
+  MapPin,
+  Menu,
+  Plane,
+  Settings,
+  ShoppingBag,
+  UserPlus,
+  X,
+} from "lucide-react";
 import { useTranslations } from "next-intl";
 import React, { useEffect, useState } from "react";
 
-import { SavedTripsModal } from "./SavedTripsModal";
+import { useAuth } from "@/hooks/useAuth";
 import { useSavedTripsModal } from "@/hooks/useSavedTripsModal";
 import { usePathname, useRouter } from "@/navigation";
-import { useAuth } from "@/hooks/useAuth";
+
+import { SavedTripsModal } from "./SavedTripsModal";
 
 export const Navigation: React.FC = () => {
   const t = useTranslations("Navigation");
@@ -163,7 +179,7 @@ export const Navigation: React.FC = () => {
         <div className="flex items-center gap-4 md:gap-6">
           {user ? (
             <>
-              <div className="hidden md:flex items-center gap-3 text-gray-700">
+              <div className="hidden md:flex items-center gap-4 text-gray-700">
                 <button
                   onClick={openTripsModal}
                   className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-full font-bold text-sm transition-all shadow-md hover:shadow-lg active:scale-95"
@@ -188,13 +204,13 @@ export const Navigation: React.FC = () => {
                     {profile?.avatar_url ? (
                       <img src={profile.avatar_url} alt="Profile" className="w-full h-full object-cover" />
                     ) : (
-                      <span>{profile?.full_name?.[0]?.toUpperCase() || user.email?.[0]?.toUpperCase() || 'U'}</span>
+                      <span>{profile?.full_name?.[0]?.toUpperCase() || user.email?.[0]?.toUpperCase() || "U"}</span>
                     )}
                   </div>
                   <div className="hidden lg:block text-left">
                     <p className="text-[10px] text-gray-400 font-medium leading-none mb-1">{t("hello")}</p>
                     <p className="text-sm font-bold text-gray-900 leading-none">
-                      {profile?.full_name || user.email?.split('@')[0] || t("traveler")}
+                      {profile?.full_name || user.email?.split("@")[0] || t("traveler")}
                     </p>
                   </div>
                 </button>
@@ -202,20 +218,17 @@ export const Navigation: React.FC = () => {
                 {/* User Dropdown */}
                 {showUserDropdown && (
                   <>
-                    <div
-                      className="fixed inset-0 z-10"
-                      onClick={() => setShowUserDropdown(false)}
-                    />
+                    <div className="fixed inset-0 z-10" onClick={() => setShowUserDropdown(false)} />
                     <div className="absolute right-0 top-full mt-2 w-64 bg-white rounded-2xl shadow-xl border border-gray-100 py-2 z-20">
                       <div className="px-4 py-3 border-b border-gray-100">
-                        <p className="font-bold text-gray-900">{profile?.full_name || 'User'}</p>
+                        <p className="font-bold text-gray-900">{profile?.full_name || "User"}</p>
                         <p className="text-sm text-gray-500">{user.email}</p>
                       </div>
                       <div className="py-2">
                         <button
                           onClick={() => {
                             setShowUserDropdown(false);
-                            router.push('/profile');
+                            router.push("/profile");
                           }}
                           className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 transition flex items-center gap-3"
                         >
@@ -235,7 +248,7 @@ export const Navigation: React.FC = () => {
                         <button
                           onClick={() => {
                             setShowUserDropdown(false);
-                            router.push('/bookings');
+                            router.push("/bookings");
                           }}
                           className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 transition flex items-center gap-3"
                         >
@@ -248,7 +261,7 @@ export const Navigation: React.FC = () => {
                           onClick={async () => {
                             setShowUserDropdown(false);
                             await signOut();
-                            router.push('/');
+                            router.push("/");
                           }}
                           className="w-full px-4 py-2 text-left text-sm text-red-600 hover:bg-red-50 transition flex items-center gap-3"
                         >
@@ -264,14 +277,14 @@ export const Navigation: React.FC = () => {
           ) : (
             <div className="hidden md:flex items-center gap-3">
               <button
-                onClick={() => router.push('/login')}
+                onClick={() => router.push("/login")}
                 className="flex items-center gap-2 px-4 py-2 text-gray-700 hover:text-blue-600 font-medium text-sm transition-all"
               >
                 <LogIn size={16} />
                 Login
               </button>
               <button
-                onClick={() => router.push('/register')}
+                onClick={() => router.push("/register")}
                 className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-full font-bold text-sm transition-all shadow-md hover:shadow-lg active:scale-95"
               >
                 <UserPlus size={16} />
@@ -376,13 +389,19 @@ export const Navigation: React.FC = () => {
                     <div className="flex items-center gap-4 mb-8">
                       <div className="w-12 h-12 rounded-2xl flex items-center justify-center bg-blue-600 text-white font-bold border-2 border-blue-50">
                         {profile?.avatar_url ? (
-                          <img src={profile.avatar_url} alt="Profile" className="w-full h-full rounded-2xl object-cover" />
+                          <img
+                            src={profile.avatar_url}
+                            alt="Profile"
+                            className="w-full h-full rounded-2xl object-cover"
+                          />
                         ) : (
-                          <span>{profile?.full_name?.[0]?.toUpperCase() || user.email?.[0]?.toUpperCase() || 'U'}</span>
+                          <span>{profile?.full_name?.[0]?.toUpperCase() || user.email?.[0]?.toUpperCase() || "U"}</span>
                         )}
                       </div>
                       <div>
-                        <p className="font-bold text-gray-900">{profile?.full_name || user.email?.split('@')[0] || t("traveler")}</p>
+                        <p className="font-bold text-gray-900">
+                          {profile?.full_name || user.email?.split("@")[0] || t("traveler")}
+                        </p>
                         <p className="text-xs text-gray-400 font-medium">{user.email}</p>
                       </div>
                     </div>
@@ -390,7 +409,7 @@ export const Navigation: React.FC = () => {
                       onClick={async () => {
                         setIsMobileMenuOpen(false);
                         await signOut();
-                        router.push('/');
+                        router.push("/");
                       }}
                       className="w-full flex items-center gap-4 p-4 rounded-2xl bg-red-50 text-red-600 font-bold hover:bg-red-100 transition-colors"
                     >
@@ -403,7 +422,7 @@ export const Navigation: React.FC = () => {
                     <button
                       onClick={() => {
                         setIsMobileMenuOpen(false);
-                        router.push('/login');
+                        router.push("/login");
                       }}
                       className="w-full flex items-center justify-center gap-3 p-4 rounded-2xl border-2 border-gray-200 text-gray-700 font-bold hover:border-blue-500 hover:text-blue-600 transition-all"
                     >
@@ -413,7 +432,7 @@ export const Navigation: React.FC = () => {
                     <button
                       onClick={() => {
                         setIsMobileMenuOpen(false);
-                        router.push('/register');
+                        router.push("/register");
                       }}
                       className="w-full flex items-center justify-center gap-3 p-4 rounded-2xl bg-gradient-to-r from-blue-600 to-purple-600 text-white font-bold hover:from-blue-700 hover:to-purple-700 transition-all shadow-lg"
                     >

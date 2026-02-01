@@ -69,9 +69,7 @@ export default function DestinationDetailPage() {
 
   const nights = Math.ceil((checkOutDate.getTime() - checkInDate.getTime()) / (1000 * 60 * 60 * 24));
 
-  const formatDateForInput = (date: Date) => {
-    return date.toISOString().split("T")[0];
-  };
+  const formatDateForInput = (date: Date) => date.toISOString().split("T")[0];
 
   const handleCheckInChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newDate = new Date(e.target.value);
@@ -268,11 +266,7 @@ export default function DestinationDetailPage() {
               {/* Overview */}
               <section className="space-y-6">
                 <h2 className="text-2xl font-black text-gray-900">{t("overview")}</h2>
-                <p className="text-gray-500 leading-relaxed font-light text-[17px]">
-                  {destination.description} This full-day PRIVATE tour to discover the landmarks of the capital of Oman
-                  since 1793. In this tour, you will enjoy panoramic views of Muscat and we will explore Oman&apos;s
-                  rich cultural heritage, which is well preserved in the capital.
-                </p>
+                <p className="text-gray-500 leading-relaxed font-light text-[17px]">{destination.description}</p>
               </section>
 
               {/* Highlights */}
@@ -398,7 +392,9 @@ export default function DestinationDetailPage() {
                   </div>
                   <div className="pt-4 border-t border-gray-100 flex items-center justify-between">
                     <span className="text-base font-black text-gray-900">{t("totalPrice")}</span>
-                    <span className="text-2xl font-black text-blue-600">${(destination.price * nights).toFixed(2)}</span>
+                    <span className="text-2xl font-black text-blue-600">
+                      ${(destination.price * nights).toFixed(2)}
+                    </span>
                   </div>
                 </div>
 
@@ -426,7 +422,7 @@ export default function DestinationDetailPage() {
         <div className="fixed bottom-12 left-12 z-[100]">
           <button
             onClick={() => router.back()}
-            className="bg-white hover:bg-black hover:text-white text-gray-900 px-8 py-5 rounded-full shadow-2xl border border-gray-100 flex items-center gap-3 transition-all active:scale-95 group font-black uppercase tracking-widest text-[13px]"
+            className="bg-blue-600 hover:bg-white hover:text-blue-600 text-white px-8 py-5 rounded-full shadow-2xl hover:border-2 border-blue-600 flex items-center gap-3 transition-all active:scale-95 group font-black uppercase tracking-widest text-[13px]"
           >
             <ArrowLeft size={20} className="group-hover:-translate-x-2 transition-transform" />
             <span>{t("goBack")}</span>

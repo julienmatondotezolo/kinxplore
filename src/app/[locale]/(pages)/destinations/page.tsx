@@ -20,7 +20,7 @@ import {
   Waves,
   X,
 } from "lucide-react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import React, { useEffect, useMemo, useState } from "react";
 
 import { DestinationSearch } from "@/components/DestinationSearch";
@@ -50,6 +50,7 @@ const categoryIcons: Record<string, React.ReactNode> = {
 
 export default function DestinationsPage() {
   const t = useTranslations("Destinations");
+  const locale = useLocale(); // Get current locale
   const [showMap, setShowMap] = useState(false);
   const [showMobileFilters, setShowMobileFilters] = useState(false);
   const [showDesktopFilters, setShowDesktopFilters] = useState(false);
@@ -575,9 +576,10 @@ export default function DestinationsPage() {
               <div className="hidden lg:block lg:w-[40%] h-full min-h-[600px] rounded-3xl overflow-hidden sticky top-[180px] border border-blue-100 shadow-lg">
                 <MapView
                   locations={mapLocations}
+                  locale={locale}
                   onMarkerClick={(locationId) => {
-                    // Navigate to destination detail page using router
-                    router.push(`/destinations/${locationId}`);
+                    // Marker clicked - no navigation, just show info
+                    console.log("Destination clicked:", locationId);
                   }}
                 />
               </div>
