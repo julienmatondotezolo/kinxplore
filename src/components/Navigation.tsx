@@ -13,6 +13,7 @@ import {
   Menu,
   Plane,
   Settings,
+  ShoppingBag,
   UserPlus,
   X,
 } from "lucide-react";

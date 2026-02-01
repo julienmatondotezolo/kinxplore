@@ -3,32 +3,8 @@ import { Plane, Star } from "lucide-react";
 import { useTranslations } from "next-intl";
 import React from "react";
 
-const destinations = [
-  {
-    title: "Lola ya Bonobo, Mont Ngafula",
-    price: "$40",
-    rating: 5.0,
-    img: "https://picsum.photos/600/600?random=101",
-  },
-  {
-    title: "Zongo Falls, Bas-Congo",
-    price: "$120",
-    rating: 5.0,
-    img: "https://picsum.photos/600/600?random=102",
-  },
-  {
-    title: "Ma Vallée, Nature Park",
-    price: "$65",
-    rating: 5.0,
-    img: "https://picsum.photos/600/600?random=103",
-  },
-  {
-    title: "Sunset over Congo River",
-    price: "$85",
-    rating: 5.0,
-    img: "https://picsum.photos/600/600?random=104",
-  },
-];
+import { useDestinations } from "@/hooks/useDestinations";
+import { useRouter } from "@/navigation";
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -54,6 +30,32 @@ const itemVariants = {
 
 export const PopularDestinations: React.FC = () => {
   const t = useTranslations("PopularDestinations");
+  const router = useRouter();
+  const { data: allDestinations, isLoading } = useDestinations();
+
+  // Get first 4 destinations for popular section
+  const destinations = allDestinations?.slice(0, 4) || [];
+
+  const handleDestinationClick = (destinationId: string) => {
+    router.push(`/destinations/${destinationId}`);
+  };
+
+  if (isLoading) {
+    return (
+      <div className="py-24 max-w-7xl mx-auto px-4" id="destinations">
+        <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900 tracking-tight mb-12">{t("title")}</h2>
+        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-8">
+          {[1, 2, 3, 4].map((i) => (
+            <div key={i} className="animate-pulse">
+              <div className="bg-gray-200 rounded-[2.5rem] aspect-square mb-6"></div>
+              <div className="h-4 bg-gray-200 rounded mb-2"></div>
+              <div className="h-4 bg-gray-200 rounded w-2/3"></div>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="py-24 max-w-7xl mx-auto px-4" id="destinations">
@@ -75,11 +77,16 @@ export const PopularDestinations: React.FC = () => {
         className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-8"
       >
         {destinations.map((dest, idx) => (
-          <motion.div key={idx} variants={itemVariants} className="group cursor-pointer">
+          <motion.div
+            key={dest.id}
+            variants={itemVariants}
+            onClick={() => handleDestinationClick(dest.id)}
+            className="group cursor-pointer"
+          >
             <div className="relative overflow-hidden rounded-[2.5rem] mb-6 aspect-square shadow-sm transition-all duration-500 group-hover:shadow-2xl">
               <img
-                src={dest.img}
-                alt={dest.title}
+                src={dest.image || `https://picsum.photos/600/600?random=${idx + 101}`}
+                alt={dest.name}
                 className="w-full h-full object-cover transform group-hover:scale-110 transition duration-700"
               />
 
@@ -94,16 +101,18 @@ export const PopularDestinations: React.FC = () => {
 
             <div className="space-y-2 px-1">
               <h3 className="font-bold text-lg text-gray-900 leading-tight group-hover:text-blue-600 transition-colors">
-                {dest.title}
+                {dest.name}
               </h3>
               <div className="flex justify-between items-center">
                 <div className="flex items-baseline gap-1.5">
-                  <span className="font-bold text-gray-900">{dest.price}</span>
+                  <span className="font-bold text-gray-900">${dest.price}</span>
                   <span className="text-sm font-medium text-gray-400">{t("starting")}</span>
                 </div>
                 <div className="flex items-center gap-1">
                   <Star size={14} className="text-gray-300 fill-gray-300" />
-                  <span className="text-sm font-bold text-gray-900">{dest.rating.toFixed(1)}</span>
+                  <span className="text-sm font-bold text-gray-900">
+                    {dest.ratings ? dest.ratings.toFixed(1) : "5.0"}
+                  </span>
                 </div>
               </div>
             </div>

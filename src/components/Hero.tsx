@@ -216,7 +216,7 @@ export const Hero: React.FC = () => {
             {/* Footer Link */}
             <div className="pt-1 sm:pt-2 text-center pb-4">
               <button className="inline-flex items-center gap-2 text-blue-600 font-black text-[9px] sm:text-[10px] uppercase tracking-[0.15em] sm:tracking-[0.2em] group border-b-2 border-transparent active:border-blue-600 pb-1 transition-all touch-manipulation">
-                {t("explorePackages")}
+                {t("exploreAllDestinations")}
                 <ArrowRight
                   size={12}
                   className="-rotate-45 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform sm:w-3.5 sm:h-3.5"
@@ -345,7 +345,7 @@ export const Hero: React.FC = () => {
           {/* Footer Link */}
           <motion.div variants={itemVariants} className="pt-2 self-start pl-12">
             <button className="flex items-center gap-2 text-blue-600 font-bold text-xs uppercase tracking-[0.2em] group border-b-2 border-transparent hover:border-blue-600 pb-1 transition-all">
-              {t("explorePackages")}
+              {t("exploreAllDestinations")}
               <ArrowRight
                 size={14}
                 className="-rotate-45 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform"
