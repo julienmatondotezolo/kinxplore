@@ -9,6 +9,7 @@ import {
   Mail,
   MapPin,
   Phone,
+  ShoppingBag,
   Users,
   X,
   XCircle,
@@ -56,28 +57,15 @@ export default function BookingsPage() {
       setIsLoading(true);
       setError(null);
 
-      // Get token from Supabase session
+      // Get token from Supabase session (optional - can be null)
       const {
         data: { session },
-        error: sessionError,
       } = await supabase.auth.getSession();
 
-      if (sessionError || !session) {
-        console.error("Session error:", sessionError);
-        setError("Authentication session not found. Please login again.");
-        setIsLoading(false);
-        return;
-      }
+      const token = session?.access_token || "";
 
-      const token = session.access_token;
-
-      if (!token) {
-        console.error("No access token in session");
-        setError("No authentication token found. Please login again.");
-        setIsLoading(false);
-        return;
-      }
-
+      // Call API with or without token
+      // Backend will return empty data if no token
       const [bookingsData, statsData] = await Promise.all([
         bookingsApi.getMyBookings(token),
         bookingsApi.getMyBookingStats(token),
@@ -88,11 +76,6 @@ export default function BookingsPage() {
     } catch (err: any) {
       console.error("Error loading bookings:", err);
       setError(err.message || "Failed to load bookings");
-
-      // Don't redirect on error, just show the error
-      if (err.status === 401) {
-        setError("Your session has expired. Please logout and login again.");
-      }
     } finally {
       setIsLoading(false);
     }
@@ -291,7 +274,34 @@ export default function BookingsPage() {
           )}
 
           {/* Bookings List */}
-          {filteredBookings.length === 0 ? (
+          {!user && !authLoading ? (
+            // Not logged in - show login message
+            <div className="bg-gradient-to-br from-blue-50 to-purple-50 rounded-2xl p-12 text-center border-2 border-blue-200">
+              <div className="max-w-md mx-auto">
+                <div className="w-20 h-20 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-6">
+                  <ShoppingBag size={40} className="text-white" />
+                </div>
+                <h3 className="text-2xl font-bold text-gray-900 mb-3">Login to View Your Bookings</h3>
+                <p className="text-gray-600 mb-6">
+                  Sign in to your account to view and manage your destination bookings.
+                </p>
+                <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                  <Link
+                    href="/login?returnUrl=/bookings"
+                    className="inline-flex items-center justify-center gap-2 bg-blue-600 text-white px-6 py-3 rounded-xl font-bold hover:bg-blue-700 transition-all shadow-lg"
+                  >
+                    Login to Continue
+                  </Link>
+                  <Link
+                    href="/register"
+                    className="inline-flex items-center justify-center gap-2 bg-white text-blue-600 px-6 py-3 rounded-xl font-bold hover:bg-gray-50 transition-all border-2 border-blue-600"
+                  >
+                    Create Account
+                  </Link>
+                </div>
+              </div>
+            </div>
+          ) : filteredBookings.length === 0 ? (
             <div className="bg-gray-50 rounded-2xl p-12 text-center border border-gray-100">
               <p className="text-gray-500 text-lg mb-4">{t("noBookings")}</p>
               <Link
