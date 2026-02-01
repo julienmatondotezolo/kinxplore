@@ -76,9 +76,15 @@ export default function DestinationsPage() {
     setCurrentPage,
     viewMode,
     setViewMode,
+    resetFilters,
   } = useDestinationStore();
 
   const router = useRouter();
+
+  // Reset all filters when the page first loads
+  useEffect(() => {
+    resetFilters();
+  }, [resetFilters]);
 
   // Reset to grid view when hiding map
   const handleToggleMap = () => {

@@ -12,17 +12,19 @@ export function HeroSearchBar() {
   const tCommunes = useTranslations("Communes");
   const { heroSearch, setHeroSearch, setSearchQuery } = useDestinationStore();
 
-  // Initialize state from heroSearch
+  // Initialize state from heroSearch (but don't apply filters on mount)
   const [location, setLocation] = useState(() => heroSearch?.destination || "");
   const [duration, setDuration] = useState(() => heroSearch?.duration || 3);
   const [tripStyle, setTripStyle] = useState(() => heroSearch?.tripStyle || "adventure");
 
-  // Apply hero search query on mount if it exists
+  // Sync local state with heroSearch when it's cleared
   useEffect(() => {
-    if (heroSearch?.destination) {
-      setSearchQuery(heroSearch.destination);
+    if (!heroSearch) {
+      setLocation("");
+      setDuration(3);
+      setTripStyle("adventure");
     }
-  }, [heroSearch, setSearchQuery]);
+  }, [heroSearch]);
 
   const handleSearch = () => {
     // Save to store

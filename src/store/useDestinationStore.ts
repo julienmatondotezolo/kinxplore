@@ -161,6 +161,7 @@ export const useDestinationStore = create<DestinationStore>()(
               searchQuery: "",
               priceRange: { min: 0, max: 10000 },
               currentPage: 1,
+              heroSearch: null,
             },
             false,
             "resetFilters",
