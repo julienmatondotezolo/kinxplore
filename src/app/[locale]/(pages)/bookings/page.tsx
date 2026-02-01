@@ -102,18 +102,22 @@ export default function BookingsPage() {
 
     try {
       setIsCancelling(true);
+
       const {
         data: { session },
       } = await supabase.auth.getSession();
       const token = session?.access_token;
 
       if (!token) {
+        console.error("[CANCEL BOOKING] No authentication token found");
         alert("Authentication session not found. Please refresh the page and try again.");
         return;
       }
 
+      console.log("[CANCEL BOOKING] Sending cancellation request...");
       await bookingsApi.cancelMyBooking(selectedBooking.id, cancelReason || undefined, token);
 
+      console.log("[CANCEL BOOKING] Cancellation successful, reloading bookings...");
       // Reload bookings
       await loadBookings();
 
@@ -121,8 +125,14 @@ export default function BookingsPage() {
       setShowCancelModal(false);
       setSelectedBooking(null);
       setCancelReason("");
+      console.log("[CANCEL BOOKING] Cancellation complete");
     } catch (err: any) {
-      console.error("Error cancelling booking:", err);
+      console.error("[CANCEL BOOKING] Error:", err);
+      console.error("[CANCEL BOOKING] Error details:", {
+        message: err.message,
+        status: err.status,
+        data: err.data,
+      });
       alert(err.message || "Failed to cancel booking");
     } finally {
       setIsCancelling(false);
@@ -153,26 +163,38 @@ export default function BookingsPage() {
 
     try {
       setIsUpdating(true);
+      console.log("[UPDATE BOOKING] Starting update for booking:", selectedBooking.id);
+      console.log("[UPDATE BOOKING] Update data:", editFormData);
+
       const {
         data: { session },
       } = await supabase.auth.getSession();
       const token = session?.access_token;
 
       if (!token) {
+        console.error("[UPDATE BOOKING] No authentication token found");
         alert("Authentication session not found. Please refresh the page and try again.");
         return;
       }
 
+      console.log("[UPDATE BOOKING] Sending update request...");
       await bookingsApi.updateMyBooking(selectedBooking.id, editFormData, token);
 
+      console.log("[UPDATE BOOKING] Update successful, reloading bookings...");
       // Reload bookings
       await loadBookings();
 
       // Close modal
       setShowEditModal(false);
       setSelectedBooking(null);
+      console.log("[UPDATE BOOKING] Update complete");
     } catch (err: any) {
-      console.error("Error updating booking:", err);
+      console.error("[UPDATE BOOKING] Error:", err);
+      console.error("[UPDATE BOOKING] Error details:", {
+        message: err.message,
+        status: err.status,
+        data: err.data,
+      });
       alert(err.message || "Failed to update booking");
     } finally {
       setIsUpdating(false);
@@ -542,9 +564,7 @@ export default function BookingsPage() {
               {/* Dates */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-bold text-gray-700 mb-2">
-                    {t("editModal.checkInDate")}
-                  </label>
+                  <label className="block text-sm font-bold text-gray-700 mb-2">{t("editModal.checkInDate")}</label>
                   <input
                     type="date"
                     value={editFormData.check_in_date}
@@ -553,9 +573,7 @@ export default function BookingsPage() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-bold text-gray-700 mb-2">
-                    {t("editModal.checkOutDate")}
-                  </label>
+                  <label className="block text-sm font-bold text-gray-700 mb-2">{t("editModal.checkOutDate")}</label>
                   <input
                     type="date"
                     value={editFormData.check_out_date}
@@ -567,14 +585,14 @@ export default function BookingsPage() {
 
               {/* Number of Guests */}
               <div>
-                <label className="block text-sm font-bold text-gray-700 mb-2">
-                  {t("editModal.numberOfGuests")}
-                </label>
+                <label className="block text-sm font-bold text-gray-700 mb-2">{t("editModal.numberOfGuests")}</label>
                 <input
                   type="number"
                   min="1"
                   value={editFormData.number_of_guests || 1}
-                  onChange={(e) => setEditFormData({ ...editFormData, number_of_guests: parseInt(e.target.value) || 1 })}
+                  onChange={(e) =>
+                    setEditFormData({ ...editFormData, number_of_guests: parseInt(e.target.value) || 1 })
+                  }
                   className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white focus:border-blue-600 focus:ring-2 focus:ring-blue-100 outline-none transition-all"
                 />
               </div>
@@ -582,9 +600,7 @@ export default function BookingsPage() {
               {/* Guest Name */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-bold text-gray-700 mb-2">
-                    {t("editModal.firstName")}
-                  </label>
+                  <label className="block text-sm font-bold text-gray-700 mb-2">{t("editModal.firstName")}</label>
                   <input
                     type="text"
                     value={editFormData.guest_first_name}
@@ -593,9 +609,7 @@ export default function BookingsPage() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-bold text-gray-700 mb-2">
-                    {t("editModal.lastName")}
-                  </label>
+                  <label className="block text-sm font-bold text-gray-700 mb-2">{t("editModal.lastName")}</label>
                   <input
                     type="text"
                     value={editFormData.guest_last_name}
@@ -608,9 +622,7 @@ export default function BookingsPage() {
               {/* Contact Info */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-bold text-gray-700 mb-2">
-                    {t("editModal.email")}
-                  </label>
+                  <label className="block text-sm font-bold text-gray-700 mb-2">{t("editModal.email")}</label>
                   <input
                     type="email"
                     value={editFormData.contact_email}
@@ -619,9 +631,7 @@ export default function BookingsPage() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-bold text-gray-700 mb-2">
-                    {t("editModal.phone")}
-                  </label>
+                  <label className="block text-sm font-bold text-gray-700 mb-2">{t("editModal.phone")}</label>
                   <input
                     type="tel"
                     value={editFormData.contact_phone}
@@ -633,9 +643,7 @@ export default function BookingsPage() {
 
               {/* Address */}
               <div>
-                <label className="block text-sm font-bold text-gray-700 mb-2">
-                  {t("editModal.address")}
-                </label>
+                <label className="block text-sm font-bold text-gray-700 mb-2">{t("editModal.address")}</label>
                 <input
                   type="text"
                   value={editFormData.guest_address}
@@ -647,9 +655,7 @@ export default function BookingsPage() {
               {/* City, Country, Zip */}
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div>
-                  <label className="block text-sm font-bold text-gray-700 mb-2">
-                    {t("editModal.city")}
-                  </label>
+                  <label className="block text-sm font-bold text-gray-700 mb-2">{t("editModal.city")}</label>
                   <input
                     type="text"
                     value={editFormData.guest_city}
@@ -658,9 +664,7 @@ export default function BookingsPage() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-bold text-gray-700 mb-2">
-                    {t("editModal.country")}
-                  </label>
+                  <label className="block text-sm font-bold text-gray-700 mb-2">{t("editModal.country")}</label>
                   <input
                     type="text"
                     value={editFormData.guest_country}
@@ -669,9 +673,7 @@ export default function BookingsPage() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-bold text-gray-700 mb-2">
-                    {t("editModal.zipCode")}
-                  </label>
+                  <label className="block text-sm font-bold text-gray-700 mb-2">{t("editModal.zipCode")}</label>
                   <input
                     type="text"
                     value={editFormData.guest_zip_code}
