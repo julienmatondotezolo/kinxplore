@@ -2,6 +2,7 @@
 
 import {
   ArrowLeft,
+  Calendar,
   Car,
   CheckCircle2,
   ChevronRight,
@@ -35,7 +36,48 @@ export default function DestinationDetailPage() {
   const t = useTranslations("DestinationDetail");
   // const [activeTab, setActiveTab] = useState("overview"); // Unused for now
 
+  // Booking state
+  const [checkInDate, setCheckInDate] = useState<Date>(() => {
+    const date = new Date();
+    date.setDate(date.getDate() + 1); // Tomorrow
+    return date;
+  });
+  const [checkOutDate, setCheckOutDate] = useState<Date>(() => {
+    const date = new Date();
+    date.setDate(date.getDate() + 4); // 3 nights
+    return date;
+  });
+
   const { data: destination, isLoading, error } = useDestination(id);
+
+  const nights = Math.ceil((checkOutDate.getTime() - checkInDate.getTime()) / (1000 * 60 * 60 * 24));
+
+  const formatDateForInput = (date: Date) => {
+    return date.toISOString().split("T")[0];
+  };
+
+  const handleCheckInChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newDate = new Date(e.target.value);
+    setCheckInDate(newDate);
+    // Ensure check-out is at least 1 day after check-in
+    if (newDate >= checkOutDate) {
+      const newCheckOut = new Date(newDate);
+      newCheckOut.setDate(newCheckOut.getDate() + 1);
+      setCheckOutDate(newCheckOut);
+    }
+  };
+
+  const handleCheckOutChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newDate = new Date(e.target.value);
+    // Only update if it's after check-in
+    if (newDate > checkInDate) {
+      setCheckOutDate(newDate);
+    }
+  };
+
+  const handleBookNow = () => {
+    router.push(`/destinations/${id}/booking`);
+  };
 
   if (isLoading) {
     return (
@@ -287,28 +329,48 @@ export default function DestinationDetailPage() {
                 </div>
 
                 <div className="flex border border-gray-100 rounded-[24px] overflow-hidden bg-gray-50/50">
-                  <button className="flex-1 px-6 py-5 flex flex-col items-start gap-1.5 hover:bg-white transition-colors border-r border-gray-100">
-                    <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">
+                  <div className="flex-1 px-6 py-5 flex flex-col items-start gap-1.5 hover:bg-white hover:shadow-sm transition-all border-r border-gray-100 relative group cursor-pointer">
+                    <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest flex items-center gap-1.5">
+                      <Calendar size={12} />
                       {t("checkIn")}
-                    </span>
-                    <span className="text-[15px] font-black">Aug 2, 2024</span>
-                  </button>
-                  <button className="flex-1 px-6 py-5 flex flex-col items-start gap-1.5 hover:bg-white transition-colors">
-                    <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">
+                    </label>
+                    <input
+                      type="date"
+                      value={formatDateForInput(checkInDate)}
+                      onChange={handleCheckInChange}
+                      min={formatDateForInput(new Date())}
+                      className="text-[15px] font-black bg-transparent border-none outline-none cursor-pointer w-full appearance-none hover:text-blue-600 transition-colors [&::-webkit-calendar-picker-indicator]:cursor-pointer [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:inset-0 [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:h-full"
+                    />
+                    <div className="absolute inset-0 flex items-center justify-end pr-6 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity">
+                      <Calendar size={16} className="text-blue-600" />
+                    </div>
+                  </div>
+                  <div className="flex-1 px-6 py-5 flex flex-col items-start gap-1.5 hover:bg-white hover:shadow-sm transition-all relative group cursor-pointer">
+                    <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest flex items-center gap-1.5">
+                      <Calendar size={12} />
                       {t("checkOut")}
-                    </span>
-                    <span className="text-[15px] font-black">Aug 5, 2024</span>
-                  </button>
+                    </label>
+                    <input
+                      type="date"
+                      value={formatDateForInput(checkOutDate)}
+                      onChange={handleCheckOutChange}
+                      min={formatDateForInput(new Date(checkInDate.getTime() + 86400000))}
+                      className="text-[15px] font-black bg-transparent border-none outline-none cursor-pointer w-full appearance-none hover:text-blue-600 transition-colors [&::-webkit-calendar-picker-indicator]:cursor-pointer [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:inset-0 [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:h-full"
+                    />
+                    <div className="absolute inset-0 flex items-center justify-end pr-6 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity">
+                      <Calendar size={16} className="text-blue-600" />
+                    </div>
+                  </div>
                 </div>
 
                 <div className="space-y-5">
                   <div className="flex items-center justify-between text-gray-500 text-[15px] font-medium">
                     <div className="flex items-center gap-2 underline decoration-gray-200 decoration-dotted underline-offset-4">
                       <span>
-                        ${destination.price.toFixed(2)} x {t("nights", { count: 3 })}
+                        ${destination.price.toFixed(2)} x {nights} {nights === 1 ? "night" : "nights"}
                       </span>
                     </div>
-                    <span>${(destination.price * 3).toFixed(2)}</span>
+                    <span>${(destination.price * nights).toFixed(2)}</span>
                   </div>
                   <div className="flex items-center justify-between text-gray-500 text-[15px] font-medium">
                     <span className="underline decoration-gray-200 decoration-dotted underline-offset-4">
@@ -318,12 +380,15 @@ export default function DestinationDetailPage() {
                   </div>
                   <div className="pt-8 border-t border-gray-100 flex items-center justify-between">
                     <span className="text-lg font-black text-gray-900">{t("totalPrice")}</span>
-                    <span className="text-3xl font-black text-blue-600">${(destination.price * 3).toFixed(2)}</span>
+                    <span className="text-3xl font-black text-blue-600">${(destination.price * nights).toFixed(2)}</span>
                   </div>
                 </div>
 
                 <div className="space-y-4">
-                  <button className="w-full bg-blue-600 hover:bg-blue-700 text-white py-6 rounded-[24px] font-black text-lg shadow-xl shadow-blue-500/25 active:scale-95 transition-all">
+                  <button
+                    onClick={handleBookNow}
+                    className="w-full bg-blue-600 hover:bg-blue-700 text-white py-6 rounded-[24px] font-black text-lg shadow-xl shadow-blue-500/25 active:scale-95 transition-all"
+                  >
                     {t("bookNow")}
                   </button>
                   <button className="w-full bg-white hover:bg-gray-50 text-gray-900 py-6 rounded-[24px] font-bold text-[15px] border border-gray-100 active:scale-95 transition-all">
