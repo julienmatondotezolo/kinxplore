@@ -18,12 +18,15 @@ import React, { useEffect, useState } from "react";
 
 import { Footer } from "@/components/Footer";
 import { Navigation } from "@/components/Navigation";
-import { bookingsApi, Booking, BookingStats } from "@/lib/api";
+import { useAuth } from "@/hooks/useAuth";
+import { Booking, bookingsApi, BookingStats } from "@/lib/api";
+import { supabase } from "@/lib/supabase";
 import { Link, useRouter } from "@/navigation";
 
 export default function BookingsPage() {
   const t = useTranslations("Bookings");
   const router = useRouter();
+  const { user, loading: authLoading } = useAuth();
 
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [stats, setStats] = useState<BookingStats | null>(null);
@@ -34,21 +37,44 @@ export default function BookingsPage() {
   const [showCancelModal, setShowCancelModal] = useState(false);
   const [cancelReason, setCancelReason] = useState("");
   const [isCancelling, setIsCancelling] = useState(false);
+  const [hasCheckedAuth, setHasCheckedAuth] = useState(false);
 
+  // Check authentication once
   useEffect(() => {
-    loadBookings();
-  }, []);
+    if (!authLoading && !hasCheckedAuth) {
+      setHasCheckedAuth(true);
+      if (!user) {
+        router.push(`/login?returnUrl=/bookings`);
+      } else {
+        loadBookings();
+      }
+    }
+  }, [user, authLoading, hasCheckedAuth, router]);
 
   const loadBookings = async () => {
     try {
       setIsLoading(true);
       setError(null);
 
-      // Get token from localStorage
-      const token = localStorage.getItem("access_token");
+      // Get token from Supabase session
+      const {
+        data: { session },
+        error: sessionError,
+      } = await supabase.auth.getSession();
+
+      if (sessionError || !session) {
+        console.error("Session error:", sessionError);
+        setError("Authentication session not found. Please login again.");
+        setIsLoading(false);
+        return;
+      }
+
+      const token = session.access_token;
+
       if (!token) {
-        // Redirect to login with return URL
-        router.push(`/login?returnUrl=/bookings`);
+        console.error("No access token in session");
+        setError("No authentication token found. Please login again.");
+        setIsLoading(false);
         return;
       }
 
@@ -62,8 +88,10 @@ export default function BookingsPage() {
     } catch (err: any) {
       console.error("Error loading bookings:", err);
       setError(err.message || "Failed to load bookings");
+
+      // Don't redirect on error, just show the error
       if (err.status === 401) {
-        router.push(`/login?returnUrl=/bookings`);
+        setError("Your session has expired. Please logout and login again.");
       }
     } finally {
       setIsLoading(false);
@@ -75,9 +103,13 @@ export default function BookingsPage() {
 
     try {
       setIsCancelling(true);
-      const token = localStorage.getItem("access_token");
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+      const token = session?.access_token;
+
       if (!token) {
-        router.push(`/login?returnUrl=/bookings`);
+        alert("Authentication session not found. Please refresh the page and try again.");
         return;
       }
 
@@ -185,9 +217,7 @@ export default function BookingsPage() {
                 <p className="text-3xl font-black text-green-700">{stats.confirmed}</p>
               </div>
               <div className="bg-blue-50 rounded-2xl p-6 border border-blue-100">
-                <p className="text-xs font-bold text-blue-600 uppercase tracking-widest mb-2">
-                  {t("stats.completed")}
-                </p>
+                <p className="text-xs font-bold text-blue-600 uppercase tracking-widest mb-2">{t("stats.completed")}</p>
                 <p className="text-3xl font-black text-blue-700">{stats.completed}</p>
               </div>
               <div className="bg-purple-50 rounded-2xl p-6 border border-purple-100">
@@ -283,8 +313,7 @@ export default function BookingsPage() {
                     <div className="md:w-64 h-48 md:h-auto relative overflow-hidden">
                       <img
                         src={
-                          booking.destination?.image ||
-                          `https://picsum.photos/400/300?random=${booking.destination_id}`
+                          booking.destination?.image || `https://picsum.photos/400/300?random=${booking.destination_id}`
                         }
                         alt={booking.destination?.name || "Destination"}
                         className="w-full h-full object-cover"
