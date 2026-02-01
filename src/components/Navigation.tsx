@@ -73,6 +73,12 @@ export const Navigation: React.FC = () => {
       return;
     }
 
+    // Handle destinations navigation to dedicated page
+    if (id === "destinations") {
+      router.push("/destinations");
+      return;
+    }
+
     // If not on home page, navigate home first
     if (pathname !== "/") {
       router.push("/");
