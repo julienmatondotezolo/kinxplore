@@ -38,6 +38,11 @@ export default function BookingPage() {
     return date;
   });
 
+  // Check if destination has Hotel category
+  const hasHotelCategory = destination?.categories?.some(
+    (cat) => cat.parent.name.toLowerCase() === "hotel"
+  ) ?? false;
+
   const [guestInfo, setGuestInfo] = useState<BookingGuestInfo>({
     firstName: "",
     lastName: "",
@@ -71,10 +76,13 @@ export default function BookingPage() {
   }
 
   const pricePerNight = destination.price;
-  const nights = Math.ceil((checkOut.getTime() - checkIn.getTime()) / (1000 * 60 * 60 * 24));
+  const nights = hasHotelCategory 
+    ? Math.ceil((checkOut.getTime() - checkIn.getTime()) / (1000 * 60 * 60 * 24))
+    : 1; // For non-hotel categories, default to 1 night/unit
   const totalPrice = pricePerNight * nights;
-  const serviceFee = 0;
+  const serviceFee = pricePerNight > 0 ? 100 : 0; // Service fee is $100 if there's a price
   const finalPrice = totalPrice + serviceFee;
+  const showPrice = pricePerNight > 0;
 
   const formatDateForInput = (date: Date) => date.toISOString().split("T")[0];
 
@@ -280,11 +288,11 @@ export default function BookingPage() {
                 {/* Dates Selection */}
                 <div className="bg-white rounded-xl p-5 sm:p-6 shadow-sm border border-gray-100">
                   <h3 className="text-sm sm:text-base font-bold text-gray-900 mb-4">{t("selectYourDates")}</h3>
-                  <div className="flex flex-col sm:flex-row border border-gray-200 rounded-lg overflow-hidden bg-white">
-                    <div className="flex-1 px-4 py-3 sm:py-4 flex flex-col items-start gap-1 transition-colors sm:border-r border-gray-200">
+                  <div className={`flex flex-col ${hasHotelCategory ? 'sm:flex-row' : ''} border border-gray-200 rounded-lg overflow-hidden bg-white`}>
+                    <div className={`flex-1 px-4 py-3 sm:py-4 flex flex-col items-start gap-1 transition-colors ${hasHotelCategory ? 'sm:border-r' : ''} border-gray-200`}>
                       <label className="text-[9px] sm:text-[10px] font-bold text-gray-400 uppercase tracking-widest flex items-center gap-1.5">
                         <Calendar size={12} />
-                        {t("checkIn")}
+                        {hasHotelCategory ? t("checkIn") : t("date")}
                       </label>
                       <input
                         type="date"
@@ -294,26 +302,32 @@ export default function BookingPage() {
                         className="text-sm sm:text-[15px] font-bold bg-transparent border-none outline-none cursor-pointer w-full"
                       />
                     </div>
-                    <div className="flex-1 px-4 py-3 sm:py-4 flex flex-col items-start gap-1 transition-colors border-t sm:border-t-0 border-gray-200">
-                      <label className="text-[9px] sm:text-[10px] font-bold text-gray-400 uppercase tracking-widest flex items-center gap-1.5">
-                        <Calendar size={12} />
-                        {t("checkOut")}
-                      </label>
-                      <input
-                        type="date"
-                        value={formatDateForInput(checkOut)}
-                        onChange={handleCheckOutChange}
-                        min={formatDateForInput(new Date(checkIn.getTime() + 86400000))}
-                        className="text-sm sm:text-[15px] font-bold bg-transparent border-none outline-none cursor-pointer w-full"
-                      />
+                    {hasHotelCategory && (
+                      <div className="flex-1 px-4 py-3 sm:py-4 flex flex-col items-start gap-1 transition-colors border-t sm:border-t-0 border-gray-200">
+                        <label className="text-[9px] sm:text-[10px] font-bold text-gray-400 uppercase tracking-widest flex items-center gap-1.5">
+                          <Calendar size={12} />
+                          {t("checkOut")}
+                        </label>
+                        <input
+                          type="date"
+                          value={formatDateForInput(checkOut)}
+                          onChange={handleCheckOutChange}
+                          min={formatDateForInput(new Date(checkIn.getTime() + 86400000))}
+                          className="text-sm sm:text-[15px] font-bold bg-transparent border-none outline-none cursor-pointer w-full"
+                        />
+                      </div>
+                    )}
+                  </div>
+                  {showPrice && (
+                    <div className="flex items-center justify-between text-xs sm:text-sm text-gray-600 px-2 mt-3">
+                      <span className="font-medium">
+                        {hasHotelCategory ? t(nights === 1 ? "night" : "nights", { count: nights }) : t("booking")}
+                      </span>
+                      <span className="font-bold text-blue-600">
+                        {t("total")}: ${finalPrice.toFixed(2)}
+                      </span>
                     </div>
-                  </div>
-                  <div className="flex items-center justify-between text-xs sm:text-sm text-gray-600 px-2 mt-3">
-                    <span className="font-medium">{t(nights === 1 ? "night" : "nights", { count: nights })}</span>
-                    <span className="font-bold text-blue-600">
-                      {t("total")}: ${finalPrice.toFixed(2)}
-                    </span>
-                  </div>
+                  )}
                 </div>
 
                 {/* Personal Information */}
@@ -484,11 +498,18 @@ export default function BookingPage() {
                         <div className="flex items-center gap-2">
                           <Calendar size={14} />
                           <span>
-                            {checkIn.toLocaleDateString()} - {checkOut.toLocaleDateString()}
+                            {hasHotelCategory 
+                              ? `${checkIn.toLocaleDateString()} - ${checkOut.toLocaleDateString()}`
+                              : checkIn.toLocaleDateString()
+                            }
                           </span>
                         </div>
-                        <span className="hidden sm:inline">•</span>
-                        <span>{t(nights === 1 ? "night" : "nights", { count: nights })}</span>
+                        {hasHotelCategory && (
+                          <>
+                            <span className="hidden sm:inline">•</span>
+                            <span>{t(nights === 1 ? "night" : "nights", { count: nights })}</span>
+                          </>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -536,26 +557,31 @@ export default function BookingPage() {
                 </div>
 
                 {/* Price Breakdown */}
-                <div className="bg-white rounded-xl p-5 sm:p-6 shadow-sm border border-gray-100">
-                  <h3 className="text-sm sm:text-base font-bold text-gray-900 mb-4">{t("priceBreakdown")}</h3>
-                  <div className="space-y-2.5">
-                    <div className="flex justify-between text-xs sm:text-sm text-gray-600">
-                      <span>
-                        ${pricePerNight.toFixed(2)} x {nights}{" "}
-                        {nights === 1 ? t("night", { count: nights }) : t("nights", { count: nights })}
-                      </span>
-                      <span className="font-semibold">${totalPrice.toFixed(2)}</span>
-                    </div>
-                    <div className="flex justify-between text-xs sm:text-sm text-gray-600">
-                      <span>{t("serviceFee")}</span>
-                      <span className="font-semibold">${serviceFee.toFixed(2)}</span>
-                    </div>
-                    <div className="pt-2.5 border-t border-gray-200 flex justify-between items-center">
-                      <span className="text-sm sm:text-base font-bold text-gray-900">{t("total")}</span>
-                      <span className="text-lg sm:text-xl font-bold text-blue-600">${finalPrice.toFixed(2)}</span>
+                {showPrice && (
+                  <div className="bg-white rounded-xl p-5 sm:p-6 shadow-sm border border-gray-100">
+                    <h3 className="text-sm sm:text-base font-bold text-gray-900 mb-4">{t("priceBreakdown")}</h3>
+                    <div className="space-y-2.5">
+                      <div className="flex justify-between text-xs sm:text-sm text-gray-600">
+                        <span>
+                          ${pricePerNight.toFixed(2)} x {nights}{" "}
+                          {hasHotelCategory 
+                            ? (nights === 1 ? t("night", { count: nights }) : t("nights", { count: nights }))
+                            : t("unit")
+                          }
+                        </span>
+                        <span className="font-semibold">${totalPrice.toFixed(2)}</span>
+                      </div>
+                      <div className="flex justify-between text-xs sm:text-sm text-gray-600">
+                        <span>{t("serviceFee")}</span>
+                        <span className="font-semibold">${serviceFee.toFixed(2)}</span>
+                      </div>
+                      <div className="pt-2.5 border-t border-gray-200 flex justify-between items-center">
+                        <span className="text-sm sm:text-base font-bold text-gray-900">{t("total")}</span>
+                        <span className="text-lg sm:text-xl font-bold text-blue-600">${finalPrice.toFixed(2)}</span>
+                      </div>
                     </div>
                   </div>
-                </div>
+                )}
               </motion.div>
             )}
 
@@ -591,75 +617,86 @@ export default function BookingPage() {
                             month: "short",
                             day: "numeric",
                             year: "numeric",
-                          })}{" "}
-                          -{" "}
-                          {checkOut.toLocaleDateString("en-US", {
-                            month: "short",
-                            day: "numeric",
-                            year: "numeric",
                           })}
+                          {hasHotelCategory && (
+                            <>
+                              {" "}-{" "}
+                              {checkOut.toLocaleDateString("en-US", {
+                                month: "short",
+                                day: "numeric",
+                                year: "numeric",
+                              })}
+                            </>
+                          )}
                         </span>
                       </div>
                     </div>
                   </div>
 
                   {/* Price Breakdown Card */}
-                  <div className="p-4 sm:p-5 bg-white rounded-xl border border-gray-200 text-left space-y-3">
-                    <div className="flex items-center justify-between pb-3 border-b border-gray-100">
-                      <h4 className="text-xs font-bold text-gray-400 uppercase tracking-wider">{t("priceDetails")}</h4>
-                    </div>
-
-                    {/* Dates Display */}
-                    <div className="flex flex-col sm:flex-row border border-gray-100 rounded-lg overflow-hidden bg-white">
-                      <div className="flex-1 px-3 py-2 flex flex-col items-start gap-0.5 sm:border-r border-gray-100">
-                        <span className="text-[9px] sm:text-[10px] font-bold text-gray-400 uppercase tracking-widest">
-                          {t("checkIn")}
-                        </span>
-                        <span className="text-xs sm:text-sm font-bold text-gray-900">
-                          {checkIn.toLocaleDateString("en-US", {
-                            month: "2-digit",
-                            day: "2-digit",
-                            year: "numeric",
-                          })}
-                        </span>
+                  {showPrice && (
+                    <div className="p-4 sm:p-5 bg-white rounded-xl border border-gray-200 text-left space-y-3">
+                      <div className="flex items-center justify-between pb-3 border-b border-gray-100">
+                        <h4 className="text-xs font-bold text-gray-400 uppercase tracking-wider">{t("priceDetails")}</h4>
                       </div>
-                      <div className="flex-1 px-3 py-2 flex flex-col items-start gap-0.5 border-t sm:border-t-0 border-gray-100">
-                        <span className="text-[9px] sm:text-[10px] font-bold text-gray-400 uppercase tracking-widest">
-                          {t("checkOut")}
-                        </span>
-                        <span className="text-xs sm:text-sm font-bold text-gray-900">
-                          {checkOut.toLocaleDateString("en-US", {
-                            month: "2-digit",
-                            day: "2-digit",
-                            year: "numeric",
-                          })}
-                        </span>
-                      </div>
-                    </div>
 
-                    {/* Price Breakdown */}
-                    <div className="space-y-2 pt-1">
-                      <div className="flex items-center justify-between text-gray-500 text-xs sm:text-sm">
-                        <div className="flex items-center gap-2">
-                          <span className="underline decoration-gray-200 decoration-dotted underline-offset-4">
-                            ${pricePerNight.toFixed(2)} x {nights}{" "}
-                            {nights === 1 ? t("night", { count: nights }) : t("nights", { count: nights })}
+                      {/* Dates Display */}
+                      <div className={`flex flex-col ${hasHotelCategory ? 'sm:flex-row' : ''} border border-gray-100 rounded-lg overflow-hidden bg-white`}>
+                        <div className={`flex-1 px-3 py-2 flex flex-col items-start gap-0.5 ${hasHotelCategory ? 'sm:border-r' : ''} border-gray-100`}>
+                          <span className="text-[9px] sm:text-[10px] font-bold text-gray-400 uppercase tracking-widest">
+                            {hasHotelCategory ? t("checkIn") : t("date")}
+                          </span>
+                          <span className="text-xs sm:text-sm font-bold text-gray-900">
+                            {checkIn.toLocaleDateString("en-US", {
+                              month: "2-digit",
+                              day: "2-digit",
+                              year: "numeric",
+                            })}
                           </span>
                         </div>
-                        <span className="font-semibold text-gray-900">${totalPrice.toFixed(2)}</span>
+                        {hasHotelCategory && (
+                          <div className="flex-1 px-3 py-2 flex flex-col items-start gap-0.5 border-t sm:border-t-0 border-gray-100">
+                            <span className="text-[9px] sm:text-[10px] font-bold text-gray-400 uppercase tracking-widest">
+                              {t("checkOut")}
+                            </span>
+                            <span className="text-xs sm:text-sm font-bold text-gray-900">
+                              {checkOut.toLocaleDateString("en-US", {
+                                month: "2-digit",
+                                day: "2-digit",
+                                year: "numeric",
+                              })}
+                            </span>
+                          </div>
+                        )}
                       </div>
-                      <div className="flex items-center justify-between text-gray-500 text-xs sm:text-sm">
-                        <span className="underline decoration-gray-200 decoration-dotted underline-offset-4">
-                          {t("serviceFee")}
-                        </span>
-                        <span className="font-semibold text-gray-900">${serviceFee.toFixed(2)}</span>
-                      </div>
-                      <div className="pt-2 border-t border-gray-200 flex items-center justify-between">
-                        <span className="text-sm font-bold text-gray-900">{t("totalPrice")}</span>
-                        <span className="text-lg sm:text-xl font-bold text-blue-600">${finalPrice.toFixed(2)}</span>
+
+                      {/* Price Breakdown */}
+                      <div className="space-y-2 pt-1">
+                        <div className="flex items-center justify-between text-gray-500 text-xs sm:text-sm">
+                          <div className="flex items-center gap-2">
+                            <span className="underline decoration-gray-200 decoration-dotted underline-offset-4">
+                              ${pricePerNight.toFixed(2)} x {nights}{" "}
+                              {hasHotelCategory 
+                                ? (nights === 1 ? t("night", { count: nights }) : t("nights", { count: nights }))
+                                : t("unit")
+                              }
+                            </span>
+                          </div>
+                          <span className="font-semibold text-gray-900">${totalPrice.toFixed(2)}</span>
+                        </div>
+                        <div className="flex items-center justify-between text-gray-500 text-xs sm:text-sm">
+                          <span className="underline decoration-gray-200 decoration-dotted underline-offset-4">
+                            Frais de Service
+                          </span>
+                          <span className="font-semibold text-gray-900">${serviceFee.toFixed(2)}</span>
+                        </div>
+                        <div className="pt-2 border-t border-gray-200 flex items-center justify-between">
+                          <span className="text-sm font-bold text-gray-900">Prix Total</span>
+                          <span className="text-lg sm:text-xl font-bold text-blue-600">${finalPrice.toFixed(2)}</span>
+                        </div>
                       </div>
                     </div>
-                  </div>
+                  )}
 
                   {/* Guest Information */}
                   <div className="p-4 sm:p-5 bg-gray-50 rounded-xl space-y-2.5 text-left">
