@@ -52,6 +52,7 @@ export interface Destination {
 export interface DestinationWithCategories extends Destination {
   categories: CategoryInfo[];
   facilities?: Facility[];
+  images?: DestinationImage[];
 }
 
 export interface ParentCategoryWithSubcategories extends ParentCategory {
@@ -70,4 +71,42 @@ export interface DestinationFilters {
   minPrice?: number;
   maxPrice?: number;
   location?: string;
+}
+
+// Destination Images
+export interface DestinationImage {
+  id: string;
+  destination_id: string;
+  url: string;
+  sort_order: number;
+  alt_text?: string;
+  created_at: string;
+}
+
+// Trips / Circuits
+export interface Trip {
+  id: string;
+  name: string;
+  subtitle?: string;
+  description?: string;
+  duration: string;
+  included_items: any[];
+  program: any[];
+  price_international: number;
+  price_local: number;
+  region: 'kinshasa' | 'kongo_central';
+  image?: string;
+  status: 'active' | 'inactive';
+  sort_order: number;
+  created_at: string;
+  updated_at: string;
+  destinations?: Array<{
+    id: string;
+    name: string;
+    description?: string;
+    image: string;
+    location: string;
+    price?: number;
+    ratings?: number;
+  }>;
 }

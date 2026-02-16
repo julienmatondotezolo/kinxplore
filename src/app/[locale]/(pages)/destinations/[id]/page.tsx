@@ -189,47 +189,46 @@ export default function DestinationDetailPage() {
           </div>
 
           {/* Image Gallery */}
-          <div className="grid grid-cols-1 md:grid-cols-4 grid-rows-2 gap-4 h-[500px] md:h-[600px] mb-12 rounded-[40px] overflow-hidden shadow-2xl shadow-blue-500/10">
-            <div className="md:col-span-2 md:row-span-2 relative group overflow-hidden">
-              <img
-                src={destination.image || `https://picsum.photos/1200/800?random=${destination.id}1`}
-                alt={destination.name}
-                className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
-              />
-            </div>
-            <div className="hidden md:block relative group overflow-hidden">
-              <img
-                src={`https://picsum.photos/800/800?random=${destination.id}2`}
-                alt="Detail"
-                className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
-              />
-            </div>
-            <div className="hidden md:block relative group overflow-hidden">
-              <img
-                src={`https://picsum.photos/800/800?random=${destination.id}3`}
-                alt="Detail"
-                className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
-              />
-            </div>
-            <div className="hidden md:block relative group overflow-hidden">
-              <img
-                src={`https://picsum.photos/800/800?random=${destination.id}4`}
-                alt="Detail"
-                className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
-              />
-            </div>
-            <div className="hidden md:block relative group overflow-hidden">
-              <img
-                src={`https://picsum.photos/800/800?random=${destination.id}5`}
-                alt="Detail"
-                className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
-              />
-              <button className="absolute bottom-6 right-6 bg-white/95 backdrop-blur-md px-6 py-3 rounded-2xl text-[13px] font-bold shadow-2xl border border-gray-100 flex items-center gap-2 hover:bg-black hover:text-white transition-all z-10">
-                <MoreHorizontal size={18} />
-                {t("showAllPhotos")}
-              </button>
-            </div>
-          </div>
+          {(() => {
+            const extraImages = destination.images?.sort((a, b) => a.sort_order - b.sort_order) || [];
+            const galleryImages = [
+              destination.image || `https://picsum.photos/1200/800?random=${destination.id}1`,
+              ...(extraImages.length > 0
+                ? extraImages.slice(0, 4).map((img) => img.url)
+                : [
+                    `https://picsum.photos/800/800?random=${destination.id}2`,
+                    `https://picsum.photos/800/800?random=${destination.id}3`,
+                    `https://picsum.photos/800/800?random=${destination.id}4`,
+                    `https://picsum.photos/800/800?random=${destination.id}5`,
+                  ]),
+            ];
+            return (
+              <div className="grid grid-cols-1 md:grid-cols-4 grid-rows-2 gap-4 h-[500px] md:h-[600px] mb-12 rounded-[40px] overflow-hidden shadow-2xl shadow-blue-500/10">
+                <div className="md:col-span-2 md:row-span-2 relative group overflow-hidden">
+                  <img
+                    src={galleryImages[0]}
+                    alt={destination.name}
+                    className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+                  />
+                </div>
+                {galleryImages.slice(1, 5).map((src, i) => (
+                  <div key={i} className={`hidden md:block relative group overflow-hidden`}>
+                    <img
+                      src={src}
+                      alt={extraImages[i]?.alt_text || "Detail"}
+                      className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+                    />
+                    {i === 3 && (
+                      <button className="absolute bottom-6 right-6 bg-white/95 backdrop-blur-md px-6 py-3 rounded-2xl text-[13px] font-bold shadow-2xl border border-gray-100 flex items-center gap-2 hover:bg-black hover:text-white transition-all z-10">
+                        <MoreHorizontal size={18} />
+                        {t("showAllPhotos")}
+                      </button>
+                    )}
+                  </div>
+                ))}
+              </div>
+            );
+          })()}
 
           {/* Info Bar */}
           <section className="grid grid-cols-2 md:grid-cols-4 gap-6 p-8 bg-gray-50/50 rounded-[40px] border border-gray-100 mb-12">

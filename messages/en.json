@@ -7,7 +7,8 @@
     "contact": "Contact",
     "hello": "Hello!",
     "traveler": "Traveler",
-    "logout": "Logout"
+    "logout": "Logout",
+    "trips": "Our Trips"
   },
   "Hero": {
     "badge": "Discover Kinshasa, DRC",
@@ -78,6 +79,10 @@
     "localSupport": {
       "title": "Local Support",
       "description": "24/7 support from local experts ready to assist you any time during your stay."
+    },
+    "airportService": {
+      "title": "Airport Service",
+      "description": "Reliable airport transfers and assistance for a smooth arrival and departure."
     },
     "exploreNow": "Explore Now"
   },
@@ -356,5 +361,58 @@
       "confirmCancel": "Yes, Cancel",
       "cancelling": "Cancelling..."
     }
+  },
+  "Trips": {
+    "title": "Our Trips",
+    "subtitle": "Discover curated multi-destination tours across Kinshasa and Kongo Central",
+    "regionKinshasa": "Kinshasa",
+    "regionKongoCentral": "Kongo Central",
+    "international": "int.",
+    "local": "local",
+    "duration": "Duration",
+    "region": "Region",
+    "destinations": "destinations",
+    "stops": "Stops",
+    "overview": "Overview",
+    "whatsIncluded": "What's Included",
+    "program": "Program",
+    "destinationsIncluded": "Destinations Included",
+    "priceFrom": "Price from",
+    "perPerson": "per person",
+    "localPrice": "Local price",
+    "bookNow": "Book Now",
+    "backToTrips": "Back to Trips",
+    "notFound": "Trip not found",
+    "errorLoading": "Failed to load trips. Please try again."
+  },
+  "TripBooking": {
+    "bookTrip": "Book Trip",
+    "selectPriceType": "Select Price Type",
+    "international": "International",
+    "local": "Local",
+    "startDate": "Start Date",
+    "guestInfo": "Guest Information",
+    "review": "Review",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "email": "Email",
+    "phone": "Phone",
+    "country": "Country",
+    "city": "City",
+    "address": "Address",
+    "zipCode": "Zip Code",
+    "specialRequests": "Special Requests (Optional)",
+    "continue": "Continue",
+    "back": "Back",
+    "reviewBooking": "Review Your Booking",
+    "priceType": "Price Type",
+    "guest": "Guest",
+    "total": "Total",
+    "confirmBooking": "Confirm Booking",
+    "bookingConfirmed": "Booking Confirmed!",
+    "bookingId": "Booking Reference",
+    "confirmationSent": "A confirmation email has been sent to your email address.",
+    "viewBookings": "View My Bookings",
+    "browseTrips": "Browse More Trips"
   }
 }

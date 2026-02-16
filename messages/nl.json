@@ -2,6 +2,17 @@
   "Index": {
     "welcome": "Welkom"
   },
+  "Navigation": {
+    "home": "Home",
+    "destination": "Bestemming",
+    "services": "Diensten",
+    "faq": "FAQ",
+    "contact": "Contact",
+    "hello": "Hallo!",
+    "traveler": "Reiziger",
+    "logout": "Uitloggen",
+    "trips": "Onze Reizen"
+  },
   "DestinationDetail": {
     "breadcrumbs": {
       "home": "Home",
@@ -171,5 +182,82 @@
       "confirmCancel": "Ja, Annuleren",
       "cancelling": "Annuleren..."
     }
+  },
+  "Services": {
+    "title": "Onze diensten",
+    "tripPlanning": {
+      "title": "Reisplanning",
+      "description": "Gepersonaliseerde reisplannen speciaal ontworpen voor uw reisstijl en behoeften."
+    },
+    "aiItinerary": {
+      "title": "AI Reisplan",
+      "description": "Directe AI-generatie bespaart u uren onderzoek voor uw reis naar Kinshasa."
+    },
+    "safePackages": {
+      "title": "Veilige Pakketten",
+      "description": "Toegang tot premium en geverifieerde lokale ervaringen tegen de beste gegarandeerde prijzen."
+    },
+    "localSupport": {
+      "title": "Lokale Ondersteuning",
+      "description": "24/7 ondersteuning van lokale experts die u op elk moment tijdens uw verblijf kunnen helpen."
+    },
+    "airportService": {
+      "title": "Luchthavenservice",
+      "description": "Betrouwbare luchthaven transfers en assistentie voor een soepele aankomst en vertrek."
+    },
+    "exploreNow": "Nu Ontdekken"
+  },
+  "Trips": {
+    "title": "Onze Reizen",
+    "subtitle": "Ontdek samengestelde multi-bestemmingsreizen door Kinshasa en Kongo Centraal",
+    "regionKinshasa": "Kinshasa",
+    "regionKongoCentral": "Kongo Centraal",
+    "international": "int.",
+    "local": "lokaal",
+    "duration": "Duur",
+    "region": "Regio",
+    "destinations": "bestemmingen",
+    "stops": "Stops",
+    "overview": "Overzicht",
+    "whatsIncluded": "Wat is inbegrepen",
+    "program": "Programma",
+    "destinationsIncluded": "Inbegrepen Bestemmingen",
+    "priceFrom": "Prijs vanaf",
+    "perPerson": "per persoon",
+    "localPrice": "Lokale prijs",
+    "bookNow": "Nu Boeken",
+    "backToTrips": "Terug naar Reizen",
+    "notFound": "Reis niet gevonden",
+    "errorLoading": "Reizen laden mislukt. Probeer het opnieuw."
+  },
+  "TripBooking": {
+    "bookTrip": "Reis Boeken",
+    "selectPriceType": "Selecteer Prijstype",
+    "international": "Internationaal",
+    "local": "Lokaal",
+    "startDate": "Startdatum",
+    "guestInfo": "Gastinformatie",
+    "review": "Beoordeling",
+    "firstName": "Voornaam",
+    "lastName": "Achternaam",
+    "email": "E-mail",
+    "phone": "Telefoon",
+    "country": "Land",
+    "city": "Stad",
+    "address": "Adres",
+    "zipCode": "Postcode",
+    "specialRequests": "Speciale Verzoeken (Optioneel)",
+    "continue": "Doorgaan",
+    "back": "Terug",
+    "reviewBooking": "Bekijk Uw Boeking",
+    "priceType": "Prijstype",
+    "guest": "Gast",
+    "total": "Totaal",
+    "confirmBooking": "Boeking Bevestigen",
+    "bookingConfirmed": "Boeking Bevestigd!",
+    "bookingId": "Boekingsreferentie",
+    "confirmationSent": "Er is een bevestigingsmail verzonden naar uw e-mailadres.",
+    "viewBookings": "Bekijk Mijn Boekingen",
+    "browseTrips": "Meer Reizen Bekijken"
   }
 }

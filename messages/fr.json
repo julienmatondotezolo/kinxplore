@@ -7,7 +7,8 @@
     "contact": "Contact",
     "hello": "Bonjour !",
     "traveler": "Voyageur",
-    "logout": "Déconnexion"
+    "logout": "Déconnexion",
+    "trips": "Nos Circuits"
   },
   "Hero": {
     "badge": "Découvrez Kinshasa, RDC",
@@ -78,6 +79,10 @@
     "localSupport": {
       "title": "Support Local",
       "description": "Support 24/7 d'experts locaux prêts à vous assister à tout moment pendant votre séjour."
+    },
+    "airportService": {
+      "title": "Service Aéroport",
+      "description": "Transferts aéroport fiables et assistance pour une arrivée et un départ en toute sérénité."
     },
     "exploreNow": "Explorer Maintenant"
   },
@@ -356,5 +361,58 @@
       "confirmCancel": "Oui, Annuler",
       "cancelling": "Annulation..."
     }
+  },
+  "Trips": {
+    "title": "Nos Circuits",
+    "subtitle": "Découvrez des circuits multi-destinations à travers Kinshasa et le Kongo Central",
+    "regionKinshasa": "Kinshasa",
+    "regionKongoCentral": "Kongo Central",
+    "international": "int.",
+    "local": "local",
+    "duration": "Durée",
+    "region": "Région",
+    "destinations": "destinations",
+    "stops": "Étapes",
+    "overview": "Aperçu",
+    "whatsIncluded": "Ce qui est inclus",
+    "program": "Programme",
+    "destinationsIncluded": "Destinations Incluses",
+    "priceFrom": "Prix à partir de",
+    "perPerson": "par personne",
+    "localPrice": "Prix local",
+    "bookNow": "Réserver Maintenant",
+    "backToTrips": "Retour aux Circuits",
+    "notFound": "Circuit non trouvé",
+    "errorLoading": "Échec du chargement des circuits. Veuillez réessayer."
+  },
+  "TripBooking": {
+    "bookTrip": "Réserver le Circuit",
+    "selectPriceType": "Sélectionner le Type de Prix",
+    "international": "International",
+    "local": "Local",
+    "startDate": "Date de Début",
+    "guestInfo": "Informations Client",
+    "review": "Vérification",
+    "firstName": "Prénom",
+    "lastName": "Nom",
+    "email": "E-mail",
+    "phone": "Téléphone",
+    "country": "Pays",
+    "city": "Ville",
+    "address": "Adresse",
+    "zipCode": "Code Postal",
+    "specialRequests": "Demandes Spéciales (Optionnel)",
+    "continue": "Continuer",
+    "back": "Retour",
+    "reviewBooking": "Vérifiez Votre Réservation",
+    "priceType": "Type de Prix",
+    "guest": "Client",
+    "total": "Total",
+    "confirmBooking": "Confirmer la Réservation",
+    "bookingConfirmed": "Réservation Confirmée !",
+    "bookingId": "Référence de Réservation",
+    "confirmationSent": "Un e-mail de confirmation a été envoyé à votre adresse e-mail.",
+    "viewBookings": "Voir Mes Réservations",
+    "browseTrips": "Découvrir Plus de Circuits"
   }
 }

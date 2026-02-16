@@ -93,6 +93,12 @@ export const Navigation: React.FC = () => {
       return;
     }
 
+    // Handle trips navigation to dedicated page
+    if (id === "trips") {
+      router.push("/trips");
+      return;
+    }
+
     // If not on home page, navigate home first
     if (pathname !== "/") {
       router.push("/");
@@ -117,6 +123,7 @@ export const Navigation: React.FC = () => {
   const navLinks = [
     { id: "home", label: t("home"), icon: Home },
     { id: "destinations", label: t("destination"), icon: MapPin },
+    { id: "trips", label: t("trips"), icon: Plane },
     { id: "services", label: t("services"), icon: Briefcase },
     { id: "faq", label: t("faq"), icon: HelpCircle },
     { id: "contact", label: t("contact"), icon: Mail },

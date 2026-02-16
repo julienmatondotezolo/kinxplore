@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { ArrowRight, Calendar, Headphones, ShieldCheck, Zap } from "lucide-react";
+import { ArrowRight, Calendar, Headphones, Plane, ShieldCheck, Zap } from "lucide-react";
 import { useTranslations } from "next-intl";
 import React from "react";
 
@@ -34,6 +34,13 @@ const useServices = () => {
       desc: t("localSupport.description"),
       bgColor: "bg-[#FFF4E6]",
       iconBg: "bg-[#FFD8A8]",
+    },
+    {
+      icon: Plane,
+      title: t("airportService.title"),
+      desc: t("airportService.description"),
+      bgColor: "bg-[#E8F4FD]",
+      iconBg: "bg-[#90CAF9]",
     },
   ];
 };
@@ -84,7 +91,7 @@ export const OurServices: React.FC = () => {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-100px" }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 md:gap-6"
         >
           {services.map((svc, i) => (
             <motion.div

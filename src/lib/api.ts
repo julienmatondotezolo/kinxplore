@@ -2,7 +2,7 @@
  * API Client for Kinxplore Backend
  */
 
-import { DestinationWithCategories, ParentCategoryWithSubcategories } from "@/types/api.types";
+import { DestinationWithCategories, ParentCategoryWithSubcategories, Trip } from "@/types/api.types";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:2431";
 
@@ -178,6 +178,12 @@ export const bookingsApi = {
       },
       body: JSON.stringify({ reason }),
     }),
+};
+
+// Trips API
+export const tripsApi = {
+  getAll: () => fetchApi<Trip[]>("/trips"),
+  getById: (id: string) => fetchApi<Trip>(`/trips/${id}`),
 };
 
 export { ApiError };
