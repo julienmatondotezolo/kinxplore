@@ -109,10 +109,19 @@ export const useDestinationStore = create<DestinationStore>()(
         getFilteredDestinations: () => {
           const { destinations, activeCategory, searchQuery, priceRange, selectedRating, selectedAmenities } = get();
 
+          // Leisure is a virtual category grouping multiple parent categories
+          const leisureCategories = ["bar", "café", "lounge", "parc", "nature", "musée", "centre culturel"];
+
           let filtered = [...destinations];
 
           // Filter by category
-          if (activeCategory !== "all") {
+          if (activeCategory === "loisirs") {
+            filtered = filtered.filter((dest) =>
+              dest.categories.some((cat) =>
+                leisureCategories.includes(cat.parent.name.toLowerCase()),
+              ),
+            );
+          } else if (activeCategory !== "all") {
             filtered = filtered.filter((dest) =>
               dest.categories.some((cat) => cat.parent.name.toLowerCase() === activeCategory.toLowerCase()),
             );

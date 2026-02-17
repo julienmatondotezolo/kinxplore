@@ -88,10 +88,8 @@ export default function DestinationsPage() {
 
   const router = useRouter();
 
-  // Reset all filters when the page first loads
-  useEffect(() => {
-    resetFilters();
-  }, [resetFilters]);
+  // Note: We no longer reset filters on mount because the navbar
+  // pre-sets the category filter before navigating here.
 
   // Reset to grid view when hiding map
   const handleToggleMap = () => {

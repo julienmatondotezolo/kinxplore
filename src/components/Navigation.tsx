@@ -23,6 +23,7 @@ import React, { useEffect, useState } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import { useSavedTripsModal } from "@/hooks/useSavedTripsModal";
 import { usePathname, useRouter } from "@/navigation";
+import { useDestinationStore } from "@/store/useDestinationStore";
 
 export const Navigation: React.FC = () => {
   const t = useTranslations("Navigation");
@@ -34,6 +35,7 @@ export const Navigation: React.FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [showUserDropdown, setShowUserDropdown] = useState(false);
   const { openModal: openTripsModal } = useSavedTripsModal();
+  const { activeCategory: storeCategory, setActiveCategory, resetFilters } = useDestinationStore();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -67,16 +69,23 @@ export const Navigation: React.FC = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [pathname]);
 
-  // Set active section based on pathname (derived from state)
-  const pathnameToSection: Record<string, string> = {
-    "/trips": "trips",
-    "/restaurants": "restaurants",
-    "/loisirs": "loisirs",
-    "/hotels": "hotels",
-    "/events": "events",
-    "/destinations": "destinations",
+  // Map store category back to nav tab id
+  const categoryToNavId: Record<string, string> = {
+    restaurant: "restaurants",
+    hotel: "hotels",
+    loisirs: "loisirs",
   };
-  const derivedSection = pathnameToSection[pathname] || "home";
+
+  // Set active section based on pathname (derived from state)
+  const getDerivedSection = () => {
+    if (pathname === "/trips") return "trips";
+    if (pathname === "/events") return "events";
+    if (pathname === "/destinations") {
+      return categoryToNavId[storeCategory] || "destinations";
+    }
+    return "home";
+  };
+  const derivedSection = getDerivedSection();
 
   useEffect(() => {
     if (derivedSection !== activeSection) {
@@ -84,13 +93,11 @@ export const Navigation: React.FC = () => {
     }
   }, [derivedSection, activeSection]);
 
-  // Pages that have their own dedicated routes
-  const pageRoutes: Record<string, string> = {
-    trips: "/trips",
-    restaurants: "/restaurants",
-    loisirs: "/loisirs",
-    hotels: "/hotels",
-    events: "/events",
+  // Category filters that navigate to /destinations with a pre-set category
+  const categoryFilters: Record<string, string> = {
+    restaurants: "restaurant",
+    loisirs: "loisirs",
+    hotels: "hotel",
   };
 
   const scrollToSection = (e: React.MouseEvent<HTMLAnchorElement | HTMLDivElement>, id: string) => {
@@ -106,13 +113,26 @@ export const Navigation: React.FC = () => {
       return;
     }
 
-    // Handle navigation to dedicated pages
-    if (pageRoutes[id]) {
-      router.push(pageRoutes[id]);
+    // Handle trips navigation to dedicated page
+    if (id === "trips") {
+      router.push("/trips");
       return;
     }
 
-    // If not on home page, navigate home first
+    // Handle events navigation to dedicated page
+    if (id === "events") {
+      router.push("/events");
+      return;
+    }
+
+    // Handle category-based navigation to destinations page
+    if (categoryFilters[id]) {
+      setActiveCategory(categoryFilters[id]);
+      router.push("/destinations");
+      return;
+    }
+
+    // If not on home page, navigate home first (for services scroll)
     if (pathname !== "/") {
       router.push("/");
       return;
