@@ -21,6 +21,7 @@ import { useTranslations } from "next-intl";
 import React, { useEffect, useState } from "react";
 
 import { useAuth } from "@/hooks/useAuth";
+import { useSavedTripsModal } from "@/hooks/useSavedTripsModal";
 import { usePathname, useRouter } from "@/navigation";
 
 export const Navigation: React.FC = () => {
@@ -32,6 +33,7 @@ export const Navigation: React.FC = () => {
   const [activeSection, setActiveSection] = useState("home");
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [showUserDropdown, setShowUserDropdown] = useState(false);
+  const { openModal: openTripsModal } = useSavedTripsModal();
 
   useEffect(() => {
     const handleScroll = () => {
