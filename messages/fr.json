@@ -8,7 +8,12 @@
     "hello": "Bonjour !",
     "traveler": "Voyageur",
     "logout": "Déconnexion",
-    "trips": "Nos Circuits"
+    "trips": "Nos Circuits",
+    "circuit": "Circuit",
+    "restaurant": "Restaurant",
+    "loisirs": "Loisirs",
+    "hotel": "Hôtel",
+    "events": "Événements"
   },
   "Hero": {
     "badge": "Découvrez Kinshasa, RDC",
@@ -361,6 +366,36 @@
       "confirmCancel": "Oui, Annuler",
       "cancelling": "Annulation..."
     }
+  },
+  "Restaurants": {
+    "title": "Restaurants à Kinshasa",
+    "subtitle": "Découvrez les meilleurs restaurants de Kinshasa",
+    "loading": "Chargement...",
+    "noResults": "Aucun restaurant trouvé",
+    "noResultsDesc": "Nous n'avons trouvé aucun restaurant pour le moment.",
+    "totalBeforeTaxes": "total avant taxes"
+  },
+  "Hotels": {
+    "title": "Hôtels à Kinshasa",
+    "subtitle": "Trouvez les meilleurs hôtels pour votre séjour à Kinshasa",
+    "loading": "Chargement...",
+    "noResults": "Aucun hôtel trouvé",
+    "noResultsDesc": "Nous n'avons trouvé aucun hôtel pour le moment.",
+    "totalBeforeTaxes": "total avant taxes"
+  },
+  "Loisirs": {
+    "title": "Loisirs à Kinshasa",
+    "subtitle": "Explorez les activités de loisirs et divertissements à Kinshasa",
+    "loading": "Chargement...",
+    "noResults": "Aucun loisir trouvé",
+    "noResultsDesc": "Nous n'avons trouvé aucune activité de loisir pour le moment.",
+    "totalBeforeTaxes": "total avant taxes"
+  },
+  "Events": {
+    "title": "Événements à Kinshasa",
+    "subtitle": "Découvrez les événements à venir à Kinshasa",
+    "comingSoon": "Bientôt disponible",
+    "comingSoonDesc": "Cette section est en cours de préparation. Revenez bientôt pour découvrir les événements à Kinshasa !"
   },
   "Trips": {
     "title": "Nos Circuits",

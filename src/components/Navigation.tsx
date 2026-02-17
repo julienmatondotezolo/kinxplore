@@ -4,17 +4,17 @@
 import { AnimatePresence, motion } from "framer-motion";
 import {
   Briefcase,
-  HelpCircle,
-  Home,
+  CalendarDays,
+  Gamepad2,
+  Hotel,
   LogIn,
   LogOut,
-  Mail,
-  MapPin,
   Menu,
   Plane,
   Settings,
   ShoppingBag,
   UserPlus,
+  UtensilsCrossed,
   X,
 } from "lucide-react";
 import { useTranslations } from "next-intl";
@@ -66,13 +66,30 @@ export const Navigation: React.FC = () => {
   }, [pathname]);
 
   // Set active section based on pathname (derived from state)
-  const derivedSection = pathname === "/destinations" ? "destinations" : pathname === "/" ? "home" : "home";
+  const pathnameToSection: Record<string, string> = {
+    "/trips": "trips",
+    "/restaurants": "restaurants",
+    "/loisirs": "loisirs",
+    "/hotels": "hotels",
+    "/events": "events",
+    "/destinations": "destinations",
+  };
+  const derivedSection = pathnameToSection[pathname] || "home";
 
   useEffect(() => {
     if (derivedSection !== activeSection) {
       setActiveSection(derivedSection);
     }
   }, [derivedSection, activeSection]);
+
+  // Pages that have their own dedicated routes
+  const pageRoutes: Record<string, string> = {
+    trips: "/trips",
+    restaurants: "/restaurants",
+    loisirs: "/loisirs",
+    hotels: "/hotels",
+    events: "/events",
+  };
 
   const scrollToSection = (e: React.MouseEvent<HTMLAnchorElement | HTMLDivElement>, id: string) => {
     e.preventDefault();
@@ -87,15 +104,9 @@ export const Navigation: React.FC = () => {
       return;
     }
 
-    // Handle destinations navigation to dedicated page
-    if (id === "destinations") {
-      router.push("/destinations");
-      return;
-    }
-
-    // Handle trips navigation to dedicated page
-    if (id === "trips") {
-      router.push("/trips");
+    // Handle navigation to dedicated pages
+    if (pageRoutes[id]) {
+      router.push(pageRoutes[id]);
       return;
     }
 
@@ -121,12 +132,12 @@ export const Navigation: React.FC = () => {
   };
 
   const navLinks = [
-    { id: "home", label: t("home"), icon: Home },
-    { id: "destinations", label: t("destination"), icon: MapPin },
-    { id: "trips", label: t("trips"), icon: Plane },
+    { id: "trips", label: t("circuit"), icon: Plane },
+    { id: "restaurants", label: t("restaurant"), icon: UtensilsCrossed },
+    { id: "loisirs", label: t("loisirs"), icon: Gamepad2 },
+    { id: "hotels", label: t("hotel"), icon: Hotel },
+    { id: "events", label: t("events"), icon: CalendarDays },
     { id: "services", label: t("services"), icon: Briefcase },
-    { id: "faq", label: t("faq"), icon: HelpCircle },
-    { id: "contact", label: t("contact"), icon: Mail },
   ];
 
   const handleLogoClick = () => {

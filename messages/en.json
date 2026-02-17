@@ -8,7 +8,12 @@
     "hello": "Hello!",
     "traveler": "Traveler",
     "logout": "Logout",
-    "trips": "Our Trips"
+    "trips": "Our Trips",
+    "circuit": "Circuit",
+    "restaurant": "Restaurant",
+    "loisirs": "Leisure",
+    "hotel": "Hotel",
+    "events": "Events"
   },
   "Hero": {
     "badge": "Discover Kinshasa, DRC",
@@ -361,6 +366,36 @@
       "confirmCancel": "Yes, Cancel",
       "cancelling": "Cancelling..."
     }
+  },
+  "Restaurants": {
+    "title": "Restaurants in Kinshasa",
+    "subtitle": "Discover the best restaurants in Kinshasa",
+    "loading": "Loading...",
+    "noResults": "No restaurants found",
+    "noResultsDesc": "We couldn't find any restaurants at the moment.",
+    "totalBeforeTaxes": "total before taxes"
+  },
+  "Hotels": {
+    "title": "Hotels in Kinshasa",
+    "subtitle": "Find the best hotels for your stay in Kinshasa",
+    "loading": "Loading...",
+    "noResults": "No hotels found",
+    "noResultsDesc": "We couldn't find any hotels at the moment.",
+    "totalBeforeTaxes": "total before taxes"
+  },
+  "Loisirs": {
+    "title": "Leisure in Kinshasa",
+    "subtitle": "Explore leisure activities and entertainment in Kinshasa",
+    "loading": "Loading...",
+    "noResults": "No leisure activities found",
+    "noResultsDesc": "We couldn't find any leisure activities at the moment.",
+    "totalBeforeTaxes": "total before taxes"
+  },
+  "Events": {
+    "title": "Events in Kinshasa",
+    "subtitle": "Discover upcoming events in Kinshasa",
+    "comingSoon": "Coming Soon",
+    "comingSoonDesc": "This section is under construction. Check back soon to discover events in Kinshasa!"
   },
   "Trips": {
     "title": "Our Trips",
