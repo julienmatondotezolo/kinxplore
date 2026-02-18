@@ -3,7 +3,7 @@ import { Plane, Star } from "lucide-react";
 import { useTranslations } from "next-intl";
 import React from "react";
 
-import { useDestinations } from "@/hooks/useDestinations";
+import { useTrips } from "@/hooks/useTrips";
 import { useRouter } from "@/navigation";
 
 const containerVariants = {
@@ -31,18 +31,18 @@ const itemVariants = {
 export const PopularDestinations: React.FC = () => {
   const t = useTranslations("PopularDestinations");
   const router = useRouter();
-  const { data: allDestinations, isLoading } = useDestinations();
+  const { data: allTrips, isLoading } = useTrips();
 
-  // Get first 4 destinations for popular section
-  const destinations = allDestinations?.slice(0, 4) || [];
+  // Get first 4 trips for popular section
+  const trips = allTrips?.slice(0, 4) || [];
 
-  const handleDestinationClick = (destinationId: string) => {
-    router.push(`/destinations/${destinationId}`);
+  const handleTripClick = (tripId: string) => {
+    router.push(`/trips/${tripId}`);
   };
 
   if (isLoading) {
     return (
-      <div className="py-24 max-w-7xl mx-auto px-4" id="destinations">
+      <div className="py-24 max-w-7xl mx-auto px-4" id="circuits">
         <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900 tracking-tight mb-12">{t("title")}</h2>
         <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-8">
           {[1, 2, 3, 4].map((i) => (
@@ -58,7 +58,7 @@ export const PopularDestinations: React.FC = () => {
   }
 
   return (
-    <div className="py-24 max-w-7xl mx-auto px-4" id="destinations">
+    <div className="py-24 max-w-7xl mx-auto px-4" id="circuits">
       <motion.div
         initial={{ opacity: 0, x: -20 }}
         whileInView={{ opacity: 1, x: 0 }}
@@ -76,17 +76,17 @@ export const PopularDestinations: React.FC = () => {
         viewport={{ once: true, margin: "-100px" }}
         className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-8"
       >
-        {destinations.map((dest, idx) => (
+        {trips.map((trip, idx) => (
           <motion.div
-            key={dest.id}
+            key={trip.id}
             variants={itemVariants}
-            onClick={() => handleDestinationClick(dest.id)}
+            onClick={() => handleTripClick(trip.id)}
             className="group cursor-pointer"
           >
             <div className="relative overflow-hidden rounded-[2.5rem] mb-6 aspect-square shadow-sm transition-all duration-500 group-hover:shadow-2xl">
               <img
-                src={dest.image || `https://picsum.photos/600/600?random=${idx + 101}`}
-                alt={dest.name}
+                src={trip.image || `https://picsum.photos/600/600?random=${idx + 101}`}
+                alt={trip.name}
                 className="w-full h-full object-cover transform group-hover:scale-110 transition duration-700"
               />
 
@@ -101,18 +101,15 @@ export const PopularDestinations: React.FC = () => {
 
             <div className="space-y-2 px-1">
               <h3 className="font-bold text-lg text-gray-900 leading-tight group-hover:text-blue-600 transition-colors">
-                {dest.name}
+                {trip.name}
               </h3>
               <div className="flex justify-between items-center">
                 <div className="flex items-baseline gap-1.5">
-                  <span className="font-bold text-gray-900">${dest.price}</span>
+                  <span className="font-bold text-gray-900">${trip.price_international}</span>
                   <span className="text-sm font-medium text-gray-400">{t("starting")}</span>
                 </div>
                 <div className="flex items-center gap-1">
-                  <Star size={14} className="text-gray-300 fill-gray-300" />
-                  <span className="text-sm font-bold text-gray-900">
-                    {dest.ratings ? dest.ratings.toFixed(1) : "5.0"}
-                  </span>
+                  <span className="text-sm font-medium text-gray-400">{trip.duration}</span>
                 </div>
               </div>
             </div>

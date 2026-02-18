@@ -40,7 +40,7 @@
     "reviewsStats": "4,9/5 de 2k+ Voyageurs",
     "topRated": "Expériences les Mieux Notées",
     "explorePackages": "Découvrir tous les packages",
-    "exploreAllDestinations": "Explorer Toutes les Destinations",
+    "exploreAllDestinations": "Explorer Tous les Circuits",
     "search": "Rechercher",
     "activeFilters": "Filtres actifs"
   },
@@ -63,7 +63,7 @@
     "bandalungwa": "Bandalungwa"
   },
   "PopularDestinations": {
-    "title": "Destinations Populaires",
+    "title": "Circuits Populaires",
     "bookingTrip": "Réserver un Voyage",
     "starting": "À partir de"
   },
@@ -92,8 +92,32 @@
     "exploreNow": "Explorer Maintenant"
   },
   "WhyChooseUs": {
-    "title": "Pourquoi nous choisir ?",
-    "subtitle": "Profitez d'un confort ultime avec notre thème Single Feature, conçu pour votre prochaine aventure.",
+    "title": "Pourquoi choisir KINXPLORE ?",
+    "subtitle": "Votre partenaire de confiance pour explorer Kinshasa et le Kongo Central en toute sérénité.",
+    "localExpertise": {
+      "title": "Expertise Locale",
+      "description": "Une connaissance approfondie de Kinshasa et du Kongo Central pour des circuits authentiques."
+    },
+    "reliableService": {
+      "title": "Service Fiable",
+      "description": "Des prestations ponctuelles et professionnelles à chaque étape de votre voyage."
+    },
+    "professionalDrivers": {
+      "title": "Chauffeurs Professionnels",
+      "description": "Des chauffeurs expérimentés et courtois pour un trajet sûr et agréable."
+    },
+    "assistance247": {
+      "title": "Assistance 24h/24",
+      "description": "Une équipe disponible jour et nuit pour répondre à vos besoins."
+    },
+    "transparentPricing": {
+      "title": "Tarifs Transparents",
+      "description": "Des prix clairs et sans surprises, avec tarifs locaux et internationaux."
+    },
+    "comfortableVehicles": {
+      "title": "Véhicules Confortables",
+      "description": "Une flotte de véhicules modernes et bien entretenus pour votre confort."
+    },
     "travelTip": {
       "title": "Conseils de Voyage",
       "description": "Notre IA fournit des conseils locaux en temps réel mis à jour par les habitants."

@@ -236,6 +236,69 @@
     "noResultsDesc": "We konden momenteel geen vrijetijdsactiviteiten vinden.",
     "totalBeforeTaxes": "totaal voor belastingen"
   },
+  "Hero": {
+    "badge": "Ontdek Kinshasa, DRC",
+    "title": "Verken",
+    "titleCity": "Kinshasa,",
+    "titleYourWay": "Op Jouw Manier.",
+    "subtitle": "Het kloppend hart van Congo.",
+    "description": "Vertel ons uw reisstijl en onze reisagent zal het perfecte reisplan voor uw verblijf in Kinshasa samenstellen.",
+    "destination": "Bestemming",
+    "destinationValue": "Kinshasa, DRC",
+    "location": "Locatie",
+    "selectLocation": "Selecteer een gemeente",
+    "duration": "Duur",
+    "days": "Dagen",
+    "tripStyle": "Reisstijl",
+    "startPlanning": "AI Planning Starten",
+    "planning": "Plannen...",
+    "chatSearchPlaceholder": "Plan mij een reis naar het prachtige...",
+    "suggestion1": "Inspireer me waar ik heen kan gaan",
+    "suggestion2": "Maak een nieuwe reis",
+    "suggestion3": "Zoek familiehotels in Gombe",
+    "reviews": "Beoordelingen",
+    "reviewsRating": "4,8 van 5",
+    "reviewsStats": "4,9/5 van 2k+ Reizigers",
+    "topRated": "Best Beoordeelde Ervaringen",
+    "explorePackages": "Alle Pakketten Bekijken",
+    "exploreAllDestinations": "Alle Circuits Bekijken",
+    "search": "Zoeken",
+    "activeFilters": "Actieve filters"
+  },
+  "PopularDestinations": {
+    "title": "Populaire Circuits",
+    "bookingTrip": "Reis Boeken",
+    "starting": "Vanaf"
+  },
+  "WhyChooseUs": {
+    "title": "Waarom KINXPLORE kiezen?",
+    "subtitle": "Uw betrouwbare partner om Kinshasa en Kongo Centraal met een gerust hart te verkennen.",
+    "localExpertise": {
+      "title": "Lokale Expertise",
+      "description": "Diepgaande kennis van Kinshasa en Kongo Centraal voor authentieke circuitervaringen."
+    },
+    "reliableService": {
+      "title": "Betrouwbare Service",
+      "description": "Stipte en professionele dienstverlening bij elke stap van uw reis."
+    },
+    "professionalDrivers": {
+      "title": "Professionele Chauffeurs",
+      "description": "Ervaren en hoffelijke chauffeurs voor een veilige en aangename rit."
+    },
+    "assistance247": {
+      "title": "24/7 Assistentie",
+      "description": "Een team dat dag en nacht beschikbaar is om aan uw behoeften te voldoen."
+    },
+    "transparentPricing": {
+      "title": "Transparante Prijzen",
+      "description": "Duidelijke prijzen zonder verrassingen, met lokale en internationale tarieven."
+    },
+    "comfortableVehicles": {
+      "title": "Comfortabele Voertuigen",
+      "description": "Een vloot moderne en goed onderhouden voertuigen voor uw comfort."
+    },
+    "learnMore": "Meer Informatie"
+  },
   "Events": {
     "title": "Evenementen in Kinshasa",
     "subtitle": "Ontdek aankomende evenementen in Kinshasa",

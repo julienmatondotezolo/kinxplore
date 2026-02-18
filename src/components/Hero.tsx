@@ -3,35 +3,26 @@ import { ArrowRight, ArrowUpRight, Compass, MapPin, Plane, Star } from "lucide-r
 import { useTranslations } from "next-intl";
 import React from "react";
 
+import { useTrips } from "@/hooks/useTrips";
+import { Link } from "@/navigation";
+
 import { ChatSearch } from "./ChatSearch";
 
 export const Hero: React.FC = () => {
   const t = useTranslations("Hero");
-  const packages = [
-    {
-      title: "Kinshasa Essentials",
-      price: "$450",
-      duration: "3 Days",
-      img: "https://picsum.photos/800/1000?random=60",
-      badge: "Bestseller",
-      tag: "Cultural",
-    },
-    {
-      title: "River Safari",
-      price: "$800",
-      duration: "5 Days",
-      img: "https://picsum.photos/600/400?random=61",
-      tag: "Adventure",
-    },
-    {
-      title: "Nightlife Tour",
-      price: "$250",
-      duration: "1 Night",
-      img: "https://picsum.photos/600/400?random=62",
-      badge: "Trending",
-      tag: "Entertainment",
-    },
-  ];
+  const { data: allTrips, isLoading } = useTrips();
+
+  const trips = allTrips?.slice(0, 3) || [];
+
+  const packages = trips.map((trip) => ({
+    id: trip.id,
+    title: trip.name,
+    price: `$${trip.price_international}`,
+    duration: trip.duration,
+    img: trip.image || `https://picsum.photos/800/1000?random=${trip.id}`,
+    tag: trip.region === "kinshasa" ? "Kinshasa" : "Kongo Central",
+    badge: undefined as string | undefined,
+  }));
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -175,53 +166,59 @@ export const Hero: React.FC = () => {
 
             {/* Packages Grid for Mobile */}
             <div className="space-y-3 sm:space-y-4 px-1 sm:px-2">
-              {packages.map((pkg, i) => (
-                <motion.div
-                  key={i}
-                  variants={cardVariants}
-                  whileTap={{ scale: 0.98 }}
-                  className="relative rounded-[2rem] sm:rounded-[2.5rem] overflow-hidden shadow-lg sm:shadow-xl border-3 sm:border-4 border-white group cursor-pointer aspect-[16/9] sm:aspect-[16/10] active:shadow-2xl transition-shadow"
-                >
-                  <img src={pkg.img} alt={pkg.title} className="w-full h-full object-cover" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
+              {isLoading ? (
+                [1, 2, 3].map((i) => (
+                  <div key={i} className="animate-pulse rounded-[2rem] sm:rounded-[2.5rem] bg-gray-200 aspect-[16/9] sm:aspect-[16/10]" />
+                ))
+              ) : (
+                packages.map((pkg, i) => (
+                  <motion.div
+                    key={i}
+                    variants={cardVariants}
+                    whileTap={{ scale: 0.98 }}
+                    className="relative rounded-[2rem] sm:rounded-[2.5rem] overflow-hidden shadow-lg sm:shadow-xl border-3 sm:border-4 border-white group cursor-pointer aspect-[16/9] sm:aspect-[16/10] active:shadow-2xl transition-shadow"
+                  >
+                    <img src={pkg.img} alt={pkg.title} className="w-full h-full object-cover" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
 
-                  {/* Badge */}
-                  {pkg.badge && (
-                    <div className="absolute top-3 sm:top-4 left-3 sm:left-4 px-2.5 sm:px-3 py-1 bg-blue-600 text-white text-[8px] sm:text-[9px] font-bold rounded-full uppercase tracking-wider shadow-lg">
-                      {pkg.badge}
+                    {/* Badge */}
+                    {pkg.badge && (
+                      <div className="absolute top-3 sm:top-4 left-3 sm:left-4 px-2.5 sm:px-3 py-1 bg-blue-600 text-white text-[8px] sm:text-[9px] font-bold rounded-full uppercase tracking-wider shadow-lg">
+                        {pkg.badge}
+                      </div>
+                    )}
+
+                    <div className="absolute top-3 sm:top-4 right-3 sm:right-4 w-9 h-9 sm:w-10 sm:h-10 bg-white/90 backdrop-blur rounded-full flex items-center justify-center shadow-lg active:bg-blue-600 active:text-white transition-colors">
+                      <ArrowUpRight size={16} className="text-gray-900 sm:w-4 sm:h-4" />
                     </div>
-                  )}
 
-                  <div className="absolute top-3 sm:top-4 right-3 sm:right-4 w-9 h-9 sm:w-10 sm:h-10 bg-white/90 backdrop-blur rounded-full flex items-center justify-center shadow-lg active:bg-blue-600 active:text-white transition-colors">
-                    <ArrowUpRight size={16} className="text-gray-900 sm:w-4 sm:h-4" />
-                  </div>
-
-                  <div className="absolute bottom-4 sm:bottom-6 left-4 sm:left-6 right-4 sm:right-6 text-white text-left">
-                    <p className="text-[8px] sm:text-[9px] font-bold text-blue-300 sm:text-blue-400 uppercase tracking-[0.15em] sm:tracking-[0.2em] mb-1">
-                      {pkg.tag}
-                    </p>
-                    <h4 className="text-lg sm:text-xl font-extrabold mb-1.5 sm:mb-2 leading-tight">{pkg.title}</h4>
-                    <div className="flex items-center gap-1.5 sm:gap-2">
-                      <span className="text-[11px] sm:text-xs font-bold opacity-90">{pkg.duration}</span>
-                      <span className="w-1 h-1 bg-white/40 rounded-full" />
-                      <span className="text-[11px] sm:text-xs font-bold text-blue-300 sm:text-blue-400">
-                        From {pkg.price}
-                      </span>
+                    <div className="absolute bottom-4 sm:bottom-6 left-4 sm:left-6 right-4 sm:right-6 text-white text-left">
+                      <p className="text-[8px] sm:text-[9px] font-bold text-blue-300 sm:text-blue-400 uppercase tracking-[0.15em] sm:tracking-[0.2em] mb-1">
+                        {pkg.tag}
+                      </p>
+                      <h4 className="text-lg sm:text-xl font-extrabold mb-1.5 sm:mb-2 leading-tight">{pkg.title}</h4>
+                      <div className="flex items-center gap-1.5 sm:gap-2">
+                        <span className="text-[11px] sm:text-xs font-bold opacity-90">{pkg.duration}</span>
+                        <span className="w-1 h-1 bg-white/40 rounded-full" />
+                        <span className="text-[11px] sm:text-xs font-bold text-blue-300 sm:text-blue-400">
+                          From {pkg.price}
+                        </span>
+                      </div>
                     </div>
-                  </div>
-                </motion.div>
-              ))}
+                  </motion.div>
+                ))
+              )}
             </div>
 
             {/* Footer Link */}
             <div className="pt-1 sm:pt-2 text-center pb-4">
-              <button className="inline-flex items-center gap-2 text-blue-600 font-black text-[9px] sm:text-[10px] uppercase tracking-[0.15em] sm:tracking-[0.2em] group border-b-2 border-transparent active:border-blue-600 pb-1 transition-all touch-manipulation">
+              <Link href="/trips" className="inline-flex items-center gap-2 text-blue-600 font-black text-[9px] sm:text-[10px] uppercase tracking-[0.15em] sm:tracking-[0.2em] group border-b-2 border-transparent active:border-blue-600 pb-1 transition-all touch-manipulation">
                 {t("exploreAllDestinations")}
                 <ArrowRight
                   size={12}
                   className="-rotate-45 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform sm:w-3.5 sm:h-3.5"
                 />
-              </button>
+              </Link>
             </div>
           </motion.div>
         </div>
@@ -252,6 +249,14 @@ export const Hero: React.FC = () => {
 
           {/* Grid of Destination Cards */}
           <div className="grid grid-cols-2 gap-4 relative h-full max-h-[420px]">
+            {isLoading ? (
+              <>
+                <div className="animate-pulse rounded-[2rem] bg-gray-200 h-full row-span-2" />
+                <div className="animate-pulse rounded-[2rem] bg-gray-200 h-48" />
+                <div className="animate-pulse rounded-[2rem] bg-gray-200 h-40 mt-auto" />
+              </>
+            ) : packages.length === 0 ? null : (
+              <>
             {/* Large Left Package Card */}
             <motion.div
               variants={cardVariants}
@@ -340,17 +345,19 @@ export const Hero: React.FC = () => {
                 </div>
               </div>
             </motion.div>
+              </>
+            )}
           </div>
 
           {/* Footer Link */}
           <motion.div variants={itemVariants} className="pt-2 self-start pl-12">
-            <button className="flex items-center gap-2 text-blue-600 font-bold text-xs uppercase tracking-[0.2em] group border-b-2 border-transparent hover:border-blue-600 pb-1 transition-all">
+            <Link href="/trips" className="flex items-center gap-2 text-blue-600 font-bold text-xs uppercase tracking-[0.2em] group border-b-2 border-transparent hover:border-blue-600 pb-1 transition-all">
               {t("exploreAllDestinations")}
               <ArrowRight
                 size={14}
                 className="-rotate-45 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform"
               />
-            </button>
+            </Link>
           </motion.div>
         </div>
       </motion.div>

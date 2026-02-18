@@ -1,7 +1,9 @@
 import { motion } from "framer-motion";
-import { ArrowRight, Calendar, Headphones, Plane, ShieldCheck, Zap } from "lucide-react";
+import { ArrowRight, Calendar, Headphones, Plane } from "lucide-react";
 import { useTranslations } from "next-intl";
 import React from "react";
+
+import { Link } from "@/navigation";
 
 const useServices = () => {
   const t = useTranslations("Services");
@@ -13,20 +15,7 @@ const useServices = () => {
       desc: t("tripPlanning.description"),
       bgColor: "bg-[#DEFCE9]",
       iconBg: "bg-[#63E6BE]",
-    },
-    {
-      icon: Zap,
-      title: t("aiItinerary.title"),
-      desc: t("aiItinerary.description"),
-      bgColor: "bg-[#E6F0FF]",
-      iconBg: "bg-[#A5D8FF]",
-    },
-    {
-      icon: ShieldCheck,
-      title: t("safePackages.title"),
-      desc: t("safePackages.description"),
-      bgColor: "bg-[#F9E6FF]",
-      iconBg: "bg-[#FFD6FF]",
+      link: "/trips",
     },
     {
       icon: Headphones,
@@ -34,6 +23,7 @@ const useServices = () => {
       desc: t("localSupport.description"),
       bgColor: "bg-[#FFF4E6]",
       iconBg: "bg-[#FFD8A8]",
+      link: undefined as string | undefined,
     },
     {
       icon: Plane,
@@ -41,6 +31,7 @@ const useServices = () => {
       desc: t("airportService.description"),
       bgColor: "bg-[#E8F4FD]",
       iconBg: "bg-[#90CAF9]",
+      link: "#contact",
     },
   ];
 };
@@ -91,7 +82,7 @@ export const OurServices: React.FC = () => {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-100px" }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 md:gap-6"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6"
         >
           {services.map((svc, i) => (
             <motion.div
@@ -108,10 +99,22 @@ export const OurServices: React.FC = () => {
               <h3 className="font-extrabold text-3xl text-gray-900 mb-4">{svc.title}</h3>
               <p className="text-gray-600 font-medium leading-relaxed mb-10">{svc.desc}</p>
 
-              <button className="mt-auto flex items-center gap-2 font-bold text-gray-900 group/btn">
-                {t("exploreNow")}
-                <ArrowRight size={20} className="group-hover/btn:translate-x-1 transition-transform" />
-              </button>
+              {svc.link?.startsWith("#") ? (
+                <a href={svc.link} className="mt-auto flex items-center gap-2 font-bold text-gray-900 group/btn">
+                  {t("exploreNow")}
+                  <ArrowRight size={20} className="group-hover/btn:translate-x-1 transition-transform" />
+                </a>
+              ) : svc.link ? (
+                <Link href={svc.link} className="mt-auto flex items-center gap-2 font-bold text-gray-900 group/btn">
+                  {t("exploreNow")}
+                  <ArrowRight size={20} className="group-hover/btn:translate-x-1 transition-transform" />
+                </Link>
+              ) : (
+                <span className="mt-auto flex items-center gap-2 font-bold text-gray-900 group/btn">
+                  {t("exploreNow")}
+                  <ArrowRight size={20} className="group-hover/btn:translate-x-1 transition-transform" />
+                </span>
+              )}
             </motion.div>
           ))}
         </motion.div>

@@ -40,7 +40,7 @@
     "reviewsStats": "4.9/5 from 2k+ Travelers",
     "topRated": "Top-Rated Experiences",
     "explorePackages": "Explore All Packages",
-    "exploreAllDestinations": "Explore All Destinations",
+    "exploreAllDestinations": "Explore All Circuits",
     "search": "Search",
     "activeFilters": "Active filters"
   },
@@ -63,7 +63,7 @@
     "bandalungwa": "Bandalungwa"
   },
   "PopularDestinations": {
-    "title": "Popular Destinations",
+    "title": "Popular Circuits",
     "bookingTrip": "Booking Trip",
     "starting": "Starting"
   },
@@ -92,8 +92,32 @@
     "exploreNow": "Explore Now"
   },
   "WhyChooseUs": {
-    "title": "Why choose us?",
-    "subtitle": "Experience ultimate comfort in your Single Feature theme, designed for your next adventure.",
+    "title": "Why choose KINXPLORE?",
+    "subtitle": "Your trusted partner to explore Kinshasa and Kongo Central with peace of mind.",
+    "localExpertise": {
+      "title": "Local Expertise",
+      "description": "Deep knowledge of Kinshasa and Kongo Central for authentic circuit experiences."
+    },
+    "reliableService": {
+      "title": "Reliable Service",
+      "description": "Punctual and professional services at every step of your journey."
+    },
+    "professionalDrivers": {
+      "title": "Professional Drivers",
+      "description": "Experienced and courteous drivers for a safe and pleasant ride."
+    },
+    "assistance247": {
+      "title": "24/7 Assistance",
+      "description": "A team available day and night to meet your needs."
+    },
+    "transparentPricing": {
+      "title": "Transparent Pricing",
+      "description": "Clear prices with no surprises, featuring local and international rates."
+    },
+    "comfortableVehicles": {
+      "title": "Comfortable Vehicles",
+      "description": "A fleet of modern and well-maintained vehicles for your comfort."
+    },
     "travelTip": {
       "title": "Travel Tip",
       "description": "Our AI provides real-time local tips updated by locals."

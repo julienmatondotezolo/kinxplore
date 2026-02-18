@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable @next/next/no-img-element */
 import { motion } from "framer-motion";
-import { CheckCircle2, ChevronRight, Smartphone } from "lucide-react";
+import { Car, CheckCircle2, ChevronRight, Clock, Globe, Headphones, MapPin, Smartphone, Tag } from "lucide-react";
 import { useTranslations } from "next-intl";
 import React from "react";
 
@@ -9,9 +9,12 @@ export const WhyChooseUs: React.FC = () => {
   const t = useTranslations("WhyChooseUs");
 
   const points = [
-    { title: t("travelTip.title"), desc: t("travelTip.description") },
-    { title: t("flightBooking.title"), desc: t("flightBooking.description") },
-    { title: t("safeSpots.title"), desc: t("safeSpots.description") },
+    { icon: MapPin, title: t("localExpertise.title"), desc: t("localExpertise.description") },
+    { icon: CheckCircle2, title: t("reliableService.title"), desc: t("reliableService.description") },
+    { icon: Car, title: t("professionalDrivers.title"), desc: t("professionalDrivers.description") },
+    { icon: Headphones, title: t("assistance247.title"), desc: t("assistance247.description") },
+    { icon: Tag, title: t("transparentPricing.title"), desc: t("transparentPricing.description") },
+    { icon: Clock, title: t("comfortableVehicles.title"), desc: t("comfortableVehicles.description") },
   ];
 
   return (
@@ -32,7 +35,7 @@ export const WhyChooseUs: React.FC = () => {
             <p className="text-xl text-gray-500 font-medium max-w-xl leading-relaxed">{t("subtitle")}</p>
           </div>
 
-          <div className="space-y-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
             {points.map((point, i) => (
               <motion.div
                 key={i}
@@ -40,14 +43,14 @@ export const WhyChooseUs: React.FC = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: i * 0.1 }}
-                className="flex gap-6 items-start group"
+                className="flex gap-4 items-start group"
               >
                 <div className="mt-1 w-12 h-12 rounded-2xl bg-blue-50 text-blue-600 flex flex-shrink-0 items-center justify-center group-hover:bg-blue-600 group-hover:text-white transition-all duration-300">
-                  <CheckCircle2 size={24} />
+                  <point.icon size={24} />
                 </div>
-                <div className="space-y-2">
-                  <h4 className="text-xl font-bold text-gray-900">{point.title}</h4>
-                  <p className="text-gray-500 font-medium">{point.desc}</p>
+                <div className="space-y-1">
+                  <h4 className="text-lg font-bold text-gray-900">{point.title}</h4>
+                  <p className="text-gray-500 font-medium text-sm">{point.desc}</p>
                 </div>
               </motion.div>
             ))}
