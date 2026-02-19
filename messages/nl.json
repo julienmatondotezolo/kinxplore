@@ -213,7 +213,7 @@
     "exploreNow": "Nu Ontdekken"
   },
   "Restaurants": {
-    "title": "Restaurants in Kinshasa",
+    "title": "De beste restaurants in Kinshasa",
     "subtitle": "Ontdek de beste restaurants in Kinshasa",
     "loading": "Laden...",
     "noResults": "Geen restaurants gevonden",
@@ -221,7 +221,7 @@
     "totalBeforeTaxes": "totaal voor belastingen"
   },
   "Hotels": {
-    "title": "Hotels in Kinshasa",
+    "title": "De beste hotels in Kinshasa",
     "subtitle": "Vind de beste hotels voor uw verblijf in Kinshasa",
     "loading": "Laden...",
     "noResults": "Geen hotels gevonden",
@@ -229,7 +229,7 @@
     "totalBeforeTaxes": "totaal voor belastingen"
   },
   "Loisirs": {
-    "title": "Vrije tijd in Kinshasa",
+    "title": "De beste vrijetijdsactiviteiten",
     "subtitle": "Ontdek vrijetijdsactiviteiten en entertainment in Kinshasa",
     "loading": "Laden...",
     "noResults": "Geen activiteiten gevonden",
@@ -326,7 +326,8 @@
     "bookNow": "Nu Boeken",
     "backToTrips": "Terug naar Reizen",
     "notFound": "Reis niet gevonden",
-    "errorLoading": "Reizen laden mislukt. Probeer het opnieuw."
+    "errorLoading": "Reizen laden mislukt. Probeer het opnieuw.",
+    "contactAgentText": "Voer uw gegevens in, onze agent neemt contact met u op om uw circuit efficiënt te plannen."
   },
   "TripBooking": {
     "bookTrip": "Reis Boeken",

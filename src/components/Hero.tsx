@@ -17,7 +17,6 @@ export const Hero: React.FC = () => {
   const packages = trips.map((trip) => ({
     id: trip.id,
     title: trip.name,
-    price: `$${trip.price_international}`,
     duration: trip.duration,
     img: trip.image || `https://picsum.photos/800/1000?random=${trip.id}`,
     tag: trip.region === "kinshasa" ? "Kinshasa" : "Kongo Central",
@@ -199,10 +198,6 @@ export const Hero: React.FC = () => {
                       <h4 className="text-lg sm:text-xl font-extrabold mb-1.5 sm:mb-2 leading-tight">{pkg.title}</h4>
                       <div className="flex items-center gap-1.5 sm:gap-2">
                         <span className="text-[11px] sm:text-xs font-bold opacity-90">{pkg.duration}</span>
-                        <span className="w-1 h-1 bg-white/40 rounded-full" />
-                        <span className="text-[11px] sm:text-xs font-bold text-blue-300 sm:text-blue-400">
-                          From {pkg.price}
-                        </span>
                       </div>
                     </div>
                   </motion.div>
@@ -287,8 +282,6 @@ export const Hero: React.FC = () => {
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <span className="text-xs font-bold opacity-90">{packages[0].duration}</span>
-                    <span className="w-1 h-1 bg-white/40 rounded-full" />
-                    <span className="text-xs font-bold text-blue-400">From {packages[0].price}</span>
                   </div>
                 </div>
               </div>
@@ -315,7 +308,6 @@ export const Hero: React.FC = () => {
                 <h4 className="text-base font-bold mb-0.5 leading-tight">{packages[1].title}</h4>
                 <div className="flex items-center gap-2 text-[9px] font-bold text-white/80">
                   <span>{packages[1].duration}</span>
-                  <span className="text-blue-400">{packages[1].price}</span>
                 </div>
               </div>
             </motion.div>
@@ -341,7 +333,6 @@ export const Hero: React.FC = () => {
                 <h4 className="text-base font-bold mb-0.5 leading-tight">{packages[2].title}</h4>
                 <div className="flex items-center gap-2 text-[9px] font-bold text-white/80">
                   <span>{packages[2].duration}</span>
-                  <span className="text-blue-400">{packages[2].price}</span>
                 </div>
               </div>
             </motion.div>

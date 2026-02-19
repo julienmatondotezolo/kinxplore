@@ -196,15 +196,8 @@ export default function TripDetailPage() {
             <div className="lg:w-[360px]">
               <div className="sticky top-32 bg-white rounded-2xl border border-gray-100 shadow-lg p-6 space-y-6">
                 <div>
-                  <p className="text-sm text-gray-500 mb-1">{t("priceFrom")}</p>
-                  <div className="flex items-baseline gap-2">
-                    <span className="text-4xl font-extrabold text-gray-900">
-                      ${trip.price_international}
-                    </span>
-                    <span className="text-gray-400">/ {t("perPerson")}</span>
-                  </div>
-                  <p className="text-sm text-gray-500 mt-1">
-                    {t("localPrice")}: <span className="font-bold text-gray-700">${trip.price_local}</span>
+                  <p className="text-sm text-gray-600 leading-relaxed">
+                    {t("contactAgentText")}
                   </p>
                 </div>
 

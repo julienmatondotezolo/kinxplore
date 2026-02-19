@@ -392,7 +392,7 @@
     }
   },
   "Restaurants": {
-    "title": "Restaurants in Kinshasa",
+    "title": "The best restaurants in Kinshasa",
     "subtitle": "Discover the best restaurants in Kinshasa",
     "loading": "Loading...",
     "noResults": "No restaurants found",
@@ -400,7 +400,7 @@
     "totalBeforeTaxes": "total before taxes"
   },
   "Hotels": {
-    "title": "Hotels in Kinshasa",
+    "title": "The best hotels in Kinshasa",
     "subtitle": "Find the best hotels for your stay in Kinshasa",
     "loading": "Loading...",
     "noResults": "No hotels found",
@@ -408,7 +408,7 @@
     "totalBeforeTaxes": "total before taxes"
   },
   "Loisirs": {
-    "title": "Leisure in Kinshasa",
+    "title": "The best leisure activities",
     "subtitle": "Explore leisure activities and entertainment in Kinshasa",
     "loading": "Loading...",
     "noResults": "No leisure activities found",
@@ -442,7 +442,8 @@
     "bookNow": "Book Now",
     "backToTrips": "Back to Trips",
     "notFound": "Trip not found",
-    "errorLoading": "Failed to load trips. Please try again."
+    "errorLoading": "Failed to load trips. Please try again.",
+    "contactAgentText": "Enter your details, our agent will contact you to efficiently plan your circuit."
   },
   "TripBooking": {
     "bookTrip": "Book Trip",

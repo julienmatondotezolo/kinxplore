@@ -392,7 +392,7 @@
     }
   },
   "Restaurants": {
-    "title": "Restaurants à Kinshasa",
+    "title": "Les meilleurs restaurants de Kinshasa",
     "subtitle": "Découvrez les meilleurs restaurants de Kinshasa",
     "loading": "Chargement...",
     "noResults": "Aucun restaurant trouvé",
@@ -400,7 +400,7 @@
     "totalBeforeTaxes": "total avant taxes"
   },
   "Hotels": {
-    "title": "Hôtels à Kinshasa",
+    "title": "Les meilleurs hôtels de Kinshasa",
     "subtitle": "Trouvez les meilleurs hôtels pour votre séjour à Kinshasa",
     "loading": "Chargement...",
     "noResults": "Aucun hôtel trouvé",
@@ -408,7 +408,7 @@
     "totalBeforeTaxes": "total avant taxes"
   },
   "Loisirs": {
-    "title": "Loisirs à Kinshasa",
+    "title": "Les meilleures activités de loisirs",
     "subtitle": "Explorez les activités de loisirs et divertissements à Kinshasa",
     "loading": "Chargement...",
     "noResults": "Aucun loisir trouvé",
@@ -442,7 +442,8 @@
     "bookNow": "Réserver Maintenant",
     "backToTrips": "Retour aux Circuits",
     "notFound": "Circuit non trouvé",
-    "errorLoading": "Échec du chargement des circuits. Veuillez réessayer."
+    "errorLoading": "Échec du chargement des circuits. Veuillez réessayer.",
+    "contactAgentText": "Encodez vos données, notre agent vous recontactera pour planifier efficacement votre circuit."
   },
   "TripBooking": {
     "bookTrip": "Réserver le Circuit",

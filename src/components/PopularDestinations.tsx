@@ -104,13 +104,7 @@ export const PopularDestinations: React.FC = () => {
                 {trip.name}
               </h3>
               <div className="flex justify-between items-center">
-                <div className="flex items-baseline gap-1.5">
-                  <span className="font-bold text-gray-900">${trip.price_international}</span>
-                  <span className="text-sm font-medium text-gray-400">{t("starting")}</span>
-                </div>
-                <div className="flex items-center gap-1">
-                  <span className="text-sm font-medium text-gray-400">{trip.duration}</span>
-                </div>
+                <span className="text-sm font-medium text-gray-400">{trip.duration}</span>
               </div>
             </div>
           </motion.div>

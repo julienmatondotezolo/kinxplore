@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ArrowRight, Clock, DollarSign, MapPin, Loader2 } from "lucide-react";
+import { ArrowRight, Clock, MapPin, Loader2 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import React from "react";
 
@@ -48,19 +48,11 @@ export default function TripsPage() {
             <p className="text-sm text-gray-500 mb-3">{trip.subtitle}</p>
           )}
 
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="flex items-center gap-1">
-                <DollarSign className="w-4 h-4 text-green-600" />
-                <span className="font-bold text-gray-900">${trip.price_international}</span>
-                <span className="text-xs text-gray-400">{t("international")}</span>
-              </div>
-              <span className="text-gray-300">|</span>
-              <div className="text-sm text-gray-500">
-                ${trip.price_local} <span className="text-xs">{t("local")}</span>
-              </div>
-            </div>
-            <div className="w-8 h-8 bg-black rounded-full flex items-center justify-center group-hover:bg-blue-600 transition-colors">
+          <div className="flex items-center justify-between gap-3">
+            <p className="text-xs text-gray-500 leading-snug flex-1">
+              {t("contactAgentText")}
+            </p>
+            <div className="w-8 h-8 bg-black rounded-full flex items-center justify-center group-hover:bg-blue-600 transition-colors shrink-0">
               <ArrowRight className="w-4 h-4 text-white" />
             </div>
           </div>

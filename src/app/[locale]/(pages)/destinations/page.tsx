@@ -50,6 +50,9 @@ const categoryIcons: Record<string, React.ReactNode> = {
 
 export default function DestinationsPage() {
   const t = useTranslations("Destinations");
+  const tRestaurants = useTranslations("Restaurants");
+  const tHotels = useTranslations("Hotels");
+  const tLoisirs = useTranslations("Loisirs");
   const locale = useLocale(); // Get current locale
   const [showMap, setShowMap] = useState(false);
   const [showMobileFilters, setShowMobileFilters] = useState(false);
@@ -87,6 +90,10 @@ export default function DestinationsPage() {
   } = useDestinationStore();
 
   const router = useRouter();
+
+  // Sections that should hide the category bar and show a custom title
+  const sectionCategories = ["restaurant", "loisirs", "hotel"];
+  const isSectionView = sectionCategories.includes(activeCategory);
 
   // Note: We no longer reset filters on mount because the navbar
   // pre-sets the category filter before navigating here.
@@ -229,14 +236,26 @@ export default function DestinationsPage() {
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
             <div className="space-y-2">
               <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-gray-900">
-                {searchQuery.trim() !== ""
-                  ? t("searchResults", { count: filteredCount, query: searchQuery })
-                  : activeCategory === "all"
-                    ? t("title", { count: totalCount })
-                    : t("titleWithCategory", { count: getCountByCategory(activeCategory), category: activeCategory })}
+                {isSectionView
+                  ? activeCategory === "restaurant"
+                    ? tRestaurants("title")
+                    : activeCategory === "hotel"
+                      ? tHotels("title")
+                      : tLoisirs("title")
+                  : searchQuery.trim() !== ""
+                    ? t("searchResults", { count: filteredCount, query: searchQuery })
+                    : activeCategory === "all"
+                      ? t("title", { count: totalCount })
+                      : t("titleWithCategory", { count: getCountByCategory(activeCategory), category: activeCategory })}
               </h1>
               <p className="text-gray-500 text-lg font-light">
-                {activeCategory === "all" ? t("subtitle") : t("subtitleCategory", { category: activeCategory })}
+                {isSectionView
+                  ? activeCategory === "restaurant"
+                    ? tRestaurants("subtitle")
+                    : activeCategory === "hotel"
+                      ? tHotels("subtitle")
+                      : tLoisirs("subtitle")
+                  : activeCategory === "all" ? t("subtitle") : t("subtitleCategory", { category: activeCategory })}
               </p>
             </div>
             <DestinationSearch />
@@ -246,19 +265,32 @@ export default function DestinationsPage() {
         {/* Mobile Title Section */}
         <div className="md:hidden max-w-[2520px] mx-auto px-4 mb-6 relative z-10">
           <h1 className="text-2xl font-bold tracking-tight text-gray-900 mb-2">
-            {searchQuery.trim() !== ""
-              ? t("searchResults", { count: filteredCount, query: searchQuery }).split(" pour ")[0].split(" for ")[0]
-              : activeCategory === "all"
-                ? t("title", { count: totalCount }).split(" à Kinshasa")[0].split(" in Kinshasa")[0]
-                : t("titleWithCategory", { count: getCountByCategory(activeCategory), category: activeCategory })
-                    .split(" à Kinshasa")[0]
-                    .split(" in Kinshasa")[0]}
+            {isSectionView
+              ? activeCategory === "restaurant"
+                ? tRestaurants("title")
+                : activeCategory === "hotel"
+                  ? tHotels("title")
+                  : tLoisirs("title")
+              : searchQuery.trim() !== ""
+                ? t("searchResults", { count: filteredCount, query: searchQuery }).split(" pour ")[0].split(" for ")[0]
+                : activeCategory === "all"
+                  ? t("title", { count: totalCount }).split(" à Kinshasa")[0].split(" in Kinshasa")[0]
+                  : t("titleWithCategory", { count: getCountByCategory(activeCategory), category: activeCategory })
+                      .split(" à Kinshasa")[0]
+                      .split(" in Kinshasa")[0]}
           </h1>
           <p className="text-gray-500 text-sm font-light">
-            {searchQuery.trim() !== "" &&
-              `${t("searchPlaceholder").includes("Rechercher") ? "pour" : "for"} &ldquo;${searchQuery}&rdquo;`}
-            {searchQuery.trim() === "" &&
-              (t("title", { count: 0 }).includes("à Kinshasa") ? "à Kinshasa" : "in Kinshasa")}
+            {isSectionView
+              ? activeCategory === "restaurant"
+                ? tRestaurants("subtitle")
+                : activeCategory === "hotel"
+                  ? tHotels("subtitle")
+                  : tLoisirs("subtitle")
+              : searchQuery.trim() !== ""
+                ? `${t("searchPlaceholder").includes("Rechercher") ? "pour" : "for"} \u201c${searchQuery}\u201d`
+                : searchQuery.trim() === ""
+                  ? (t("title", { count: 0 }).includes("à Kinshasa") ? "à Kinshasa" : "in Kinshasa")
+                  : null}
           </p>
         </div>
 
@@ -317,8 +349,8 @@ export default function DestinationsPage() {
           </div>
         </div>
 
-        {/* Category Header - Airbnb Style */}
-        <div className="hidden md:block sticky top-[72px] z-50 bg-white/80 backdrop-blur-md border-b border-blue-100/50 shadow-sm mb-6">
+        {/* Category Header - Airbnb Style (hidden for section views) */}
+        <div className={`${isSectionView ? "hidden" : "hidden md:block"} sticky top-[72px] z-50 bg-white/80 backdrop-blur-md border-b border-blue-100/50 shadow-sm mb-6`}>
           <div className="max-w-[2520px] mx-auto px-4 sm:px-8 md:px-12 lg:px-16 flex items-center gap-6">
             {/* Horizontal Scrollable Categories */}
             <div className="flex-1 overflow-x-auto scrollbar-none py-4 flex items-center gap-10 md:gap-14">
