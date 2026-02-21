@@ -1,7 +1,8 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
 import { Github, Globe, Instagram, Mail, Twitter } from "lucide-react";
 import { useTranslations } from "next-intl";
 import React from "react";
+
+import { Link } from "@/navigation";
 
 export const Footer: React.FC = () => {
   const t = useTranslations("Footer");
@@ -65,19 +66,19 @@ export const Footer: React.FC = () => {
                 </a>
               </li>
               <li>
-                <a href="#" className="text-gray-500 hover:text-blue-600 font-medium transition-colors">
+                <Link href="/safety" className="text-gray-500 hover:text-blue-600 font-medium transition-colors">
                   {t("safetyInfo")}
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#" className="text-gray-500 hover:text-blue-600 font-medium transition-colors">
+                <Link href="/terms" className="text-gray-500 hover:text-blue-600 font-medium transition-colors">
                   {t("terms")}
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#" className="text-gray-500 hover:text-blue-600 font-medium transition-colors">
+                <Link href="/privacy" className="text-gray-500 hover:text-blue-600 font-medium transition-colors">
                   {t("privacy")}
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
@@ -103,15 +104,15 @@ export const Footer: React.FC = () => {
         <div className="pt-8 border-t border-gray-50 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-sm font-medium text-gray-400">{t("copyright")}</p>
           <div className="flex gap-8">
-            <a href="#" className="text-sm font-medium text-gray-400 hover:text-blue-600 transition-colors">
+            <Link href="/privacy" className="text-sm font-medium text-gray-400 hover:text-blue-600 transition-colors">
               {t("privacyLink")}
-            </a>
-            <a href="#" className="text-sm font-medium text-gray-400 hover:text-blue-600 transition-colors">
+            </Link>
+            <Link href="/terms" className="text-sm font-medium text-gray-400 hover:text-blue-600 transition-colors">
               {t("termsLink")}
-            </a>
-            <a href="#" className="text-sm font-medium text-gray-400 hover:text-blue-600 transition-colors">
+            </Link>
+            <Link href="/privacy" className="text-sm font-medium text-gray-400 hover:text-blue-600 transition-colors">
               {t("cookiesLink")}
-            </a>
+            </Link>
           </div>
         </div>
       </div>

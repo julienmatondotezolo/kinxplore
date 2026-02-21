@@ -23,7 +23,7 @@ const useServices = () => {
       desc: t("airportService.description"),
       bgColor: "bg-[#E8F4FD]",
       iconBg: "bg-[#90CAF9]",
-      link: "#contact",
+      link: "/services/airport",
     },
     {
       icon: Car,
@@ -31,7 +31,7 @@ const useServices = () => {
       desc: t("cityTransfer.description"),
       bgColor: "bg-[#F3E8FF]",
       iconBg: "bg-[#C4B5FD]",
-      link: "#contact",
+      link: "/services/city-transfer",
     },
     {
       icon: ClipboardList,
@@ -39,7 +39,7 @@ const useServices = () => {
       desc: t("adminHelp.description"),
       bgColor: "bg-[#FEF3C7]",
       iconBg: "bg-[#FCD34D]",
-      link: "#contact",
+      link: "/services/admin-help",
     },
     {
       icon: Headphones,
@@ -47,7 +47,7 @@ const useServices = () => {
       desc: t("localSupport.description"),
       bgColor: "bg-[#FFF4E6]",
       iconBg: "bg-[#FFD8A8]",
-      link: undefined as string | undefined,
+      link: "/services/local-support",
     },
   ];
 };

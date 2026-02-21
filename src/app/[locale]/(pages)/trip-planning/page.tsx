@@ -18,6 +18,7 @@ import React, { useState } from "react";
 
 import { Footer } from "@/components/Footer";
 import { Navigation } from "@/components/Navigation";
+import { supabase } from "@/lib/supabase";
 import { useRouter } from "@/navigation";
 
 export default function TripPlanningPage() {
@@ -50,9 +51,20 @@ export default function TripPlanningPage() {
     setIsSubmitting(true);
 
     try {
-      // For now, simulate a submission delay
-      // In the future, POST to backend API
-      await new Promise((resolve) => setTimeout(resolve, 1500));
+      const { error } = await supabase.from("trip_inquiries").insert({
+        first_name: form.firstName,
+        last_name: form.lastName,
+        email: form.email,
+        phone: form.phone,
+        destination: form.destination,
+        date_from: form.dateFrom || null,
+        date_to: form.dateTo || null,
+        travelers: parseInt(form.travelers) || 2,
+        trip_style: form.tripStyle || null,
+        budget: form.budget || null,
+        message: form.message || null,
+      });
+      if (error) throw error;
       setIsSuccess(true);
     } catch {
       // Error handling
@@ -133,7 +145,7 @@ export default function TripPlanningPage() {
                       value={form.firstName}
                       onChange={handleChange}
                       required
-                      className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-gray-900"
                     />
                   </div>
                 </div>
@@ -145,7 +157,7 @@ export default function TripPlanningPage() {
                     value={form.lastName}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-gray-900"
                   />
                 </div>
               </div>
@@ -160,7 +172,7 @@ export default function TripPlanningPage() {
                       value={form.email}
                       onChange={handleChange}
                       required
-                      className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-gray-900"
                     />
                   </div>
                 </div>
@@ -174,7 +186,7 @@ export default function TripPlanningPage() {
                       value={form.phone}
                       onChange={handleChange}
                       required
-                      className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-gray-900"
                     />
                   </div>
                 </div>
@@ -193,7 +205,7 @@ export default function TripPlanningPage() {
                     name="destination"
                     value={form.destination}
                     onChange={handleChange}
-                    className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none bg-white"
+                    className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none bg-white text-gray-900"
                   >
                     <option value="both">{t("destinationBoth")}</option>
                     <option value="kinshasa">{t("destinationKinshasa")}</option>
@@ -213,7 +225,7 @@ export default function TripPlanningPage() {
                       value={form.dateFrom}
                       onChange={handleChange}
                       min={new Date().toISOString().split("T")[0]}
-                      className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-gray-900"
                     />
                   </div>
                 </div>
@@ -227,7 +239,7 @@ export default function TripPlanningPage() {
                       value={form.dateTo}
                       onChange={handleChange}
                       min={form.dateFrom || new Date().toISOString().split("T")[0]}
-                      className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-gray-900"
                     />
                   </div>
                 </div>
@@ -245,7 +257,7 @@ export default function TripPlanningPage() {
                       onChange={handleChange}
                       min="1"
                       max="50"
-                      className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-gray-900"
                     />
                   </div>
                 </div>
@@ -255,7 +267,7 @@ export default function TripPlanningPage() {
                     name="tripStyle"
                     value={form.tripStyle}
                     onChange={handleChange}
-                    className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none bg-white"
+                    className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none bg-white text-gray-900"
                   >
                     <option value="">{t("selectStyle")}</option>
                     <option value="adventure">{t("styleAdventure")}</option>
@@ -273,7 +285,7 @@ export default function TripPlanningPage() {
                   name="budget"
                   value={form.budget}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none bg-white"
+                  className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none bg-white text-gray-900"
                 >
                   <option value="">{t("selectBudget")}</option>
                   <option value="economy">{t("budgetEconomy")}</option>
@@ -295,7 +307,7 @@ export default function TripPlanningPage() {
                   onChange={handleChange}
                   rows={4}
                   placeholder={t("messagePlaceholder")}
-                  className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+                  className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none bg-white text-gray-900"
                 />
               </div>
             </div>

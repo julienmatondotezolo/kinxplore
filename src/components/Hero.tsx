@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { ArrowRight, ArrowUpRight, Compass, MapPin, Plane, Star } from "lucide-react";
 import { useTranslations } from "next-intl";
-import React from "react";
+import React, { useMemo } from "react";
 
 import { useTrips } from "@/hooks/useTrips";
 import { Link } from "@/navigation";
@@ -12,7 +12,11 @@ export const Hero: React.FC = () => {
   const t = useTranslations("Hero");
   const { data: allTrips, isLoading } = useTrips();
 
-  const trips = allTrips?.slice(0, 3) || [];
+  const trips = useMemo(() => {
+    if (!allTrips || allTrips.length === 0) return [];
+    const shuffled = [...allTrips].sort(() => Math.random() - 0.5);
+    return shuffled.slice(0, 3);
+  }, [allTrips]);
 
   const packages = trips.map((trip) => ({
     id: trip.id,
@@ -171,36 +175,37 @@ export const Hero: React.FC = () => {
                 ))
               ) : (
                 packages.map((pkg, i) => (
-                  <motion.div
-                    key={i}
-                    variants={cardVariants}
-                    whileTap={{ scale: 0.98 }}
-                    className="relative rounded-[2rem] sm:rounded-[2.5rem] overflow-hidden shadow-lg sm:shadow-xl border-3 sm:border-4 border-white group cursor-pointer aspect-[16/9] sm:aspect-[16/10] active:shadow-2xl transition-shadow"
-                  >
-                    <img src={pkg.img} alt={pkg.title} className="w-full h-full object-cover" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
+                  <Link key={i} href={`/trips/${pkg.id}`}>
+                    <motion.div
+                      variants={cardVariants}
+                      whileTap={{ scale: 0.98 }}
+                      className="relative rounded-[2rem] sm:rounded-[2.5rem] overflow-hidden shadow-lg sm:shadow-xl border-3 sm:border-4 border-white group cursor-pointer aspect-[16/9] sm:aspect-[16/10] active:shadow-2xl transition-shadow"
+                    >
+                      <img src={pkg.img} alt={pkg.title} className="w-full h-full object-cover" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
 
-                    {/* Badge */}
-                    {pkg.badge && (
-                      <div className="absolute top-3 sm:top-4 left-3 sm:left-4 px-2.5 sm:px-3 py-1 bg-blue-600 text-white text-[8px] sm:text-[9px] font-bold rounded-full uppercase tracking-wider shadow-lg">
-                        {pkg.badge}
+                      {/* Badge */}
+                      {pkg.badge && (
+                        <div className="absolute top-3 sm:top-4 left-3 sm:left-4 px-2.5 sm:px-3 py-1 bg-blue-600 text-white text-[8px] sm:text-[9px] font-bold rounded-full uppercase tracking-wider shadow-lg">
+                          {pkg.badge}
+                        </div>
+                      )}
+
+                      <div className="absolute top-3 sm:top-4 right-3 sm:right-4 w-9 h-9 sm:w-10 sm:h-10 bg-white/90 backdrop-blur rounded-full flex items-center justify-center shadow-lg active:bg-blue-600 active:text-white transition-colors">
+                        <ArrowUpRight size={16} className="text-gray-900 sm:w-4 sm:h-4" />
                       </div>
-                    )}
 
-                    <div className="absolute top-3 sm:top-4 right-3 sm:right-4 w-9 h-9 sm:w-10 sm:h-10 bg-white/90 backdrop-blur rounded-full flex items-center justify-center shadow-lg active:bg-blue-600 active:text-white transition-colors">
-                      <ArrowUpRight size={16} className="text-gray-900 sm:w-4 sm:h-4" />
-                    </div>
-
-                    <div className="absolute bottom-4 sm:bottom-6 left-4 sm:left-6 right-4 sm:right-6 text-white text-left">
-                      <p className="text-[8px] sm:text-[9px] font-bold text-blue-300 sm:text-blue-400 uppercase tracking-[0.15em] sm:tracking-[0.2em] mb-1">
-                        {pkg.tag}
-                      </p>
-                      <h4 className="text-lg sm:text-xl font-extrabold mb-1.5 sm:mb-2 leading-tight">{pkg.title}</h4>
-                      <div className="flex items-center gap-1.5 sm:gap-2">
-                        <span className="text-[11px] sm:text-xs font-bold opacity-90">{pkg.duration}</span>
+                      <div className="absolute bottom-4 sm:bottom-6 left-4 sm:left-6 right-4 sm:right-6 text-white text-left">
+                        <p className="text-[8px] sm:text-[9px] font-bold text-blue-300 sm:text-blue-400 uppercase tracking-[0.15em] sm:tracking-[0.2em] mb-1">
+                          {pkg.tag}
+                        </p>
+                        <h4 className="text-lg sm:text-xl font-extrabold mb-1.5 sm:mb-2 leading-tight">{pkg.title}</h4>
+                        <div className="flex items-center gap-1.5 sm:gap-2">
+                          <span className="text-[11px] sm:text-xs font-bold opacity-90">{pkg.duration}</span>
+                        </div>
                       </div>
-                    </div>
-                  </motion.div>
+                    </motion.div>
+                  </Link>
                 ))
               )}
             </div>
@@ -253,89 +258,95 @@ export const Hero: React.FC = () => {
             ) : packages.length === 0 ? null : (
               <>
             {/* Large Left Package Card */}
-            <motion.div
-              variants={cardVariants}
-              whileHover={{ y: -5 }}
-              className="relative rounded-[2rem] overflow-hidden shadow-2xl border-4 border-white group cursor-pointer h-full row-span-2"
-            >
-              <img
-                src={packages[0].img}
-                alt={packages[0].title}
-                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-60 group-hover:opacity-80 transition-opacity" />
+            <Link href={`/trips/${packages[0].id}`} className="h-full row-span-2">
+              <motion.div
+                variants={cardVariants}
+                whileHover={{ y: -5 }}
+                className="relative rounded-[2rem] overflow-hidden shadow-2xl border-4 border-white group cursor-pointer h-full"
+              >
+                <img
+                  src={packages[0].img}
+                  alt={packages[0].title}
+                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-60 group-hover:opacity-80 transition-opacity" />
 
-              {/* Badge */}
-              {packages[0].badge && (
-                <div className="absolute top-4 left-4 px-3 py-1 bg-blue-600 text-white text-[9px] font-bold rounded-full uppercase tracking-wider shadow-lg">
-                  {packages[0].badge}
+                {/* Badge */}
+                {packages[0].badge && (
+                  <div className="absolute top-4 left-4 px-3 py-1 bg-blue-600 text-white text-[9px] font-bold rounded-full uppercase tracking-wider shadow-lg">
+                    {packages[0].badge}
+                  </div>
+                )}
+
+                <div className="absolute top-4 right-4 w-8 h-8 bg-white/90 backdrop-blur rounded-full flex items-center justify-center shadow-lg group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                  <ArrowUpRight size={16} />
                 </div>
-              )}
 
-              <div className="absolute top-4 right-4 w-8 h-8 bg-white/90 backdrop-blur rounded-full flex items-center justify-center shadow-lg group-hover:bg-blue-600 group-hover:text-white transition-colors">
-                <ArrowUpRight size={16} />
-              </div>
-
-              <div className="absolute bottom-6 left-6 right-6 text-white">
-                <p className="text-[10px] font-bold text-blue-400 uppercase tracking-[0.2em] mb-1">{packages[0].tag}</p>
-                <h4 className="text-xl font-extrabold mb-2 leading-tight">{packages[0].title}</h4>
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <span className="text-xs font-bold opacity-90">{packages[0].duration}</span>
+                <div className="absolute bottom-6 left-6 right-6 text-white">
+                  <p className="text-[10px] font-bold text-blue-400 uppercase tracking-[0.2em] mb-1">{packages[0].tag}</p>
+                  <h4 className="text-xl font-extrabold mb-2 leading-tight">{packages[0].title}</h4>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs font-bold opacity-90">{packages[0].duration}</span>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </motion.div>
+              </motion.div>
+            </Link>
 
             {/* Top Right Package Card */}
-            <motion.div
-              variants={cardVariants}
-              whileHover={{ y: -5 }}
-              className="relative rounded-[2rem] overflow-hidden shadow-xl border-4 border-white group cursor-pointer h-48"
-            >
-              <img
-                src={packages[1].img}
-                alt={packages[1].title}
-                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-50 group-hover:opacity-70 transition-opacity" />
+            <Link href={`/trips/${packages[1].id}`} className="h-48">
+              <motion.div
+                variants={cardVariants}
+                whileHover={{ y: -5 }}
+                className="relative rounded-[2rem] overflow-hidden shadow-xl border-4 border-white group cursor-pointer h-full"
+              >
+                <img
+                  src={packages[1].img}
+                  alt={packages[1].title}
+                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-50 group-hover:opacity-70 transition-opacity" />
 
-              <div className="absolute top-4 right-4 w-8 h-8 bg-white/90 backdrop-blur rounded-full flex items-center justify-center shadow-lg group-hover:bg-blue-600 group-hover:text-white transition-colors">
-                <ArrowUpRight size={16} />
-              </div>
-
-              <div className="absolute bottom-4 left-4 right-4 text-white">
-                <h4 className="text-base font-bold mb-0.5 leading-tight">{packages[1].title}</h4>
-                <div className="flex items-center gap-2 text-[9px] font-bold text-white/80">
-                  <span>{packages[1].duration}</span>
+                <div className="absolute top-4 right-4 w-8 h-8 bg-white/90 backdrop-blur rounded-full flex items-center justify-center shadow-lg group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                  <ArrowUpRight size={16} />
                 </div>
-              </div>
-            </motion.div>
+
+                <div className="absolute bottom-4 left-4 right-4 text-white">
+                  <h4 className="text-base font-bold mb-0.5 leading-tight">{packages[1].title}</h4>
+                  <div className="flex items-center gap-2 text-[9px] font-bold text-white/80">
+                    <span>{packages[1].duration}</span>
+                  </div>
+                </div>
+              </motion.div>
+            </Link>
 
             {/* Bottom Right Package Card */}
-            <motion.div
-              variants={cardVariants}
-              whileHover={{ y: -5 }}
-              className="relative rounded-[2rem] overflow-hidden shadow-xl border-4 border-white group cursor-pointer h-40 mt-auto"
-            >
-              <img
-                src={packages[2].img}
-                alt={packages[2].title}
-                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-50 group-hover:opacity-70 transition-opacity" />
+            <Link href={`/trips/${packages[2].id}`} className="h-40 mt-auto">
+              <motion.div
+                variants={cardVariants}
+                whileHover={{ y: -5 }}
+                className="relative rounded-[2rem] overflow-hidden shadow-xl border-4 border-white group cursor-pointer h-full"
+              >
+                <img
+                  src={packages[2].img}
+                  alt={packages[2].title}
+                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-50 group-hover:opacity-70 transition-opacity" />
 
-              <div className="absolute top-4 right-4 w-8 h-8 bg-white/90 backdrop-blur rounded-full flex items-center justify-center shadow-lg group-hover:bg-blue-600 group-hover:text-white transition-colors">
-                <ArrowUpRight size={16} />
-              </div>
-
-              <div className="absolute bottom-4 left-4 right-4 text-white">
-                <h4 className="text-base font-bold mb-0.5 leading-tight">{packages[2].title}</h4>
-                <div className="flex items-center gap-2 text-[9px] font-bold text-white/80">
-                  <span>{packages[2].duration}</span>
+                <div className="absolute top-4 right-4 w-8 h-8 bg-white/90 backdrop-blur rounded-full flex items-center justify-center shadow-lg group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                  <ArrowUpRight size={16} />
                 </div>
-              </div>
-            </motion.div>
+
+                <div className="absolute bottom-4 left-4 right-4 text-white">
+                  <h4 className="text-base font-bold mb-0.5 leading-tight">{packages[2].title}</h4>
+                  <div className="flex items-center gap-2 text-[9px] font-bold text-white/80">
+                    <span>{packages[2].duration}</span>
+                  </div>
+                </div>
+              </motion.div>
+            </Link>
               </>
             )}
           </div>
