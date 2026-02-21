@@ -55,6 +55,9 @@
     "bookNow": "Nu Boeken",
     "inquiryNow": "Informatie Aanvragen",
     "askQuestion": "Stel een vraag aan de beheerder",
+    "instagram": "Instagram",
+    "followOnInstagram": "Volgen op Instagram",
+    "priceRange": "Prijsbereik",
     "goBack": "Ga terug",
     "notFound": "Bestemming niet gevonden",
     "backToDestinations": "Terug naar bestemmingen"
@@ -210,6 +213,14 @@
       "title": "Luchthavenservice",
       "description": "Betrouwbare luchthaven transfers en assistentie voor een soepele aankomst en vertrek."
     },
+    "cityTransfer": {
+      "title": "Stadstransfer",
+      "description": "Veilige en betrouwbare transferservice tussen locaties in Kinshasa en Kongo Centraal."
+    },
+    "adminHelp": {
+      "title": "Administratieve Hulp",
+      "description": "Visum assistentie, administratieve documenten en ondersteuning bij officiële formaliteiten."
+    },
     "exploreNow": "Nu Ontdekken"
   },
   "Restaurants": {
@@ -237,12 +248,12 @@
     "totalBeforeTaxes": "totaal voor belastingen"
   },
   "Hero": {
-    "badge": "Ontdek Kinshasa, DRC",
+    "badge": "Ontdek Kinshasa & Kongo Central",
     "title": "Verken",
     "titleCity": "Kinshasa,",
     "titleYourWay": "Op Jouw Manier.",
     "subtitle": "Het kloppend hart van Congo.",
-    "description": "Vertel ons uw reisstijl en onze reisagent zal het perfecte reisplan voor uw verblijf in Kinshasa samenstellen.",
+    "description": "Vertel ons uw reisstijl en onze reisagent zal het perfecte reisplan voor uw verblijf in Kinshasa en Kongo Centraal samenstellen.",
     "destination": "Bestemming",
     "destinationValue": "Kinshasa, DRC",
     "location": "Locatie",
@@ -358,5 +369,43 @@
     "confirmationSent": "Er is een bevestigingsmail verzonden naar uw e-mailadres.",
     "viewBookings": "Bekijk Mijn Boekingen",
     "browseTrips": "Meer Reizen Bekijken"
+  },
+  "TripPlanning": {
+    "title": "Plan Uw Reis",
+    "subtitle": "Vertel ons uw voorkeuren en ons team zal de perfecte reis voor u samenstellen.",
+    "personalInfo": "Persoonlijke Informatie",
+    "firstName": "Voornaam",
+    "lastName": "Achternaam",
+    "email": "E-mail",
+    "phone": "Telefoon",
+    "travelPreferences": "Reisvoorkeuren",
+    "destinationPreference": "Bestemmingsvoorkeur",
+    "destinationKinshasa": "Kinshasa",
+    "destinationKongoCentral": "Kongo Centraal",
+    "destinationBoth": "Kinshasa & Kongo Centraal",
+    "dateFrom": "Vertrekdatum",
+    "dateTo": "Retourdatum",
+    "travelers": "Aantal reizigers",
+    "tripStyle": "Reisstijl",
+    "selectStyle": "Selecteer een stijl",
+    "styleAdventure": "Avontuur",
+    "styleCultural": "Cultureel",
+    "styleRelaxation": "Ontspanning",
+    "styleFamily": "Familie",
+    "styleBusiness": "Zakelijk",
+    "budget": "Budget",
+    "selectBudget": "Selecteer een budget",
+    "budgetEconomy": "Economisch",
+    "budgetStandard": "Standaard",
+    "budgetPremium": "Premium",
+    "budgetLuxury": "Luxe",
+    "additionalInfo": "Aanvullende Informatie",
+    "message": "Bericht / Speciale verzoeken",
+    "messagePlaceholder": "Beschrijf uw verwachtingen, interesses of speciale verzoeken...",
+    "back": "Terug",
+    "submit": "Verzoek Indienen",
+    "success": "Verzoek Verzonden!",
+    "successMessage": "Ons team neemt binnenkort contact met u op om uw reis te plannen.",
+    "backToHome": "Terug naar Home"
   }
 }

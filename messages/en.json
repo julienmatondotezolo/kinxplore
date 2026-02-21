@@ -16,12 +16,12 @@
     "events": "Events"
   },
   "Hero": {
-    "badge": "Discover Kinshasa, DRC",
+    "badge": "Discover Kinshasa & Kongo Central",
     "title": "Explore",
     "titleCity": "Kinshasa,",
     "titleYourWay": "Your Way.",
     "subtitle": "The heartbeat of Congo.",
-    "description": "Tell us your trip style, and our travel agent will craft the perfect itinerary for your stay in Kinshasa.",
+    "description": "Tell us your trip style, and our travel agent will craft the perfect itinerary for your stay in Kinshasa and Kongo Central.",
     "destination": "Destination",
     "destinationValue": "Kinshasa, DRC",
     "location": "Location",
@@ -88,6 +88,14 @@
     "airportService": {
       "title": "Airport Service",
       "description": "Reliable airport transfers and assistance for a smooth arrival and departure."
+    },
+    "cityTransfer": {
+      "title": "City Transfer",
+      "description": "Safe and reliable transfer service between locations in Kinshasa and Kongo Central."
+    },
+    "adminHelp": {
+      "title": "Administrative Help",
+      "description": "Visa assistance, administrative documents and official formalities support."
     },
     "exploreNow": "Explore Now"
   },
@@ -258,6 +266,9 @@
     "bookNow": "Book Now",
     "inquiryNow": "Inquiry Now",
     "askQuestion": "Ask manager a Question",
+    "instagram": "Instagram",
+    "followOnInstagram": "Follow on Instagram",
+    "priceRange": "Price Range",
     "goBack": "Go back",
     "notFound": "Destination not found",
     "backToDestinations": "Back to destinations"
@@ -474,5 +485,43 @@
     "confirmationSent": "A confirmation email has been sent to your email address.",
     "viewBookings": "View My Bookings",
     "browseTrips": "Browse More Trips"
+  },
+  "TripPlanning": {
+    "title": "Plan Your Trip",
+    "subtitle": "Tell us your preferences and our team will create the perfect trip for you.",
+    "personalInfo": "Personal Information",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "email": "Email",
+    "phone": "Phone",
+    "travelPreferences": "Travel Preferences",
+    "destinationPreference": "Destination preference",
+    "destinationKinshasa": "Kinshasa",
+    "destinationKongoCentral": "Kongo Central",
+    "destinationBoth": "Kinshasa & Kongo Central",
+    "dateFrom": "Departure date",
+    "dateTo": "Return date",
+    "travelers": "Number of travelers",
+    "tripStyle": "Trip style",
+    "selectStyle": "Select a style",
+    "styleAdventure": "Adventure",
+    "styleCultural": "Cultural",
+    "styleRelaxation": "Relaxation",
+    "styleFamily": "Family",
+    "styleBusiness": "Business",
+    "budget": "Budget",
+    "selectBudget": "Select a budget",
+    "budgetEconomy": "Economy",
+    "budgetStandard": "Standard",
+    "budgetPremium": "Premium",
+    "budgetLuxury": "Luxury",
+    "additionalInfo": "Additional Information",
+    "message": "Message / Special requests",
+    "messagePlaceholder": "Describe your expectations, interests or any special requests...",
+    "back": "Back",
+    "submit": "Submit Request",
+    "success": "Request Sent!",
+    "successMessage": "Our team will contact you shortly to plan your trip.",
+    "backToHome": "Back to Home"
   }
 }

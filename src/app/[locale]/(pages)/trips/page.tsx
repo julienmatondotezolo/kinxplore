@@ -112,8 +112,8 @@ export default function TripsPage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
             >
-              <RegionSection title={t("regionKinshasa")} trips={kinshasa} />
               <RegionSection title={t("regionKongoCentral")} trips={kongoCentral} />
+              <RegionSection title={t("regionKinshasa")} trips={kinshasa} />
             </motion.div>
           )}
         </div>

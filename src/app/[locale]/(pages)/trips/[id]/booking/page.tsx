@@ -36,7 +36,7 @@ export default function TripBookingPage() {
   const [bookingId, setBookingId] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
-  const [priceType, setPriceType] = useState<"international" | "local">("international");
+
 
   const [startDate, setStartDate] = useState<string>(() => {
     const date = new Date();
@@ -56,9 +56,7 @@ export default function TripBookingPage() {
     specialRequests: "",
   });
 
-  const selectedPrice = priceType === "international"
-    ? trip?.price_international || 0
-    : trip?.price_local || 0;
+  const selectedPrice = trip?.price_international || 0;
 
   const handleConfirmBooking = async () => {
     if (!user || !trip) return;
@@ -159,27 +157,6 @@ export default function TripBookingPage() {
         {/* Step 1: Guest Info */}
         {currentStep === "info" && (
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-6">
-            {/* Price Type Toggle */}
-            <div className="bg-white rounded-2xl p-6 border border-gray-100">
-              <h2 className="font-bold text-gray-900 mb-4">{t("selectPriceType")}</h2>
-              <div className="grid grid-cols-2 gap-3">
-                {(["international", "local"] as const).map((type) => (
-                  <button
-                    key={type}
-                    onClick={() => setPriceType(type)}
-                    className={`p-4 rounded-xl border-2 transition-all ${
-                      priceType === type ? "border-blue-600 bg-blue-50" : "border-gray-200 hover:border-gray-300"
-                    }`}
-                  >
-                    <p className="font-bold text-gray-900">
-                      ${type === "international" ? trip.price_international : trip.price_local}
-                    </p>
-                    <p className="text-sm text-gray-500">{t(type)}</p>
-                  </button>
-                ))}
-              </div>
-            </div>
-
             {/* Start Date */}
             <div className="bg-white rounded-2xl p-6 border border-gray-100">
               <h2 className="font-bold text-gray-900 mb-4">{t("startDate")}</h2>
@@ -312,13 +289,8 @@ export default function TripBookingPage() {
                 </div>
                 <div className="grid grid-cols-2 gap-4 text-sm">
                   <div><span className="text-gray-500">{t("startDate")}:</span> <span className="font-bold">{startDate}</span></div>
-                  <div><span className="text-gray-500">{t("priceType")}:</span> <span className="font-bold">{t(priceType)}</span></div>
                   <div><span className="text-gray-500">{t("guest")}:</span> <span className="font-bold">{guestInfo.firstName} {guestInfo.lastName}</span></div>
                   <div><span className="text-gray-500">{t("email")}:</span> <span className="font-bold">{guestInfo.email}</span></div>
-                </div>
-                <div className="pt-4 border-t flex items-center justify-between">
-                  <span className="text-lg font-bold text-gray-900">{t("total")}</span>
-                  <span className="text-2xl font-extrabold text-green-600">${selectedPrice}</span>
                 </div>
               </div>
             </div>
@@ -386,7 +358,7 @@ export default function TripBookingPage() {
                 className="px-8 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl font-bold disabled:opacity-50 flex items-center gap-2"
               >
                 {isSubmitting && <Loader2 className="w-4 h-4 animate-spin" />}
-                {t("confirmBooking")} - ${selectedPrice}
+                {t("confirmBooking")}
               </button>
             )}
           </div>

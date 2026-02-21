@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { ArrowRight, Calendar, Headphones, Plane } from "lucide-react";
+import { ArrowRight, Calendar, Car, ClipboardList, Headphones, Plane } from "lucide-react";
 import { useTranslations } from "next-intl";
 import React from "react";
 
@@ -15,15 +15,7 @@ const useServices = () => {
       desc: t("tripPlanning.description"),
       bgColor: "bg-[#DEFCE9]",
       iconBg: "bg-[#63E6BE]",
-      link: "/trips",
-    },
-    {
-      icon: Headphones,
-      title: t("localSupport.title"),
-      desc: t("localSupport.description"),
-      bgColor: "bg-[#FFF4E6]",
-      iconBg: "bg-[#FFD8A8]",
-      link: undefined as string | undefined,
+      link: "/trip-planning",
     },
     {
       icon: Plane,
@@ -32,6 +24,30 @@ const useServices = () => {
       bgColor: "bg-[#E8F4FD]",
       iconBg: "bg-[#90CAF9]",
       link: "#contact",
+    },
+    {
+      icon: Car,
+      title: t("cityTransfer.title"),
+      desc: t("cityTransfer.description"),
+      bgColor: "bg-[#F3E8FF]",
+      iconBg: "bg-[#C4B5FD]",
+      link: "#contact",
+    },
+    {
+      icon: ClipboardList,
+      title: t("adminHelp.title"),
+      desc: t("adminHelp.description"),
+      bgColor: "bg-[#FEF3C7]",
+      iconBg: "bg-[#FCD34D]",
+      link: "#contact",
+    },
+    {
+      icon: Headphones,
+      title: t("localSupport.title"),
+      desc: t("localSupport.description"),
+      bgColor: "bg-[#FFF4E6]",
+      iconBg: "bg-[#FFD8A8]",
+      link: undefined as string | undefined,
     },
   ];
 };

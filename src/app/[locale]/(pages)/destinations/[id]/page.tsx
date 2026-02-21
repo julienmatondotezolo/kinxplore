@@ -10,6 +10,7 @@ import {
   Globe,
   Heart,
   Info,
+  Instagram,
   MapPin,
   MoreHorizontal,
   Palmtree,
@@ -67,8 +68,10 @@ export default function DestinationDetailPage() {
 
   const { data: destination, isLoading, error } = useDestination(id);
 
-  // Check if destination has Hotel category
+  // Check if destination has Hotel or Restaurant category
   const hasHotelCategory = destination?.categories?.some((cat) => cat.parent.name.toLowerCase() === "hotel") ?? false;
+  const hasRestaurantCategory = destination?.categories?.some((cat) => cat.parent.name.toLowerCase() === "restaurant") ?? false;
+  const isRestaurantOrHotel = hasHotelCategory || hasRestaurantCategory;
 
   const nights = hasHotelCategory
     ? Math.ceil((checkOutDate.getTime() - checkInDate.getTime()) / (1000 * 60 * 60 * 24))
@@ -230,45 +233,47 @@ export default function DestinationDetailPage() {
             );
           })()}
 
-          {/* Info Bar */}
-          <section className="grid grid-cols-2 md:grid-cols-4 gap-6 p-8 bg-gray-50/50 rounded-[40px] border border-gray-100 mb-12">
-            <div className="flex items-center gap-4 px-4">
-              <div className="w-14 h-14 rounded-full bg-white flex items-center justify-center shadow-sm border border-gray-100 text-gray-400">
-                <Clock size={24} />
+          {/* Info Bar — hidden for restaurants/hotels */}
+          {!isRestaurantOrHotel && (
+            <section className="grid grid-cols-2 md:grid-cols-4 gap-6 p-8 bg-gray-50/50 rounded-[40px] border border-gray-100 mb-12">
+              <div className="flex items-center gap-4 px-4">
+                <div className="w-14 h-14 rounded-full bg-white flex items-center justify-center shadow-sm border border-gray-100 text-gray-400">
+                  <Clock size={24} />
+                </div>
+                <div>
+                  <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1">{t("duration")}</p>
+                  <p className="text-lg font-black">9 hr</p>
+                </div>
               </div>
-              <div>
-                <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1">{t("duration")}</p>
-                <p className="text-lg font-black">9 hr</p>
+              <div className="flex items-center gap-4 px-4 border-l border-gray-100">
+                <div className="w-14 h-14 rounded-full bg-white flex items-center justify-center shadow-sm border border-gray-100 text-gray-400">
+                  <Palmtree size={24} />
+                </div>
+                <div>
+                  <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1">{t("tourType")}</p>
+                  <p className="text-lg font-black">{t("dailyTour")}</p>
+                </div>
               </div>
-            </div>
-            <div className="flex items-center gap-4 px-4 border-l border-gray-100">
-              <div className="w-14 h-14 rounded-full bg-white flex items-center justify-center shadow-sm border border-gray-100 text-gray-400">
-                <Palmtree size={24} />
+              <div className="flex items-center gap-4 px-4 border-l border-gray-100">
+                <div className="w-14 h-14 rounded-full bg-white flex items-center justify-center shadow-sm border border-gray-100 text-gray-400">
+                  <Users size={24} />
+                </div>
+                <div>
+                  <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1">{t("groupSize")}</p>
+                  <p className="text-lg font-black">40 {t("person")}</p>
+                </div>
               </div>
-              <div>
-                <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1">{t("tourType")}</p>
-                <p className="text-lg font-black">{t("dailyTour")}</p>
+              <div className="flex items-center gap-4 px-4 border-l border-gray-100">
+                <div className="w-14 h-14 rounded-full bg-white flex items-center justify-center shadow-sm border border-gray-100 text-gray-400">
+                  <Globe size={24} />
+                </div>
+                <div>
+                  <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1">{t("languages")}</p>
+                  <p className="text-lg font-black">EN, FR</p>
+                </div>
               </div>
-            </div>
-            <div className="flex items-center gap-4 px-4 border-l border-gray-100">
-              <div className="w-14 h-14 rounded-full bg-white flex items-center justify-center shadow-sm border border-gray-100 text-gray-400">
-                <Users size={24} />
-              </div>
-              <div>
-                <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1">{t("groupSize")}</p>
-                <p className="text-lg font-black">40 {t("person")}</p>
-              </div>
-            </div>
-            <div className="flex items-center gap-4 px-4 border-l border-gray-100">
-              <div className="w-14 h-14 rounded-full bg-white flex items-center justify-center shadow-sm border border-gray-100 text-gray-400">
-                <Globe size={24} />
-              </div>
-              <div>
-                <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1">{t("languages")}</p>
-                <p className="text-lg font-black">EN, FR</p>
-              </div>
-            </div>
-          </section>
+            </section>
+          )}
 
           <div className="flex flex-col lg:flex-row gap-16">
             {/* Left Content */}
@@ -278,6 +283,21 @@ export default function DestinationDetailPage() {
                 <h2 className="text-2xl font-black text-gray-900">{t("overview")}</h2>
                 <p className="text-gray-500 leading-relaxed font-light text-[17px]">{destination.description}</p>
               </section>
+
+              {/* Instagram Link — shown if available */}
+              {(destination as any).instagram_url && (
+                <section className="flex items-center gap-3">
+                  <a
+                    href={(destination as any).instagram_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 px-5 py-3 rounded-2xl border border-gray-100 hover:border-pink-400 hover:bg-pink-50 transition-all font-bold text-sm shadow-sm bg-white text-pink-600"
+                  >
+                    <Instagram size={18} />
+                    <span>{t("followOnInstagram")}</span>
+                  </a>
+                </section>
+              )}
 
               {/* Highlights */}
               <section className="space-y-6">
@@ -336,17 +356,20 @@ export default function DestinationDetailPage() {
             {/* Booking Card */}
             <div className="lg:w-[360px]">
               <div className="sticky top-32 bg-white rounded-[24px] border border-gray-100 shadow-xl shadow-blue-500/10 p-6 space-y-6">
+                {/* Price header — shown as price range for restaurants/hotels, full display otherwise */}
                 {showPrice && (
                   <div className="flex items-baseline justify-between">
                     <div className="space-y-1">
                       <p className="text-[9px] font-bold text-gray-400 uppercase tracking-widest">
-                        {t("priceStartsFrom")}
+                        {isRestaurantOrHotel ? t("priceRange") : t("priceStartsFrom")}
                       </p>
                       <div className="flex items-baseline gap-1">
                         <span className="text-2xl font-black text-gray-900">${destination.price.toFixed(2)}</span>
-                        <span className="text-gray-400 font-light text-sm">
-                          {hasHotelCategory ? t("perNight") : t("perUnit")}
-                        </span>
+                        {!isRestaurantOrHotel && (
+                          <span className="text-gray-400 font-light text-sm">
+                            {hasHotelCategory ? t("perNight") : t("perUnit")}
+                          </span>
+                        )}
                       </div>
                     </div>
                     <div className="bg-orange-50 text-orange-600 px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-wider flex items-center gap-1.5">
@@ -356,48 +379,52 @@ export default function DestinationDetailPage() {
                   </div>
                 )}
 
-                <div
-                  className={`flex border border-gray-100 rounded-xl overflow-hidden bg-gray-50/50 ${!hasHotelCategory ? "justify-center" : ""}`}
-                >
+                {/* Date picker — hidden for restaurants/hotels */}
+                {!isRestaurantOrHotel && (
                   <div
-                    className={`${hasHotelCategory ? "flex-1 border-r" : "w-full"} px-4 py-3 flex flex-col items-start gap-1 hover:bg-white hover:shadow-sm transition-all border-gray-100 relative group cursor-pointer`}
+                    className={`flex border border-gray-100 rounded-xl overflow-hidden bg-gray-50/50 ${!hasHotelCategory ? "justify-center" : ""}`}
                   >
-                    <label className="text-[9px] font-bold text-gray-400 uppercase tracking-widest flex items-center gap-1">
-                      <Calendar size={10} />
-                      {hasHotelCategory ? t("checkIn") : t("date")}
-                    </label>
-                    <input
-                      type="date"
-                      value={formatDateForInput(checkInDate)}
-                      onChange={handleCheckInChange}
-                      min={formatDateForInput(new Date())}
-                      className="text-sm font-bold bg-transparent border-none outline-none cursor-pointer w-full appearance-none hover:text-blue-600 transition-colors [&::-webkit-calendar-picker-indicator]:cursor-pointer [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:inset-0 [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:h-full"
-                    />
-                    <div className="absolute inset-0 flex items-center justify-end pr-4 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity">
-                      <Calendar size={14} className="text-blue-600" />
-                    </div>
-                  </div>
-                  {hasHotelCategory && (
-                    <div className="flex-1 px-4 py-3 flex flex-col items-start gap-1 hover:bg-white hover:shadow-sm transition-all relative group cursor-pointer">
+                    <div
+                      className={`${hasHotelCategory ? "flex-1 border-r" : "w-full"} px-4 py-3 flex flex-col items-start gap-1 hover:bg-white hover:shadow-sm transition-all border-gray-100 relative group cursor-pointer`}
+                    >
                       <label className="text-[9px] font-bold text-gray-400 uppercase tracking-widest flex items-center gap-1">
                         <Calendar size={10} />
-                        {t("checkOut")}
+                        {hasHotelCategory ? t("checkIn") : t("date")}
                       </label>
                       <input
                         type="date"
-                        value={formatDateForInput(checkOutDate)}
-                        onChange={handleCheckOutChange}
-                        min={formatDateForInput(new Date(checkInDate.getTime() + 86400000))}
+                        value={formatDateForInput(checkInDate)}
+                        onChange={handleCheckInChange}
+                        min={formatDateForInput(new Date())}
                         className="text-sm font-bold bg-transparent border-none outline-none cursor-pointer w-full appearance-none hover:text-blue-600 transition-colors [&::-webkit-calendar-picker-indicator]:cursor-pointer [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:inset-0 [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:h-full"
                       />
                       <div className="absolute inset-0 flex items-center justify-end pr-4 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity">
                         <Calendar size={14} className="text-blue-600" />
                       </div>
                     </div>
-                  )}
-                </div>
+                    {hasHotelCategory && (
+                      <div className="flex-1 px-4 py-3 flex flex-col items-start gap-1 hover:bg-white hover:shadow-sm transition-all relative group cursor-pointer">
+                        <label className="text-[9px] font-bold text-gray-400 uppercase tracking-widest flex items-center gap-1">
+                          <Calendar size={10} />
+                          {t("checkOut")}
+                        </label>
+                        <input
+                          type="date"
+                          value={formatDateForInput(checkOutDate)}
+                          onChange={handleCheckOutChange}
+                          min={formatDateForInput(new Date(checkInDate.getTime() + 86400000))}
+                          className="text-sm font-bold bg-transparent border-none outline-none cursor-pointer w-full appearance-none hover:text-blue-600 transition-colors [&::-webkit-calendar-picker-indicator]:cursor-pointer [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:inset-0 [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:h-full"
+                        />
+                        <div className="absolute inset-0 flex items-center justify-end pr-4 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity">
+                          <Calendar size={14} className="text-blue-600" />
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                )}
 
-                {showPrice && (
+                {/* Price breakdown — hidden for restaurants/hotels */}
+                {!isRestaurantOrHotel && showPrice && (
                   <div className="space-y-3">
                     <div className="flex items-center justify-between text-gray-500 text-sm font-medium">
                       <div className="flex items-center gap-2 underline decoration-gray-200 decoration-dotted underline-offset-4">
@@ -423,21 +450,27 @@ export default function DestinationDetailPage() {
                   </div>
                 )}
 
-                <div className="space-y-2.5">
-                  <button
-                    onClick={handleBookNow}
-                    className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl font-bold text-sm shadow-lg shadow-blue-500/25 active:scale-95 transition-all"
-                  >
-                    {t("bookNow")}
-                  </button>
-                  <button className="w-full bg-white hover:bg-gray-50 text-gray-900 py-3 rounded-xl font-semibold text-sm border border-gray-100 active:scale-95 transition-all">
-                    {t("inquiryNow")}
-                  </button>
-                </div>
+                {/* Booking buttons — hidden for restaurants/hotels */}
+                {!isRestaurantOrHotel && (
+                  <div className="space-y-2.5">
+                    <button
+                      onClick={handleBookNow}
+                      className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl font-bold text-sm shadow-lg shadow-blue-500/25 active:scale-95 transition-all"
+                    >
+                      {t("bookNow")}
+                    </button>
+                    <button className="w-full bg-white hover:bg-gray-50 text-gray-900 py-3 rounded-xl font-semibold text-sm border border-gray-100 active:scale-95 transition-all">
+                      {t("inquiryNow")}
+                    </button>
+                  </div>
+                )}
 
-                <p className="text-center text-gray-400 text-xs font-bold cursor-pointer hover:text-blue-600 hover:underline transition-all uppercase tracking-widest">
-                  {t("askQuestion")}
-                </p>
+                {/* Ask question — hidden for restaurants/hotels */}
+                {!isRestaurantOrHotel && (
+                  <p className="text-center text-gray-400 text-xs font-bold cursor-pointer hover:text-blue-600 hover:underline transition-all uppercase tracking-widest">
+                    {t("askQuestion")}
+                  </p>
+                )}
               </div>
             </div>
           </div>
