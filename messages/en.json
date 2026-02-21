@@ -454,7 +454,8 @@
     "backToTrips": "Back to Trips",
     "notFound": "Trip not found",
     "errorLoading": "Failed to load trips. Please try again.",
-    "contactAgentText": "Enter your details, our agent will contact you to efficiently plan your circuit."
+    "contactAgentText": "Enter your details, our agent will contact you to efficiently plan your circuit.",
+    "showAllPhotos": "Show all photos"
   },
   "TripBooking": {
     "bookTrip": "Book Trip",

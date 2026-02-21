@@ -8,6 +8,7 @@ import {
   DollarSign,
   Globe,
   MapPin,
+  MoreHorizontal,
   Loader2,
 } from "lucide-react";
 import { useParams } from "next/navigation";
@@ -59,31 +60,95 @@ export default function TripDetailPage() {
       <Navigation />
 
       <div className="pt-24 pb-20">
-        {/* Hero Image */}
-        <div className="relative w-full h-[40vh] md:h-[50vh] overflow-hidden">
-          {trip.image ? (
-            <img
-              src={trip.image}
-              alt={trip.name}
-              className="w-full h-full object-cover"
-            />
-          ) : (
-            <div className="w-full h-full bg-gradient-to-br from-blue-200 to-blue-200" />
-          )}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-          <div className="absolute bottom-8 left-8 right-8 text-white">
-            <button
-              onClick={() => router.push("/trips")}
-              className="flex items-center gap-2 text-white/80 hover:text-white mb-4 text-sm"
-            >
-              <ArrowLeft className="w-4 h-4" /> {t("backToTrips")}
-            </button>
-            <h1 className="text-3xl md:text-5xl font-extrabold mb-2">{trip.name}</h1>
-            {trip.subtitle && (
-              <p className="text-lg text-white/80">{trip.subtitle}</p>
-            )}
-          </div>
-        </div>
+        {/* Hero Image / Gallery */}
+        {(() => {
+          const extraImages = (trip.images || []).sort(
+            (a, b) => a.sort_order - b.sort_order
+          );
+          const hasGallery = extraImages.length > 0;
+
+          if (hasGallery) {
+            const galleryImages = [
+              trip.image || `https://picsum.photos/1200/800?random=${trip.id}1`,
+              ...extraImages.slice(0, 4).map((img) => img.url),
+            ];
+
+            return (
+              <div className="max-w-7xl mx-auto px-4">
+                <div className="mb-4">
+                  <button
+                    onClick={() => router.push("/trips")}
+                    className="flex items-center gap-2 text-gray-500 hover:text-gray-900 text-sm"
+                  >
+                    <ArrowLeft className="w-4 h-4" /> {t("backToTrips")}
+                  </button>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-4 grid-rows-2 gap-4 h-[500px] md:h-[600px] mb-8 rounded-[40px] overflow-hidden shadow-2xl shadow-blue-500/10">
+                  <div className="md:col-span-2 md:row-span-2 relative group overflow-hidden">
+                    <img
+                      src={galleryImages[0]}
+                      alt={trip.name}
+                      className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+                    />
+                  </div>
+                  {galleryImages.slice(1, 5).map((src, i) => (
+                    <div
+                      key={i}
+                      className="hidden md:block relative group overflow-hidden"
+                    >
+                      <img
+                        src={src}
+                        alt={extraImages[i]?.alt_text || "Detail"}
+                        className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+                      />
+                      {i === 3 && galleryImages.length > 4 && (
+                        <button className="absolute bottom-6 right-6 bg-white/95 backdrop-blur-md px-6 py-3 rounded-2xl text-[13px] font-bold shadow-2xl border border-gray-100 flex items-center gap-2 hover:bg-black hover:text-white transition-all z-10">
+                          <MoreHorizontal size={18} />
+                          {t("showAllPhotos")}
+                        </button>
+                      )}
+                    </div>
+                  ))}
+                </div>
+                <h1 className="text-3xl md:text-5xl font-extrabold text-gray-900 mb-2">
+                  {trip.name}
+                </h1>
+                {trip.subtitle && (
+                  <p className="text-lg text-gray-500 mb-6">{trip.subtitle}</p>
+                )}
+              </div>
+            );
+          }
+
+          return (
+            <div className="relative w-full h-[40vh] md:h-[50vh] overflow-hidden">
+              {trip.image ? (
+                <img
+                  src={trip.image}
+                  alt={trip.name}
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <div className="w-full h-full bg-gradient-to-br from-blue-200 to-blue-200" />
+              )}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+              <div className="absolute bottom-8 left-8 right-8 text-white">
+                <button
+                  onClick={() => router.push("/trips")}
+                  className="flex items-center gap-2 text-white/80 hover:text-white mb-4 text-sm"
+                >
+                  <ArrowLeft className="w-4 h-4" /> {t("backToTrips")}
+                </button>
+                <h1 className="text-3xl md:text-5xl font-extrabold mb-2">
+                  {trip.name}
+                </h1>
+                {trip.subtitle && (
+                  <p className="text-lg text-white/80">{trip.subtitle}</p>
+                )}
+              </div>
+            </div>
+          );
+        })()}
 
         <div className="max-w-7xl mx-auto px-4 mt-8">
           <div className="flex flex-col lg:flex-row gap-10">

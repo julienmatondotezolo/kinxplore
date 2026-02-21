@@ -358,7 +358,8 @@
     "backToTrips": "Terug naar Reizen",
     "notFound": "Reis niet gevonden",
     "errorLoading": "Reizen laden mislukt. Probeer het opnieuw.",
-    "contactAgentText": "Voer uw gegevens in, onze agent neemt contact met u op om uw circuit efficiënt te plannen."
+    "contactAgentText": "Voer uw gegevens in, onze agent neemt contact met u op om uw circuit efficiënt te plannen.",
+    "showAllPhotos": "Alle foto's tonen"
   },
   "TripBooking": {
     "bookTrip": "Reis Boeken",

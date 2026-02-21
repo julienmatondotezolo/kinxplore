@@ -454,7 +454,8 @@
     "backToTrips": "Retour aux Circuits",
     "notFound": "Circuit non trouvé",
     "errorLoading": "Échec du chargement des circuits. Veuillez réessayer.",
-    "contactAgentText": "Encodez vos données, notre agent vous recontactera pour planifier efficacement votre circuit."
+    "contactAgentText": "Encodez vos données, notre agent vous recontactera pour planifier efficacement votre circuit.",
+    "showAllPhotos": "Voir toutes les photos"
   },
   "TripBooking": {
     "bookTrip": "Réserver le Circuit",

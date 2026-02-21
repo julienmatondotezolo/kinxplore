@@ -83,6 +83,16 @@ export interface DestinationImage {
   created_at: string;
 }
 
+// Trip Images
+export interface TripImage {
+  id: string;
+  trip_id: string;
+  url: string;
+  sort_order: number;
+  alt_text?: string;
+  created_at: string;
+}
+
 // Trips / Circuits
 export interface Trip {
   id: string;
@@ -109,4 +119,5 @@ export interface Trip {
     price?: number;
     ratings?: number;
   }>;
+  images?: TripImage[];
 }
