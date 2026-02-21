@@ -18,7 +18,6 @@ import React, { useState } from "react";
 
 import { useAuth } from "@/hooks/useAuth";
 import { useTrip } from "@/hooks/useTrips";
-import { bookingsApi } from "@/lib/api";
 import { supabase } from "@/lib/supabase";
 import { useRouter } from "@/navigation";
 import { BookingGuestInfo, BookingStep } from "@/types/booking.types";
@@ -33,7 +32,6 @@ export default function TripBookingPage() {
   const { data: trip, isLoading, error } = useTrip(id);
 
   const [currentStep, setCurrentStep] = useState<BookingStep>("info");
-  const [bookingId, setBookingId] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
 
@@ -56,46 +54,31 @@ export default function TripBookingPage() {
     specialRequests: "",
   });
 
-  const selectedPrice = trip?.price_international || 0;
-
   const handleConfirmBooking = async () => {
-    if (!user || !trip) return;
+    if (!trip) return;
 
     setIsSubmitting(true);
     setSubmitError(null);
 
     try {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session?.access_token) {
-        router.push(`/login?returnUrl=/trips/${id}/booking`);
-        return;
-      }
+      const { error: insertError } = await supabase.from("trip_inquiries").insert({
+        first_name: guestInfo.firstName,
+        last_name: guestInfo.lastName,
+        email: guestInfo.email,
+        phone: guestInfo.phone,
+        destination: trip.region === "kinshasa" ? "kinshasa" : "kongo_central",
+        date_from: startDate || null,
+        date_to: null,
+        travelers: 1,
+        trip_style: null,
+        budget: null,
+        message: `Trip: ${trip.name} (${trip.duration})\nCountry: ${guestInfo.country}\nCity: ${guestInfo.city}\nAddress: ${guestInfo.address}\nZip: ${guestInfo.zipCode}${guestInfo.specialRequests ? `\n\nSpecial Requests: ${guestInfo.specialRequests}` : ""}`,
+      });
 
-      const endDate = new Date(startDate);
-      endDate.setDate(endDate.getDate() + 1);
-
-      const bookingData = {
-        trip_id: trip.id,
-        check_in_date: startDate,
-        check_out_date: endDate.toISOString().split("T")[0],
-        number_of_guests: 1,
-        total_price: selectedPrice,
-        guest_first_name: guestInfo.firstName,
-        guest_last_name: guestInfo.lastName,
-        contact_email: guestInfo.email,
-        contact_phone: guestInfo.phone,
-        guest_country: guestInfo.country,
-        guest_address: guestInfo.address,
-        guest_city: guestInfo.city,
-        guest_zip_code: guestInfo.zipCode,
-        special_requests: guestInfo.specialRequests || undefined,
-      };
-
-      const booking = await bookingsApi.createBooking(bookingData as any, session.access_token);
-      setBookingId(booking.id);
+      if (insertError) throw insertError;
       setCurrentStep("confirmation");
     } catch (err: any) {
-      setSubmitError(err.message || "Failed to create booking");
+      setSubmitError(err.message || "Failed to submit inquiry");
     } finally {
       setIsSubmitting(false);
     }
@@ -120,7 +103,7 @@ export default function TripBookingPage() {
   const isInfoValid = guestInfo.firstName && guestInfo.lastName && guestInfo.email && guestInfo.phone && guestInfo.country && guestInfo.address && guestInfo.city && guestInfo.zipCode;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50/50 via-white to-purple-50/30">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50/50 via-white to-blue-50/30">
       {/* Header */}
       <div className="bg-white border-b sticky top-0 z-50">
         <div className="max-w-4xl mx-auto px-4 py-4 flex items-center gap-4">
@@ -165,7 +148,7 @@ export default function TripBookingPage() {
                 value={startDate}
                 onChange={(e) => setStartDate(e.target.value)}
                 min={new Date().toISOString().split("T")[0]}
-                className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-gray-900"
               />
             </div>
 
@@ -181,7 +164,7 @@ export default function TripBookingPage() {
                       type="text"
                       value={guestInfo.firstName}
                       onChange={(e) => setGuestInfo({ ...guestInfo, firstName: e.target.value })}
-                      className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-gray-900"
                     />
                   </div>
                 </div>
@@ -191,7 +174,7 @@ export default function TripBookingPage() {
                     type="text"
                     value={guestInfo.lastName}
                     onChange={(e) => setGuestInfo({ ...guestInfo, lastName: e.target.value })}
-                    className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-gray-900"
                   />
                 </div>
               </div>
@@ -204,7 +187,7 @@ export default function TripBookingPage() {
                       type="email"
                       value={guestInfo.email}
                       onChange={(e) => setGuestInfo({ ...guestInfo, email: e.target.value })}
-                      className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-gray-900"
                     />
                   </div>
                 </div>
@@ -216,7 +199,7 @@ export default function TripBookingPage() {
                       type="tel"
                       value={guestInfo.phone}
                       onChange={(e) => setGuestInfo({ ...guestInfo, phone: e.target.value })}
-                      className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-gray-900"
                     />
                   </div>
                 </div>
@@ -228,7 +211,7 @@ export default function TripBookingPage() {
                     type="text"
                     value={guestInfo.country}
                     onChange={(e) => setGuestInfo({ ...guestInfo, country: e.target.value })}
-                    className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-gray-900"
                   />
                 </div>
                 <div>
@@ -237,7 +220,7 @@ export default function TripBookingPage() {
                     type="text"
                     value={guestInfo.city}
                     onChange={(e) => setGuestInfo({ ...guestInfo, city: e.target.value })}
-                    className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-gray-900"
                   />
                 </div>
               </div>
@@ -248,7 +231,7 @@ export default function TripBookingPage() {
                     type="text"
                     value={guestInfo.address}
                     onChange={(e) => setGuestInfo({ ...guestInfo, address: e.target.value })}
-                    className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-gray-900"
                   />
                 </div>
                 <div>
@@ -257,7 +240,7 @@ export default function TripBookingPage() {
                     type="text"
                     value={guestInfo.zipCode}
                     onChange={(e) => setGuestInfo({ ...guestInfo, zipCode: e.target.value })}
-                    className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-gray-900"
                   />
                 </div>
               </div>
@@ -267,7 +250,7 @@ export default function TripBookingPage() {
                   value={guestInfo.specialRequests}
                   onChange={(e) => setGuestInfo({ ...guestInfo, specialRequests: e.target.value })}
                   rows={3}
-                  className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+                  className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none bg-white text-gray-900"
                 />
               </div>
             </div>
@@ -310,18 +293,11 @@ export default function TripBookingPage() {
               <CheckCircle2 className="w-10 h-10 text-green-600" />
             </div>
             <h2 className="text-3xl font-extrabold text-gray-900 mb-2">{t("bookingConfirmed")}</h2>
-            <p className="text-gray-500 mb-2">{t("bookingId")}: {bookingId}</p>
             <p className="text-gray-500 mb-8">{t("confirmationSent")}</p>
             <div className="flex items-center justify-center gap-4">
               <button
-                onClick={() => router.push("/bookings")}
-                className="px-6 py-3 bg-black text-white rounded-full font-bold"
-              >
-                {t("viewBookings")}
-              </button>
-              <button
                 onClick={() => router.push("/trips")}
-                className="px-6 py-3 border-2 border-gray-200 rounded-full font-bold text-gray-700 hover:bg-gray-50"
+                className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-full font-bold transition-colors"
               >
                 {t("browseTrips")}
               </button>
@@ -347,7 +323,7 @@ export default function TripBookingPage() {
               <button
                 onClick={() => setCurrentStep("review")}
                 disabled={!isInfoValid}
-                className="px-8 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl font-bold disabled:opacity-50 disabled:cursor-not-allowed"
+                className="px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
               >
                 {t("continue")}
               </button>
@@ -355,7 +331,7 @@ export default function TripBookingPage() {
               <button
                 onClick={handleConfirmBooking}
                 disabled={isSubmitting}
-                className="px-8 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl font-bold disabled:opacity-50 flex items-center gap-2"
+                className="px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold disabled:opacity-50 flex items-center gap-2 transition-colors"
               >
                 {isSubmitting && <Loader2 className="w-4 h-4 animate-spin" />}
                 {t("confirmBooking")}

@@ -20,7 +20,7 @@ export default function CityTransferPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50/50 via-white to-purple-50/30">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50/50 via-white to-blue-50/30">
       <Navigation />
 
       <div className="pt-32 pb-20 px-4">
@@ -30,8 +30,8 @@ export default function CityTransferPage() {
             animate={{ opacity: 1, y: 0 }}
             className="text-center mb-16"
           >
-            <div className="w-16 h-16 bg-purple-100 rounded-2xl flex items-center justify-center mx-auto mb-6">
-              <Car className="w-8 h-8 text-purple-600" />
+            <div className="w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center mx-auto mb-6">
+              <Car className="w-8 h-8 text-blue-600" />
             </div>
             <h1 className="text-4xl md:text-5xl font-extrabold text-gray-900 tracking-tight mb-4">
               {t("cityTransferTitle")}
@@ -75,7 +75,7 @@ export default function CityTransferPage() {
           >
             <a
               href="#contact"
-              className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl font-bold hover:shadow-lg transition-all"
+              className="inline-flex items-center gap-2 px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold hover:shadow-lg transition-all"
             >
               {t("contactUs")}
               <ArrowRight className="w-5 h-5" />

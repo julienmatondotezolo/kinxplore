@@ -26,7 +26,7 @@ export const ItineraryDayCard: React.FC<ItineraryDayCardProps> = ({ day, index }
       className="flex gap-3 sm:gap-4"
     >
       {/* Day Number Circle */}
-      <div className="flex-shrink-0 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center text-white font-black text-xs sm:text-sm shadow-md ring-4 ring-blue-50">
+      <div className="flex-shrink-0 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-blue-600 flex items-center justify-center text-white font-black text-xs sm:text-sm shadow-md ring-4 ring-blue-50">
         {day.day}
       </div>
 
@@ -47,7 +47,7 @@ export const ItineraryDayCard: React.FC<ItineraryDayCardProps> = ({ day, index }
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                 />
               ) : (
-                <div className="w-full h-full bg-gradient-to-br from-blue-400 via-purple-500 to-pink-400 flex items-center justify-center">
+                <div className="w-full h-full bg-gradient-to-br from-blue-400 via-blue-500 to-blue-600 flex items-center justify-center">
                   <MapPin size={28} className="text-white/90 sm:w-8 sm:h-8" />
                 </div>
               )}
@@ -160,7 +160,7 @@ export const ItineraryDayCard: React.FC<ItineraryDayCardProps> = ({ day, index }
                 {day.destinations.length > 1 && (
                   <div>
                     <h4 className="text-xs sm:text-sm font-bold text-gray-700 mb-2 flex items-center gap-2">
-                      <MapPin size={14} className="text-purple-600" />
+                      <MapPin size={14} className="text-blue-600" />
                       Destinations ({day.destinations.length})
                     </h4>
                     <div className="space-y-1.5 sm:space-y-2">

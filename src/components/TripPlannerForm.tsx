@@ -205,7 +205,7 @@ export const TripPlannerForm: React.FC<Props> = ({ compact = false }) => {
       {/* ... rest of the original form ... */}
       {/* Decorative background elements for the form area */}
       <div className="absolute inset-0 -z-10 overflow-hidden pointer-events-none">
-        <div className="absolute -top-20 -left-20 w-64 h-64 bg-gradient-to-br from-blue-400/10 to-purple-400/10 rounded-full blur-3xl" />
+        <div className="absolute -top-20 -left-20 w-64 h-64 bg-gradient-to-br from-blue-400/10 to-blue-400/10 rounded-full blur-3xl" />
         <div className="absolute -bottom-20 -right-20 w-72 h-72 bg-gradient-to-tl from-pink-400/10 to-orange-400/10 rounded-full blur-3xl" />
       </div>
 

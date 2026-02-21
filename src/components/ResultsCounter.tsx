@@ -49,7 +49,7 @@ export function ResultsCounter({ count, total, isFiltered }: ResultsCounterProps
           stiffness: 300,
           damping: 20,
         }}
-        className="inline-flex items-center gap-3 bg-gradient-to-r from-blue-50 to-purple-50 border border-blue-100 rounded-full px-6 py-3"
+        className="inline-flex items-center gap-3 bg-gradient-to-r from-blue-50 to-blue-50 border border-blue-100 rounded-full px-6 py-3"
       >
         <MapPin size={18} className="text-blue-600" />
         <div className="flex items-baseline gap-2">

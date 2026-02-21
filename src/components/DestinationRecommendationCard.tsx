@@ -40,7 +40,7 @@ export const DestinationRecommendationCard: React.FC<DestinationRecommendationCa
       className="bg-white rounded-3xl shadow-xl border border-gray-200 overflow-hidden hover:shadow-2xl transition-all group cursor-pointer"
     >
       {/* Image */}
-      <div className="relative h-48 bg-gradient-to-br from-blue-500 via-purple-600 to-pink-500 overflow-hidden">
+      <div className="relative h-48 bg-gradient-to-br from-blue-500 via-blue-600 to-pink-500 overflow-hidden">
         {destination.image_url ? (
           <img
             src={destination.image_url}
@@ -48,7 +48,7 @@ export const DestinationRecommendationCard: React.FC<DestinationRecommendationCa
             className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
           />
         ) : (
-          <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-blue-400/20 via-purple-500/20 to-pink-400/20">
+          <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-blue-400/20 via-blue-500/20 to-pink-400/20">
             <MapPin size={64} className="text-white/60" />
           </div>
         )}
@@ -84,7 +84,7 @@ export const DestinationRecommendationCard: React.FC<DestinationRecommendationCa
         </div>
 
         {/* AI Recommendation Reason - Most prominent */}
-        <div className="bg-gradient-to-br from-blue-50 to-purple-50 border-2 border-blue-200 rounded-2xl p-4 relative overflow-hidden">
+        <div className="bg-gradient-to-br from-blue-50 to-blue-50 border-2 border-blue-200 rounded-2xl p-4 relative overflow-hidden">
           {/* Sparkle Icon */}
           <div className="absolute top-3 right-3 text-blue-400 opacity-50">
             <Sparkles size={20} />

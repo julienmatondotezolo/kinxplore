@@ -322,7 +322,7 @@ export function MapPlaceholder({ destinationCount }: { destinationCount: number 
     <div className="w-full h-full flex items-center justify-center relative bg-blue-50/30 rounded-[32px]">
       <div className="absolute inset-0 bg-[url('https://api.mapbox.com/styles/v1/mapbox/light-v10/static/0,0,0,0,0/800x800?access_token=pk.placeholder')] bg-cover opacity-20 grayscale contrast-[0.8]" />
       <div className="z-10 text-center px-10">
-        <div className="w-20 h-20 bg-gradient-to-br from-blue-600 to-purple-600 rounded-3xl flex items-center justify-center shadow-xl mx-auto mb-6 transform transition-transform hover:scale-110">
+        <div className="w-20 h-20 bg-blue-600 rounded-3xl flex items-center justify-center shadow-xl mx-auto mb-6 transform transition-transform hover:scale-110">
           <MapPin size={40} className="text-white stroke-[1.5]" />
         </div>
         <h4 className="text-xl font-bold mb-3 text-gray-800">Map Explorer</h4>

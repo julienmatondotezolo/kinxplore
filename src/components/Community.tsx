@@ -122,7 +122,7 @@ export const Community: React.FC = () => {
 
             {/* Central Card with Image (from template) */}
             <motion.div whileHover={{ scale: 1.02 }} className="relative group max-w-md mx-auto">
-              <div className="absolute -inset-4 bg-gradient-to-r from-blue-600 to-purple-600 rounded-[3rem] blur-xl opacity-20 group-hover:opacity-40 transition-opacity" />
+              <div className="absolute -inset-4 bg-blue-600 rounded-[3rem] blur-xl opacity-20 group-hover:opacity-40 transition-opacity" />
               <div className="relative rounded-[2.5rem] overflow-hidden border-8 border-white shadow-2xl aspect-[4/3]">
                 <img
                   src="https://picsum.photos/800/600?random=350"

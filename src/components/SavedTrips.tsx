@@ -94,7 +94,7 @@ export const SavedTrips: React.FC = () => {
         animate={{ opacity: 1, y: 0 }}
         className="flex flex-col items-center justify-center py-20 px-4"
       >
-        <div className="w-20 h-20 sm:w-24 sm:h-24 bg-gradient-to-br from-blue-100 to-purple-100 rounded-3xl flex items-center justify-center mb-6 shadow-lg">
+        <div className="w-20 h-20 sm:w-24 sm:h-24 bg-gradient-to-br from-blue-100 to-blue-100 rounded-3xl flex items-center justify-center mb-6 shadow-lg">
           <Package size={40} className="text-blue-600 sm:w-12 sm:h-12" />
         </div>
         <h3 className="text-xl sm:text-2xl font-extrabold text-gray-900 mb-2 text-center">
@@ -103,7 +103,7 @@ export const SavedTrips: React.FC = () => {
         <p className="text-sm sm:text-base text-gray-600 max-w-md text-center mb-6">
           Start planning your adventure in Kinshasa and save your itineraries here
         </p>
-        <button className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-6 py-3 rounded-xl font-bold shadow-lg hover:shadow-xl transition-all active:scale-95 touch-manipulation">
+        <button className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl font-bold shadow-lg hover:shadow-xl transition-all active:scale-95 touch-manipulation">
           <Sparkles size={18} />
           Start Planning
           <ArrowRight size={18} />
@@ -143,7 +143,7 @@ export const SavedTrips: React.FC = () => {
                 className="group bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden hover:shadow-2xl transition-all cursor-pointer"
               >
                 {/* Trip Image/Header */}
-                <div className="relative h-40 sm:h-48 overflow-hidden bg-gradient-to-br from-blue-400 via-purple-500 to-pink-400">
+                <div className="relative h-40 sm:h-48 overflow-hidden bg-gradient-to-br from-blue-400 via-blue-500 to-pink-400">
                   {primaryDestination?.image_url ? (
                     <img
                       src={primaryDestination.image_url}
@@ -202,7 +202,7 @@ export const SavedTrips: React.FC = () => {
                   {/* Stats */}
                   <div className="flex items-center gap-3 mb-3 pb-3 border-b border-gray-100">
                     <div className="flex items-center gap-1.5 text-xs text-gray-500">
-                      <MapPin size={12} className="text-purple-600" />
+                      <MapPin size={12} className="text-blue-600" />
                       <span className="font-medium">
                         {trip.recommendations.destinations.length} places
                       </span>
@@ -216,7 +216,7 @@ export const SavedTrips: React.FC = () => {
                   </div>
 
                   {/* View Button */}
-                  <button className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white py-2.5 rounded-xl font-bold text-sm transition-all shadow-md hover:shadow-lg active:scale-98 touch-manipulation">
+                  <button className="w-full flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white py-2.5 rounded-xl font-bold text-sm transition-all shadow-md hover:shadow-lg active:scale-98 touch-manipulation">
                     <Eye size={16} />
                     View Itinerary
                     <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
@@ -245,7 +245,7 @@ export const SavedTrips: React.FC = () => {
               onClick={(e) => e.stopPropagation()}
               className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
             >
-              <div className="sticky top-0 bg-gradient-to-r from-blue-600 to-purple-600 text-white p-6 z-10">
+              <div className="sticky top-0 bg-blue-600 text-white p-6 z-10">
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
                     <h2 className="text-xl sm:text-2xl font-extrabold mb-2">
@@ -268,7 +268,7 @@ export const SavedTrips: React.FC = () => {
                 {/* Destinations */}
                 <div>
                   <h3 className="text-lg font-bold text-gray-900 mb-3 flex items-center gap-2">
-                    <MapPin size={20} className="text-purple-600" />
+                    <MapPin size={20} className="text-blue-600" />
                     Destinations ({selectedTrip.recommendations.destinations.length})
                   </h3>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">

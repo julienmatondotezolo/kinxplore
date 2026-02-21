@@ -20,7 +20,7 @@ export default function AdminHelpPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50/50 via-white to-purple-50/30">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50/50 via-white to-blue-50/30">
       <Navigation />
 
       <div className="pt-32 pb-20 px-4">
@@ -75,7 +75,7 @@ export default function AdminHelpPage() {
           >
             <a
               href="#contact"
-              className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl font-bold hover:shadow-lg transition-all"
+              className="inline-flex items-center gap-2 px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold hover:shadow-lg transition-all"
             >
               {t("contactUs")}
               <ArrowRight className="w-5 h-5" />

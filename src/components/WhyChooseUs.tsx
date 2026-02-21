@@ -107,7 +107,7 @@ export const WhyChooseUs: React.FC = () => {
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                     <p className="absolute bottom-2 left-2 text-[10px] font-bold text-white leading-none">Safari</p>
                   </div>
-                  <div className="aspect-[4/5] rounded-2xl bg-purple-50 overflow-hidden relative">
+                  <div className="aspect-[4/5] rounded-2xl bg-blue-50 overflow-hidden relative">
                     <img src="https://picsum.photos/200/300?random=402" className="w-full h-full object-cover" />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                     <p className="absolute bottom-2 left-2 text-[10px] font-bold text-white leading-none">Sunset</p>

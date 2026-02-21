@@ -68,7 +68,7 @@ export default function TripDetailPage() {
               className="w-full h-full object-cover"
             />
           ) : (
-            <div className="w-full h-full bg-gradient-to-br from-blue-200 to-purple-200" />
+            <div className="w-full h-full bg-gradient-to-br from-blue-200 to-blue-200" />
           )}
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
           <div className="absolute bottom-8 left-8 right-8 text-white">
@@ -219,7 +219,7 @@ export default function TripDetailPage() {
                 </div>
 
                 <Link href={`/trips/${trip.id}/booking`}>
-                  <button className="w-full py-4 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-xl font-bold text-lg transition-all shadow-lg hover:shadow-xl active:scale-95">
+                  <button className="w-full py-4 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold text-lg transition-all shadow-lg hover:shadow-xl active:scale-95">
                     {t("bookNow")}
                   </button>
                 </Link>

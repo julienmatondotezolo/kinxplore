@@ -291,11 +291,11 @@ export default function BookingsPage() {
                 <p className="text-xs font-bold text-blue-600 uppercase tracking-widest mb-2">{t("stats.completed")}</p>
                 <p className="text-3xl font-black text-blue-700">{stats.completed}</p>
               </div>
-              <div className="bg-purple-50 rounded-2xl p-6 border border-purple-100">
-                <p className="text-xs font-bold text-purple-600 uppercase tracking-widest mb-2">
+              <div className="bg-blue-50 rounded-2xl p-6 border border-blue-100">
+                <p className="text-xs font-bold text-blue-600 uppercase tracking-widest mb-2">
                   {t("stats.totalSpent")}
                 </p>
-                <p className="text-3xl font-black text-purple-700">${stats.totalSpent.toFixed(0)}</p>
+                <p className="text-3xl font-black text-blue-700">${stats.totalSpent.toFixed(0)}</p>
               </div>
             </div>
           )}
@@ -364,7 +364,7 @@ export default function BookingsPage() {
           {/* Bookings List */}
           {!user && !authLoading ? (
             // Not logged in - show login message
-            <div className="bg-gradient-to-br from-blue-50 to-purple-50 rounded-2xl p-12 text-center border-2 border-blue-200">
+            <div className="bg-gradient-to-br from-blue-50 to-blue-50 rounded-2xl p-12 text-center border-2 border-blue-200">
               <div className="max-w-md mx-auto">
                 <div className="w-20 h-20 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-6">
                   <ShoppingBag size={40} className="text-white" />
@@ -462,7 +462,7 @@ export default function BookingsPage() {
                           </div>
                         </div>
                         <div className="flex items-center gap-3">
-                          <div className="w-10 h-10 rounded-full bg-purple-50 flex items-center justify-center text-purple-600">
+                          <div className="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center text-blue-600">
                             <Users size={18} />
                           </div>
                           <div>

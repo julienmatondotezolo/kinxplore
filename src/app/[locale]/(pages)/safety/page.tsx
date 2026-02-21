@@ -11,7 +11,7 @@ export default function SafetyPage() {
   const t = useTranslations("Legal");
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50/50 via-white to-purple-50/30">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50/50 via-white to-blue-50/30">
       <Navigation />
 
       <div className="pt-32 pb-20 px-4">

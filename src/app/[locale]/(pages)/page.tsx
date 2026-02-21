@@ -24,7 +24,7 @@ export default function HomePage() {
       <div className="relative bg-[#FAFBFF] overflow-hidden">
         {/* Background decorative elements */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-40 -left-40 w-96 h-96 bg-gradient-to-br from-blue-400/10 to-purple-400/10 rounded-full blur-3xl" />
+          <div className="absolute top-40 -left-40 w-96 h-96 bg-gradient-to-br from-blue-400/10 to-blue-400/10 rounded-full blur-3xl" />
           <div className="absolute bottom-40 -right-40 w-96 h-96 bg-gradient-to-tl from-pink-400/10 to-orange-400/10 rounded-full blur-3xl" />
         </div>
 

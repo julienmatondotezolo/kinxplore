@@ -75,7 +75,7 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
               onClick={item.action}
               className={`flex flex-col items-center justify-center gap-1 py-2 px-3 rounded-xl transition-all touch-manipulation active:scale-95 ${
                 isActive
-                  ? "bg-gradient-to-br from-blue-600 to-purple-600 text-white shadow-lg"
+                  ? "bg-blue-600 text-white shadow-lg"
                   : "text-gray-600 hover:bg-gray-50"
               }`}
             >

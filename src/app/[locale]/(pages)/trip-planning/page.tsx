@@ -77,7 +77,7 @@ export default function TripPlanningPage() {
 
   if (isSuccess) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50/50 via-white to-purple-50/30">
+      <div className="min-h-screen bg-gradient-to-br from-blue-50/50 via-white to-blue-50/30">
         <Navigation />
         <div className="pt-32 pb-20 px-4">
           <motion.div
@@ -92,7 +92,7 @@ export default function TripPlanningPage() {
             <p className="text-gray-500 mb-8">{t("successMessage")}</p>
             <button
               onClick={() => router.push("/")}
-              className="px-8 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl font-bold"
+              className="px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold"
             >
               {t("backToHome")}
             </button>
@@ -104,7 +104,7 @@ export default function TripPlanningPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50/50 via-white to-purple-50/30">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50/50 via-white to-blue-50/30">
       <Navigation />
 
       <div className="pt-32 pb-20 px-4">
@@ -325,7 +325,7 @@ export default function TripPlanningPage() {
               <button
                 type="submit"
                 disabled={!isFormValid || isSubmitting}
-                className="px-8 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl font-bold disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                className="px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
               >
                 {isSubmitting ? (
                   <Loader2 className="w-4 h-4 animate-spin" />

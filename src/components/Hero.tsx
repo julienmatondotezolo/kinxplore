@@ -60,11 +60,11 @@ export const Hero: React.FC = () => {
   };
 
   return (
-    <div className="relative pt-20 sm:pt-24 md:pt-32 pb-20 sm:pb-32 md:pb-48 px-3 sm:px-4 overflow-hidden bg-gradient-to-br from-blue-50/50 via-purple-50/30 to-pink-50/40">
+    <div className="relative pt-20 sm:pt-24 md:pt-32 pb-20 sm:pb-32 md:pb-48 px-3 sm:px-4 overflow-hidden bg-gradient-to-br from-blue-50/50 via-blue-50/30 to-pink-50/40">
       {/* ... Background Blobs ... */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {/* Large primary blob - top right */}
-        <div className="absolute -top-40 -right-40 w-[300px] sm:w-[500px] h-[300px] sm:h-[500px] bg-gradient-to-br from-blue-400/20 to-purple-400/20 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute -top-40 -right-40 w-[300px] sm:w-[500px] h-[300px] sm:h-[500px] bg-gradient-to-br from-blue-400/20 to-blue-400/20 rounded-full blur-3xl animate-pulse" />
 
         {/* Secondary blob - bottom left */}
         <div className="absolute -bottom-20 -left-20 w-[250px] sm:w-[400px] h-[250px] sm:h-[400px] bg-gradient-to-tr from-pink-400/15 to-orange-400/15 rounded-full blur-3xl animate-pulse delay-1000" />
@@ -81,7 +81,7 @@ export const Hero: React.FC = () => {
         <div className="hidden md:block absolute top-32 right-[20%] text-blue-400/20 animate-float">
           <Plane size={40} className="rotate-45" />
         </div>
-        <div className="hidden md:block absolute bottom-32 left-[15%] text-purple-400/20 animate-float-delayed">
+        <div className="hidden md:block absolute bottom-32 left-[15%] text-blue-400/20 animate-float-delayed">
           <Compass size={36} />
         </div>
         <div className="hidden md:block absolute top-[45%] right-[10%] text-pink-400/20 animate-float-slow">

@@ -110,7 +110,7 @@ export const ItineraryRenderer: React.FC<ItineraryRendererProps> = ({ itineraryT
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: sectionIndex * 0.05 }}
-              className="bg-gradient-to-br from-blue-50 to-purple-50 rounded-xl sm:rounded-2xl p-4 sm:p-5 border border-blue-100"
+              className="bg-gradient-to-br from-blue-50 to-blue-50 rounded-xl sm:rounded-2xl p-4 sm:p-5 border border-blue-100"
             >
               <p className="text-sm sm:text-base text-gray-700 leading-relaxed">
                 {section.content[0]}
@@ -129,7 +129,7 @@ export const ItineraryRenderer: React.FC<ItineraryRendererProps> = ({ itineraryT
               className="bg-white rounded-xl sm:rounded-2xl shadow-lg border border-gray-100 overflow-hidden"
             >
               {/* Day Header */}
-              <div className="bg-gradient-to-r from-blue-600 via-blue-600 to-purple-600 px-4 sm:px-6 py-3 sm:py-4">
+              <div className="bg-gradient-to-r from-blue-600 via-blue-600 to-blue-600 px-4 sm:px-6 py-3 sm:py-4">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 sm:w-12 sm:h-12 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center">
                     <Calendar size={20} className="text-white sm:w-6 sm:h-6" />
@@ -153,7 +153,7 @@ export const ItineraryRenderer: React.FC<ItineraryRendererProps> = ({ itineraryT
                     initial={{ opacity: 0, x: -10 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: (sectionIndex * 0.1) + (actIndex * 0.05) }}
-                    className="group flex items-start gap-3 sm:gap-4 bg-gradient-to-br from-gray-50 to-blue-50/30 hover:from-blue-50 hover:to-purple-50/30 rounded-lg sm:rounded-xl p-3 sm:p-4 border border-gray-100 hover:border-blue-200 transition-all"
+                    className="group flex items-start gap-3 sm:gap-4 bg-gradient-to-br from-gray-50 to-blue-50/30 hover:from-blue-50 hover:to-blue-50/30 rounded-lg sm:rounded-xl p-3 sm:p-4 border border-gray-100 hover:border-blue-200 transition-all"
                   >
                     {/* Icon */}
                     <div className="flex-shrink-0 w-8 h-8 sm:w-9 sm:h-9 bg-white rounded-lg sm:rounded-xl flex items-center justify-center shadow-sm group-hover:shadow-md transition-shadow border border-gray-100">

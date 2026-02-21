@@ -110,7 +110,7 @@ export const TripChat: React.FC<TripChatProps> = ({ initialMessage, onClose }) =
     : [];
 
   return (
-    <div className="flex flex-col lg:flex-row h-full bg-gradient-to-br from-blue-50/50 via-purple-50/30 to-pink-50/40 overflow-hidden relative">
+    <div className="flex flex-col lg:flex-row h-full bg-gradient-to-br from-blue-50/50 via-blue-50/30 to-pink-50/40 overflow-hidden relative">
       {/* Chat Section */}
       <motion.div
         initial={false}
@@ -125,7 +125,7 @@ export const TripChat: React.FC<TripChatProps> = ({ initialMessage, onClose }) =
         {/* Header */}
         <div className="bg-white border-b border-gray-100 px-3 sm:px-4 md:px-6 py-3 sm:py-4 flex items-center justify-between shadow-sm">
           <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1">
-            <div className="w-9 h-9 sm:w-10 sm:h-10 bg-gradient-to-br from-blue-600 to-purple-600 rounded-full flex items-center justify-center flex-shrink-0 shadow-md">
+            <div className="w-9 h-9 sm:w-10 sm:h-10 bg-blue-600 rounded-full flex items-center justify-center flex-shrink-0 shadow-md">
               <Bot size={18} className="text-white sm:w-5 sm:h-5" />
             </div>
             <div className="min-w-0 flex-1">
@@ -140,7 +140,7 @@ export const TripChat: React.FC<TripChatProps> = ({ initialMessage, onClose }) =
                   setShowRecommendations(true);
                   setMobileView("itinerary");
                 }}
-                className="lg:hidden flex items-center gap-1.5 px-3 py-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl font-bold text-xs shadow-md hover:shadow-lg active:scale-95 transition-all touch-manipulation"
+                className="lg:hidden flex items-center gap-1.5 px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold text-xs shadow-md hover:shadow-lg active:scale-95 transition-all touch-manipulation"
                 aria-label="View itinerary"
               >
                 <MapPin size={14} />
@@ -167,7 +167,7 @@ export const TripChat: React.FC<TripChatProps> = ({ initialMessage, onClose }) =
             animate={{ opacity: 1, y: 0 }}
             className="text-center space-y-6 py-12"
           >
-            <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-blue-600 to-purple-600 rounded-full">
+            <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-600 rounded-full">
               <Sparkles size={32} className="text-white" />
             </div>
             <div className="space-y-2">
@@ -208,7 +208,7 @@ export const TripChat: React.FC<TripChatProps> = ({ initialMessage, onClose }) =
               className={`flex gap-3 ${message.role === "user" ? "justify-end" : "justify-start"}`}
             >
               {message.role === "model" && (
-                <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-purple-600 rounded-full flex items-center justify-center flex-shrink-0">
+                <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center flex-shrink-0">
                   <Bot size={16} className="text-white" />
                 </div>
               )}
@@ -240,7 +240,7 @@ export const TripChat: React.FC<TripChatProps> = ({ initialMessage, onClose }) =
             animate={{ opacity: 1, y: 0 }}
             className="flex gap-3 justify-start"
           >
-            <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-purple-600 rounded-full flex items-center justify-center flex-shrink-0">
+            <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center flex-shrink-0">
               <Bot size={16} className="text-white" />
             </div>
             <div className="max-w-[85%] md:max-w-[75%] bg-white text-gray-900 border border-gray-100 rounded-2xl rounded-tl-none px-4 py-3 shadow-sm">
@@ -259,7 +259,7 @@ export const TripChat: React.FC<TripChatProps> = ({ initialMessage, onClose }) =
             animate={{ opacity: 1 }}
             className="flex gap-3 justify-start"
           >
-            <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-purple-600 rounded-full flex items-center justify-center flex-shrink-0">
+            <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center flex-shrink-0">
               <Bot size={16} className="text-white" />
             </div>
             <div className="bg-white border border-gray-100 rounded-2xl rounded-tl-none px-4 py-3 shadow-sm">
@@ -332,7 +332,7 @@ export const TripChat: React.FC<TripChatProps> = ({ initialMessage, onClose }) =
             }`}
           >
             {/* Recommendations Header */}
-            <div className="bg-gradient-to-r from-blue-600 via-blue-600 to-purple-600 px-4 sm:px-6 py-4 sm:py-5 text-white flex-shrink-0">
+            <div className="bg-blue-600 px-4 sm:px-6 py-4 sm:py-5 text-white flex-shrink-0">
               {/* Back button for mobile */}
               <button
                 onClick={() => {
@@ -398,7 +398,7 @@ export const TripChat: React.FC<TripChatProps> = ({ initialMessage, onClose }) =
                     zoom={12}
                   />
                 ) : (
-                  <div className="w-full h-full bg-gradient-to-br from-blue-100 via-purple-50 to-pink-100 flex items-center justify-center">
+                  <div className="w-full h-full bg-gradient-to-br from-blue-100 via-blue-50 to-pink-100 flex items-center justify-center">
                     <div className="text-center px-4">
                       <div className="w-12 h-12 sm:w-16 sm:h-16 bg-white rounded-2xl flex items-center justify-center mx-auto mb-2 sm:mb-3 shadow-lg">
                         <MapPin size={24} className="text-blue-600 sm:w-8 sm:h-8" />
@@ -474,7 +474,7 @@ export const TripChat: React.FC<TripChatProps> = ({ initialMessage, onClose }) =
                 className={`w-full py-3 sm:py-4 px-4 sm:px-6 rounded-xl sm:rounded-2xl font-extrabold text-base sm:text-lg transition-all shadow-lg hover:shadow-xl active:scale-[0.98] flex items-center justify-center gap-2 sm:gap-3 touch-manipulation ${
                   isSaved
                     ? "bg-green-600 hover:bg-green-700 text-white ring-2 ring-green-200"
-                    : "bg-gradient-to-r from-blue-600 via-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white"
+                    : "bg-blue-600 hover:bg-blue-700 text-white"
                 } disabled:opacity-60 disabled:cursor-not-allowed`}
               >
                 {isSaving ? (

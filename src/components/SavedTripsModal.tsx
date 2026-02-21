@@ -48,7 +48,7 @@ export const SavedTripsModal: React.FC<SavedTripsModalProps> = ({ isOpen, onClos
               className="relative w-full h-full sm:h-[90vh] sm:max-w-6xl bg-white sm:rounded-2xl shadow-2xl overflow-hidden flex flex-col"
             >
               {/* Header */}
-              <div className="flex-shrink-0 bg-gradient-to-r from-blue-600 via-blue-600 to-purple-600 px-4 sm:px-6 py-4 sm:py-5 flex items-center justify-between shadow-lg">
+              <div className="flex-shrink-0 bg-blue-600 px-4 sm:px-6 py-4 sm:py-5 flex items-center justify-between shadow-lg">
                 <div>
                   <h2 className="text-xl sm:text-2xl font-extrabold text-white">
                     My Saved Trips
@@ -67,7 +67,7 @@ export const SavedTripsModal: React.FC<SavedTripsModalProps> = ({ isOpen, onClos
               </div>
 
               {/* Content */}
-              <div className="flex-1 overflow-y-auto bg-gradient-to-br from-blue-50/50 via-purple-50/30 to-pink-50/40">
+              <div className="flex-1 overflow-y-auto bg-gradient-to-br from-blue-50/50 via-blue-50/30 to-pink-50/40">
                 <SavedTrips />
               </div>
             </motion.div>

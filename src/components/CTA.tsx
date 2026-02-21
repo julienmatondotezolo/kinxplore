@@ -17,7 +17,7 @@ export const CTA: React.FC = () => {
       >
         {/* Background elements */}
         <div className="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 bg-blue-100 rounded-full blur-3xl opacity-50 -z-10" />
-        <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-96 h-96 bg-purple-100 rounded-full blur-3xl opacity-50 -z-10" />
+        <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-96 h-96 bg-blue-100 rounded-full blur-3xl opacity-50 -z-10" />
 
         <div className="flex flex-col lg:flex-row items-center justify-between gap-12">
           <div className="flex-1 space-y-6 text-center lg:text-left">

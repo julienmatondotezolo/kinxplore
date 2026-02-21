@@ -217,7 +217,7 @@ export const Navigation: React.FC = () => {
               <div className="hidden md:flex items-center gap-6 text-gray-700">
                 <button
                   onClick={() => router.push("/bookings")}
-                  className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-full font-bold text-sm transition-all shadow-md hover:shadow-lg active:scale-95"
+                  className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-full font-bold text-sm transition-all shadow-md hover:shadow-lg active:scale-95"
                 >
                   <Plane size={16} />
                   My Bookings
@@ -314,7 +314,7 @@ export const Navigation: React.FC = () => {
               </button>
               <button
                 onClick={() => router.push("/register")}
-                className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-full font-bold text-sm transition-all shadow-md hover:shadow-lg active:scale-95"
+                className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-full font-bold text-sm transition-all shadow-md hover:shadow-lg active:scale-95"
               >
                 <UserPlus size={16} />
                 Sign Up
@@ -376,7 +376,7 @@ export const Navigation: React.FC = () => {
                       setIsMobileMenuOpen(false);
                       openTripsModal();
                     }}
-                    className="flex items-center justify-between p-4 rounded-2xl cursor-pointer transition-all bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg hover:shadow-xl active:scale-95"
+                    className="flex items-center justify-between p-4 rounded-2xl cursor-pointer transition-all bg-blue-600 hover:bg-blue-700 text-white shadow-lg hover:shadow-xl active:scale-95"
                   >
                     <div className="flex items-center gap-4">
                       <Plane size={20} />
@@ -463,7 +463,7 @@ export const Navigation: React.FC = () => {
                         setIsMobileMenuOpen(false);
                         router.push("/register");
                       }}
-                      className="w-full flex items-center justify-center gap-3 p-4 rounded-2xl bg-gradient-to-r from-blue-600 to-purple-600 text-white font-bold hover:from-blue-700 hover:to-purple-700 transition-all shadow-lg"
+                      className="w-full flex items-center justify-center gap-3 p-4 rounded-2xl bg-blue-600 text-white font-bold hover:bg-blue-700 transition-all shadow-lg"
                     >
                       <UserPlus size={20} />
                       Sign Up

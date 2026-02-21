@@ -32,7 +32,7 @@ export default function TripsPage() {
               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
             />
           ) : (
-            <div className="w-full h-full bg-gradient-to-br from-blue-100 to-purple-100 flex items-center justify-center">
+            <div className="w-full h-full bg-gradient-to-br from-blue-100 to-blue-100 flex items-center justify-center">
               <MapPin className="w-12 h-12 text-blue-300" />
             </div>
           )}
@@ -79,7 +79,7 @@ export default function TripsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50/50 via-white to-purple-50/30">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50/50 via-white to-blue-50/30">
       <Navigation />
 
       <div className="pt-32 pb-20 px-4">
