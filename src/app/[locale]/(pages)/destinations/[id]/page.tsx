@@ -137,8 +137,6 @@ export default function DestinationDetailPage() {
     return <CheckCircle2 size={20} />;
   };
 
-  const highlights = ["The Sultan Qaboos Grand Mosque", "The Royal Opera House", "The National Museum", "Muttrah Souq"];
-
   return (
     <div className="min-h-screen bg-white font-sans text-gray-900 selection:bg-blue-100 selection:text-blue-900">
       <Navigation />
@@ -300,19 +298,21 @@ export default function DestinationDetailPage() {
               )}
 
               {/* Highlights */}
-              <section className="space-y-6">
-                <h2 className="text-2xl font-black text-gray-900">{t("highlights")}</h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-y-5 gap-x-10">
-                  {highlights.map((highlight, i) => (
-                    <div key={i} className="flex items-start gap-4">
-                      <div className="mt-1 bg-blue-50 p-1 rounded-md">
-                        <CheckCircle2 size={16} className="text-blue-600" />
+              {destination.highlights && destination.highlights.length > 0 && (
+                <section className="space-y-6">
+                  <h2 className="text-2xl font-black text-gray-900">{t("highlights")}</h2>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-y-5 gap-x-10">
+                    {destination.highlights.map((highlight: string, i: number) => (
+                      <div key={i} className="flex items-start gap-4">
+                        <div className="mt-1 bg-blue-50 p-1 rounded-md">
+                          <CheckCircle2 size={16} className="text-blue-600" />
+                        </div>
+                        <span className="text-[16px] font-light text-gray-600 leading-snug">{highlight}</span>
                       </div>
-                      <span className="text-[16px] font-light text-gray-600 leading-snug">{highlight}</span>
-                    </div>
-                  ))}
-                </div>
-              </section>
+                    ))}
+                  </div>
+                </section>
+              )}
 
               {/* Facilities */}
               {destinationFacilities.length > 0 && (

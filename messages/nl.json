@@ -250,7 +250,7 @@
   "Hero": {
     "badge": "Ontdek Kinshasa & Kongo Central",
     "title": "Verken",
-    "titleCity": "Kinshasa,",
+    "titleCity": "Kinshasa en Kongo Central",
     "titleYourWay": "Op Jouw Manier.",
     "subtitle": "Het kloppend hart van Congo.",
     "description": "Vertel ons uw reisstijl en onze reisagent zal het perfecte reisplan voor uw verblijf in Kinshasa en Kongo Centraal samenstellen.",
@@ -309,6 +309,26 @@
       "description": "Een vloot moderne en goed onderhouden voertuigen voor uw comfort."
     },
     "learnMore": "Meer Informatie"
+  },
+  "Footer": {
+    "description": "Ontdek geselecteerde bestemmingen, circuits, restaurants, hotels en lokale diensten in Kinshasa en Kongo Centraal. Uw betrouwbare gids om het hart van Congo te verkennen.",
+    "company": "Bedrijf",
+    "aboutUs": "Over Ons",
+    "services": "Diensten",
+    "community": "Community",
+    "ourBlog": "Onze Blog",
+    "support": "Ondersteuning",
+    "helpCenter": "Helpcentrum",
+    "safetyInfo": "Veiligheidsinformatie",
+    "terms": "Algemene Voorwaarden",
+    "privacy": "Privacybeleid",
+    "subscribe": "Abonneren",
+    "subscribeDesc": "Ontvang reistips en nieuws over Kinshasa.",
+    "emailPlaceholder": "hallo@kinxplore.com",
+    "copyright": "© 2025 KinXplore. Alle Rechten Voorbehouden.",
+    "privacyLink": "Privacy",
+    "termsLink": "Voorwaarden",
+    "cookiesLink": "Cookies"
   },
   "Events": {
     "title": "Evenementen in Kinshasa",
