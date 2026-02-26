@@ -222,7 +222,8 @@ export const Navigation: React.FC = () => {
                   <ChevronDown size={14} />
                 </button>
                 {showInfosDropdown && (
-                  <div className="absolute top-full left-0 mt-2 w-52 bg-white rounded-xl shadow-xl border border-gray-100 py-2 z-50">
+                  <div className="absolute top-full left-0 pt-2 w-52 z-50">
+                  <div className="bg-white rounded-xl shadow-xl border border-gray-100 py-2">
                     {infosSubItems.map((item) => (
                       <button
                         key={item.href}
@@ -235,6 +236,7 @@ export const Navigation: React.FC = () => {
                         {item.label}
                       </button>
                     ))}
+                  </div>
                   </div>
                 )}
               </div>
