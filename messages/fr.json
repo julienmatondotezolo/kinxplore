@@ -2,26 +2,30 @@
   "Navigation": {
     "home": "Accueil",
     "destination": "Destination",
-    "services": "Services",
+    "services": "Services exclusifs",
     "faq": "FAQ",
     "contact": "Contact",
     "hello": "Bonjour !",
     "traveler": "Voyageur",
     "logout": "Déconnexion",
-    "trips": "Nos Circuits",
-    "circuit": "Circuit",
-    "restaurant": "Restaurant",
-    "loisirs": "Loisirs",
-    "hotel": "Hôtel",
-    "events": "Événements"
+    "trips": "Nos Itinéraires",
+    "circuit": "Itinéraires",
+    "restaurant": "Restaurants",
+    "loisirs": "Activités",
+    "hotel": "Hébergements",
+    "events": "Événements",
+    "infos": "Infos",
+    "infosTravel": "Voyager au Congo",
+    "infosTransport": "Comment se déplacer",
+    "infosCurrency": "La monnaie"
   },
   "Hero": {
-    "badge": "Découvrez Kinshasa & Kongo Central",
+    "badge": "autrement",
     "title": "Explorez",
-    "titleCity": "Kinshasa et Kongo Central",
-    "titleYourWay": "À Votre Façon.",
-    "subtitle": "Le cœur battant du Congo.",
-    "description": "Dites-nous votre style de voyage et notre agent de voyage créera l'itinéraire parfait pour votre séjour à Kinshasa et au Kongo Central.",
+    "titleCity": "Kinshasa et le Kongo Central.",
+    "titleYourWay": "",
+    "subtitle": "Vivez une expérience qui vous ressemble.",
+    "description": "Au cœur vibrant du Congo, découvrez Kinshasa et le Kongo Central à travers des expériences pensées pour vous — entre culture, nature et rencontres authentiques.",
     "destination": "Destination",
     "destinationValue": "Kinshasa, RDC",
     "location": "Localisation",
@@ -37,10 +41,10 @@
     "suggestion3": "Trouver des hôtels familiaux à Gombe",
     "reviews": "Avis",
     "reviewsRating": "4,8 sur 5",
-    "reviewsStats": "4,9/5 de 2k+ Voyageurs",
+    "reviewsStats": "Plus de 2000 voyageurs nous font confiance — 4,9/5",
     "topRated": "Expériences les Mieux Notées",
     "explorePackages": "Découvrir tous les packages",
-    "exploreAllDestinations": "Explorer Tous les Circuits",
+    "exploreAllDestinations": "Découvrir les expériences",
     "search": "Rechercher",
     "activeFilters": "Filtres actifs"
   },
@@ -63,15 +67,15 @@
     "bandalungwa": "Bandalungwa"
   },
   "PopularDestinations": {
-    "title": "Circuits Populaires",
+    "title": "Itinéraires Populaires",
     "bookingTrip": "Réserver un Voyage",
     "starting": "À partir de"
   },
   "Services": {
-    "title": "Nos services",
+    "title": "Une assistance complète pour votre séjour",
     "tripPlanning": {
-      "title": "Planification de Voyage",
-      "description": "Itinéraires personnalisés conçus spécifiquement pour votre style de voyage et vos besoins."
+      "title": "Planification de voyage sur mesure",
+      "description": "Nous concevons des itinéraires personnalisés adaptés à vos envies, votre rythme et votre budget."
     },
     "aiItinerary": {
       "title": "Itinéraire IA",
@@ -82,20 +86,24 @@
       "description": "Accès à des expériences locales premium et vérifiées aux meilleurs prix garantis."
     },
     "localSupport": {
-      "title": "Support Local",
-      "description": "Support 24/7 d'experts locaux prêts à vous assister à tout moment pendant votre séjour."
+      "title": "Accompagnement local 24/7",
+      "description": "Une équipe sur place disponible à tout moment pour vous guider et vous assister."
     },
     "airportService": {
-      "title": "Service Aéroport",
-      "description": "Transferts aéroport fiables et assistance pour une arrivée et un départ en toute sérénité."
+      "title": "Accueil et transfert aéroport",
+      "description": "Prise en charge à votre arrivée à l'aéroport de N'Djili, avec chauffeur et véhicule climatisé."
     },
     "cityTransfer": {
-      "title": "Transfert Urbain",
-      "description": "Service de transfert entre les différents lieux de Kinshasa et du Kongo Central en toute sécurité."
+      "title": "Transport sur place",
+      "description": "Déplacements sécurisés à Kinshasa et vers le Kongo Central avec chauffeur privé."
     },
     "adminHelp": {
-      "title": "Aide Administrative",
-      "description": "Assistance pour les formalités de visa, documents administratifs et démarches officielles."
+      "title": "Assistance visa et formalités",
+      "description": "Accompagnement pour vos démarches de visa, documents de voyage et formalités administratives."
+    },
+    "visa": {
+      "title": "Visa et formalités",
+      "description": "Assistance complète pour l'obtention de votre visa et les formalités d'entrée en RDC."
     },
     "exploreNow": "Explorer Maintenant"
   },
@@ -403,24 +411,25 @@
     }
   },
   "Restaurants": {
-    "title": "Les meilleurs restaurants de Kinshasa",
-    "subtitle": "Découvrez les meilleurs restaurants de Kinshasa",
+    "title": "Où manger à Kinshasa ?",
+    "subtitle": "Des adresses testées et approuvées pour tous les goûts et tous les budgets.",
+    "budgetNote": "Budget moyen : 25-30$ par personne",
     "loading": "Chargement...",
     "noResults": "Aucun restaurant trouvé",
     "noResultsDesc": "Nous n'avons trouvé aucun restaurant pour le moment.",
     "totalBeforeTaxes": "total avant taxes"
   },
   "Hotels": {
-    "title": "Les meilleurs hôtels de Kinshasa",
-    "subtitle": "Trouvez les meilleurs hôtels pour votre séjour à Kinshasa",
+    "title": "Où séjourner à Kinshasa ?",
+    "subtitle": "Notre sélection d'hébergements pour tous les budgets.",
     "loading": "Chargement...",
     "noResults": "Aucun hôtel trouvé",
     "noResultsDesc": "Nous n'avons trouvé aucun hôtel pour le moment.",
     "totalBeforeTaxes": "total avant taxes"
   },
   "Loisirs": {
-    "title": "Les meilleures activités de loisirs",
-    "subtitle": "Explorez les activités de loisirs et divertissements à Kinshasa",
+    "title": "Que faire à Kinshasa ?",
+    "subtitle": "Activités, sorties et expériences à ne pas manquer.",
     "loading": "Chargement...",
     "noResults": "Aucun loisir trouvé",
     "noResultsDesc": "Nous n'avons trouvé aucune activité de loisir pour le moment.",
@@ -433,8 +442,8 @@
     "comingSoonDesc": "Cette section est en cours de préparation. Revenez bientôt pour découvrir les événements à Kinshasa !"
   },
   "Trips": {
-    "title": "Nos Circuits",
-    "subtitle": "Découvrez des circuits multi-destinations à travers Kinshasa et le Kongo Central",
+    "title": "Nos Itinéraires",
+    "subtitle": "Au cœur vibrant du Congo, découvrez Kinshasa et le Kongo Central à travers des expériences pensées pour vous.",
     "regionKinshasa": "Kinshasa",
     "regionKongoCentral": "Kongo Central",
     "international": "int.",
@@ -451,8 +460,18 @@
     "perPerson": "par personne",
     "localPrice": "Prix local",
     "bookNow": "Réserver Maintenant",
-    "backToTrips": "Retour aux Circuits",
-    "notFound": "Circuit non trouvé",
+    "backToTrips": "Retour aux Itinéraires",
+    "notFound": "Itinéraire non trouvé",
+    "idealFor": "Idéal pour",
+    "idealCouples": "Couples",
+    "idealNature": "Amoureux de la nature",
+    "idealWeekend": "Week-end",
+    "idealFriends": "Entre amis",
+    "whyChoose": "Pourquoi choisir cette expérience",
+    "whyProximity": "À proximité de Kinshasa",
+    "whyWeekend": "Parfait pour un week-end",
+    "whyProfessional": "Encadrement professionnel",
+    "whySafe": "Sécurité garantie",
     "errorLoading": "Échec du chargement des circuits. Veuillez réessayer.",
     "contactAgentText": "Encodez vos données, notre agent vous recontactera pour planifier efficacement votre circuit.",
     "showAllPhotos": "Voir toutes les photos"

@@ -5,18 +5,22 @@
   "Navigation": {
     "home": "Home",
     "destination": "Bestemming",
-    "services": "Diensten",
+    "services": "Exclusieve diensten",
     "faq": "FAQ",
     "contact": "Contact",
     "hello": "Hallo!",
     "traveler": "Reiziger",
     "logout": "Uitloggen",
-    "trips": "Onze Reizen",
-    "circuit": "Circuit",
-    "restaurant": "Restaurant",
-    "loisirs": "Vrije tijd",
-    "hotel": "Hotel",
-    "events": "Evenementen"
+    "trips": "Onze Routes",
+    "circuit": "Routes",
+    "restaurant": "Restaurants",
+    "loisirs": "Activiteiten",
+    "hotel": "Accommodaties",
+    "events": "Evenementen",
+    "infos": "Info",
+    "infosTravel": "Reizen naar Congo",
+    "infosTransport": "Vervoer ter plaatse",
+    "infosCurrency": "Valuta"
   },
   "DestinationDetail": {
     "breadcrumbs": {
@@ -192,10 +196,10 @@
     }
   },
   "Services": {
-    "title": "Onze diensten",
+    "title": "Volledige assistentie voor uw verblijf",
     "tripPlanning": {
-      "title": "Reisplanning",
-      "description": "Gepersonaliseerde reisplannen speciaal ontworpen voor uw reisstijl en behoeften."
+      "title": "Reisplanning op maat",
+      "description": "Wij ontwerpen gepersonaliseerde routes afgestemd op uw wensen, tempo en budget."
     },
     "aiItinerary": {
       "title": "AI Reisplan",
@@ -206,54 +210,59 @@
       "description": "Toegang tot premium en geverifieerde lokale ervaringen tegen de beste gegarandeerde prijzen."
     },
     "localSupport": {
-      "title": "Lokale Ondersteuning",
-      "description": "24/7 ondersteuning van lokale experts die u op elk moment tijdens uw verblijf kunnen helpen."
+      "title": "24/7 lokale begeleiding",
+      "description": "Een team ter plaatse dat altijd beschikbaar is om u te begeleiden en te helpen."
     },
     "airportService": {
-      "title": "Luchthavenservice",
-      "description": "Betrouwbare luchthaven transfers en assistentie voor een soepele aankomst en vertrek."
+      "title": "Ontvangst en luchthaven transfer",
+      "description": "Ophaalservice bij aankomst op N'Djili luchthaven, met chauffeur en geklimatiseerd voertuig."
     },
     "cityTransfer": {
-      "title": "Stadstransfer",
-      "description": "Veilige en betrouwbare transferservice tussen locaties in Kinshasa en Kongo Centraal."
+      "title": "Vervoer ter plaatse",
+      "description": "Veilig vervoer in Kinshasa en naar Kongo Centraal met privéchauffeur."
     },
     "adminHelp": {
-      "title": "Administratieve Hulp",
-      "description": "Visum assistentie, administratieve documenten en ondersteuning bij officiële formaliteiten."
+      "title": "Visum- en formaliteitenassistentie",
+      "description": "Begeleiding bij uw visumaanvragen, reisdocumenten en administratieve formaliteiten."
+    },
+    "visa": {
+      "title": "Visum en formaliteiten",
+      "description": "Volledige assistentie voor het verkrijgen van uw visum en inreisformaliteiten voor de DRC."
     },
     "exploreNow": "Nu Ontdekken"
   },
   "Restaurants": {
-    "title": "De beste restaurants in Kinshasa",
-    "subtitle": "Ontdek de beste restaurants in Kinshasa",
+    "title": "Waar eten in Kinshasa?",
+    "subtitle": "Geteste en goedgekeurde adressen voor elke smaak en elk budget.",
+    "budgetNote": "Gemiddeld budget: $25-30 per persoon",
     "loading": "Laden...",
     "noResults": "Geen restaurants gevonden",
     "noResultsDesc": "We konden momenteel geen restaurants vinden.",
     "totalBeforeTaxes": "totaal voor belastingen"
   },
   "Hotels": {
-    "title": "De beste hotels in Kinshasa",
-    "subtitle": "Vind de beste hotels voor uw verblijf in Kinshasa",
+    "title": "Waar verblijven in Kinshasa?",
+    "subtitle": "Onze selectie accommodaties voor elk budget.",
     "loading": "Laden...",
     "noResults": "Geen hotels gevonden",
     "noResultsDesc": "We konden momenteel geen hotels vinden.",
     "totalBeforeTaxes": "totaal voor belastingen"
   },
   "Loisirs": {
-    "title": "De beste vrijetijdsactiviteiten",
-    "subtitle": "Ontdek vrijetijdsactiviteiten en entertainment in Kinshasa",
+    "title": "Wat te doen in Kinshasa?",
+    "subtitle": "Activiteiten, uitjes en ervaringen die u niet mag missen.",
     "loading": "Laden...",
     "noResults": "Geen activiteiten gevonden",
     "noResultsDesc": "We konden momenteel geen vrijetijdsactiviteiten vinden.",
     "totalBeforeTaxes": "totaal voor belastingen"
   },
   "Hero": {
-    "badge": "Ontdek Kinshasa & Kongo Central",
+    "badge": "anders",
     "title": "Verken",
-    "titleCity": "Kinshasa en Kongo Central",
-    "titleYourWay": "Op Jouw Manier.",
-    "subtitle": "Het kloppend hart van Congo.",
-    "description": "Vertel ons uw reisstijl en onze reisagent zal het perfecte reisplan voor uw verblijf in Kinshasa en Kongo Centraal samenstellen.",
+    "titleCity": "Kinshasa en Kongo Centraal.",
+    "titleYourWay": "",
+    "subtitle": "Beleef een ervaring die bij u past.",
+    "description": "In het bruisende hart van Congo, ontdek Kinshasa en Kongo Centraal via ervaringen die voor u zijn gemaakt — tussen cultuur, natuur en authentieke ontmoetingen.",
     "destination": "Bestemming",
     "destinationValue": "Kinshasa, DRC",
     "location": "Locatie",
@@ -269,15 +278,15 @@
     "suggestion3": "Zoek familiehotels in Gombe",
     "reviews": "Beoordelingen",
     "reviewsRating": "4,8 van 5",
-    "reviewsStats": "4,9/5 van 2k+ Reizigers",
+    "reviewsStats": "Meer dan 2000 reizigers vertrouwen ons — 4,9/5",
     "topRated": "Best Beoordeelde Ervaringen",
     "explorePackages": "Alle Pakketten Bekijken",
-    "exploreAllDestinations": "Alle Circuits Bekijken",
+    "exploreAllDestinations": "Ontdek ervaringen",
     "search": "Zoeken",
     "activeFilters": "Actieve filters"
   },
   "PopularDestinations": {
-    "title": "Populaire Circuits",
+    "title": "Populaire Routes",
     "bookingTrip": "Reis Boeken",
     "starting": "Vanaf"
   },
@@ -337,8 +346,8 @@
     "comingSoonDesc": "Deze sectie is in voorbereiding. Kom binnenkort terug om evenementen in Kinshasa te ontdekken!"
   },
   "Trips": {
-    "title": "Onze Reizen",
-    "subtitle": "Ontdek samengestelde multi-bestemmingsreizen door Kinshasa en Kongo Centraal",
+    "title": "Onze Routes",
+    "subtitle": "In het bruisende hart van Congo, ontdek Kinshasa en Kongo Centraal via ervaringen die voor u zijn gemaakt.",
     "regionKinshasa": "Kinshasa",
     "regionKongoCentral": "Kongo Centraal",
     "international": "int.",
@@ -355,8 +364,18 @@
     "perPerson": "per persoon",
     "localPrice": "Lokale prijs",
     "bookNow": "Nu Boeken",
-    "backToTrips": "Terug naar Reizen",
-    "notFound": "Reis niet gevonden",
+    "backToTrips": "Terug naar Routes",
+    "notFound": "Route niet gevonden",
+    "idealFor": "Ideaal voor",
+    "idealCouples": "Koppels",
+    "idealNature": "Natuurliefhebbers",
+    "idealWeekend": "Weekend",
+    "idealFriends": "Met vrienden",
+    "whyChoose": "Waarom deze ervaring kiezen",
+    "whyProximity": "Dicht bij Kinshasa",
+    "whyWeekend": "Perfect voor een weekend",
+    "whyProfessional": "Professionele begeleiding",
+    "whySafe": "Gegarandeerde veiligheid",
     "errorLoading": "Reizen laden mislukt. Probeer het opnieuw.",
     "contactAgentText": "Voer uw gegevens in, onze agent neemt contact met u op om uw circuit efficiënt te plannen.",
     "showAllPhotos": "Alle foto's tonen"

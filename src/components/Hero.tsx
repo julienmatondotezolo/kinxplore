@@ -114,7 +114,6 @@ export const Hero: React.FC = () => {
               variants={itemVariants}
               className="text-[2rem] sm:text-4xl md:text-[4.2rem] font-black text-gray-900 leading-[1.15] sm:leading-[1.2] md:leading-[1.1] tracking-tight px-1"
             >
-              {/* <span className="block">{t("title")}</span> */}
               <span className="flex items-center justify-center lg:justify-start gap-2 sm:gap-3 flex-wrap">
                 {t("title")} {t("titleCity")}
                 <span className="inline-block w-14 h-7 sm:w-16 sm:h-8 md:w-24 md:h-12 bg-gray-100 rounded-full overflow-hidden border-2 md:border-4 border-white shadow-sm -rotate-2 transform hover:rotate-0 transition-transform duration-500">
@@ -124,7 +123,6 @@ export const Hero: React.FC = () => {
                     alt="Kinshasa"
                   />
                 </span>
-                {t("titleYourWay")}
               </span>
             </motion.h1>
 

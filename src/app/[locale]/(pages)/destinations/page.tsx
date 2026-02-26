@@ -257,6 +257,11 @@ export default function DestinationsPage() {
                       : tLoisirs("subtitle")
                   : activeCategory === "all" ? t("subtitle") : t("subtitleCategory", { category: activeCategory })}
               </p>
+              {activeCategory === "restaurant" && (
+                <p className="text-sm font-medium text-amber-700 bg-amber-50 inline-block px-3 py-1.5 rounded-full mt-2">
+                  {tRestaurants("budgetNote")}
+                </p>
+              )}
             </div>
             <DestinationSearch />
           </div>
@@ -292,6 +297,11 @@ export default function DestinationsPage() {
                   ? (t("title", { count: 0 }).includes("à Kinshasa") ? "à Kinshasa" : "in Kinshasa")
                   : null}
           </p>
+          {activeCategory === "restaurant" && (
+            <p className="text-xs font-medium text-amber-700 bg-amber-50 inline-block px-2.5 py-1 rounded-full mt-2">
+              {tRestaurants("budgetNote")}
+            </p>
+          )}
         </div>
 
 

@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { ArrowRight, Calendar, Car, ClipboardList, Headphones, Plane } from "lucide-react";
+import { ArrowRight, Calendar, Car, ClipboardList, FileText, Headphones, Plane } from "lucide-react";
 import { useTranslations } from "next-intl";
 import React from "react";
 
@@ -48,6 +48,14 @@ const useServices = () => {
       bgColor: "bg-[#FFF4E6]",
       iconBg: "bg-[#FFD8A8]",
       link: "/services/local-support",
+    },
+    {
+      icon: FileText,
+      title: t("visa.title"),
+      desc: t("visa.description"),
+      bgColor: "bg-[#E8EAF6]",
+      iconBg: "bg-[#9FA8DA]",
+      link: "/services/visa",
     },
   ];
 };

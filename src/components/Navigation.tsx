@@ -5,8 +5,10 @@ import { AnimatePresence, motion } from "framer-motion";
 import {
   Briefcase,
   CalendarDays,
+  ChevronDown,
   Gamepad2,
   Hotel,
+  Info,
   LogIn,
   LogOut,
   Menu,
@@ -34,6 +36,8 @@ export const Navigation: React.FC = () => {
   const [activeSection, setActiveSection] = useState("home");
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [showUserDropdown, setShowUserDropdown] = useState(false);
+  const [showInfosDropdown, setShowInfosDropdown] = useState(false);
+  const [showMobileInfos, setShowMobileInfos] = useState(false);
   const { openModal: openTripsModal } = useSavedTripsModal();
   const { activeCategory: storeCategory, setActiveCategory, resetFilters } = useDestinationStore();
 
@@ -160,6 +164,13 @@ export const Navigation: React.FC = () => {
     { id: "hotels", label: t("hotel"), icon: Hotel },
     { id: "events", label: t("events"), icon: CalendarDays },
     { id: "services", label: t("services"), icon: Briefcase },
+    { id: "infos", label: t("infos"), icon: Info },
+  ];
+
+  const infosSubItems = [
+    { label: t("infosTravel"), href: "/infos/travel" },
+    { label: t("infosTransport"), href: "/infos/transport" },
+    { label: t("infosCurrency"), href: "/infos/currency" },
   ];
 
   const handleLogoClick = () => {
@@ -194,21 +205,55 @@ export const Navigation: React.FC = () => {
               : "bg-white/80 backdrop-blur-md shadow-sm border border-gray-100/50 text-gray-600"
           }`}
         >
-          {navLinks.map((link) => (
-            <a
-              key={link.id}
-              href={`#${link.id}`}
-              onClick={(e) => scrollToSection(e, link.id)}
-              className={`transition-colors flex items-center gap-1.5 relative ${
-                activeSection === link.id ? "text-blue-600 font-semibold" : "hover:text-blue-600"
-              }`}
-            >
-              {activeSection === link.id && (
-                <motion.span layoutId="activeDot" className="w-1.5 h-1.5 bg-blue-600 rounded-full" />
-              )}
-              {link.label}
-            </a>
-          ))}
+          {navLinks.map((link) =>
+            link.id === "infos" ? (
+              <div
+                key={link.id}
+                className="relative"
+                onMouseEnter={() => setShowInfosDropdown(true)}
+                onMouseLeave={() => setShowInfosDropdown(false)}
+              >
+                <button
+                  className={`transition-colors flex items-center gap-1.5 relative ${
+                    activeSection === link.id ? "text-blue-600 font-semibold" : "hover:text-blue-600"
+                  }`}
+                >
+                  {link.label}
+                  <ChevronDown size={14} />
+                </button>
+                {showInfosDropdown && (
+                  <div className="absolute top-full left-0 mt-2 w-52 bg-white rounded-xl shadow-xl border border-gray-100 py-2 z-50">
+                    {infosSubItems.map((item) => (
+                      <button
+                        key={item.href}
+                        onClick={() => {
+                          setShowInfosDropdown(false);
+                          router.push(item.href);
+                        }}
+                        className="w-full px-4 py-2.5 text-left text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition font-medium"
+                      >
+                        {item.label}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+            ) : (
+              <a
+                key={link.id}
+                href={`#${link.id}`}
+                onClick={(e) => scrollToSection(e, link.id)}
+                className={`transition-colors flex items-center gap-1.5 relative ${
+                  activeSection === link.id ? "text-blue-600 font-semibold" : "hover:text-blue-600"
+                }`}
+              >
+                {activeSection === link.id && (
+                  <motion.span layoutId="activeDot" className="w-1.5 h-1.5 bg-blue-600 rounded-full" />
+                )}
+                {link.label}
+              </a>
+            )
+          )}
         </div>
 
         <div className="flex items-center gap-4 md:gap-6">
@@ -385,26 +430,57 @@ export const Navigation: React.FC = () => {
                     <div className="w-1.5 h-1.5 bg-white rounded-full animate-pulse" />
                   </div>
 
-                  {navLinks.map((link) => (
-                    <div
-                      key={link.id}
-                      onClick={(e) => scrollToSection(e as any, link.id)}
-                      className={`flex items-center justify-between p-4 rounded-2xl cursor-pointer transition-all ${
-                        activeSection === link.id ? "bg-blue-50 text-blue-600" : "text-gray-500 hover:bg-gray-50"
-                      }`}
-                    >
-                      <div className="flex items-center gap-4">
-                        <link.icon
-                          size={20}
-                          className={activeSection === link.id ? "text-blue-600" : "text-gray-400"}
-                        />
-                        <span className="font-bold">{link.label}</span>
+                  {navLinks.map((link) =>
+                    link.id === "infos" ? (
+                      <div key={link.id}>
+                        <div
+                          onClick={() => setShowMobileInfos(!showMobileInfos)}
+                          className="flex items-center justify-between p-4 rounded-2xl cursor-pointer transition-all text-gray-500 hover:bg-gray-50"
+                        >
+                          <div className="flex items-center gap-4">
+                            <link.icon size={20} className="text-gray-400" />
+                            <span className="font-bold">{link.label}</span>
+                          </div>
+                          <ChevronDown size={16} className={`transition-transform ${showMobileInfos ? "rotate-180" : ""}`} />
+                        </div>
+                        {showMobileInfos && (
+                          <div className="ml-12 space-y-1">
+                            {infosSubItems.map((item) => (
+                              <div
+                                key={item.href}
+                                onClick={() => {
+                                  setIsMobileMenuOpen(false);
+                                  router.push(item.href);
+                                }}
+                                className="p-3 rounded-xl text-sm text-gray-500 hover:bg-blue-50 hover:text-blue-600 cursor-pointer font-medium transition-all"
+                              >
+                                {item.label}
+                              </div>
+                            ))}
+                          </div>
+                        )}
                       </div>
-                      <motion.div initial={{ opacity: 0 }} animate={{ opacity: activeSection === link.id ? 1 : 0 }}>
-                        <div className="w-1.5 h-1.5 bg-blue-600 rounded-full" />
-                      </motion.div>
-                    </div>
-                  ))}
+                    ) : (
+                      <div
+                        key={link.id}
+                        onClick={(e) => scrollToSection(e as any, link.id)}
+                        className={`flex items-center justify-between p-4 rounded-2xl cursor-pointer transition-all ${
+                          activeSection === link.id ? "bg-blue-50 text-blue-600" : "text-gray-500 hover:bg-gray-50"
+                        }`}
+                      >
+                        <div className="flex items-center gap-4">
+                          <link.icon
+                            size={20}
+                            className={activeSection === link.id ? "text-blue-600" : "text-gray-400"}
+                          />
+                          <span className="font-bold">{link.label}</span>
+                        </div>
+                        <motion.div initial={{ opacity: 0 }} animate={{ opacity: activeSection === link.id ? 1 : 0 }}>
+                          <div className="w-1.5 h-1.5 bg-blue-600 rounded-full" />
+                        </motion.div>
+                      </div>
+                    )
+                  )}
                   <div className="flex items-center gap-4 p-4 rounded-2xl text-gray-500 hover:bg-gray-50 cursor-pointer">
                     <Settings size={20} className="text-gray-400" />
                     <span className="font-bold">Settings</span>
