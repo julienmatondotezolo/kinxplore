@@ -12,7 +12,7 @@ export const ChatSearch: React.FC = () => {
   const router = useRouter();
 
   const handleExploreClick = () => {
-    router.push("/destinations");
+    router.push("/trips");
   };
 
   return (
