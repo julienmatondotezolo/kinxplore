@@ -88,33 +88,48 @@ export default function TripDetailPage() {
                     <ArrowLeft className="w-4 h-4" /> {t("backToTrips")}
                   </button>
                 </div>
-                <div className="grid grid-cols-1 md:grid-cols-4 grid-rows-2 gap-4 h-[500px] md:h-[600px] mb-8 rounded-[40px] overflow-hidden shadow-2xl shadow-blue-500/10">
-                  <div className="md:col-span-2 md:row-span-2 relative group overflow-hidden">
-                    <img
-                      src={galleryImages[0]}
-                      alt={trip.name}
-                      className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
-                    />
+                <>
+                  {/* Mobile: swipeable carousel */}
+                  <div className="md:hidden flex overflow-x-auto snap-x snap-mandatory gap-3 h-[300px] mb-8 rounded-[24px] [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+                    {galleryImages.map((src, i) => (
+                      <div key={i} className="snap-center shrink-0 w-[85%] h-full rounded-[24px] overflow-hidden">
+                        <img
+                          src={src}
+                          alt={i === 0 ? trip.name : (extraImages[i - 1]?.alt_text || "Detail")}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                    ))}
                   </div>
-                  {galleryImages.slice(1, 5).map((src, i) => (
-                    <div
-                      key={i}
-                      className="hidden md:block relative group overflow-hidden"
-                    >
+                  {/* Desktop: grid layout */}
+                  <div className="hidden md:grid md:grid-cols-4 grid-rows-2 gap-4 h-[600px] mb-8 rounded-[40px] overflow-hidden shadow-2xl shadow-blue-500/10">
+                    <div className="md:col-span-2 md:row-span-2 relative group overflow-hidden">
                       <img
-                        src={src}
-                        alt={extraImages[i]?.alt_text || "Detail"}
+                        src={galleryImages[0]}
+                        alt={trip.name}
                         className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
                       />
-                      {i === 3 && galleryImages.length > 4 && (
-                        <button className="absolute bottom-6 right-6 bg-white/95 backdrop-blur-md px-6 py-3 rounded-2xl text-[13px] font-bold shadow-2xl border border-gray-100 flex items-center gap-2 hover:bg-black hover:text-white transition-all z-10">
-                          <MoreHorizontal size={18} />
-                          {t("showAllPhotos")}
-                        </button>
-                      )}
                     </div>
-                  ))}
-                </div>
+                    {galleryImages.slice(1, 5).map((src, i) => (
+                      <div
+                        key={i}
+                        className="relative group overflow-hidden"
+                      >
+                        <img
+                          src={src}
+                          alt={extraImages[i]?.alt_text || "Detail"}
+                          className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+                        />
+                        {i === 3 && galleryImages.length > 4 && (
+                          <button className="absolute bottom-6 right-6 bg-white/95 backdrop-blur-md px-6 py-3 rounded-2xl text-[13px] font-bold shadow-2xl border border-gray-100 flex items-center gap-2 hover:bg-black hover:text-white transition-all z-10">
+                            <MoreHorizontal size={18} />
+                            {t("showAllPhotos")}
+                          </button>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </>
                 <h1 className="text-3xl md:text-5xl font-extrabold text-gray-900 mb-2">
                   {trip.name}
                 </h1>

@@ -7,6 +7,7 @@ import {
   CheckCircle2,
   ChevronRight,
   Clock,
+  Facebook,
   Globe,
   Heart,
   Info,
@@ -204,74 +205,47 @@ export default function DestinationDetailPage() {
                   ]),
             ];
             return (
-              <div className="grid grid-cols-1 md:grid-cols-4 grid-rows-2 gap-4 h-[500px] md:h-[600px] mb-12 rounded-[40px] overflow-hidden shadow-2xl shadow-blue-500/10">
-                <div className="md:col-span-2 md:row-span-2 relative group overflow-hidden">
-                  <img
-                    src={galleryImages[0]}
-                    alt={destination.name}
-                    className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
-                  />
+              <>
+                {/* Mobile: swipeable carousel */}
+                <div className="md:hidden flex overflow-x-auto snap-x snap-mandatory gap-3 h-[300px] mb-12 rounded-[24px] [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+                  {galleryImages.map((src, i) => (
+                    <div key={i} className="snap-center shrink-0 w-[85%] h-full rounded-[24px] overflow-hidden">
+                      <img
+                        src={src}
+                        alt={i === 0 ? destination.name : (extraImages[i - 1]?.alt_text || "Detail")}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                  ))}
                 </div>
-                {galleryImages.slice(1, 5).map((src, i) => (
-                  <div key={i} className={`hidden md:block relative group overflow-hidden`}>
+                {/* Desktop: grid layout */}
+                <div className="hidden md:grid md:grid-cols-4 grid-rows-2 gap-4 h-[600px] mb-12 rounded-[40px] overflow-hidden shadow-2xl shadow-blue-500/10">
+                  <div className="md:col-span-2 md:row-span-2 relative group overflow-hidden">
                     <img
-                      src={src}
-                      alt={extraImages[i]?.alt_text || "Detail"}
+                      src={galleryImages[0]}
+                      alt={destination.name}
                       className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
                     />
-                    {i === 3 && (
-                      <button className="absolute bottom-6 right-6 bg-white/95 backdrop-blur-md px-6 py-3 rounded-2xl text-[13px] font-bold shadow-2xl border border-gray-100 flex items-center gap-2 hover:bg-black hover:text-white transition-all z-10">
-                        <MoreHorizontal size={18} />
-                        {t("showAllPhotos")}
-                      </button>
-                    )}
                   </div>
-                ))}
-              </div>
+                  {galleryImages.slice(1, 5).map((src, i) => (
+                    <div key={i} className="relative group overflow-hidden">
+                      <img
+                        src={src}
+                        alt={extraImages[i]?.alt_text || "Detail"}
+                        className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+                      />
+                      {i === 3 && (
+                        <button className="absolute bottom-6 right-6 bg-white/95 backdrop-blur-md px-6 py-3 rounded-2xl text-[13px] font-bold shadow-2xl border border-gray-100 flex items-center gap-2 hover:bg-black hover:text-white transition-all z-10">
+                          <MoreHorizontal size={18} />
+                          {t("showAllPhotos")}
+                        </button>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </>
             );
           })()}
-
-          {/* Info Bar — hidden for restaurants/hotels */}
-          {!isRestaurantOrHotel && (
-            <section className="grid grid-cols-2 md:grid-cols-4 gap-6 p-8 bg-gray-50/50 rounded-[40px] border border-gray-100 mb-12">
-              <div className="flex items-center gap-4 px-4">
-                <div className="w-14 h-14 rounded-full bg-white flex items-center justify-center shadow-sm border border-gray-100 text-gray-400">
-                  <Clock size={24} />
-                </div>
-                <div>
-                  <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1">{t("duration")}</p>
-                  <p className="text-lg font-black">9 hr</p>
-                </div>
-              </div>
-              <div className="flex items-center gap-4 px-4 border-l border-gray-100">
-                <div className="w-14 h-14 rounded-full bg-white flex items-center justify-center shadow-sm border border-gray-100 text-gray-400">
-                  <Palmtree size={24} />
-                </div>
-                <div>
-                  <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1">{t("tourType")}</p>
-                  <p className="text-lg font-black">{t("dailyTour")}</p>
-                </div>
-              </div>
-              <div className="flex items-center gap-4 px-4 border-l border-gray-100">
-                <div className="w-14 h-14 rounded-full bg-white flex items-center justify-center shadow-sm border border-gray-100 text-gray-400">
-                  <Users size={24} />
-                </div>
-                <div>
-                  <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1">{t("groupSize")}</p>
-                  <p className="text-lg font-black">40 {t("person")}</p>
-                </div>
-              </div>
-              <div className="flex items-center gap-4 px-4 border-l border-gray-100">
-                <div className="w-14 h-14 rounded-full bg-white flex items-center justify-center shadow-sm border border-gray-100 text-gray-400">
-                  <Globe size={24} />
-                </div>
-                <div>
-                  <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1">{t("languages")}</p>
-                  <p className="text-lg font-black">EN, FR</p>
-                </div>
-              </div>
-            </section>
-          )}
 
           <div className="flex flex-col lg:flex-row gap-16">
             {/* Left Content */}
@@ -282,18 +256,42 @@ export default function DestinationDetailPage() {
                 <p className="text-gray-500 leading-relaxed font-light text-[17px]">{destination.description}</p>
               </section>
 
-              {/* Instagram Link — shown if available */}
-              {(destination as any).instagram_url && (
-                <section className="flex items-center gap-3">
-                  <a
-                    href={(destination as any).instagram_url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 px-5 py-3 rounded-2xl border border-gray-100 hover:border-pink-400 hover:bg-pink-50 transition-all font-bold text-sm shadow-sm bg-white text-pink-600"
-                  >
-                    <Instagram size={18} />
-                    <span>{t("followOnInstagram")}</span>
-                  </a>
+              {/* Social Links */}
+              {((destination as any).instagram_url || (destination as any).facebook_url || (destination as any).website_url) && (
+                <section className="flex flex-wrap items-center gap-3">
+                  {(destination as any).instagram_url && (
+                    <a
+                      href={(destination as any).instagram_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 px-5 py-3 rounded-2xl border border-gray-100 hover:border-pink-400 hover:bg-pink-50 transition-all font-bold text-sm shadow-sm bg-white text-pink-600"
+                    >
+                      <Instagram size={18} />
+                      <span>{t("followOnInstagram")}</span>
+                    </a>
+                  )}
+                  {(destination as any).facebook_url && (
+                    <a
+                      href={(destination as any).facebook_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 px-5 py-3 rounded-2xl border border-gray-100 hover:border-blue-500 hover:bg-blue-50 transition-all font-bold text-sm shadow-sm bg-white text-blue-600"
+                    >
+                      <Facebook size={18} />
+                      <span>{t("followOnFacebook")}</span>
+                    </a>
+                  )}
+                  {(destination as any).website_url && (
+                    <a
+                      href={(destination as any).website_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 px-5 py-3 rounded-2xl border border-gray-100 hover:border-gray-400 hover:bg-gray-50 transition-all font-bold text-sm shadow-sm bg-white text-gray-700"
+                    >
+                      <Globe size={18} />
+                      <span>{t("visitWebsite")}</span>
+                    </a>
+                  )}
                 </section>
               )}
 
@@ -372,10 +370,12 @@ export default function DestinationDetailPage() {
                         )}
                       </div>
                     </div>
-                    <div className="bg-orange-50 text-orange-600 px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-wider flex items-center gap-1.5">
-                      <Info size={12} />
-                      <span>{t("bestPrice")}</span>
-                    </div>
+                    {!isRestaurantOrHotel && (
+                      <div className="bg-orange-50 text-orange-600 px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-wider flex items-center gap-1.5">
+                        <Info size={12} />
+                        <span>{t("bestPrice")}</span>
+                      </div>
+                    )}
                   </div>
                 )}
 

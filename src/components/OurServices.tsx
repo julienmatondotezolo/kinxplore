@@ -113,32 +113,21 @@ export const OurServices: React.FC = () => {
               key={i}
               variants={cardVariants}
               whileHover={{ y: -10 }}
-              className={`group ${svc.bgColor} p-10 rounded-[2.5rem] transition-all duration-500 hover:shadow-2xl flex flex-col items-start text-left`}
+              className={`group ${svc.bgColor} rounded-[2.5rem] transition-all duration-500 hover:shadow-2xl`}
             >
-              <div
-                className={`w-14 h-14 ${svc.iconBg} rounded-2xl flex items-center justify-center text-gray-900 mb-8 group-hover:scale-110 transition-transform duration-300 shadow-sm`}
-              >
-                <svc.icon size={28} />
-              </div>
-              <h3 className="font-extrabold text-3xl text-gray-900 mb-4">{svc.title}</h3>
-              <p className="text-gray-600 font-medium leading-relaxed mb-10">{svc.desc}</p>
-
-              {svc.link?.startsWith("#") ? (
-                <a href={svc.link} className="mt-auto flex items-center gap-2 font-bold text-gray-900 group/btn">
-                  {t("exploreNow")}
-                  <ArrowRight size={20} className="group-hover/btn:translate-x-1 transition-transform" />
-                </a>
-              ) : svc.link ? (
-                <Link href={svc.link} className="mt-auto flex items-center gap-2 font-bold text-gray-900 group/btn">
-                  {t("exploreNow")}
-                  <ArrowRight size={20} className="group-hover/btn:translate-x-1 transition-transform" />
-                </Link>
-              ) : (
+              <Link href={svc.link} className="p-10 flex flex-col items-start text-left h-full">
+                <div
+                  className={`w-14 h-14 ${svc.iconBg} rounded-2xl flex items-center justify-center text-gray-900 mb-8 group-hover:scale-110 transition-transform duration-300 shadow-sm`}
+                >
+                  <svc.icon size={28} />
+                </div>
+                <h3 className="font-extrabold text-3xl text-gray-900 mb-4">{svc.title}</h3>
+                <p className="text-gray-600 font-medium leading-relaxed mb-10">{svc.desc}</p>
                 <span className="mt-auto flex items-center gap-2 font-bold text-gray-900 group/btn">
                   {t("exploreNow")}
                   <ArrowRight size={20} className="group-hover/btn:translate-x-1 transition-transform" />
                 </span>
-              )}
+              </Link>
             </motion.div>
           ))}
         </motion.div>
