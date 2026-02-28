@@ -2,25 +2,16 @@
 
 import {
   ArrowLeft,
-  Calendar,
-  Car,
   CheckCircle2,
   ChevronRight,
-  Clock,
   Facebook,
   Globe,
   Heart,
-  Info,
   Instagram,
   MapPin,
   MoreHorizontal,
-  Palmtree,
   Share2,
   Star,
-  Users,
-  Waves,
-  Wifi,
-  Wind,
 } from "lucide-react";
 import dynamic from "next/dynamic";
 import { useParams } from "next/navigation";
@@ -52,58 +43,10 @@ export default function DestinationDetailPage() {
   const t = useTranslations("DestinationDetail");
   // const [activeTab, setActiveTab] = useState("overview"); // Unused for now
 
-  // Booking state
-  const [checkInDate, setCheckInDate] = useState<Date>(() => {
-    const date = new Date();
-    date.setDate(date.getDate() + 1); // Tomorrow
-    return date;
-  });
-  const [checkOutDate, setCheckOutDate] = useState<Date>(() => {
-    const date = new Date();
-    date.setDate(date.getDate() + 4); // 3 nights
-    return date;
-  });
-
   // Track if map loaded successfully
   const [showLocationSection, setShowLocationSection] = useState(true);
 
   const { data: destination, isLoading, error } = useDestination(id);
-
-  // Check if destination has Hotel or Restaurant category
-  const hasHotelCategory = destination?.categories?.some((cat) => cat.parent.name.toLowerCase() === "hotel") ?? false;
-  const hasRestaurantCategory = destination?.categories?.some((cat) => cat.parent.name.toLowerCase() === "restaurant") ?? false;
-  const isRestaurantOrHotel = hasHotelCategory || hasRestaurantCategory;
-
-  const nights = hasHotelCategory
-    ? Math.ceil((checkOutDate.getTime() - checkInDate.getTime()) / (1000 * 60 * 60 * 24))
-    : 1;
-
-  const showPrice = (destination?.price ?? 0) > 0;
-
-  const formatDateForInput = (date: Date) => date.toISOString().split("T")[0];
-
-  const handleCheckInChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newDate = new Date(e.target.value);
-    setCheckInDate(newDate);
-    // Ensure check-out is at least 1 day after check-in
-    if (newDate >= checkOutDate) {
-      const newCheckOut = new Date(newDate);
-      newCheckOut.setDate(newCheckOut.getDate() + 1);
-      setCheckOutDate(newCheckOut);
-    }
-  };
-
-  const handleCheckOutChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newDate = new Date(e.target.value);
-    // Only update if it's after check-in
-    if (newDate > checkInDate) {
-      setCheckOutDate(newDate);
-    }
-  };
-
-  const handleBookNow = () => {
-    router.push(`/destinations/${id}/booking`);
-  };
 
   if (isLoading) {
     return (
@@ -247,9 +190,9 @@ export default function DestinationDetailPage() {
             );
           })()}
 
-          <div className="flex flex-col lg:flex-row gap-16">
-            {/* Left Content */}
-            <div className="flex-1 space-y-16">
+          <div className="flex flex-col gap-16">
+            {/* Content */}
+            <div className="space-y-16">
               {/* Overview */}
               <section className="space-y-6">
                 <h2 className="text-2xl font-black text-gray-900">{t("overview")}</h2>
@@ -351,128 +294,6 @@ export default function DestinationDetailPage() {
               )}
             </div>
 
-            {/* Booking Card */}
-            <div className="lg:w-[360px]">
-              <div className="sticky top-32 bg-white rounded-[24px] border border-gray-100 shadow-xl shadow-blue-500/10 p-6 space-y-6">
-                {/* Price header — shown as price range for restaurants/hotels, full display otherwise */}
-                {showPrice && (
-                  <div className="flex items-baseline justify-between">
-                    <div className="space-y-1">
-                      <p className="text-[9px] font-bold text-gray-400 uppercase tracking-widest">
-                        {isRestaurantOrHotel ? t("priceRange") : t("priceStartsFrom")}
-                      </p>
-                      <div className="flex items-baseline gap-1">
-                        <span className="text-2xl font-black text-gray-900">${destination.price.toFixed(2)}</span>
-                        {!isRestaurantOrHotel && (
-                          <span className="text-gray-400 font-light text-sm">
-                            {hasHotelCategory ? t("perNight") : t("perUnit")}
-                          </span>
-                        )}
-                      </div>
-                    </div>
-                    {!isRestaurantOrHotel && (
-                      <div className="bg-orange-50 text-orange-600 px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-wider flex items-center gap-1.5">
-                        <Info size={12} />
-                        <span>{t("bestPrice")}</span>
-                      </div>
-                    )}
-                  </div>
-                )}
-
-                {/* Date picker — hidden for restaurants/hotels */}
-                {!isRestaurantOrHotel && (
-                  <div
-                    className={`flex border border-gray-100 rounded-xl overflow-hidden bg-gray-50/50 ${!hasHotelCategory ? "justify-center" : ""}`}
-                  >
-                    <div
-                      className={`${hasHotelCategory ? "flex-1 border-r" : "w-full"} px-4 py-3 flex flex-col items-start gap-1 hover:bg-white hover:shadow-sm transition-all border-gray-100 relative group cursor-pointer`}
-                    >
-                      <label className="text-[9px] font-bold text-gray-400 uppercase tracking-widest flex items-center gap-1">
-                        <Calendar size={10} />
-                        {hasHotelCategory ? t("checkIn") : t("date")}
-                      </label>
-                      <input
-                        type="date"
-                        value={formatDateForInput(checkInDate)}
-                        onChange={handleCheckInChange}
-                        min={formatDateForInput(new Date())}
-                        className="text-sm font-bold bg-transparent border-none outline-none cursor-pointer w-full appearance-none hover:text-blue-600 transition-colors [&::-webkit-calendar-picker-indicator]:cursor-pointer [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:inset-0 [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:h-full"
-                      />
-                      <div className="absolute inset-0 flex items-center justify-end pr-4 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity">
-                        <Calendar size={14} className="text-blue-600" />
-                      </div>
-                    </div>
-                    {hasHotelCategory && (
-                      <div className="flex-1 px-4 py-3 flex flex-col items-start gap-1 hover:bg-white hover:shadow-sm transition-all relative group cursor-pointer">
-                        <label className="text-[9px] font-bold text-gray-400 uppercase tracking-widest flex items-center gap-1">
-                          <Calendar size={10} />
-                          {t("checkOut")}
-                        </label>
-                        <input
-                          type="date"
-                          value={formatDateForInput(checkOutDate)}
-                          onChange={handleCheckOutChange}
-                          min={formatDateForInput(new Date(checkInDate.getTime() + 86400000))}
-                          className="text-sm font-bold bg-transparent border-none outline-none cursor-pointer w-full appearance-none hover:text-blue-600 transition-colors [&::-webkit-calendar-picker-indicator]:cursor-pointer [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:inset-0 [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:h-full"
-                        />
-                        <div className="absolute inset-0 flex items-center justify-end pr-4 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity">
-                          <Calendar size={14} className="text-blue-600" />
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                )}
-
-                {/* Price breakdown — hidden for restaurants/hotels */}
-                {!isRestaurantOrHotel && showPrice && (
-                  <div className="space-y-3">
-                    <div className="flex items-center justify-between text-gray-500 text-sm font-medium">
-                      <div className="flex items-center gap-2 underline decoration-gray-200 decoration-dotted underline-offset-4">
-                        <span>
-                          ${destination.price.toFixed(2)} x {nights}{" "}
-                          {hasHotelCategory ? (nights === 1 ? "night" : "nights") : "unit"}
-                        </span>
-                      </div>
-                      <span>${(destination.price * nights).toFixed(2)}</span>
-                    </div>
-                    <div className="flex items-center justify-between text-gray-500 text-sm font-medium">
-                      <span className="underline decoration-gray-200 decoration-dotted underline-offset-4">
-                        Frais de Service
-                      </span>
-                      <span>$100.00</span>
-                    </div>
-                    <div className="pt-4 border-t border-gray-100 flex items-center justify-between">
-                      <span className="text-base font-black text-gray-900">Prix Total</span>
-                      <span className="text-2xl font-black text-blue-600">
-                        ${(destination.price * nights + 100).toFixed(2)}
-                      </span>
-                    </div>
-                  </div>
-                )}
-
-                {/* Booking buttons — hidden for restaurants/hotels */}
-                {!isRestaurantOrHotel && (
-                  <div className="space-y-2.5">
-                    <button
-                      onClick={handleBookNow}
-                      className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl font-bold text-sm shadow-lg shadow-blue-500/25 active:scale-95 transition-all"
-                    >
-                      {t("bookNow")}
-                    </button>
-                    <button className="w-full bg-white hover:bg-gray-50 text-gray-900 py-3 rounded-xl font-semibold text-sm border border-gray-100 active:scale-95 transition-all">
-                      {t("inquiryNow")}
-                    </button>
-                  </div>
-                )}
-
-                {/* Ask question — hidden for restaurants/hotels */}
-                {!isRestaurantOrHotel && (
-                  <p className="text-center text-gray-400 text-xs font-bold cursor-pointer hover:text-blue-600 hover:underline transition-all uppercase tracking-widest">
-                    {t("askQuestion")}
-                  </p>
-                )}
-              </div>
-            </div>
           </div>
         </div>
 

@@ -1,0 +1,154 @@
+"use client";
+
+import { motion } from "framer-motion";
+import {
+  ArrowRight,
+  Calendar,
+  Car,
+  ClipboardList,
+  FileText,
+  Headphones,
+  Plane,
+} from "lucide-react";
+import { useTranslations } from "next-intl";
+import React from "react";
+
+import { Footer } from "@/components/Footer";
+import { Navigation } from "@/components/Navigation";
+import { Link } from "@/navigation";
+
+const useServices = () => {
+  const t = useTranslations("Services");
+
+  return [
+    {
+      icon: Calendar,
+      title: t("tripPlanning.title"),
+      desc: t("tripPlanning.description"),
+      bgColor: "bg-[#DEFCE9]",
+      iconBg: "bg-[#63E6BE]",
+      link: "/trip-planning",
+    },
+    {
+      icon: Plane,
+      title: t("airportService.title"),
+      desc: t("airportService.description"),
+      bgColor: "bg-[#E8F4FD]",
+      iconBg: "bg-[#90CAF9]",
+      link: "/services/airport",
+    },
+    {
+      icon: Car,
+      title: t("cityTransfer.title"),
+      desc: t("cityTransfer.description"),
+      bgColor: "bg-[#F3E8FF]",
+      iconBg: "bg-[#C4B5FD]",
+      link: "/services/city-transfer",
+    },
+    {
+      icon: ClipboardList,
+      title: t("adminHelp.title"),
+      desc: t("adminHelp.description"),
+      bgColor: "bg-[#FEF3C7]",
+      iconBg: "bg-[#FCD34D]",
+      link: "/services/admin-help",
+    },
+    {
+      icon: Headphones,
+      title: t("localSupport.title"),
+      desc: t("localSupport.description"),
+      bgColor: "bg-[#FFF4E6]",
+      iconBg: "bg-[#FFD8A8]",
+      link: "/services/local-support",
+    },
+    {
+      icon: FileText,
+      title: t("visa.title"),
+      desc: t("visa.description"),
+      bgColor: "bg-[#E8EAF6]",
+      iconBg: "bg-[#9FA8DA]",
+      link: "/services/visa",
+    },
+  ];
+};
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.15,
+    },
+  },
+};
+
+const cardVariants = {
+  hidden: { opacity: 0, scale: 0.9, y: 30 },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    y: 0,
+    transition: {
+      duration: 0.5,
+    },
+  },
+};
+
+export default function ServicesPage() {
+  const t = useTranslations("Services");
+  const services = useServices();
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-blue-50/50 via-white to-blue-50/30">
+      <Navigation />
+
+      <div className="pt-32 pb-20 px-4">
+        <div className="max-w-7xl mx-auto">
+          {/* Hero */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-center mb-20 space-y-4"
+          >
+            <h1 className="text-4xl md:text-6xl font-extrabold text-gray-900 tracking-tight leading-tight">
+              {t("title")}
+            </h1>
+          </motion.div>
+
+          {/* Services Grid */}
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6"
+          >
+            {services.map((svc, i) => (
+              <motion.div
+                key={i}
+                variants={cardVariants}
+                whileHover={{ y: -10 }}
+                className={`group ${svc.bgColor} rounded-[2.5rem] transition-all duration-500 hover:shadow-2xl`}
+              >
+                <Link href={svc.link} className="p-10 flex flex-col items-start text-left h-full">
+                  <div
+                    className={`w-14 h-14 ${svc.iconBg} rounded-2xl flex items-center justify-center text-gray-900 mb-8 group-hover:scale-110 transition-transform duration-300 shadow-sm`}
+                  >
+                    <svc.icon size={28} />
+                  </div>
+                  <h3 className="font-extrabold text-3xl text-gray-900 mb-4">{svc.title}</h3>
+                  <p className="text-gray-600 font-medium leading-relaxed mb-10">{svc.desc}</p>
+                  <span className="mt-auto flex items-center gap-2 font-bold text-gray-900 group/btn">
+                    {t("exploreNow")}
+                    <ArrowRight size={20} className="group-hover/btn:translate-x-1 transition-transform" />
+                  </span>
+                </Link>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </div>
+
+      <Footer />
+    </div>
+  );
+}

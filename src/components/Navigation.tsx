@@ -129,6 +129,12 @@ export const Navigation: React.FC = () => {
       return;
     }
 
+    // Handle services navigation to dedicated page
+    if (id === "services") {
+      router.push("/services");
+      return;
+    }
+
     // Handle category-based navigation to destinations page
     if (categoryFilters[id]) {
       setActiveCategory(categoryFilters[id]);
