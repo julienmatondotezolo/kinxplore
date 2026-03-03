@@ -25,7 +25,7 @@
     "titleCity": "Kinshasa and Kongo Central.",
     "titleYourWay": "",
     "subtitle": "Live an experience that feels like you.",
-    "description": "In the vibrant heart of Congo, discover Kinshasa and Kongo Central through experiences designed for you — between culture, nature and authentic encounters.",
+    "description": "In the vibrant heart of Congo, discover Kinshasa and Kongo Central through experiences designed for you, between culture, nature and authentic encounters.",
     "destination": "Destination",
     "destinationValue": "Kinshasa, DRC",
     "location": "Location",
@@ -279,6 +279,7 @@
     "visitWebsite": "Visit website",
     "followOnFacebook": "Follow on Facebook",
     "priceRange": "Average budget",
+    "openingHours": "Opening Hours",
     "goBack": "Go back",
     "notFound": "Destination not found",
     "backToDestinations": "Back to destinations"
@@ -475,7 +476,7 @@
     "whyProfessional": "Professional guidance",
     "whySafe": "Guaranteed safety",
     "errorLoading": "Failed to load trips. Please try again.",
-    "contactAgentText": "Plan your personalized experience in Kinshasa. Our local expert will contact you quickly to create an itinerary tailored to your interests.",
+    "contactAgentText": "Plan your personalized experience. Our local expert will contact you quickly to create an itinerary tailored to your interests.",
     "showAllPhotos": "Show all photos"
   },
   "TripBooking": {

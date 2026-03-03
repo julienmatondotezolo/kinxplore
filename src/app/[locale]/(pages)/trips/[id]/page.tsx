@@ -340,12 +340,10 @@ export default function TripDetailPage() {
                     <span className="text-gray-500">{t("region")}</span>
                     <span className="font-bold">{formatRegion(trip.region)}</span>
                   </div>
-                  {trip.destinations && (
-                    <div className="flex items-center justify-between">
-                      <span className="text-gray-500">{t("stops")}</span>
-                      <span className="font-bold">{trip.destinations.length} {t("destinations")}</span>
-                    </div>
-                  )}
+                  <div className="flex items-center justify-between">
+                    <span className="text-gray-500">{t("priceFrom")}</span>
+                    <span className="font-bold">${trip.price_international} {t("international")} / ${trip.price_local} {t("local")}</span>
+                  </div>
                 </div>
 
                 <Link href={`/trips/${trip.id}/booking`}>

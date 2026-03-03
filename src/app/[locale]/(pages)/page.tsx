@@ -2,11 +2,11 @@
 
 import { BrandReel } from "@/components/BrandReel";
 import { Community } from "@/components/Community";
-import { CTA } from "@/components/CTA";
+
 import { Footer } from "@/components/Footer";
 import { Hero } from "@/components/Hero";
 import { Navigation } from "@/components/Navigation";
-import { OurServices } from "@/components/OurServices";
+
 import { PopularDestinations } from "@/components/PopularDestinations";
 import { Reveal } from "@/components/Reveal";
 import { Testimonials } from "@/components/Testimonials";
@@ -34,10 +34,6 @@ export default function HomePage() {
           </div>
         </Reveal>
 
-        <Reveal width="100%" delay={0.3}>
-          <OurServices />
-        </Reveal>
-
         <Reveal width="100%">
           <WhyChooseUs />
         </Reveal>
@@ -50,9 +46,6 @@ export default function HomePage() {
           <Community />
         </Reveal>
 
-        <Reveal width="100%">
-          <CTA />
-        </Reveal>
       </div>
 
       <Footer />

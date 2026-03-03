@@ -5,6 +5,8 @@ import { Car, CheckCircle2, ChevronRight, Clock, Globe, Headphones, MapPin, Smar
 import { useTranslations } from "next-intl";
 import React from "react";
 
+import { Link } from "@/navigation";
+
 export const WhyChooseUs: React.FC = () => {
   const t = useTranslations("WhyChooseUs");
 
@@ -56,9 +58,9 @@ export const WhyChooseUs: React.FC = () => {
             ))}
           </div>
 
-          <button className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-10 rounded-2xl shadow-xl shadow-blue-500/30 transition-all hover:scale-105 active:scale-95 flex items-center gap-2">
+          <Link href="/services" className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-10 rounded-2xl shadow-xl shadow-blue-500/30 transition-all hover:scale-105 active:scale-95 flex items-center gap-2 inline-flex">
             {t("learnMore")} <ChevronRight size={20} />
-          </button>
+          </Link>
         </motion.div>
 
         {/* Right Side: Device Mockup (Mobile-optimized web app) */}

@@ -4,6 +4,7 @@ import {
   ArrowLeft,
   CheckCircle2,
   ChevronRight,
+  Clock,
   Facebook,
   Globe,
   Heart,
@@ -198,6 +199,32 @@ export default function DestinationDetailPage() {
                 <h2 className="text-2xl font-black text-gray-900">{t("overview")}</h2>
                 <p className="text-gray-500 leading-relaxed font-light text-[17px]">{destination.description}</p>
               </section>
+
+              {/* Opening Hours */}
+              {(destination as any).opening_hours && Object.values((destination as any).opening_hours).some((v: any) => v && v.trim()) && (
+                <section className="space-y-6">
+                  <h2 className="text-2xl font-black text-gray-900 flex items-center gap-3">
+                    <Clock size={24} className="text-blue-600" />
+                    {t("openingHours")}
+                  </h2>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    {(["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"] as const).map((day) => {
+                      const hours = (destination as any).opening_hours?.[day];
+                      if (!hours || !hours.trim()) return null;
+                      const dayLabels: Record<string, string> = {
+                        monday: "Lundi", tuesday: "Mardi", wednesday: "Mercredi",
+                        thursday: "Jeudi", friday: "Vendredi", saturday: "Samedi", sunday: "Dimanche",
+                      };
+                      return (
+                        <div key={day} className="flex items-center justify-between px-4 py-3 rounded-xl bg-gray-50 border border-gray-100">
+                          <span className="font-bold text-sm text-gray-700">{dayLabels[day]}</span>
+                          <span className="text-sm text-gray-500 font-medium">{hours}</span>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </section>
+              )}
 
               {/* Social Links */}
               {((destination as any).instagram_url || (destination as any).facebook_url || (destination as any).website_url) && (
