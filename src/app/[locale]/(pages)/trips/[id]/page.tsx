@@ -338,7 +338,7 @@ export default function TripDetailPage() {
                   </div>
                   <div className="flex items-center justify-between">
                     <span className="text-gray-500">{t("priceFrom")}</span>
-                    <span className="font-bold">${trip.price_international} {t("international")}</span>
+                    <span className="font-bold">${trip.price_international}</span>
                   </div>
                 </div>
 
