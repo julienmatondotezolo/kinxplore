@@ -282,6 +282,41 @@ export default function DestinationDetailPage() {
                 </section>
               )}
 
+              {/* Ideal For */}
+              {(destination as any).ideal_for && (destination as any).ideal_for.length > 0 && (
+                <section className="space-y-6">
+                  <h2 className="text-2xl font-black text-gray-900">{t("idealFor")}</h2>
+                  <div className="flex flex-wrap gap-2">
+                    {(destination as any).ideal_for.map((item: string, i: number) => (
+                      <span
+                        key={i}
+                        className="inline-flex items-center gap-1.5 bg-blue-50 text-blue-700 px-4 py-2 rounded-full text-sm font-medium"
+                      >
+                        {item}
+                      </span>
+                    ))}
+                  </div>
+                </section>
+              )}
+
+              {/* Why Choose */}
+              {(destination as any).why_choose && (destination as any).why_choose.length > 0 && (
+                <section className="space-y-6">
+                  <h2 className="text-2xl font-black text-gray-900">{t("whyChoose")}</h2>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    {(destination as any).why_choose.map((item: string, i: number) => (
+                      <div
+                        key={i}
+                        className="flex items-center gap-3 bg-green-50/50 p-3 rounded-xl"
+                      >
+                        <CheckCircle2 className="w-5 h-5 text-green-600 shrink-0" />
+                        <span className="text-gray-700 text-sm font-medium">{item}</span>
+                      </div>
+                    ))}
+                  </div>
+                </section>
+              )}
+
               {/* Facilities */}
               {destinationFacilities.length > 0 && (
                 <section className="space-y-10 pt-10 border-t border-gray-100">
