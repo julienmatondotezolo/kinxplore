@@ -1,7 +1,7 @@
 "use client";
 
 import { BrandReel } from "@/components/BrandReel";
-import { Community } from "@/components/Community";
+
 
 import { Footer } from "@/components/Footer";
 import { Hero } from "@/components/Hero";
@@ -42,9 +42,6 @@ export default function HomePage() {
           <Testimonials />
         </Reveal>
 
-        <Reveal width="100%">
-          <Community />
-        </Reveal>
 
       </div>
 

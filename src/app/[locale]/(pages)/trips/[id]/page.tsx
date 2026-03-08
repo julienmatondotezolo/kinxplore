@@ -5,16 +5,10 @@ import {
   ArrowLeft,
   CheckCircle2,
   Clock,
-  DollarSign,
   Globe,
-  Heart,
   Loader2,
   MapPin,
   MoreHorizontal,
-  Mountain,
-  Shield,
-  Star,
-  Users,
 } from "lucide-react";
 import { useParams } from "next/navigation";
 import { useTranslations } from "next-intl";
@@ -201,49 +195,51 @@ export default function TripDetailPage() {
               )}
 
               {/* Emotion Block */}
-              <div className="space-y-6">
-                {/* Ideal For */}
-                <div>
-                  <h3 className="text-lg font-bold text-gray-900 mb-3">{t("idealFor")}</h3>
-                  <div className="flex flex-wrap gap-2">
-                    {[
-                      { label: t("idealCouples"), icon: Heart },
-                      { label: t("idealNature"), icon: Mountain },
-                      { label: t("idealWeekend"), icon: Star },
-                      { label: t("idealFriends"), icon: Users },
-                    ].map((tag) => (
-                      <span
-                        key={tag.label}
-                        className="inline-flex items-center gap-1.5 bg-blue-50 text-blue-700 px-4 py-2 rounded-full text-sm font-medium"
-                      >
-                        <tag.icon className="w-4 h-4" />
-                        {tag.label}
-                      </span>
-                    ))}
-                  </div>
-                </div>
+              {(() => {
+                const idealFor = trip.destinations?.flatMap((d: any) => d.ideal_for || []) || [];
+                const whyChoose = trip.destinations?.flatMap((d: any) => d.why_choose || []) || [];
+                const uniqueIdealFor = [...new Set(idealFor)];
+                const uniqueWhyChoose = [...new Set(whyChoose)];
 
-                {/* Why Choose */}
-                <div>
-                  <h3 className="text-lg font-bold text-gray-900 mb-3">{t("whyChoose")}</h3>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    {[
-                      { label: t("whyProximity"), icon: MapPin },
-                      { label: t("whyWeekend"), icon: Clock },
-                      { label: t("whyProfessional"), icon: CheckCircle2 },
-                      { label: t("whySafe"), icon: Shield },
-                    ].map((item) => (
-                      <div
-                        key={item.label}
-                        className="flex items-center gap-3 bg-green-50/50 p-3 rounded-xl"
-                      >
-                        <item.icon className="w-5 h-5 text-green-600 shrink-0" />
-                        <span className="text-gray-700 text-sm font-medium">{item.label}</span>
+                if (uniqueIdealFor.length === 0 && uniqueWhyChoose.length === 0) return null;
+
+                return (
+                  <div className="space-y-6">
+                    {uniqueIdealFor.length > 0 && (
+                      <div>
+                        <h3 className="text-lg font-bold text-gray-900 mb-3">{t("idealFor")}</h3>
+                        <div className="flex flex-wrap gap-2">
+                          {uniqueIdealFor.map((label) => (
+                            <span
+                              key={label}
+                              className="inline-flex items-center gap-1.5 bg-blue-50 text-blue-700 px-4 py-2 rounded-full text-sm font-medium"
+                            >
+                              {label}
+                            </span>
+                          ))}
+                        </div>
                       </div>
-                    ))}
+                    )}
+
+                    {uniqueWhyChoose.length > 0 && (
+                      <div>
+                        <h3 className="text-lg font-bold text-gray-900 mb-3">{t("whyChoose")}</h3>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                          {uniqueWhyChoose.map((label) => (
+                            <div
+                              key={label}
+                              className="flex items-center gap-3 bg-green-50/50 p-3 rounded-xl"
+                            >
+                              <CheckCircle2 className="w-5 h-5 text-green-600 shrink-0" />
+                              <span className="text-gray-700 text-sm font-medium">{label}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
                   </div>
-                </div>
-              </div>
+                );
+              })()}
 
               {/* What's Included */}
               {trip.included_items && trip.included_items.length > 0 && (
@@ -342,7 +338,7 @@ export default function TripDetailPage() {
                   </div>
                   <div className="flex items-center justify-between">
                     <span className="text-gray-500">{t("priceFrom")}</span>
-                    <span className="font-bold">${trip.price_international} {t("international")} / ${trip.price_local} {t("local")}</span>
+                    <span className="font-bold">${trip.price_international} {t("international")}</span>
                   </div>
                 </div>
 
