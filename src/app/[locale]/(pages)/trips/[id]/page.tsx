@@ -196,10 +196,10 @@ export default function TripDetailPage() {
 
               {/* Emotion Block */}
               {(() => {
-                const idealFor = trip.destinations?.flatMap((d: any) => d.ideal_for || []) || [];
-                const whyChoose = trip.destinations?.flatMap((d: any) => d.why_choose || []) || [];
-                const uniqueIdealFor = [...new Set(idealFor)];
-                const uniqueWhyChoose = [...new Set(whyChoose)];
+                const destIdealFor = trip.destinations?.flatMap((d: any) => d.ideal_for || []) || [];
+                const destWhyChoose = trip.destinations?.flatMap((d: any) => d.why_choose || []) || [];
+                const uniqueIdealFor = [...new Set([...(trip.ideal_for || []), ...destIdealFor])];
+                const uniqueWhyChoose = [...new Set([...(trip.why_choose || []), ...destWhyChoose])];
 
                 if (uniqueIdealFor.length === 0 && uniqueWhyChoose.length === 0) return null;
 
