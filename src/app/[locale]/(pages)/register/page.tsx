@@ -3,12 +3,14 @@
 import { useState } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { useRouter } from '@/navigation';
+import { useLocale } from 'next-intl';
 import { motion } from 'framer-motion';
 import { Mail, Lock, User, ArrowRight, Loader2, CheckCircle } from 'lucide-react';
 import Link from 'next/link';
 
 export default function RegisterPage() {
-  const [fullName, setFullName] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -17,6 +19,7 @@ export default function RegisterPage() {
   const [success, setSuccess] = useState(false);
   const { signUp } = useAuth();
   const router = useRouter();
+  const locale = useLocale();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -38,11 +41,8 @@ export default function RegisterPage() {
     }
 
     try {
-      await signUp(email, password, fullName);
+      await signUp(email, password, firstName, lastName, locale);
       setSuccess(true);
-      setTimeout(() => {
-        router.push('/login');
-      }, 2000);
     } catch (err: any) {
       setError(err.message || 'Failed to create account. Please try again.');
     } finally {
@@ -63,9 +63,15 @@ export default function RegisterPage() {
           </div>
           <h2 className="text-2xl font-bold text-gray-900 mb-2">Account Created!</h2>
           <p className="text-gray-600 mb-4">
-            Please check your email to verify your account.
+            We&apos;ve sent a confirmation email to <strong>{email}</strong>.<br />
+            Please click the link in the email to verify your account before logging in.
           </p>
-          <p className="text-sm text-gray-500">Redirecting to login...</p>
+          <Link
+            href="/login"
+            className="inline-block mt-2 px-6 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-all"
+          >
+            Go to Login
+          </Link>
         </motion.div>
       </div>
     );
@@ -90,24 +96,45 @@ export default function RegisterPage() {
         {/* Register Card */}
         <div className="bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
           <form onSubmit={handleSubmit} className="space-y-5">
-            {/* Full Name Field */}
-            <div>
-              <label htmlFor="fullName" className="block text-sm font-medium text-gray-700 mb-2">
-                Full Name
-              </label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <User className="h-5 w-5 text-gray-400" />
+            {/* Name Fields */}
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <label htmlFor="firstName" className="block text-sm font-medium text-gray-700 mb-2">
+                  First Name
+                </label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <User className="h-5 w-5 text-gray-400" />
+                  </div>
+                  <input
+                    type="text"
+                    id="firstName"
+                    value={firstName}
+                    onChange={(e) => setFirstName(e.target.value)}
+                    className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white text-gray-900"
+                    placeholder="John"
+                    required
+                  />
                 </div>
-                <input
-                  type="text"
-                  id="fullName"
-                  value={fullName}
-                  onChange={(e) => setFullName(e.target.value)}
-                  className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white text-gray-900"
-                  placeholder="John Doe"
-                  required
-                />
+              </div>
+              <div>
+                <label htmlFor="lastName" className="block text-sm font-medium text-gray-700 mb-2">
+                  Last Name
+                </label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <User className="h-5 w-5 text-gray-400" />
+                  </div>
+                  <input
+                    type="text"
+                    id="lastName"
+                    value={lastName}
+                    onChange={(e) => setLastName(e.target.value)}
+                    className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white text-gray-900"
+                    placeholder="Doe"
+                    required
+                  />
+                </div>
               </div>
             </div>
 

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useLocale } from 'next-intl';
 import { useAuth } from '@/hooks/useAuth';
 
 interface AuthModalProps {
@@ -13,11 +14,13 @@ export default function AuthModal({ isOpen, onClose, defaultMode = 'signin' }: A
   const [mode, setMode] = useState<'signin' | 'signup' | 'reset'>(defaultMode);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [fullName, setFullName] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [message, setMessage] = useState<string | null>(null);
 
+  const locale = useLocale();
   const { signIn, signUp, resetPassword } = useAuth();
 
   if (!isOpen) return null;
@@ -33,7 +36,7 @@ export default function AuthModal({ isOpen, onClose, defaultMode = 'signin' }: A
         await signIn(email, password);
         onClose();
       } else if (mode === 'signup') {
-        await signUp(email, password, fullName);
+        await signUp(email, password, firstName, lastName, locale);
         setMessage('Account created! Please check your email to verify your account.');
         setTimeout(() => {
           onClose();
@@ -73,18 +76,35 @@ export default function AuthModal({ isOpen, onClose, defaultMode = 'signin' }: A
 
         <form onSubmit={handleSubmit} className="space-y-4">
           {mode === 'signup' && (
-            <div>
-              <label htmlFor="fullName" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                Full Name
-              </label>
-              <input
-                type="text"
-                id="fullName"
-                value={fullName}
-                onChange={(e) => setFullName(e.target.value)}
-                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
-                required
-              />
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <label htmlFor="firstName" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                  First Name
+                </label>
+                <input
+                  type="text"
+                  id="firstName"
+                  value={firstName}
+                  onChange={(e) => setFirstName(e.target.value)}
+                  className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+                  placeholder="John"
+                  required
+                />
+              </div>
+              <div>
+                <label htmlFor="lastName" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                  Last Name
+                </label>
+                <input
+                  type="text"
+                  id="lastName"
+                  value={lastName}
+                  onChange={(e) => setLastName(e.target.value)}
+                  className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+                  placeholder="Doe"
+                  required
+                />
+              </div>
             </div>
           )}
 

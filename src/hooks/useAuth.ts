@@ -56,15 +56,20 @@ export function useAuth() {
     }
   };
 
-  const signUp = async (email: string, password: string, fullName?: string) => {
+  const signUp = async (email: string, password: string, firstName?: string, lastName?: string, locale?: string) => {
+    const fullName = [firstName, lastName].filter(Boolean).join(' ');
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
       options: {
         data: {
           full_name: fullName,
+          first_name: firstName,
+          last_name: lastName,
+          locale: locale || 'en',
           role: 'user',
         },
+        emailRedirectTo: `${window.location.origin}/${locale || 'en'}/login`,
       },
     });
 
