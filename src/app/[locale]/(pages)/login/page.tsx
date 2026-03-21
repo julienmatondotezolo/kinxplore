@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { useRouter } from '@/navigation';
+import { useLocale } from 'next-intl';
 import { useSearchParams } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { Mail, Lock, ArrowRight, Loader2 } from 'lucide-react';
@@ -15,6 +16,7 @@ export default function LoginPage() {
   const [error, setError] = useState<string | null>(null);
   const { signIn } = useAuth();
   const router = useRouter();
+  const locale = useLocale();
   const searchParams = useSearchParams();
   const returnUrl = searchParams.get('returnUrl');
 
@@ -24,7 +26,7 @@ export default function LoginPage() {
     setError(null);
 
     try {
-      await signIn(email, password);
+      await signIn(email, password, locale);
       // Redirect to returnUrl if provided, otherwise go to home
       router.push(returnUrl || '/');
     } catch (err: any) {

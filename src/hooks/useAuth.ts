@@ -4,6 +4,20 @@ import { useState, useEffect } from 'react';
 import { supabase, UserProfile } from '@/lib/supabase';
 import { User, Session } from '@supabase/supabase-js';
 
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:2431';
+
+async function sendMailNotification(endpoint: string, body: Record<string, string | undefined>) {
+  try {
+    await fetch(`${API_BASE_URL}/api/mail/${endpoint}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    });
+  } catch {
+    // Mail notification is non-blocking
+  }
+}
+
 export function useAuth() {
   const [user, setUser] = useState<User | null>(null);
   const [profile, setProfile] = useState<UserProfile | null>(null);
@@ -69,21 +83,37 @@ export function useAuth() {
           locale: locale || 'en',
           role: 'user',
         },
-        emailRedirectTo: `${window.location.origin}/${locale || 'en'}/login`,
       },
     });
 
     if (error) throw error;
+
+    // Send welcome email via backend
+    sendMailNotification('welcome', {
+      email,
+      name: fullName || email,
+      locale: locale || 'en',
+    });
+
     return data;
   };
 
-  const signIn = async (email: string, password: string) => {
+  const signIn = async (email: string, password: string, locale?: string) => {
     const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
 
     if (error) throw error;
+
+    // Send login notification via backend
+    const name = data.user?.user_metadata?.full_name || email;
+    sendMailNotification('login', {
+      email,
+      name,
+      locale: locale || data.user?.user_metadata?.locale || 'en',
+    });
+
     return data;
   };
 
@@ -107,9 +137,9 @@ export function useAuth() {
     return data;
   };
 
-  const resetPassword = async (email: string) => {
+  const resetPassword = async (email: string, locale?: string) => {
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${window.location.origin}/auth/reset-password`,
+      redirectTo: `${window.location.origin}/${locale || 'en'}/reset-password`,
     });
 
     if (error) throw error;

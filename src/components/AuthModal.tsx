@@ -33,7 +33,7 @@ export default function AuthModal({ isOpen, onClose, defaultMode = 'signin' }: A
 
     try {
       if (mode === 'signin') {
-        await signIn(email, password);
+        await signIn(email, password, locale);
         onClose();
       } else if (mode === 'signup') {
         await signUp(email, password, firstName, lastName, locale);
@@ -42,7 +42,7 @@ export default function AuthModal({ isOpen, onClose, defaultMode = 'signin' }: A
           onClose();
         }, 2000);
       } else if (mode === 'reset') {
-        await resetPassword(email);
+        await resetPassword(email, locale);
         setMessage('Password reset link sent to your email!');
         setTimeout(() => {
           setMode('signin');
