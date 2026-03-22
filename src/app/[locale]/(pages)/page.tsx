@@ -19,7 +19,7 @@ export default function HomePage() {
 
       <Hero />
 
-      <BrandReel />
+      {/* <BrandReel /> */}
 
       <div className="relative bg-[#FAFBFF] overflow-hidden">
         {/* Background decorative elements */}
