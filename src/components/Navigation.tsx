@@ -7,6 +7,7 @@ import {
   CalendarDays,
   ChevronDown,
   Gamepad2,
+  Globe,
   Hotel,
   Info,
   LogIn,
@@ -19,7 +20,8 @@ import {
   UtensilsCrossed,
   X,
 } from "lucide-react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
+import { useRouter as useNextRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
 import { useAuth } from "@/hooks/useAuth";
@@ -29,6 +31,8 @@ import { useDestinationStore } from "@/store/useDestinationStore";
 
 export const Navigation: React.FC = () => {
   const t = useTranslations("Navigation");
+  const locale = useLocale();
+  const nextRouter = useNextRouter();
   const router = useRouter();
   const pathname = usePathname();
   const { user, profile, loading: authLoading, signOut } = useAuth();
@@ -337,6 +341,34 @@ export const Navigation: React.FC = () => {
                           <ShoppingBag size={16} />
                           {t("myBookings")}
                         </button>
+                      </div>
+                      <div className="border-t border-gray-100 py-2 px-4">
+                        <p className="text-xs font-semibold text-gray-400 uppercase tracking-widest mb-2 flex items-center gap-2">
+                          <Globe size={14} />
+                          {t("language")}
+                        </p>
+                        <div className="flex gap-1.5">
+                          {[
+                            { code: "fr", label: "FR" },
+                            { code: "en", label: "EN" },
+                            { code: "nl", label: "NL" },
+                          ].map((lang) => (
+                            <button
+                              key={lang.code}
+                              onClick={() => {
+                                setShowUserDropdown(false);
+                                nextRouter.push(`/${lang.code}${pathname}`);
+                              }}
+                              className={`flex-1 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                                locale === lang.code
+                                  ? "bg-blue-600 text-white"
+                                  : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                              }`}
+                            >
+                              {lang.label}
+                            </button>
+                          ))}
+                        </div>
                       </div>
                       <div className="border-t border-gray-100 py-2">
                         <button

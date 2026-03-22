@@ -1,11 +1,46 @@
-import { Github, Globe, Instagram, Mail, Twitter } from "lucide-react";
-import { useTranslations } from "next-intl";
-import React from "react";
+import { Check, Facebook, Instagram, Loader2, Mail } from "lucide-react";
+import { useLocale, useTranslations } from "next-intl";
+import React, { useState } from "react";
 
 import { Link } from "@/navigation";
 
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:2431";
+
 export const Footer: React.FC = () => {
   const t = useTranslations("Footer");
+  const locale = useLocale();
+  const [newsletterEmail, setNewsletterEmail] = useState("");
+  const [newsletterStatus, setNewsletterStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+
+  const handleSubscribe = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newsletterEmail) return;
+
+    setNewsletterStatus("loading");
+    try {
+      const res = await fetch(`${API_BASE_URL}/api/newsletter/subscribe`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: newsletterEmail, locale }),
+      });
+
+      if (!res.ok) {
+        const data = await res.json();
+        if (data.statusCode === 409) {
+          setNewsletterStatus("success");
+        } else {
+          throw new Error(data.message);
+        }
+      } else {
+        setNewsletterStatus("success");
+        setNewsletterEmail("");
+      }
+    } catch {
+      setNewsletterStatus("error");
+    }
+
+    setTimeout(() => setNewsletterStatus("idle"), 4000);
+  };
 
   return (
     <footer className="bg-white pt-24 pb-12" id="contact">
@@ -19,14 +54,32 @@ export const Footer: React.FC = () => {
             </div>
             <p className="text-gray-500 font-medium leading-relaxed">{t("description")}</p>
             <div className="flex items-center gap-4">
-              {[Github, Twitter, Instagram, Globe].map((Icon, i) => (
-                <button
-                  key={i}
-                  className="w-10 h-10 rounded-full border border-gray-100 flex items-center justify-center text-gray-400 hover:bg-blue-600 hover:text-white hover:border-blue-600 transition-all shadow-sm"
-                >
-                  <Icon size={18} />
-                </button>
-              ))}
+              <a
+                href="https://www.instagram.com/kinxplore/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-10 h-10 rounded-full border border-gray-100 flex items-center justify-center text-gray-400 hover:bg-blue-600 hover:text-white hover:border-blue-600 transition-all shadow-sm"
+              >
+                <Instagram size={18} />
+              </a>
+              <a
+                href="https://www.facebook.com/profile.php?id=100079690630995"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-10 h-10 rounded-full border border-gray-100 flex items-center justify-center text-gray-400 hover:bg-blue-600 hover:text-white hover:border-blue-600 transition-all shadow-sm"
+              >
+                <Facebook size={18} />
+              </a>
+              <a
+                href="https://www.tiktok.com/@kinxplore"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-10 h-10 rounded-full border border-gray-100 flex items-center justify-center text-gray-400 hover:bg-blue-600 hover:text-white hover:border-blue-600 transition-all shadow-sm"
+              >
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5" />
+                </svg>
+              </a>
             </div>
           </div>
 
@@ -87,16 +140,35 @@ export const Footer: React.FC = () => {
           <div className="space-y-8">
             <h4 className="text-lg font-bold text-gray-900">{t("subscribe")}</h4>
             <p className="text-gray-500 font-medium">{t("subscribeDesc")}</p>
-            <div className="relative">
+            <form onSubmit={handleSubscribe} className="relative">
               <input
                 type="email"
+                value={newsletterEmail}
+                onChange={(e) => setNewsletterEmail(e.target.value)}
                 placeholder={t("emailPlaceholder")}
+                required
                 className="w-full bg-gray-50 border border-gray-100 rounded-2xl py-4 pl-6 pr-12 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
               />
-              <button className="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 bg-blue-600 text-white rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/30 hover:bg-blue-700 transition-all">
-                <Mail size={18} />
+              <button
+                type="submit"
+                disabled={newsletterStatus === "loading"}
+                className="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 bg-blue-600 text-white rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/30 hover:bg-blue-700 transition-all disabled:opacity-50"
+              >
+                {newsletterStatus === "loading" ? (
+                  <Loader2 size={18} className="animate-spin" />
+                ) : newsletterStatus === "success" ? (
+                  <Check size={18} />
+                ) : (
+                  <Mail size={18} />
+                )}
               </button>
-            </div>
+            </form>
+            {newsletterStatus === "success" && (
+              <p className="text-sm text-green-600 font-medium mt-2">{t("subscribeSuccess")}</p>
+            )}
+            {newsletterStatus === "error" && (
+              <p className="text-sm text-red-600 font-medium mt-2">{t("subscribeError")}</p>
+            )}
           </div>
         </div>
 

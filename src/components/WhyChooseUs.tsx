@@ -89,7 +89,7 @@ export const WhyChooseUs: React.FC = () => {
                   <div className="w-8 h-8 rounded-full bg-blue-100" />
                 </div>
                 <div className="space-y-2">
-                  <p className="text-2xl font-bold leading-tight">Where do you want to travel?</p>
+                  <p className="text-2xl font-bold leading-tight">{t("phoneTitle")}</p>
                 </div>
                 <div className="bg-gray-50 rounded-2xl p-4 flex flex-col gap-4 border border-gray-100">
                   <div className="flex items-center gap-3">
@@ -97,8 +97,8 @@ export const WhyChooseUs: React.FC = () => {
                       <Smartphone size={20} />
                     </div>
                     <div>
-                      <p className="text-[10px] font-bold text-gray-400 uppercase">Location</p>
-                      <p className="font-bold text-sm">Kinshasa, DRC</p>
+                      <p className="text-[10px] font-bold text-gray-400 uppercase">{t("phoneLocation")}</p>
+                      <p className="font-bold text-sm">{t("phoneCity")}</p>
                     </div>
                   </div>
                 </div>
@@ -107,12 +107,12 @@ export const WhyChooseUs: React.FC = () => {
                   <div className="aspect-[4/5] rounded-2xl bg-blue-50 overflow-hidden relative">
                     <img src="https://picsum.photos/200/300?random=401" className="w-full h-full object-cover" />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                    <p className="absolute bottom-2 left-2 text-[10px] font-bold text-white leading-none">Safari</p>
+                    <p className="absolute bottom-2 left-2 text-[10px] font-bold text-white leading-none">{t("phoneSafari")}</p>
                   </div>
                   <div className="aspect-[4/5] rounded-2xl bg-blue-50 overflow-hidden relative">
                     <img src="https://picsum.photos/200/300?random=402" className="w-full h-full object-cover" />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                    <p className="absolute bottom-2 left-2 text-[10px] font-bold text-white leading-none">Sunset</p>
+                    <p className="absolute bottom-2 left-2 text-[10px] font-bold text-white leading-none">{t("phoneSunset")}</p>
                   </div>
                 </div>
               </div>
@@ -128,9 +128,9 @@ export const WhyChooseUs: React.FC = () => {
                 <div className="w-8 h-8 rounded-full bg-green-500 flex items-center justify-center text-white shadow-sm">
                   <CheckCircle2 size={16} />
                 </div>
-                <p className="text-[10px] font-bold text-gray-900 uppercase">Success</p>
+                <p className="text-[10px] font-bold text-gray-900 uppercase">{t("phoneSuccess")}</p>
               </div>
-              <p className="text-xs font-bold text-gray-500 leading-tight">Itinerary generated instantly!</p>
+              <p className="text-xs font-bold text-gray-500 leading-tight">{t("phoneItinerary")}</p>
             </motion.div>
           </div>
         </motion.div>

@@ -29,7 +29,8 @@
     "signUp": "Registreren",
     "mainMenu": "Hoofdmenu",
     "settings": "Instellingen",
-    "user": "Gebruiker"
+    "user": "Gebruiker",
+    "language": "Taal"
   },
   "DestinationDetail": {
     "breadcrumbs": {
@@ -340,7 +341,14 @@
       "title": "Comfortabele Voertuigen",
       "description": "Een vloot moderne en goed onderhouden voertuigen voor uw comfort."
     },
-    "learnMore": "Meer Informatie"
+    "learnMore": "Meer Informatie",
+    "phoneTitle": "Waar wil je naartoe reizen?",
+    "phoneLocation": "Locatie",
+    "phoneCity": "Kinshasa, DRC",
+    "phoneSafari": "Safari",
+    "phoneSunset": "Zonsondergang",
+    "phoneSuccess": "Succes",
+    "phoneItinerary": "Reisroute direct gegenereerd!"
   },
   "Footer": {
     "description": "Ontdek geselecteerde bestemmingen, circuits, restaurants, hotels en lokale diensten in Kinshasa en Kongo Centraal. Uw betrouwbare gids om het hart van Congo te verkennen.",
@@ -360,7 +368,9 @@
     "copyright": "© 2025 KinXplore. Alle Rechten Voorbehouden.",
     "privacyLink": "Privacy",
     "termsLink": "Voorwaarden",
-    "cookiesLink": "Cookies"
+    "cookiesLink": "Cookies",
+    "subscribeSuccess": "Succesvol geabonneerd! Check je email.",
+    "subscribeError": "Abonneren mislukt. Probeer het opnieuw."
   },
   "Events": {
     "title": "Evenementen in Kinshasa",
@@ -735,5 +745,40 @@
     "tryAgain": "Opnieuw Proberen",
     "noToken": "Geen bevestigingstoken opgegeven.",
     "somethingWentWrong": "Er is iets misgegaan. Probeer het opnieuw."
+  },
+  "Profile": {
+    "title": "Mijn Profiel",
+    "subtitle": "Beheer je persoonlijke informatie en beveiligingsinstellingen",
+    "personalInfo": "Persoonlijke Informatie",
+    "firstName": "Voornaam",
+    "lastName": "Achternaam",
+    "email": "E-mailadres",
+    "phone": "Telefoonnummer",
+    "saveChanges": "Opslaan",
+    "saving": "Opslaan...",
+    "profileUpdated": "Profiel succesvol bijgewerkt",
+    "security": "Beveiliging",
+    "changePassword": "Wachtwoord Wijzigen",
+    "currentPassword": "Huidig Wachtwoord",
+    "newPassword": "Nieuw Wachtwoord",
+    "confirmNewPassword": "Bevestig Nieuw Wachtwoord",
+    "passwordMinLength": "Minimaal 8 tekens",
+    "passwordsDoNotMatch": "Wachtwoorden komen niet overeen",
+    "passwordTooShort": "Wachtwoord moet minimaal 8 tekens bevatten",
+    "updatePassword": "Wachtwoord Bijwerken",
+    "updatingPassword": "Bijwerken...",
+    "passwordUpdated": "Wachtwoord succesvol bijgewerkt",
+    "memberSince": "Lid sinds",
+    "role": "Rol",
+    "backToHome": "Terug naar home"
+  },
+  "Unsubscribe": {
+    "title": "Uitgeschreven",
+    "message": "Je bent succesvol uitgeschreven van de Kinxplore nieuwsbrief.",
+    "resubscribe": "Van gedachten veranderd? Je kunt je altijd opnieuw aanmelden via onze website.",
+    "backToHome": "Terug naar home",
+    "processing": "Verwerken...",
+    "failed": "Uitschrijven Mislukt",
+    "failedMessage": "De uitschrijflink is ongeldig of is al gebruikt."
   }
 }

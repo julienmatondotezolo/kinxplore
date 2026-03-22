@@ -26,7 +26,8 @@
     "signUp": "S'inscrire",
     "mainMenu": "Menu Principal",
     "settings": "Paramètres",
-    "user": "Utilisateur"
+    "user": "Utilisateur",
+    "language": "Langue"
   },
   "Hero": {
     "badge": "Découvrez Kinshasa & Kongo Central autrement",
@@ -155,7 +156,14 @@
       "title": "Lieux Sûrs",
       "description": "Priorisation des emplacements vérifiés et sécurisés à travers Kinshasa."
     },
-    "learnMore": "En Savoir Plus"
+    "learnMore": "En Savoir Plus",
+    "phoneTitle": "Où voulez-vous voyager ?",
+    "phoneLocation": "Destination",
+    "phoneCity": "Kinshasa, RDC",
+    "phoneSafari": "Safari",
+    "phoneSunset": "Coucher de soleil",
+    "phoneSuccess": "Succès",
+    "phoneItinerary": "Itinéraire généré instantanément !"
   },
   "Community": {
     "title": "Rejoignez notre communauté",
@@ -187,7 +195,9 @@
     "copyright": "© 2025 KinXplore. Tous Droits Réservés.",
     "privacyLink": "Confidentialité",
     "termsLink": "Conditions",
-    "cookiesLink": "Cookies"
+    "cookiesLink": "Cookies",
+    "subscribeSuccess": "Abonnement réussi ! Vérifiez votre email.",
+    "subscribeError": "Échec de l'abonnement. Veuillez réessayer."
   },
   "Packages": {
     "title": "Explorez les Meilleures Destinations de Kinshasa",
@@ -832,5 +842,40 @@
     "tryAgain": "Réessayer",
     "noToken": "Aucun jeton de confirmation fourni.",
     "somethingWentWrong": "Une erreur s'est produite. Veuillez réessayer."
+  },
+  "Profile": {
+    "title": "Mon Profil",
+    "subtitle": "Gérez vos informations personnelles et paramètres de sécurité",
+    "personalInfo": "Informations Personnelles",
+    "firstName": "Prénom",
+    "lastName": "Nom",
+    "email": "Adresse Email",
+    "phone": "Numéro de Téléphone",
+    "saveChanges": "Enregistrer",
+    "saving": "Enregistrement...",
+    "profileUpdated": "Profil mis à jour avec succès",
+    "security": "Sécurité",
+    "changePassword": "Changer le Mot de Passe",
+    "currentPassword": "Mot de Passe Actuel",
+    "newPassword": "Nouveau Mot de Passe",
+    "confirmNewPassword": "Confirmer le Nouveau Mot de Passe",
+    "passwordMinLength": "Minimum 8 caractères",
+    "passwordsDoNotMatch": "Les mots de passe ne correspondent pas",
+    "passwordTooShort": "Le mot de passe doit contenir au moins 8 caractères",
+    "updatePassword": "Mettre à Jour le Mot de Passe",
+    "updatingPassword": "Mise à jour...",
+    "passwordUpdated": "Mot de passe mis à jour avec succès",
+    "memberSince": "Membre depuis",
+    "role": "Rôle",
+    "backToHome": "Retour à l'accueil"
+  },
+  "Unsubscribe": {
+    "title": "Désabonné",
+    "message": "Vous avez été désabonné avec succès de la newsletter Kinxplore.",
+    "resubscribe": "Vous avez changé d'avis ? Vous pouvez toujours vous réabonner depuis notre site.",
+    "backToHome": "Retour à l'accueil",
+    "processing": "Traitement...",
+    "failed": "Échec du désabonnement",
+    "failedMessage": "Le lien de désabonnement est invalide ou a déjà été utilisé."
   }
 }

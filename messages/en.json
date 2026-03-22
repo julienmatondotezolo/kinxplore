@@ -26,7 +26,8 @@
     "signUp": "Sign Up",
     "mainMenu": "Main Menu",
     "settings": "Settings",
-    "user": "User"
+    "user": "User",
+    "language": "Language"
   },
   "Hero": {
     "badge": "Discover Kinshasa & Kongo Central differently",
@@ -155,7 +156,14 @@
       "title": "Safe Spots",
       "description": "Prioritizing verified and secure locations across Kinshasa."
     },
-    "learnMore": "Learn More"
+    "learnMore": "Learn More",
+    "phoneTitle": "Where do you want to travel?",
+    "phoneLocation": "Location",
+    "phoneCity": "Kinshasa, DRC",
+    "phoneSafari": "Safari",
+    "phoneSunset": "Sunset",
+    "phoneSuccess": "Success",
+    "phoneItinerary": "Itinerary generated instantly!"
   },
   "Community": {
     "title": "Join with our community",
@@ -187,7 +195,9 @@
     "copyright": "© 2025 KinXplore. All Rights Reserved.",
     "privacyLink": "Privacy",
     "termsLink": "Terms",
-    "cookiesLink": "Cookies"
+    "cookiesLink": "Cookies",
+    "subscribeSuccess": "Successfully subscribed! Check your email.",
+    "subscribeError": "Failed to subscribe. Please try again."
   },
   "Packages": {
     "title": "Explore Kinshasa's Top Destinations",
@@ -832,5 +842,40 @@
     "tryAgain": "Try Again",
     "noToken": "No confirmation token provided.",
     "somethingWentWrong": "Something went wrong. Please try again."
+  },
+  "Profile": {
+    "title": "My Profile",
+    "subtitle": "Manage your personal information and security settings",
+    "personalInfo": "Personal Information",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "email": "Email Address",
+    "phone": "Phone Number",
+    "saveChanges": "Save Changes",
+    "saving": "Saving...",
+    "profileUpdated": "Profile updated successfully",
+    "security": "Security",
+    "changePassword": "Change Password",
+    "currentPassword": "Current Password",
+    "newPassword": "New Password",
+    "confirmNewPassword": "Confirm New Password",
+    "passwordMinLength": "Must be at least 8 characters",
+    "passwordsDoNotMatch": "Passwords do not match",
+    "passwordTooShort": "Password must be at least 8 characters long",
+    "updatePassword": "Update Password",
+    "updatingPassword": "Updating...",
+    "passwordUpdated": "Password updated successfully",
+    "memberSince": "Member since",
+    "role": "Role",
+    "backToHome": "Back to home"
+  },
+  "Unsubscribe": {
+    "title": "Unsubscribed",
+    "message": "You have been successfully unsubscribed from the Kinxplore newsletter.",
+    "resubscribe": "Changed your mind? You can always subscribe again from our website.",
+    "backToHome": "Back to Home",
+    "processing": "Processing...",
+    "failed": "Unsubscribe Failed",
+    "failedMessage": "The unsubscribe link is invalid or has already been used."
   }
 }
