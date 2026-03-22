@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { useRouter } from '@/navigation';
-import { useLocale } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { motion } from 'framer-motion';
 import { CheckCircle, XCircle, Loader2 } from 'lucide-react';
 import Link from 'next/link';
@@ -16,12 +16,13 @@ export default function ConfirmEmailPage() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const locale = useLocale();
+  const t = useTranslations("ConfirmEmail");
   const token = searchParams.get('token');
 
   useEffect(() => {
     if (!token) {
       setStatus('error');
-      setErrorMessage('No confirmation token provided.');
+      setErrorMessage(t('noToken'));
       return;
     }
 
@@ -42,7 +43,7 @@ export default function ConfirmEmailPage() {
       })
       .catch((err) => {
         setStatus('error');
-        setErrorMessage(err.message || 'Something went wrong. Please try again.');
+        setErrorMessage(err.message || t('somethingWentWrong'));
       });
   }, [token, router]);
 
@@ -58,8 +59,8 @@ export default function ConfirmEmailPage() {
             <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-100 rounded-full mb-4">
               <Loader2 className="h-8 w-8 text-blue-600 animate-spin" />
             </div>
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">Confirming your email...</h2>
-            <p className="text-gray-600">Please wait while we verify your email address.</p>
+            <h2 className="text-2xl font-bold text-gray-900 mb-2">{t('confirming')}</h2>
+            <p className="text-gray-600">{t('pleaseWait')}</p>
           </>
         )}
 
@@ -68,15 +69,15 @@ export default function ConfirmEmailPage() {
             <div className="inline-flex items-center justify-center w-16 h-16 bg-green-100 rounded-full mb-4">
               <CheckCircle className="h-8 w-8 text-green-600" />
             </div>
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">Email Confirmed!</h2>
+            <h2 className="text-2xl font-bold text-gray-900 mb-2">{t('emailConfirmed')}</h2>
             <p className="text-gray-600 mb-4">
-              Your email has been verified. Redirecting you to login...
+              {t('redirecting')}
             </p>
             <Link
               href="/login?confirmed=true"
               className="inline-block mt-2 px-6 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-all"
             >
-              Go to Login
+              {t('goToLogin')}
             </Link>
           </>
         )}
@@ -86,13 +87,13 @@ export default function ConfirmEmailPage() {
             <div className="inline-flex items-center justify-center w-16 h-16 bg-red-100 rounded-full mb-4">
               <XCircle className="h-8 w-8 text-red-600" />
             </div>
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">Confirmation Failed</h2>
+            <h2 className="text-2xl font-bold text-gray-900 mb-2">{t('confirmationFailed')}</h2>
             <p className="text-gray-600 mb-4">{errorMessage}</p>
             <Link
               href="/register"
               className="inline-block mt-2 px-6 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-all"
             >
-              Try Again
+              {t('tryAgain')}
             </Link>
           </>
         )}

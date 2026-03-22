@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/hooks/useAuth';
-import { useLocale } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { motion } from 'framer-motion';
 import { Mail, Lock, ArrowRight, Loader2, CheckCircle } from 'lucide-react';
 import Link from 'next/link';
@@ -18,6 +18,7 @@ export default function ResetPasswordPage() {
   const [isResettingPassword, setIsResettingPassword] = useState(false);
   const [passwordUpdated, setPasswordUpdated] = useState(false);
   const locale = useLocale();
+  const t = useTranslations("ResetPassword");
   const { resetPassword, updatePassword } = useAuth();
 
   // Detect if user arrived via reset link (Supabase sets the session automatically)
@@ -40,7 +41,7 @@ export default function ResetPasswordPage() {
       await resetPassword(email, locale);
       setSuccess(true);
     } catch (err: any) {
-      setError(err.message || 'Failed to send reset email. Please try again.');
+      setError(err.message || t("failedToSend"));
     } finally {
       setLoading(false);
     }
@@ -52,13 +53,13 @@ export default function ResetPasswordPage() {
     setError(null);
 
     if (newPassword !== confirmPassword) {
-      setError('Passwords do not match');
+      setError(t("passwordsDoNotMatch"));
       setLoading(false);
       return;
     }
 
     if (newPassword.length < 8) {
-      setError('Password must be at least 8 characters long');
+      setError(t("passwordTooShort"));
       setLoading(false);
       return;
     }
@@ -85,15 +86,15 @@ export default function ResetPasswordPage() {
           <div className="inline-flex items-center justify-center w-16 h-16 bg-green-100 rounded-full mb-4">
             <CheckCircle className="h-8 w-8 text-green-600" />
           </div>
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">Password Updated!</h2>
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">{t("passwordUpdated")}</h2>
           <p className="text-gray-600 mb-6">
-            Your password has been successfully updated. You can now sign in with your new password.
+            {t("passwordUpdatedMessage")}
           </p>
           <Link
             href="/login"
             className="inline-block px-6 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-all shadow-lg hover:shadow-xl"
           >
-            Go to Login
+            {t("goToLogin")}
           </Link>
         </motion.div>
       </div>
@@ -114,14 +115,14 @@ export default function ResetPasswordPage() {
             <Link href="/" className="inline-block">
               <h1 className="text-3xl font-bold text-gray-900">KinXplore</h1>
             </Link>
-            <p className="mt-2 text-gray-600">Choose a new password</p>
+            <p className="mt-2 text-gray-600">{t("chooseNewPassword")}</p>
           </div>
 
           <div className="bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
             <form onSubmit={handleUpdatePassword} className="space-y-5">
               <div>
                 <label htmlFor="newPassword" className="block text-sm font-medium text-gray-700 mb-2">
-                  New Password
+                  {t("newPassword")}
                 </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -138,12 +139,12 @@ export default function ResetPasswordPage() {
                     minLength={8}
                   />
                 </div>
-                <p className="mt-1 text-xs text-gray-500">Must be at least 8 characters</p>
+                <p className="mt-1 text-xs text-gray-500">{t("passwordMinLength")}</p>
               </div>
 
               <div>
                 <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 mb-2">
-                  Confirm New Password
+                  {t("confirmNewPassword")}
                 </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -180,11 +181,11 @@ export default function ResetPasswordPage() {
                 {loading ? (
                   <>
                     <Loader2 className="h-5 w-5 animate-spin" />
-                    Updating...
+                    {t("updating")}
                   </>
                 ) : (
                   <>
-                    Update Password
+                    {t("updatePassword")}
                     <ArrowRight className="h-5 w-5" />
                   </>
                 )}
@@ -208,18 +209,18 @@ export default function ResetPasswordPage() {
           <div className="inline-flex items-center justify-center w-16 h-16 bg-green-100 rounded-full mb-4">
             <CheckCircle className="h-8 w-8 text-green-600" />
           </div>
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">Check Your Email</h2>
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">{t("checkYourEmail")}</h2>
           <p className="text-gray-600 mb-6">
-            We&apos;ve sent a password reset link to <strong>{email}</strong>
+            {t("resetLinkSent")} <strong>{email}</strong>
           </p>
           <p className="text-sm text-gray-500 mb-8">
-            Click the link in the email to reset your password. The link will expire in 1 hour.
+            {t("linkExpiry")}
           </p>
           <Link
             href="/login"
             className="inline-block px-6 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-all shadow-lg hover:shadow-xl"
           >
-            Back to Login
+            {t("backToLogin")}
           </Link>
         </motion.div>
       </div>
@@ -239,20 +240,20 @@ export default function ResetPasswordPage() {
           <Link href="/" className="inline-block">
             <h1 className="text-3xl font-bold text-gray-900">KinXplore</h1>
           </Link>
-          <p className="mt-2 text-gray-600">Reset your password</p>
+          <p className="mt-2 text-gray-600">{t("resetYourPassword")}</p>
         </div>
 
         <div className="bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
           <div className="mb-6">
             <p className="text-sm text-gray-600">
-              Enter your email address and we&apos;ll send you a link to reset your password.
+              {t("resetDescription")}
             </p>
           </div>
 
           <form onSubmit={handleRequestReset} className="space-y-6">
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-                Email Address
+                {t("emailAddress")}
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -264,7 +265,7 @@ export default function ResetPasswordPage() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white text-gray-900"
-                  placeholder="you@example.com"
+                  placeholder={t("emailPlaceholder")}
                   required
                   autoComplete="email"
                 />
@@ -289,11 +290,11 @@ export default function ResetPasswordPage() {
               {loading ? (
                 <>
                   <Loader2 className="h-5 w-5 animate-spin" />
-                  Sending...
+                  {t("sending")}
                 </>
               ) : (
                 <>
-                  Send Reset Link
+                  {t("sendResetLink")}
                   <ArrowRight className="h-5 w-5" />
                 </>
               )}
@@ -305,14 +306,14 @@ export default function ResetPasswordPage() {
               href="/login"
               className="text-sm text-blue-600 hover:text-blue-700 font-medium transition-colors"
             >
-              &larr; Back to login
+              {t("backToLogin")}
             </Link>
           </div>
         </div>
 
         <div className="mt-6 text-center">
           <Link href="/" className="text-sm text-gray-600 hover:text-gray-900 transition-colors">
-            &larr; Back to home
+            {t("backToHome")}
           </Link>
         </div>
       </motion.div>

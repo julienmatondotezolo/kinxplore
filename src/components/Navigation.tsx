@@ -273,7 +273,7 @@ export const Navigation: React.FC = () => {
                   className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-full font-bold text-sm transition-all shadow-md hover:shadow-lg active:scale-95"
                 >
                   <Plane size={16} />
-                  My Bookings
+                  {t("myBookings")}
                 </button>
               </div>
 
@@ -303,7 +303,7 @@ export const Navigation: React.FC = () => {
                     <div className="fixed inset-0 z-10" onClick={() => setShowUserDropdown(false)} />
                     <div className="absolute right-0 top-full mt-2 w-64 bg-white rounded-2xl shadow-xl border border-gray-100 py-2 z-20">
                       <div className="px-4 py-3 border-b border-gray-100">
-                        <p className="font-bold text-gray-900">{profile?.full_name || "User"}</p>
+                        <p className="font-bold text-gray-900">{profile?.full_name || t("user")}</p>
                         <p className="text-sm text-gray-500">{user.email}</p>
                       </div>
                       <div className="py-2">
@@ -315,7 +315,7 @@ export const Navigation: React.FC = () => {
                           className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 transition flex items-center gap-3"
                         >
                           <Settings size={16} />
-                          Profile Settings
+                          {t("profileSettings")}
                         </button>
                         <button
                           onClick={() => {
@@ -325,7 +325,7 @@ export const Navigation: React.FC = () => {
                           className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 transition flex items-center gap-3"
                         >
                           <Plane size={16} />
-                          My Trips
+                          {t("myTrips")}
                         </button>
                         <button
                           onClick={() => {
@@ -335,7 +335,7 @@ export const Navigation: React.FC = () => {
                           className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 transition flex items-center gap-3"
                         >
                           <ShoppingBag size={16} />
-                          My Bookings
+                          {t("myBookings")}
                         </button>
                       </div>
                       <div className="border-t border-gray-100 py-2">
@@ -348,7 +348,7 @@ export const Navigation: React.FC = () => {
                           className="w-full px-4 py-2 text-left text-sm text-red-600 hover:bg-red-50 transition flex items-center gap-3"
                         >
                           <LogOut size={16} />
-                          Sign Out
+                          {t("signOut")}
                         </button>
                       </div>
                     </div>
@@ -363,14 +363,14 @@ export const Navigation: React.FC = () => {
                 className="flex items-center gap-2 px-4 py-2 text-gray-700 hover:text-blue-600 font-medium text-sm transition-all"
               >
                 <LogIn size={16} />
-                Login
+                {t("login")}
               </button>
               <button
                 onClick={() => router.push("/register")}
                 className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-full font-bold text-sm transition-all shadow-md hover:shadow-lg active:scale-95"
               >
                 <UserPlus size={16} />
-                Sign Up
+                {t("signUp")}
               </button>
             </div>
           )}
@@ -421,7 +421,7 @@ export const Navigation: React.FC = () => {
               </div>
 
               <div className="flex-1 space-y-6">
-                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-4">Main Menu</p>
+                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-4">{t("mainMenu")}</p>
                 <div className="space-y-2">
                   {/* My Trips - Featured */}
                   <div
@@ -433,7 +433,7 @@ export const Navigation: React.FC = () => {
                   >
                     <div className="flex items-center gap-4">
                       <Plane size={20} />
-                      <span className="font-bold">My Trips</span>
+                      <span className="font-bold">{t("myTrips")}</span>
                     </div>
                     <div className="w-1.5 h-1.5 bg-white rounded-full animate-pulse" />
                   </div>
@@ -491,7 +491,7 @@ export const Navigation: React.FC = () => {
                   )}
                   <div className="flex items-center gap-4 p-4 rounded-2xl text-gray-500 hover:bg-gray-50 cursor-pointer">
                     <Settings size={20} className="text-gray-400" />
-                    <span className="font-bold">Settings</span>
+                    <span className="font-bold">{t("settings")}</span>
                   </div>
                 </div>
               </div>
@@ -540,7 +540,7 @@ export const Navigation: React.FC = () => {
                       className="w-full flex items-center justify-center gap-3 p-4 rounded-2xl border-2 border-gray-200 text-gray-700 font-bold hover:border-blue-500 hover:text-blue-600 transition-all"
                     >
                       <LogIn size={20} />
-                      Login
+                      {t("login")}
                     </button>
                     <button
                       onClick={() => {
@@ -550,7 +550,7 @@ export const Navigation: React.FC = () => {
                       className="w-full flex items-center justify-center gap-3 p-4 rounded-2xl bg-blue-600 text-white font-bold hover:bg-blue-700 transition-all shadow-lg"
                     >
                       <UserPlus size={20} />
-                      Sign Up
+                      {t("signUp")}
                     </button>
                   </div>
                 )}

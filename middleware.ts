@@ -9,7 +9,10 @@ export default createMiddleware({
   locales,
 
   // Used when no locale matches
-  defaultLocale: "en",
+  defaultLocale: "fr",
+
+  // Detect locale from browser Accept-Language header
+  localeDetection: true,
 });
 
 export const config = {

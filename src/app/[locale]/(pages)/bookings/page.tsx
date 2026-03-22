@@ -113,7 +113,7 @@ export default function BookingsPage() {
 
       if (!token) {
         console.error("[CANCEL BOOKING] No authentication token found");
-        alert("Authentication session not found. Please refresh the page and try again.");
+        alert(t("authError"));
         return;
       }
 
@@ -136,7 +136,7 @@ export default function BookingsPage() {
         status: err.status,
         data: err.data,
       });
-      alert(err.message || "Failed to cancel booking");
+      alert(err.message || t("failedToCancel"));
     } finally {
       setIsCancelling(false);
     }
@@ -176,7 +176,7 @@ export default function BookingsPage() {
 
       if (!token) {
         console.error("[UPDATE BOOKING] No authentication token found");
-        alert("Authentication session not found. Please refresh the page and try again.");
+        alert(t("authError"));
         return;
       }
 
@@ -198,7 +198,7 @@ export default function BookingsPage() {
         status: err.status,
         data: err.data,
       });
-      alert(err.message || "Failed to update booking");
+      alert(err.message || t("failedToUpdate"));
     } finally {
       setIsUpdating(false);
     }
@@ -372,22 +372,22 @@ export default function BookingsPage() {
                 <div className="w-20 h-20 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-6">
                   <ShoppingBag size={40} className="text-white" />
                 </div>
-                <h3 className="text-2xl font-bold text-gray-900 mb-3">Login to View Your Bookings</h3>
+                <h3 className="text-2xl font-bold text-gray-900 mb-3">{t("loginToView")}</h3>
                 <p className="text-gray-600 mb-6">
-                  Sign in to your account to view and manage your destination bookings.
+                  {t("loginToViewDescription")}
                 </p>
                 <div className="flex flex-col sm:flex-row gap-3 justify-center">
                   <Link
                     href="/login?returnUrl=/bookings"
                     className="inline-flex items-center justify-center gap-2 bg-blue-600 text-white px-6 py-3 rounded-xl font-bold hover:bg-blue-700 transition-all shadow-lg"
                   >
-                    Login to Continue
+                    {t("loginToContinue")}
                   </Link>
                   <Link
                     href="/register"
                     className="inline-flex items-center justify-center gap-2 bg-white text-blue-600 px-6 py-3 rounded-xl font-bold hover:bg-gray-50 transition-all border-2 border-blue-600"
                   >
-                    Create Account
+                    {t("createAccount")}
                   </Link>
                 </div>
               </div>

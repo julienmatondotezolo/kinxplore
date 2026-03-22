@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { useRouter } from '@/navigation';
-import { useLocale } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { useSearchParams } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { Mail, Lock, ArrowRight, Loader2, Eye, EyeOff, CheckCircle } from 'lucide-react';
@@ -18,6 +18,7 @@ export default function LoginPage() {
   const { signIn } = useAuth();
   const router = useRouter();
   const locale = useLocale();
+  const t = useTranslations("Login");
   const searchParams = useSearchParams();
   const returnUrl = searchParams.get('returnUrl');
   const confirmed = searchParams.get('confirmed');
@@ -51,7 +52,7 @@ export default function LoginPage() {
           <Link href="/" className="inline-block">
             <h1 className="text-3xl font-bold text-gray-900">KinXplore</h1>
           </Link>
-          <p className="mt-2 text-gray-600">Welcome back! Sign in to your account</p>
+          <p className="mt-2 text-gray-600">{t("welcomeBack")}</p>
         </div>
 
         {/* Login Card */}
@@ -65,14 +66,14 @@ export default function LoginPage() {
                 className="flex items-center gap-3 rounded-lg bg-green-50 p-4 text-sm text-green-800 border border-green-200"
               >
                 <CheckCircle className="h-5 w-5 text-green-600 shrink-0" />
-                Your email has been confirmed! You can now sign in.
+                {t("emailConfirmed")}
               </motion.div>
             )}
 
             {/* Email Field */}
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-                Email Address
+                {t("emailAddress")}
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -84,7 +85,7 @@ export default function LoginPage() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white text-gray-900"
-                  placeholder="you@example.com"
+                  placeholder={t("emailPlaceholder")}
                   required
                   autoComplete="email"
                 />
@@ -94,7 +95,7 @@ export default function LoginPage() {
             {/* Password Field */}
             <div>
               <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
-                Password
+                {t("password")}
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -138,7 +139,7 @@ export default function LoginPage() {
                 href="/reset-password"
                 className="text-sm font-medium text-blue-600 hover:text-blue-700 transition-colors"
               >
-                Forgot password?
+                {t("forgotPassword")}
               </Link>
             </div>
 
@@ -151,11 +152,11 @@ export default function LoginPage() {
               {loading ? (
                 <>
                   <Loader2 className="h-5 w-5 animate-spin" />
-                  Signing in...
+                  {t("signingIn")}
                 </>
               ) : (
                 <>
-                  Sign In
+                  {t("signIn")}
                   <ArrowRight className="h-5 w-5" />
                 </>
               )}
@@ -168,7 +169,7 @@ export default function LoginPage() {
               <div className="w-full border-t border-gray-200" />
             </div>
             <div className="relative flex justify-center text-sm">
-              <span className="px-4 bg-white text-gray-500">Don't have an account?</span>
+              <span className="px-4 bg-white text-gray-500">{t("noAccount")}</span>
             </div>
           </div>
 
@@ -177,14 +178,14 @@ export default function LoginPage() {
             href="/register"
             className="block w-full text-center py-3 px-4 border-2 border-gray-200 rounded-lg font-medium text-gray-700 hover:border-blue-500 hover:text-blue-600 transition-all"
           >
-            Create an account
+            {t("createAccount")}
           </Link>
         </div>
 
         {/* Back to Home */}
         <div className="mt-6 text-center">
           <Link href="/" className="text-sm text-gray-600 hover:text-gray-900 transition-colors">
-            ← Back to home
+            {t("backToHome")}
           </Link>
         </div>
       </motion.div>
