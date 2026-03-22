@@ -1,0 +1,45 @@
+export interface CountryCode {
+  code: string;
+  name: string;
+  dial: string;
+}
+
+export const countryCodes: CountryCode[] = [
+  { code: "CD", name: "Congo (DRC)", dial: "+243" },
+  { code: "CG", name: "Congo (Republic)", dial: "+242" },
+  { code: "BE", name: "Belgium", dial: "+32" },
+  { code: "FR", name: "France", dial: "+33" },
+  { code: "NL", name: "Netherlands", dial: "+31" },
+  { code: "US", name: "United States", dial: "+1" },
+  { code: "GB", name: "United Kingdom", dial: "+44" },
+  { code: "DE", name: "Germany", dial: "+49" },
+  { code: "CA", name: "Canada", dial: "+1" },
+  { code: "ZA", name: "South Africa", dial: "+27" },
+  { code: "NG", name: "Nigeria", dial: "+234" },
+  { code: "KE", name: "Kenya", dial: "+254" },
+  { code: "CM", name: "Cameroon", dial: "+237" },
+  { code: "CI", name: "Côte d'Ivoire", dial: "+225" },
+  { code: "SN", name: "Senegal", dial: "+221" },
+  { code: "RW", name: "Rwanda", dial: "+250" },
+  { code: "UG", name: "Uganda", dial: "+256" },
+  { code: "TZ", name: "Tanzania", dial: "+255" },
+  { code: "AO", name: "Angola", dial: "+244" },
+  { code: "GH", name: "Ghana", dial: "+233" },
+  { code: "ET", name: "Ethiopia", dial: "+251" },
+  { code: "MA", name: "Morocco", dial: "+212" },
+  { code: "TN", name: "Tunisia", dial: "+216" },
+  { code: "DZ", name: "Algeria", dial: "+213" },
+  { code: "EG", name: "Egypt", dial: "+20" },
+  { code: "ES", name: "Spain", dial: "+34" },
+  { code: "IT", name: "Italy", dial: "+39" },
+  { code: "PT", name: "Portugal", dial: "+351" },
+  { code: "CH", name: "Switzerland", dial: "+41" },
+  { code: "LU", name: "Luxembourg", dial: "+352" },
+  { code: "SE", name: "Sweden", dial: "+46" },
+  { code: "BR", name: "Brazil", dial: "+55" },
+  { code: "CN", name: "China", dial: "+86" },
+  { code: "IN", name: "India", dial: "+91" },
+  { code: "JP", name: "Japan", dial: "+81" },
+  { code: "AU", name: "Australia", dial: "+61" },
+  { code: "AE", name: "UAE", dial: "+971" },
+];

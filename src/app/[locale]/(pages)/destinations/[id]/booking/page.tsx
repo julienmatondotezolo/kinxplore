@@ -1,11 +1,15 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ArrowLeft, Calendar, Check, CheckCircle2, ChevronRight, Mail, MapPin, Phone, User } from "lucide-react";
+import { ArrowLeft, Calendar, Check, CheckCircle2, ChevronRight, Mail, MapPin, User } from "lucide-react";
 import { useParams } from "next/navigation";
 import { useTranslations } from "next-intl";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
+import CountrySelect from "@/components/CountrySelect";
+import PhoneInput from "@/components/PhoneInput";
 import { useAuth } from "@/hooks/useAuth";
 import { useDestination } from "@/hooks/useDestinations";
 import { bookingsApi } from "@/lib/api";
@@ -18,7 +22,7 @@ export default function BookingPage() {
   const id = params.id as string;
   const router = useRouter();
   const t = useTranslations("Booking");
-  const { user } = useAuth();
+  const { user, profile } = useAuth();
 
   const { data: destination, isLoading, error } = useDestination(id);
 
@@ -44,16 +48,30 @@ export default function BookingPage() {
   ) ?? false;
 
   const [guestInfo, setGuestInfo] = useState<BookingGuestInfo>({
-    firstName: "",
-    lastName: "",
-    email: "",
-    phone: "",
+    firstName: profile?.first_name || user?.user_metadata?.first_name || "",
+    lastName: profile?.last_name || user?.user_metadata?.last_name || "",
+    email: profile?.email || user?.email || "",
+    phone: profile?.phone || "",
     country: "",
     address: "",
     city: "",
     zipCode: "",
     specialRequests: "",
   });
+  const [phoneCode, setPhoneCode] = useState("+243");
+
+  // Prefill guest info when profile loads
+  useEffect(() => {
+    if (profile || user) {
+      setGuestInfo((prev) => ({
+        ...prev,
+        firstName: prev.firstName || profile?.first_name || user?.user_metadata?.first_name || "",
+        lastName: prev.lastName || profile?.last_name || user?.user_metadata?.last_name || "",
+        email: prev.email || profile?.email || user?.email || "",
+        phone: prev.phone || profile?.phone || "",
+      }));
+    }
+  }, [profile, user]);
 
   if (isLoading) {
     return (
@@ -164,7 +182,7 @@ export default function BookingPage() {
         guest_first_name: guestInfo.firstName,
         guest_last_name: guestInfo.lastName,
         contact_email: guestInfo.email,
-        contact_phone: guestInfo.phone,
+        contact_phone: `${phoneCode} ${guestInfo.phone}`,
         guest_country: guestInfo.country,
         guest_address: guestInfo.address,
         guest_city: guestInfo.city,
@@ -294,12 +312,22 @@ export default function BookingPage() {
                         <Calendar size={12} />
                         {hasHotelCategory ? t("checkIn") : t("date")}
                       </label>
-                      <input
-                        type="date"
-                        value={formatDateForInput(checkIn)}
-                        onChange={handleCheckInChange}
-                        min={formatDateForInput(new Date())}
+                      <DatePicker
+                        selected={checkIn}
+                        onChange={(date: Date | null) => {
+                          if (date) {
+                            setCheckIn(date);
+                            if (date >= checkOut) {
+                              const newCheckOut = new Date(date);
+                              newCheckOut.setDate(newCheckOut.getDate() + 1);
+                              setCheckOut(newCheckOut);
+                            }
+                          }
+                        }}
+                        minDate={new Date()}
+                        dateFormat="dd/MM/yyyy"
                         className="text-sm sm:text-[15px] font-bold bg-transparent border-none outline-none cursor-pointer w-full"
+                        calendarClassName="shadow-xl border border-gray-200 rounded-xl"
                       />
                     </div>
                     {hasHotelCategory && (
@@ -308,12 +336,17 @@ export default function BookingPage() {
                           <Calendar size={12} />
                           {t("checkOut")}
                         </label>
-                        <input
-                          type="date"
-                          value={formatDateForInput(checkOut)}
-                          onChange={handleCheckOutChange}
-                          min={formatDateForInput(new Date(checkIn.getTime() + 86400000))}
+                        <DatePicker
+                          selected={checkOut}
+                          onChange={(date: Date | null) => {
+                            if (date && date > checkIn) {
+                              setCheckOut(date);
+                            }
+                          }}
+                          minDate={new Date(checkIn.getTime() + 86400000)}
+                          dateFormat="dd/MM/yyyy"
                           className="text-sm sm:text-[15px] font-bold bg-transparent border-none outline-none cursor-pointer w-full"
+                          calendarClassName="shadow-xl border border-gray-200 rounded-xl"
                         />
                       </div>
                     )}
@@ -390,16 +423,13 @@ export default function BookingPage() {
                       <label className="block text-xs sm:text-sm font-semibold text-gray-700 mb-1.5">
                         {t("phone")} {t("required")}
                       </label>
-                      <div className="relative">
-                        <Phone size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
-                        <input
-                          type="tel"
-                          value={guestInfo.phone}
-                          onChange={(e) => handleGuestInfoChange("phone", e.target.value)}
-                          className="w-full pl-10 pr-3 py-2.5 text-sm bg-white border border-gray-200 rounded-lg focus:border-blue-600 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all"
-                          placeholder={t("phonePlaceholder")}
-                        />
-                      </div>
+                      <PhoneInput
+                        phoneCode={phoneCode}
+                        onPhoneCodeChange={setPhoneCode}
+                        phone={guestInfo.phone}
+                        onPhoneChange={(value) => handleGuestInfoChange("phone", value)}
+                        inputClassName="w-full pl-10 pr-3 py-2.5 text-sm bg-white border border-gray-200 rounded-lg focus:border-blue-600 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all"
+                      />
                     </div>
                   </div>
                 </div>
@@ -452,12 +482,11 @@ export default function BookingPage() {
                         <label className="block text-xs sm:text-sm font-semibold text-gray-700 mb-1.5">
                           {t("country")} {t("required")}
                         </label>
-                        <input
-                          type="text"
+                        <CountrySelect
                           value={guestInfo.country}
-                          onChange={(e) => handleGuestInfoChange("country", e.target.value)}
-                          className="w-full px-3 py-2.5 text-sm bg-white border border-gray-200 rounded-lg focus:border-blue-600 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all"
+                          onChange={(value) => handleGuestInfoChange("country", value)}
                           placeholder={t("countryPlaceholder")}
+                          className="w-full px-3 py-2.5 text-sm bg-white border border-gray-200 rounded-lg focus:border-blue-600 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all"
                         />
                       </div>
                     </div>

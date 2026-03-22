@@ -197,7 +197,9 @@
       "keepBooking": "Boeking Behouden",
       "confirmCancel": "Ja, Annuleren",
       "cancelling": "Annuleren..."
-    }
+    },
+    "tripInquiries": "Reisaanvragen",
+    "tripInquiry": "Reisaanvraag"
   },
   "Services": {
     "title": "Volledige assistentie voor uw verblijf",
@@ -282,7 +284,7 @@
     "suggestion3": "Zoek familiehotels in Gombe",
     "reviews": "Beoordelingen",
     "reviewsRating": "4,8 van 5",
-    "reviewsStats": "Meer dan 2000 reizigers vertrouwen ons — 4,9/5",
+    "reviewsStats": "100+ reizigers vertrouwen ons — 4,9/5",
     "topRated": "Best Beoordeelde Ervaringen",
     "explorePackages": "Alle Pakketten Bekijken",
     "exploreAllDestinations": "Ontdek ervaringen",

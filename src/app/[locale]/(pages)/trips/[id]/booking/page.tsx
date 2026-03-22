@@ -9,16 +9,18 @@ import {
   Loader2,
   Mail,
   MapPin,
-  Phone,
   User,
 } from "lucide-react";
 import { useParams } from "next/navigation";
-import { useTranslations } from "next-intl";
-import React, { useState } from "react";
+import { useLocale, useTranslations } from "next-intl";
+import React, { useEffect, useState } from "react";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
+import CountrySelect from "@/components/CountrySelect";
+import PhoneInput from "@/components/PhoneInput";
 import { useAuth } from "@/hooks/useAuth";
 import { useTrip } from "@/hooks/useTrips";
-import { supabase } from "@/lib/supabase";
 import { useRouter } from "@/navigation";
 import { BookingGuestInfo, BookingStep } from "@/types/booking.types";
 
@@ -27,7 +29,8 @@ export default function TripBookingPage() {
   const id = params.id as string;
   const router = useRouter();
   const t = useTranslations("TripBooking");
-  const { user } = useAuth();
+  const locale = useLocale();
+  const { user, profile } = useAuth();
 
   const { data: trip, isLoading, error } = useTrip(id);
 
@@ -36,17 +39,18 @@ export default function TripBookingPage() {
   const [submitError, setSubmitError] = useState<string | null>(null);
 
 
-  const [startDate, setStartDate] = useState<string>(() => {
+  const [startDate, setStartDate] = useState<Date>(() => {
     const date = new Date();
     date.setDate(date.getDate() + 7);
-    return date.toISOString().split("T")[0];
+    return date;
   });
+  const [phoneCode, setPhoneCode] = useState("+243");
 
   const [guestInfo, setGuestInfo] = useState<BookingGuestInfo>({
-    firstName: "",
-    lastName: "",
-    email: user?.email || "",
-    phone: "",
+    firstName: profile?.first_name || user?.user_metadata?.first_name || "",
+    lastName: profile?.last_name || user?.user_metadata?.last_name || "",
+    email: profile?.email || user?.email || "",
+    phone: profile?.phone || "",
     country: "",
     address: "",
     city: "",
@@ -54,28 +58,55 @@ export default function TripBookingPage() {
     specialRequests: "",
   });
 
+  // Prefill guest info when profile loads
+  useEffect(() => {
+    if (profile || user) {
+      setGuestInfo((prev) => ({
+        ...prev,
+        firstName: prev.firstName || profile?.first_name || user?.user_metadata?.first_name || "",
+        lastName: prev.lastName || profile?.last_name || user?.user_metadata?.last_name || "",
+        email: prev.email || profile?.email || user?.email || "",
+        phone: prev.phone || profile?.phone || "",
+      }));
+    }
+  }, [profile, user]);
+
   const handleConfirmBooking = async () => {
     if (!trip) return;
 
     setIsSubmitting(true);
     setSubmitError(null);
 
+    const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:2431";
+
     try {
-      const { error: insertError } = await supabase.from("trip_inquiries").insert({
-        first_name: guestInfo.firstName,
-        last_name: guestInfo.lastName,
-        email: guestInfo.email,
-        phone: guestInfo.phone,
-        destination: trip.region === "kinshasa" ? "kinshasa" : "kongo_central",
-        date_from: startDate || null,
-        date_to: null,
-        travelers: 1,
-        trip_style: null,
-        budget: null,
-        message: `Trip: ${trip.name} (${trip.duration})\nCountry: ${guestInfo.country}\nCity: ${guestInfo.city}\nAddress: ${guestInfo.address}\nZip: ${guestInfo.zipCode}${guestInfo.specialRequests ? `\n\nSpecial Requests: ${guestInfo.specialRequests}` : ""}`,
+      const response = await fetch(`${API_BASE_URL}/api/inquiries`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          first_name: guestInfo.firstName,
+          last_name: guestInfo.lastName,
+          email: guestInfo.email,
+          phone: `${phoneCode} ${guestInfo.phone}`,
+          destination: trip.region === "kinshasa" ? "kinshasa" : "kongo_central",
+          date_from: startDate ? startDate.toISOString().split("T")[0] : null,
+          trip_name: trip.name,
+          trip_duration: trip.duration,
+          region: trip.region === "kinshasa" ? "Kinshasa" : "Kongo Central",
+          country: guestInfo.country,
+          city: guestInfo.city,
+          address: guestInfo.address,
+          zip_code: guestInfo.zipCode,
+          special_requests: guestInfo.specialRequests || undefined,
+          locale,
+        }),
       });
 
-      if (insertError) throw insertError;
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Failed to submit inquiry");
+      }
+
       setCurrentStep("confirmation");
     } catch (err: any) {
       setSubmitError(err.message || "Failed to submit inquiry");
@@ -143,13 +174,17 @@ export default function TripBookingPage() {
             {/* Start Date */}
             <div className="bg-white rounded-2xl p-6 border border-gray-100">
               <h2 className="font-bold text-gray-900 mb-4">{t("startDate")}</h2>
-              <input
-                type="date"
-                value={startDate}
-                onChange={(e) => setStartDate(e.target.value)}
-                min={new Date().toISOString().split("T")[0]}
-                className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-gray-900"
-              />
+              <div className="relative">
+                <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 z-10 pointer-events-none" />
+                <DatePicker
+                  selected={startDate}
+                  onChange={(date: Date | null) => date && setStartDate(date)}
+                  minDate={new Date()}
+                  dateFormat="dd/MM/yyyy"
+                  className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-gray-900"
+                  calendarClassName="shadow-xl border border-gray-200 rounded-xl"
+                />
+              </div>
             </div>
 
             {/* Guest Info Form */}
@@ -193,25 +228,22 @@ export default function TripBookingPage() {
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">{t("phone")} *</label>
-                  <div className="relative">
-                    <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-                    <input
-                      type="tel"
-                      value={guestInfo.phone}
-                      onChange={(e) => setGuestInfo({ ...guestInfo, phone: e.target.value })}
-                      className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-gray-900"
-                    />
-                  </div>
+                  <PhoneInput
+                    phoneCode={phoneCode}
+                    onPhoneCodeChange={setPhoneCode}
+                    phone={guestInfo.phone}
+                    onPhoneChange={(value) => setGuestInfo({ ...guestInfo, phone: value })}
+                    inputClassName="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-gray-900"
+                  />
                 </div>
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">{t("country")} *</label>
-                  <input
-                    type="text"
+                  <CountrySelect
                     value={guestInfo.country}
-                    onChange={(e) => setGuestInfo({ ...guestInfo, country: e.target.value })}
-                    className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-gray-900"
+                    onChange={(value) => setGuestInfo({ ...guestInfo, country: value })}
+                    className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-gray-900 text-sm"
                   />
                 </div>
                 <div>
@@ -271,7 +303,7 @@ export default function TripBookingPage() {
                   </div>
                 </div>
                 <div className="grid grid-cols-2 gap-4 text-sm">
-                  <div><span className="text-gray-500">{t("startDate")}:</span> <span className="font-bold">{startDate}</span></div>
+                  <div><span className="text-gray-500">{t("startDate")}:</span> <span className="font-bold">{startDate.toLocaleDateString()}</span></div>
                   <div><span className="text-gray-500">{t("guest")}:</span> <span className="font-bold">{guestInfo.firstName} {guestInfo.lastName}</span></div>
                   <div><span className="text-gray-500">{t("email")}:</span> <span className="font-bold">{guestInfo.email}</span></div>
                 </div>

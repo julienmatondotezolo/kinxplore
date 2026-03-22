@@ -71,50 +71,49 @@ export function useAuth() {
   };
 
   const signUp = async (email: string, password: string, firstName?: string, lastName?: string, locale?: string) => {
-    const fullName = [firstName, lastName].filter(Boolean).join(' ');
-    const { data, error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        data: {
-          full_name: fullName,
-          first_name: firstName,
-          last_name: lastName,
-          locale: locale || 'en',
-          role: 'user',
-        },
-      },
+    const response = await fetch(`${API_BASE_URL}/api/auth/register`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        email,
+        password,
+        first_name: firstName,
+        last_name: lastName,
+        locale: locale || 'en',
+      }),
     });
 
-    if (error) throw error;
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || 'Failed to create account');
+    }
 
-    // Send welcome email via backend
-    sendMailNotification('welcome', {
-      email,
-      name: fullName || email,
-      locale: locale || 'en',
-    });
-
-    return data;
+    return response.json();
   };
 
   const signIn = async (email: string, password: string, locale?: string) => {
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
+    const response = await fetch(`${API_BASE_URL}/api/auth/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password, locale: locale || 'en' }),
     });
 
-    if (error) throw error;
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || 'Failed to sign in');
+    }
 
-    // Send login notification via backend
-    const name = data.user?.user_metadata?.full_name || email;
-    sendMailNotification('login', {
-      email,
-      name,
-      locale: locale || data.user?.user_metadata?.locale || 'en',
-    });
+    const { session } = await response.json();
 
-    return data;
+    // Set the session in the Supabase client so auth state updates
+    if (session) {
+      await supabase.auth.setSession({
+        access_token: session.access_token,
+        refresh_token: session.refresh_token,
+      });
+    }
+
+    return session;
   };
 
   const signOut = async () => {

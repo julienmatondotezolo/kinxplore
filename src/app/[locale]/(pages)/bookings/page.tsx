@@ -20,7 +20,7 @@ import React, { useEffect, useState } from "react";
 import { Footer } from "@/components/Footer";
 import { Navigation } from "@/components/Navigation";
 import { useAuth } from "@/hooks/useAuth";
-import { Booking, bookingsApi, BookingStats } from "@/lib/api";
+import { Booking, bookingsApi, BookingStats, TripInquiry, inquiriesApi } from "@/lib/api";
 import { supabase } from "@/lib/supabase";
 import { Link, useRouter } from "@/navigation";
 
@@ -30,6 +30,7 @@ export default function BookingsPage() {
   const { user, loading: authLoading } = useAuth();
 
   const [bookings, setBookings] = useState<Booking[]>([]);
+  const [inquiries, setInquiries] = useState<TripInquiry[]>([]);
   const [stats, setStats] = useState<BookingStats | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -82,13 +83,15 @@ export default function BookingsPage() {
 
       // Call API with or without token
       // Backend will return empty data if no token
-      const [bookingsData, statsData] = await Promise.all([
+      const [bookingsData, statsData, inquiriesData] = await Promise.all([
         bookingsApi.getMyBookings(token),
         bookingsApi.getMyBookingStats(token),
+        inquiriesApi.getMyInquiries(token).catch(() => [] as TripInquiry[]),
       ]);
 
       setBookings(bookingsData);
       setStats(statsData);
+      setInquiries(inquiriesData);
     } catch (err: any) {
       console.error("Error loading bookings:", err);
       setError(err.message || "Failed to load bookings");
@@ -538,6 +541,60 @@ export default function BookingsPage() {
                   </div>
                 </div>
               ))}
+            </div>
+          )}
+          {/* Trip Inquiries */}
+          {inquiries.length > 0 && (
+            <div className="mt-12">
+              <h2 className="text-2xl font-bold text-gray-900 mb-6">{t("tripInquiries") || "Trip Inquiries"}</h2>
+              <div className="space-y-4">
+                {inquiries.map((inquiry) => {
+                  // Parse trip name from message
+                  const tripMatch = inquiry.message.match(/^Trip:\s*(.+?)(?:\n|$)/);
+                  const tripName = tripMatch ? tripMatch[1] : inquiry.destination;
+
+                  return (
+                    <div
+                      key={inquiry.id}
+                      className="bg-white border border-gray-100 rounded-2xl p-6 hover:shadow-lg transition-all"
+                    >
+                      <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
+                        <div className="flex-1">
+                          <div className="flex items-center gap-3 mb-2">
+                            <h3 className="text-lg font-bold text-gray-900">{tripName}</h3>
+                            <span className="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-purple-100 text-purple-700 border border-purple-200 flex items-center gap-1.5">
+                              <Clock size={12} />
+                              {t("tripInquiry") || "Trip Inquiry"}
+                            </span>
+                          </div>
+                          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-3">
+                            {inquiry.date_from && (
+                              <div className="flex items-center gap-2 text-sm text-gray-600">
+                                <Calendar size={14} className="text-gray-400" />
+                                <span>{new Date(inquiry.date_from).toLocaleDateString()}</span>
+                              </div>
+                            )}
+                            <div className="flex items-center gap-2 text-sm text-gray-600">
+                              <Mail size={14} className="text-gray-400" />
+                              <span>{inquiry.email}</span>
+                            </div>
+                            <div className="flex items-center gap-2 text-sm text-gray-600">
+                              <Phone size={14} className="text-gray-400" />
+                              <span>{inquiry.phone}</span>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="text-right shrink-0">
+                          <p className="text-xs text-gray-400">{t("bookedOn") || "Submitted"}</p>
+                          <p className="text-sm font-medium text-gray-700">
+                            {new Date(inquiry.created_at).toLocaleDateString()}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
             </div>
           )}
         </div>

@@ -41,7 +41,7 @@
     "suggestion3": "Trouver des hôtels familiaux à Gombe",
     "reviews": "Avis",
     "reviewsRating": "4,8 sur 5",
-    "reviewsStats": "Plus de 2000 voyageurs nous font confiance — 4,9/5",
+    "reviewsStats": "100+ voyageurs nous font confiance — 4,9/5",
     "topRated": "Expériences les Mieux Notées",
     "explorePackages": "Découvrir tous les packages",
     "exploreAllDestinations": "Découvrir les expériences",
@@ -413,7 +413,9 @@
       "keepBooking": "Conserver la Réservation",
       "confirmCancel": "Oui, Annuler",
       "cancelling": "Annulation..."
-    }
+    },
+    "tripInquiries": "Demandes de Voyage",
+    "tripInquiry": "Demande de Voyage"
   },
   "Restaurants": {
     "title": "Où manger à Kinshasa ?",

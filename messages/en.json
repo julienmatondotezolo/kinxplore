@@ -41,7 +41,7 @@
     "suggestion3": "Find family hotels in Gombe",
     "reviews": "Reviews",
     "reviewsRating": "4.8 out of 5",
-    "reviewsStats": "Over 2,000 travelers trust us — 4.9/5",
+    "reviewsStats": "100+ travelers trust us — 4.9/5",
     "topRated": "Top-Rated Experiences",
     "explorePackages": "Explore All Packages",
     "exploreAllDestinations": "Discover experiences",
@@ -413,7 +413,9 @@
       "keepBooking": "Keep Booking",
       "confirmCancel": "Yes, Cancel",
       "cancelling": "Cancelling..."
-    }
+    },
+    "tripInquiries": "Trip Inquiries",
+    "tripInquiry": "Trip Inquiry"
   },
   "Restaurants": {
     "title": "Where to eat in Kinshasa?",

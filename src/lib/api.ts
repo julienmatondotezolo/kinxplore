@@ -180,6 +180,32 @@ export const bookingsApi = {
     }),
 };
 
+// Trip Inquiries
+export interface TripInquiry {
+  id: string;
+  first_name: string;
+  last_name: string;
+  email: string;
+  phone: string;
+  destination: string;
+  date_from: string | null;
+  date_to: string | null;
+  travelers: number;
+  trip_style: string | null;
+  budget: string | null;
+  message: string;
+  created_at: string;
+}
+
+export const inquiriesApi = {
+  getMyInquiries: (token: string) =>
+    fetchApi<TripInquiry[]>("/inquiries/my-inquiries", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }),
+};
+
 // Trips API
 export const tripsApi = {
   getAll: () => fetchApi<Trip[]>("/trips"),
